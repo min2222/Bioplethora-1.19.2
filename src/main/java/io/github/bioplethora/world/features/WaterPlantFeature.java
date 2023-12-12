@@ -1,28 +1,33 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
-public class WaterPlantFeature extends Feature<BlockStateFeatureConfig> {
+public class WaterPlantFeature extends Feature<BlockStateConfiguration> {
 
-    public WaterPlantFeature(Codec<BlockStateFeatureConfig> pCodec) {
+    public WaterPlantFeature(Codec<BlockStateConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
-
+    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context) {
+    	BlockPos pos = context.origin();
+    	RandomSource rand = context.random();
+    	WorldGenLevel world = context.level();
+    	BlockStateConfiguration config = context.config();
+    	
         boolean flag = false;
         int i = rand.nextInt(32) - rand.nextInt(32);
         int j = rand.nextInt(32) - rand.nextInt(32);
-        int k = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX() + i, pos.getZ() + j);
+        int k = world.getHeight(Heightmap.Types.OCEAN_FLOOR, pos.getX() + i, pos.getZ() + j);
         BlockPos blockpos = new BlockPos(pos.getX() + i, k, pos.getZ() + j);
         if (world.getBlockState(blockpos).is(Blocks.WATER)) {
             if (config.state.canSurvive(world, blockpos)) {

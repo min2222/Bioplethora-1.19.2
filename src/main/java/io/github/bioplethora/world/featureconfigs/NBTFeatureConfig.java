@@ -4,9 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class NBTFeatureConfig implements IFeatureConfig {
+public class NBTFeatureConfig implements FeatureConfiguration {
 
     public static final Codec<NBTFeatureConfig> CODEC = RecordCodecBuilder.create((codecRecorder) -> codecRecorder.group(
             Codec.STRING.fieldOf("feature").forGetter((config) -> config.feature),

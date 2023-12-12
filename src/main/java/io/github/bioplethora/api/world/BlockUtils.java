@@ -1,5 +1,7 @@
 package io.github.bioplethora.api.world;
 
+import java.lang.reflect.Constructor;
+
 import io.github.bioplethora.registry.BPTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -63,24 +65,29 @@ public class BlockUtils {
 
                     BlockPos pos = new BlockPos(radX, radY, radZ);
                     BlockState blockState = world.getBlockState(pos);
-                    Block block = blockState.getBlock();
 
                     if (!blockState.is(BlockTags.DRAGON_IMMUNE) && !blockState.is(BPTags.Blocks.ALPHANIA)) {
                         if (Math.random() <= 0.3) {
-                            FallingBlockEntity blockEntity = new FallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, blockState);
-                            if (randomYDelta) {
-                                blockEntity.setDeltaMovement(blockEntity.getDeltaMovement().add(0, yDelta + (Math.random() / 4), 0));
-                            } else {
-                                blockEntity.setDeltaMovement(blockEntity.getDeltaMovement().add(0, yDelta, 0));
-                            }
-                            world.addFreshEntity(blockEntity);
-
-                            if (sendParticles) {
-                                if (world instanceof ServerLevel) {
-                                    ((ServerLevel) world).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), pos.getX(), pos.getY() + 1, pos.getZ(),
-                                            5, 0.6, 0.8, 0.6, 0.1);
+        			        try {
+        						Constructor<FallingBlockEntity> constructor = FallingBlockEntity.class.getDeclaredConstructor();
+        				        constructor.setAccessible(true);
+                                FallingBlockEntity blockEntity = constructor.newInstance(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, blockState);
+                                if (randomYDelta) {
+                                    blockEntity.setDeltaMovement(blockEntity.getDeltaMovement().add(0, yDelta + (Math.random() / 4), 0));
+                                } else {
+                                    blockEntity.setDeltaMovement(blockEntity.getDeltaMovement().add(0, yDelta, 0));
                                 }
-                            }
+                                world.addFreshEntity(blockEntity);
+
+                                if (sendParticles) {
+                                    if (world instanceof ServerLevel) {
+                                        ((ServerLevel) world).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), pos.getX(), pos.getY() + 1, pos.getZ(),
+                                                5, 0.6, 0.8, 0.6, 0.1);
+                                    }
+                                }
+        			        } catch (Exception  e) {
+        						e.printStackTrace();
+        					}
                         }
                     }
                 }

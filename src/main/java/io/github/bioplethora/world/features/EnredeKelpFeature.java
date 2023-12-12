@@ -1,29 +1,33 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.KelpTopBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.KelpBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class EnredeKelpFeature extends Feature<NoFeatureConfig> {
+public class EnredeKelpFeature extends Feature<NoneFeatureConfiguration> {
 
-    public EnredeKelpFeature(Codec<NoFeatureConfig> pCodec) {
+    public EnredeKelpFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
-
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
+    	
         int i = 0;
-        int j = world.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX(), pos.getZ());
+        int j = world.getHeight(Heightmap.Types.OCEAN_FLOOR, pos.getX(), pos.getZ());
         BlockPos blockpos = new BlockPos(pos.getX(), j, pos.getZ());
         if (world.getBlockState(blockpos).is(Blocks.WATER)) {
             BlockState blockstate = BPBlocks.ENREDE_KELP.get().defaultBlockState();
@@ -33,7 +37,7 @@ public class EnredeKelpFeature extends Feature<NoFeatureConfig> {
             for(int l = 0; l <= k; ++l) {
                 if (world.getBlockState(blockpos).is(Blocks.WATER) && world.getBlockState(blockpos.above()).is(Blocks.WATER) && blockstate1.canSurvive(world, blockpos)) {
                     if (l == k) {
-                        world.setBlock(blockpos, blockstate.setValue(KelpTopBlock.AGE, rand.nextInt(4) + 20), 2);
+                        world.setBlock(blockpos, blockstate.setValue(KelpBlock.AGE, rand.nextInt(4) + 20), 2);
                         ++i;
                     } else {
                         world.setBlock(blockpos, blockstate1, 2);
@@ -41,7 +45,7 @@ public class EnredeKelpFeature extends Feature<NoFeatureConfig> {
                 } else if (l > 0) {
                     BlockPos blockpos1 = blockpos.below();
                     if (blockstate.canSurvive(world, blockpos1) && !world.getBlockState(blockpos1.below()).is(BPBlocks.ENREDE_KELP.get())) {
-                        world.setBlock(blockpos1, blockstate.setValue(KelpTopBlock.AGE, rand.nextInt(4) + 20), 2);
+                        world.setBlock(blockpos1, blockstate.setValue(KelpBlock.AGE, rand.nextInt(4) + 20), 2);
                         ++i;
                     }
                     break;

@@ -7,12 +7,14 @@ import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
 
 public class BPTreeConfiguredFeatures {
 
     public static final ConfiguredFeature<?, ?> ENIVILE_TREE_CONFIG = BPFeatures.ENIVILE_TREE.get()
-            .configured(new NoFeatureConfig())
+            .configured(new NoneFeatureConfiguration())
             .decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             );
     public static final ConfiguredFeature<?, ?> CRYEANUM_FOREST_TREES = Feature.RANDOM_SELECTOR
@@ -21,7 +23,7 @@ public class BPTreeConfiguredFeatures {
             );
 
     public static final ConfiguredFeature<?, ?> CAERULWOOD_TREE_CONFIG = BPFeatures.CAERULWOOD_TREE.get()
-            .configured(new NoFeatureConfig())
+            .configured(new NoneFeatureConfiguration())
             .decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             );
     public static final ConfiguredFeature<?, ?> CAERI_FOREST_TREES = Feature.RANDOM_SELECTOR

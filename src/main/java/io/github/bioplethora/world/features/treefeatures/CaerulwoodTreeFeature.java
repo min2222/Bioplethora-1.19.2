@@ -1,18 +1,17 @@
 package io.github.bioplethora.world.features.treefeatures;
 
-import java.util.Random;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.world.features.NBTTreeFeature;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class CaerulwoodTreeFeature extends NBTTreeFeature {
 
-    public CaerulwoodTreeFeature(Codec<NoFeatureConfig> config) {
+    public CaerulwoodTreeFeature(Codec<NoneFeatureConfiguration> config) {
         super(config);
     }
 
@@ -32,12 +31,12 @@ public class CaerulwoodTreeFeature extends NBTTreeFeature {
     }
 
     @Override
-    public boolean lowerYLevel(Random rand) {
+    public boolean lowerYLevel(RandomSource rand) {
         return getRandomNBTTree(rand).equals("caerulwood_tree_large_1") || getRandomNBTTree(rand).equals("caerulwood_tree_large_2") || getRandomNBTTree(rand).equals("caerulwood_tree_large_3") || getRandomNBTTree(rand).equals("caerulwood_tree_large_4");
     }
 
     @Override
-    public boolean getSpawningCondition(ISeedReader world, Random random, BlockPos pos) {
+    public boolean getSpawningCondition(WorldGenLevel world, RandomSource random, BlockPos pos) {
         return defaultTreeCanPlace(world, random, pos);
     }
 }

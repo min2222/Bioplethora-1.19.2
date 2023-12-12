@@ -1,29 +1,36 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.registry.BPBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ILevel;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.BasaltDeltasFeature;
-import net.minecraft.world.gen.feature.structure.BasaltDeltasStructure;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.DeltaFeature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.DeltaFeatureConfiguration;
 
-public class EndLandsSpongeFeature extends BasaltDeltasStructure {
+public class EndLandsSpongeFeature extends DeltaFeature {
     private static final ImmutableList<Block> CANNOT_REPLACE = ImmutableList.of(Blocks.BEDROCK);
     private static final Direction[] DIRECTIONS = Direction.values();
     
-    public EndLandsSpongeFeature(Codec<BasaltDeltasFeature> pCodec) {
+    public EndLandsSpongeFeature(Codec<DeltaFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader level, ChunkGenerator chunkGen, Random rand, BlockPos pos, BasaltDeltasFeature config) {
+    public boolean place(FeaturePlaceContext<DeltaFeatureConfiguration> pContext) {
+    	WorldGenLevel level = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
+    	DeltaFeatureConfiguration config = pContext.config();
+    	
         boolean flag = false;
         int i = config.rimSize().sample(rand);
         int j = config.rimSize().sample(rand);
@@ -57,7 +64,7 @@ public class EndLandsSpongeFeature extends BasaltDeltasStructure {
         return flag;
     }
 
-    public void carveGap(ILevel pLevel, BlockPos pPos, BasaltDeltasFeature config, boolean checkOpt) {
+    public void carveGap(LevelAccessor pLevel, BlockPos pPos, DeltaFeatureConfiguration config, boolean checkOpt) {
         if (pLevel.getBlockState(pPos).is(BPBlocks.CHORUS_MYCHRODEGIA.get()) || pLevel.getBlockState(pPos).is(BPBlocks.CHORUS_MYCHRODEGIA_PART.get())) {
             return;
         }
@@ -79,7 +86,7 @@ public class EndLandsSpongeFeature extends BasaltDeltasStructure {
         }
     }
 
-    public void carveOpenings(ILevel pLevel, BlockPos pPos, BasaltDeltasFeature config) {
+    public void carveOpenings(LevelAccessor pLevel, BlockPos pPos, DeltaFeatureConfiguration config) {
         if (pLevel.getBlockState(pPos).is(BPBlocks.CHORUS_MYCHRODEGIA.get()) || pLevel.getBlockState(pPos).is(BPBlocks.CHORUS_MYCHRODEGIA_PART.get())) {
             return;
         }
@@ -96,7 +103,7 @@ public class EndLandsSpongeFeature extends BasaltDeltasStructure {
         }
     }
 
-    private static boolean isClearer(ILevel pLevel, BlockPos pPos, BasaltDeltasFeature pConfig) {
+    private static boolean isClearer(LevelAccessor pLevel, BlockPos pPos, DeltaFeatureConfiguration pConfig) {
         BlockState blockstate = pLevel.getBlockState(pPos);
         if (blockstate.is(pConfig.contents().getBlock())) {
             return false;
@@ -114,7 +121,7 @@ public class EndLandsSpongeFeature extends BasaltDeltasStructure {
         }
     }
 
-    private static boolean isClear(ILevel pLevel, BlockPos pPos, BasaltDeltasFeature pConfig) {
+    private static boolean isClear(LevelAccessor pLevel, BlockPos pPos, DeltaFeatureConfiguration pConfig) {
         BlockState blockstate = pLevel.getBlockState(pPos);
         if (CANNOT_REPLACE.contains(blockstate.getBlock())) {
             return false;
@@ -130,7 +137,7 @@ public class EndLandsSpongeFeature extends BasaltDeltasStructure {
         }
     }
 
-    private static boolean isClearOptimized(ILevel world, BlockPos pos) {
+    private static boolean isClearOptimized(LevelAccessor world, BlockPos pos) {
         boolean flag = world.isEmptyBlock(pos.east()) || world.isEmptyBlock(pos.west()) || world.isEmptyBlock(pos.south()) || world.isEmptyBlock(pos.north()) || world.isEmptyBlock(pos.below());
         return !flag;
     }

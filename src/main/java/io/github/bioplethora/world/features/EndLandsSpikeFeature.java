@@ -1,24 +1,26 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.Vec3;
 
-public class EndLandsSpikeFeature extends Feature<NoFeatureConfig> {
+public class EndLandsSpikeFeature extends Feature<NoneFeatureConfiguration> {
 
-    public EndLandsSpikeFeature(Codec<NoFeatureConfig> pCodec) {
+    public EndLandsSpikeFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
-
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	BlockPos pos = pContext.origin();
+    	
         boolean large = world.getRandom().nextInt(5) == 0;
         int tipMin = (int) ((large ? 25 : 10) * 0.7);
         int tipRand = (int) ((large ? 35 : 20) * 0.6);

@@ -1,18 +1,20 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.world.featureconfigs.ExpandedLakeFeatureConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.LightType;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.material.Material;
 
 public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
@@ -21,7 +23,11 @@ public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
         super(codec);
     }
 
-    public boolean place(ISeedReader seedReader, ChunkGenerator chunkGenerator, Random random, BlockPos pos, ExpandedLakeFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<ExpandedLakeFeatureConfig> context) {
+    	BlockPos pos = context.origin();
+    	WorldGenLevel seedReader = context.level();
+    	RandomSource random = context.random();
+    	ExpandedLakeFeatureConfig config = context.config();
         while (pos.getY() > 5 && seedReader.isEmptyBlock(pos)) {
             pos = pos.below();
         }
@@ -92,8 +98,8 @@ public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
                         for (int j4 = 4; j4 < 8; ++j4) {
                             if (aboolean[(i2 * 16 + j3) * 8 + j4]) {
                                 BlockPos blockpos = pos.offset(i2, j4 - 1, j3);
-                                if (isDirt(seedReader.getBlockState(blockpos).getBlock()) && seedReader.getBrightness(LightType.SKY, pos.offset(i2, j4, j3)) > 0) {
-                                    Biome biome = seedReader.getBiome(blockpos);
+                                if (isDirt(seedReader.getBlockState(blockpos)) && seedReader.getBrightness(LightLayer.SKY, pos.offset(i2, j4, j3)) > 0) {
+                                    Biome biome = seedReader.getBiome(blockpos).get();
                                     seedReader.setBlock(blockpos, config.getBase(), 2);
                                 }
                             }

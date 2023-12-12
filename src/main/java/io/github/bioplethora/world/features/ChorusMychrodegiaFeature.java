@@ -1,7 +1,5 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import com.mojang.serialization.Codec;
@@ -10,23 +8,29 @@ import io.github.bioplethora.api.world.BlockUtils;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ILevel;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChorusFlowerBlock;
 import net.minecraft.world.level.block.ChorusPlantBlock;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ChorusPlantFeature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
 
-    public ChorusMychrodegiaFeature(Codec<NoFeatureConfig> codec) {
+    public ChorusMychrodegiaFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
         if (world.isEmptyBlock(pos) && world.getBlockState(pos.below()).is(BPTags.Blocks.CHORUS_GROWABLE)) {
             world.setBlock(pos, ((ChorusPlantBlock)Blocks.CHORUS_PLANT).getStateForPlacement(world, pos), 2);
             growTreeRecursive(world, pos, rand, pos, 32, 0);
@@ -36,7 +40,7 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         }
     }
 
-    private static void growTreeRecursive(ILevel pLevel, BlockPos pBranchPos, Random pRand, BlockPos pOriginalBranchPos, int pMaxHorizontalDistance, int pIterations) {
+    private static void growTreeRecursive(LevelAccessor pLevel, BlockPos pBranchPos, RandomSource pRand, BlockPos pOriginalBranchPos, int pMaxHorizontalDistance, int pIterations) {
         ChorusPlantBlock chorusplantblock = (ChorusPlantBlock) Blocks.CHORUS_PLANT;
         int i = pRand.nextInt(7) + 3;
         if (pIterations == 0) {
@@ -81,7 +85,7 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         }
     }
 
-    public static void createPetals(ILevel world, BlockPos pos, Random pRand, BlockPos pOriginalBranchPos, int pIterations) {
+    public static void createPetals(LevelAccessor world, BlockPos pos, RandomSource pRand, BlockPos pOriginalBranchPos, int pIterations) {
         int size = 6 + pRand.nextInt(10);
         if (world.isAreaLoaded(pos, size)) {
             for (int x = -size; x < size; x++) {

@@ -1,11 +1,5 @@
 package io.github.bioplethora.item.weapons;
 
-import static net.minecraft.world.item.CrossbowItem.clearChargedProjectiles;
-import static net.minecraft.world.item.CrossbowItem.getChargedProjectiles;
-import static net.minecraft.world.item.CrossbowItem.getShotPitches;
-import static net.minecraft.world.item.CrossbowItem.shootProjectile;
-import static net.minecraft.world.item.CrossbowItem.tryLoadProjectiles;
-
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +21,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -106,7 +101,7 @@ public class ArbitraryBallistaItem extends CrossbowItem implements Vanishable {
         }
     }
 
-    private static void shootProjectile(Level level, LivingEntity entity, Hand hand, ItemStack stack, ItemStack itemStack, float p_220016_5_, boolean b, float p_220016_7_, float p_220016_8_, float v) {
+    private static void shootProjectile(Level level, LivingEntity entity, InteractionHand hand, ItemStack stack, ItemStack itemStack, float p_220016_5_, boolean b, float p_220016_7_, float p_220016_8_, float v) {
 
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
 
@@ -196,7 +191,7 @@ public class ArbitraryBallistaItem extends CrossbowItem implements Vanishable {
         if (f >= 1.0F && !isCharged(pStack) && tryLoadProjectiles(pEntityLiving, pStack)) {
             setCharged(pStack, true);
             SoundSource soundcategory = pEntityLiving instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-            pLevel.playSound(null, pEntityLiving.getX(), pEntityLiving.getY(), pEntityLiving.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
+            pLevel.playSound(null, pEntityLiving.getX(), pEntityLiving.getY(), pEntityLiving.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (pLevel.random.nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
     }
 
@@ -209,7 +204,7 @@ public class ArbitraryBallistaItem extends CrossbowItem implements Vanishable {
         return f;
     }
 
-    private static float[] getShotPitches(Random p_220028_0_) {
+    private static float[] getShotPitches(RandomSource p_220028_0_) {
         boolean flag = p_220028_0_.nextBoolean();
         return new float[]{1.0F, getRandomShotPitch(flag), getRandomShotPitch(!flag)};
     }

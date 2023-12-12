@@ -5,18 +5,11 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import io.github.bioplethora.api.world.LevelgenUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.world.MobSpawnInfoBuilder;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**

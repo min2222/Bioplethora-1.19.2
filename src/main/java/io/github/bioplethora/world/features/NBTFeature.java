@@ -1,18 +1,20 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.world.featureconfigs.NBTFeatureConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 public class NBTFeature extends Feature<NBTFeatureConfig> {
 
@@ -20,7 +22,13 @@ public class NBTFeature extends Feature<NBTFeatureConfig> {
         super(config);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NBTFeatureConfig config) {
+    @Override
+    public boolean place(FeaturePlaceContext<NBTFeatureConfig> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource random = pContext.random();
+    	BlockPos pos = pContext.origin();
+    	NBTFeatureConfig config = pContext.config();
+    	
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
 
         int rad = 2;
@@ -35,8 +43,8 @@ public class NBTFeature extends Feature<NBTFeatureConfig> {
             }
         }
 
-        TemplateManager tManager = world.getLevel().getStructureManager();
-        Template template = tManager.get(new ResourceLocation(Bioplethora.MOD_ID, "features/" + config.getFeature()));
+        StructureTemplateManager tManager = world.getLevel().getStructureManager();
+        StructureTemplate template = tManager.get(new ResourceLocation(Bioplethora.MOD_ID, "features/" + config.getFeature())).get();
 
         if (template == null) {
             Bioplethora.LOGGER.warn("NBT does not exist!: " + new ResourceLocation(Bioplethora.MOD_ID, "features/" + config.getFeature()));
@@ -47,8 +55,8 @@ public class NBTFeature extends Feature<NBTFeatureConfig> {
         BlockPos.MutableBlockPos placementLocation = mutablePos.set(pos).move(-halfOfNBT.getX(), config.getYOffset(), -halfOfNBT.getZ());
 
         Rotation rotation = Rotation.getRandom(random);
-        PlacementSettings placementsettings = new PlacementSettings().setRotation(rotation).setRotationPivot(halfOfNBT).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR).setIgnoreEntities(true);
-        template.placeInLevelChunk(world, placementLocation, placementsettings, random);
+        StructurePlaceSettings placementsettings = new StructurePlaceSettings().setRotation(rotation).setRotationPivot(halfOfNBT).addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR).setIgnoreEntities(true);
+        template.placeInWorld(world, placementLocation, placementLocation, placementsettings, random, 2);
 
         return true;
     }

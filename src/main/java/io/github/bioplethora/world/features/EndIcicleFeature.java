@@ -1,29 +1,33 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.Vec3;
 
-public class EndIcicleFeature extends Feature<NoFeatureConfig> {
+public class EndIcicleFeature extends Feature<NoneFeatureConfiguration> {
 
-    public EndIcicleFeature(Codec<NoFeatureConfig> pCodec) {
+    public EndIcicleFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
         pos = new BlockPos(pos.getX(), 35 + rand.nextInt(35), pos.getZ());
         createSpike(world, pos);
         return true;
     }
 
-    public static void createSpike(ISeedReader world, BlockPos pos) {
+    public static void createSpike(WorldGenLevel world, BlockPos pos) {
         boolean large = world.getRandom().nextInt(2) == 0;
         int tipMin = large ? 25 : 10;
         int tipRand = large ? 35 : 20;

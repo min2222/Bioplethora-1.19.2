@@ -1,7 +1,5 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.config.BPConfig;
@@ -10,8 +8,9 @@ import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
 import io.github.bioplethora.world.featureconfigs.FleignariteSplotchConfig;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class FleignaritePatchFeature extends Feature<FleignariteSplotchConfig> {
 
@@ -19,7 +18,10 @@ public class FleignaritePatchFeature extends Feature<FleignariteSplotchConfig> {
         super(codec);
     }
 
-    public boolean place(ISeedReader reader, ChunkGenerator generator, Random random, BlockPos pos, FleignariteSplotchConfig config) {
+    public boolean place(FeaturePlaceContext<FleignariteSplotchConfig> context) {
+    	FleignariteSplotchConfig config = context.config();
+    	WorldGenLevel reader = context.level();
+    	BlockPos pos = context.origin();
         if (config.placeOn.contains(reader.getBlockState(pos.below())) && config.placeIn.contains(reader.getBlockState(pos)) && config.placeUnder.contains(reader.getBlockState(pos.above()))) {
             if (BPVanillaBiomeFeatureGeneration.isFleignariteChunk(pos, reader)) {
                 if (Math.random() <= 0.15 && BPConfig.COMMON.spawnCavernFleignar.get()) {

@@ -5,10 +5,10 @@ import java.util.List;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class FleignariteSplotchConfig implements IFeatureConfig {
+public class FleignariteSplotchConfig implements FeatureConfiguration {
     public static final Codec<FleignariteSplotchConfig> CODEC = RecordCodecBuilder.create((p_236638_0_) -> {
         return p_236638_0_.group(
                 BlockState.CODEC.fieldOf("to_place").forGetter((p_236641_0_) -> {

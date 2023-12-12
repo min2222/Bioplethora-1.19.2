@@ -3,10 +3,10 @@ package io.github.bioplethora.world.featureconfigs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class ExpandedLakeFeatureConfig implements IFeatureConfig {
+public class ExpandedLakeFeatureConfig implements FeatureConfiguration {
 
     public static final Codec<ExpandedLakeFeatureConfig> CODEC = RecordCodecBuilder.create((codecRecorder) -> codecRecorder.group(
             BlockState.CODEC.fieldOf("liquid").forGetter((config) -> config.liquid),

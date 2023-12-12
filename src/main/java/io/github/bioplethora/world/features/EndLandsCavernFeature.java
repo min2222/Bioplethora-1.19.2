@@ -1,23 +1,27 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.registry.BPBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class EndLandsCavernFeature extends Feature<NoFeatureConfig> {
+public class EndLandsCavernFeature extends Feature<NoneFeatureConfiguration> {
 
-    public EndLandsCavernFeature(Codec<NoFeatureConfig> pCodec) {
+    public EndLandsCavernFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
         pos = new BlockPos(pos.getX(), 20 + rand.nextInt(20), pos.getZ());
         int radius = 7 + rand.nextInt(11);
         for (int sx = -radius; sx <= radius; sx++) {
@@ -39,7 +43,7 @@ public class EndLandsCavernFeature extends Feature<NoFeatureConfig> {
         return true;
     }
 
-    public boolean replaceWithEndurion(ISeedReader world, BlockPos pos) {
+    public boolean replaceWithEndurion(WorldGenLevel world, BlockPos pos) {
         return world.getBlockState(pos.offset(1, 0, 0)).isAir() || world.getBlockState(pos.offset(0, 0, 1)).isAir() || world.getBlockState(pos.offset(-1, 0, 0)).isAir() || world.getBlockState(pos.offset(0, 0, -1)).isAir() || world.getBlockState(pos.offset(0, -1, 0)).isAir();
     }
 }

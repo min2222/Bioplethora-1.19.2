@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.world.level.block.state.BlockState;
 
-public class NoisySurfaceBuilderConfig implements surface {
+public class NoisySurfaceBuilderConfig implements ISurfaceBuilderConfig {
 
     public static final Codec<NoisySurfaceBuilderConfig> CODEC = RecordCodecBuilder.create((p_237204_0_) -> {
         return p_237204_0_.group(BlockState.CODEC.fieldOf("top_material").forGetter((p_237207_0_) -> {

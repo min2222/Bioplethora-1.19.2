@@ -12,6 +12,7 @@ import io.github.bioplethora.world.featureconfigs.ExpandedLakeFeatureConfig;
 import io.github.bioplethora.world.featureconfigs.FleignariteSplotchConfig;
 import io.github.bioplethora.world.featureconfigs.PendentBlocksFeatureConfig;
 import net.minecraft.block.AbstractTopPlantBlock;
+import net.minecraft.core.Registry;
 import net.minecraft.util.registry.LevelGenRegistries;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.blockplacer.BlockPlacer;
@@ -20,7 +21,15 @@ import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
 
 public class BPConfiguredFeatures {
@@ -31,16 +40,16 @@ public class BPConfiguredFeatures {
 
     // Nether Mushrooms
     public static final ConfiguredFeature<?, ?> SOUL_MINISHROOM = register("soul_minishroom", makeNoProjectionDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.SOUL_MINISHROOM.get(), new MinishroomBlockPlacer(), 15
+            new RandomPatchFeature(RandomFeatureConfiguration.CODEC), BPBlocks.SOUL_MINISHROOM.get(), new MinishroomBlockPlacer(), 15
     ));
     
     public static final ConfiguredFeature<?, ?> SOUL_BIGSHROOM = register("soul_bigshroom", makeNoProjectionDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.SOUL_BIGSHROOM.get(), new SimpleBlockPlacer(), 12
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_BIGSHROOM.get(), new SimpleBlockPlacer(), 12
     ));
 
     // Nether Grasses
     public static final ConfiguredFeature<?, ?> KYRIA = register("kyria", makeDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.KYRIA.get(), new SimpleBlockPlacer(), 55
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.KYRIA.get(), new SimpleBlockPlacer(), 55
     ).count(18));
     public static final ConfiguredFeature<?, ?> KYRIA_BELINE = register("kyria_beline", makeNoProjectionClusterPlants(
             Feature.RANDOM_PATCH, BPBlocks.KYRIA_BELINE.get(), new DoublePlantBlockPlacer()
@@ -52,7 +61,7 @@ public class BPConfiguredFeatures {
     ).count(30));
 
     public static final ConfiguredFeature<?, ?> SOUL_SPROUTS = register("soul_sprouts", makeDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.SOUL_SPROUTS.get(), new SimpleBlockPlacer(), 26
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_SPROUTS.get(), new SimpleBlockPlacer(), 26
     ));
     public static final ConfiguredFeature<?, ?> SOUL_TALL_GRASS = register("soul_tall_grass", makeNoProjectionClusterPlants(
             Feature.RANDOM_PATCH, BPBlocks.SOUL_TALL_GRASS.get(), new DoublePlantBlockPlacer()
@@ -65,7 +74,7 @@ public class BPConfiguredFeatures {
     ));
 
     public static final ConfiguredFeature<?, ?> WARPED_DANCER = register("warped_dancer", makeDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.SOUL_SPROUTS.get(), new SimpleBlockPlacer(), 15
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_SPROUTS.get(), new SimpleBlockPlacer(), 15
     ));
 
     // Nether Vines
@@ -119,7 +128,7 @@ public class BPConfiguredFeatures {
 
     // End Plants
     public static final ConfiguredFeature<?, ?> IRION_GRASS = register("irion_grass", makeDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.IRION_GRASS.get(), new SimpleBlockPlacer(), 32
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.IRION_GRASS.get(), new SimpleBlockPlacer(), 32
     ));
 
     public static final ConfiguredFeature<?, ?> IRION_TALL_GRASS = register("irion_tall_grass", makeNoProjectionClusterPlants(
@@ -128,7 +137,7 @@ public class BPConfiguredFeatures {
     ));
 
     public static final ConfiguredFeature<?, ?> CHORUS_IDON = register("chorus_idon", makeDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.CHORUS_IDON.get(), new SimpleBlockPlacer(), 32
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.CHORUS_IDON.get(), new SimpleBlockPlacer(), 32
     ));
 
     public static final ConfiguredFeature<?, ?> CHORUS_IDE_FAN = register("chorus_ide_fan", makeNoProjectionClusterPlants(
@@ -142,7 +151,7 @@ public class BPConfiguredFeatures {
     ));
 
     public static final ConfiguredFeature<?, ?> FROSTEM = register("frostem", makeDecoratedClusterPlants(
-            new DefaultFlowersFeature(BlockClusterFeatureConfig.CODEC), BPBlocks.FROSTEM.get(), new SimpleBlockPlacer(), 48
+            new DefaultFlowersFeature(RandomPatchConfiguration.CODEC), BPBlocks.FROSTEM.get(), new SimpleBlockPlacer(), 48
     ));
 
     public static final ConfiguredFeature<?, ?> SPINXELTHORN = register("spinxelthorn", makePendentConfig(
@@ -192,7 +201,7 @@ public class BPConfiguredFeatures {
             .range(BPConfig.WORLDGEN.cyraLakesEndAmount.get()).squared().count(1));
 
     public static final ConfiguredFeature<?, ?> BYRSS_LANTERN_PLANT = register("byrss_lantern_plant", BPFeatures.SINGULAR_BLOCK.get()
-            .configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(BPBlocks.BYRSS_LANTERN_PLANT.get().defaultBlockState()), new DoublePlantBlockPlacer()).build())
+            .configured(new RandomPatchConfiguration.Builder(new SimpleBlockStateProvider(BPBlocks.BYRSS_LANTERN_PLANT.get().defaultBlockState()), new DoublePlantBlockPlacer()).build())
             .decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             ));
     public static final ConfiguredFeature<?, ?> BYRSS_LANTERN_PLANT_PATCH = register("byrss_lantern_plant_patch", Feature.RANDOM_SELECTOR
@@ -218,14 +227,14 @@ public class BPConfiguredFeatures {
             ));
 
     public static final ConfiguredFeature<?, ?> CAERI_CAVERN = register("caeri_cavern",
-            BPFeatures.CAERI_CAVERN.get().configured(new NoFeatureConfig()).range(7).squared().count(1)
+            BPFeatures.CAERI_CAVERN.get().configured(new NoneFeatureConfiguration()).range(7).squared().count(1)
                     .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.015F, 1))
                     ));
 
     public static final ConfiguredFeature<?, ?> CHORUS_MYCHRODEGIA = register("chorus_plant", BPFeatures.CHORUS_MYCHRODEGIA.get().configured(IFeatureConfig.NONE).decorated(Features.Placements.HEIGHTMAP_SQUARE).countRandom(1));
 
     public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_HL = register("end_land_spike_hl", BPFeatures.END_LAND_SPIKE.get()
-            .configured(new NoFeatureConfig()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
+            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             ));
     public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_PATCH_HL = register("end_land_spike_patch_hl", Feature.RANDOM_SELECTOR
             .configured(new MultipleRandomFeatureConfig(ImmutableList.of(END_LAND_SPIKE_HL.weighted(0.4446667F)), END_LAND_SPIKE_HL))
@@ -234,7 +243,7 @@ public class BPConfiguredFeatures {
             ));
 
     public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_ML = register("end_land_spike_ml", BPFeatures.END_LAND_SPIKE.get()
-            .configured(new NoFeatureConfig()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
+            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             ));
     public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_PATCH_ML = register("end_land_spike_patch_ml", Feature.RANDOM_SELECTOR
             .configured(new MultipleRandomFeatureConfig(ImmutableList.of(END_LAND_SPIKE_ML.weighted(0.4446667F)), END_LAND_SPIKE_ML))
@@ -243,7 +252,7 @@ public class BPConfiguredFeatures {
             ));
 
     public static final ConfiguredFeature<?, ?> CHORUS_LANTERN_PLANT = register("chorus_lantern_plant", BPFeatures.SINGULAR_BLOCK.get()
-            .configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(BPBlocks.CHORUS_LANTERN_PLANT.get().defaultBlockState()), new DoublePlantBlockPlacer()).build())
+            .configured(new RandomPatchConfiguration.Builder(new SimpleBlockStateProvider(BPBlocks.CHORUS_LANTERN_PLANT.get().defaultBlockState()), new DoublePlantBlockPlacer()).build())
             .decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             ));
     public static final ConfiguredFeature<?, ?> CHORUS_LANTERN_HIGHLANDS_PATCH = register("chorus_lantern_highlands_patch", Feature.RANDOM_SELECTOR
@@ -283,7 +292,7 @@ public class BPConfiguredFeatures {
     );
 
     public static final ConfiguredFeature<?, ?> END_ISLANDS_ICICLE = register("end_islands_icicle", BPFeatures.END_ICICLE.get()
-            .configured(new NoFeatureConfig()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
+            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             ));
     public static final ConfiguredFeature<?, ?> END_ISLANDS_ICICLE_PATCH = register("end_islands_icicle_patch", Feature.RANDOM_SELECTOR
             .configured(new MultipleRandomFeatureConfig(ImmutableList.of(END_ISLANDS_ICICLE.weighted(0.2224447F)), END_ISLANDS_ICICLE))
@@ -292,7 +301,7 @@ public class BPConfiguredFeatures {
             ));
 
     public static final ConfiguredFeature<?, ?> END_FROZEN_ISLAND = register("end_frozen_island", BPFeatures.END_FROZEN_ISLAND.get()
-            .configured(new NoFeatureConfig()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
+            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
             ));
     public static final ConfiguredFeature<?, ?> END_FROZEN_ISLAND_DECORATED = register("end_frozen_island_decorated",
             END_FROZEN_ISLAND.range(BPConfig.WORLDGEN.endFrozenIslandsAmount.get()).squared().count(1)
@@ -331,19 +340,19 @@ public class BPConfiguredFeatures {
                 .range(range).squared().count(count);
     }
 
-    public static ConfiguredFeature<?, ?> makeClusterPlants(Feature<BlockClusterFeatureConfig> feature, Block block, BlockPlacer placer) {
-        return feature.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.defaultBlockState()), placer).tries(64).build());
+    public static ConfiguredFeature<?, ?> makeClusterPlants(Feature<RandomPatchConfiguration> feature, Block block, BlockPlacer placer) {
+        return feature.configured(new RandomPatchConfiguration.Builder(new SimpleBlockStateProvider(block.defaultBlockState()), placer).tries(64).build());
     }
 
-    public static ConfiguredFeature<?, ?> makeNoProjectionClusterPlants(Feature<BlockClusterFeatureConfig> feature, Block block, BlockPlacer placer) {
-        return feature.configured(new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(block.defaultBlockState()), placer).noProjection().tries(64).build());
+    public static ConfiguredFeature<?, ?> makeNoProjectionClusterPlants(Feature<RandomPatchConfiguration> feature, Block block, BlockPlacer placer) {
+        return feature.configured(new RandomPatchConfiguration.Builder(new SimpleBlockConfiguration(block.defaultBlockState()), placer).noProjection().tries(64).build());
     }
 
-    public static ConfiguredFeature<?, ?> makeDecoratedClusterPlants(Feature<BlockClusterFeatureConfig> feature, Block block, BlockPlacer placer, int count) {
+    public static ConfiguredFeature<?, ?> makeDecoratedClusterPlants(Feature<RandomPatchConfiguration> feature, Block block, BlockPlacer placer, int count) {
         return makeClusterPlants(feature, block, placer).decorated(Features.Placements.ADD_32).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(count);
     }
 
-    public static ConfiguredFeature<?, ?> makeNoProjectionDecoratedClusterPlants(Feature<BlockClusterFeatureConfig> feature, Block block, BlockPlacer placer, int count) {
+    public static ConfiguredFeature<?, ?> makeNoProjectionDecoratedClusterPlants(Feature<RandomPatchConfiguration> feature, Block block, BlockPlacer placer, int count) {
         return makeNoProjectionClusterPlants(feature, block, placer).decorated(Features.Placements.ADD_32).decorated(Features.Placements.HEIGHTMAP_SQUARE).count(count);
     }
 }

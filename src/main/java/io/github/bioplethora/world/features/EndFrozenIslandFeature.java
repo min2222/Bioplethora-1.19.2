@@ -1,22 +1,27 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class EndFrozenIslandFeature extends Feature<NoFeatureConfig> {
+public class EndFrozenIslandFeature extends Feature<NoneFeatureConfiguration> {
 
-    public EndFrozenIslandFeature(Codec<NoFeatureConfig> pCodec) {
+    public EndFrozenIslandFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
 
         if (rand.nextInt(3) != 1) return false;
 
@@ -34,7 +39,7 @@ public class EndFrozenIslandFeature extends Feature<NoFeatureConfig> {
         return true;
     }
 
-    public void placeLayer(int radius, Block block, ISeedReader world, Random rand, boolean placeIcicle, BlockPos pos) {
+    public void placeLayer(int radius, Block block, WorldGenLevel world, RandomSource rand, boolean placeIcicle, BlockPos pos) {
         for (int sx = -radius; sx <= radius; sx++) {
             for (int sz = -radius; sz <= radius; sz++) {
                 if (sx * sx + sz * sz <= radius * radius) {

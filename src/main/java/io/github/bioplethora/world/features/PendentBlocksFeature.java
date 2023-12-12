@@ -1,16 +1,17 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.world.featureconfigs.PendentBlocksFeatureConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.ILevel;
-import net.minecraft.world.ISeedReader;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class PendentBlocksFeature extends Feature<PendentBlocksFeatureConfig> {
     private static final Direction[] DIRECTIONS = Direction.values();
@@ -19,7 +20,11 @@ public class PendentBlocksFeature extends Feature<PendentBlocksFeatureConfig> {
         super(config);
     }
 
-    public boolean place(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, PendentBlocksFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<PendentBlocksFeatureConfig> context) {
+    	WorldGenLevel world = context.level();
+    	BlockPos pos = context.origin();
+    	PendentBlocksFeatureConfig config = context.config();
+    	RandomSource rand = context.random();
         if (!world.isEmptyBlock(pos)) {
             return false;
         } else {
@@ -34,7 +39,7 @@ public class PendentBlocksFeature extends Feature<PendentBlocksFeatureConfig> {
         }
     }
 
-    protected void generateTopPart(ILevel world, Random rand, BlockPos pos, PendentBlocksFeatureConfig config) {
+    protected void generateTopPart(LevelAccessor world, RandomSource rand, BlockPos pos, PendentBlocksFeatureConfig config) {
         world.setBlock(pos, config.getTopBlockProvider().getState(rand, pos), 2);
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos mutable2 = new BlockPos.MutableBlockPos();
@@ -63,7 +68,7 @@ public class PendentBlocksFeature extends Feature<PendentBlocksFeatureConfig> {
 
     }
 
-    protected void generatePendentsInSurroundings(ILevel world, Random rand, BlockPos pos, PendentBlocksFeatureConfig config) {
+    protected void generatePendentsInSurroundings(LevelAccessor world, RandomSource rand, BlockPos pos, PendentBlocksFeatureConfig config) {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
         for (int i = 0; i < 100; ++i) {
@@ -86,7 +91,7 @@ public class PendentBlocksFeature extends Feature<PendentBlocksFeatureConfig> {
 
     }
 
-    public static void generateLength(ILevel world, BlockPos.MutableBlockPos mutable, int length, Random rand, PendentBlocksFeatureConfig config) {
+    public static void generateLength(LevelAccessor world, BlockPos.MutableBlockPos mutable, int length, RandomSource rand, PendentBlocksFeatureConfig config) {
         for (int i = 0; i <= length; ++i) {
             if (world.isEmptyBlock(mutable)) {
                 if (i == length || !world.isEmptyBlock(mutable.below())) {

@@ -1,23 +1,28 @@
 package io.github.bioplethora.world.features;
 
-import java.util.Random;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.registry.BPBlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class CaeriCavernFeature extends Feature<NoFeatureConfig> {
+public class CaeriCavernFeature extends Feature<NoneFeatureConfiguration> {
 
-    public CaeriCavernFeature(Codec<NoFeatureConfig> pCodec) {
+    public CaeriCavernFeature(Codec<NoneFeatureConfiguration> pCodec) {
         super(pCodec);
     }
 
     @Override
-    public boolean place(ISeedReader world, ChunkGenerator chunkGen, Random rand, BlockPos pos, NoFeatureConfig config) {
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> pContext) {
+    	WorldGenLevel world = pContext.level();
+    	RandomSource rand = pContext.random();
+    	BlockPos pos = pContext.origin();
+
         pos = new BlockPos(pos.getX(), 20 + rand.nextInt(25), pos.getZ());
         boolean isOpenAir = rand.nextBoolean();
         int radius = 7 + rand.nextInt(7);
@@ -53,7 +58,7 @@ public class CaeriCavernFeature extends Feature<NoFeatureConfig> {
         return true;
     }
 
-    public boolean replaceWithStone(ISeedReader world, BlockPos pos, boolean isOpenAir) {
+    public boolean replaceWithStone(WorldGenLevel world, BlockPos pos, boolean isOpenAir) {
         boolean airFlag = world.isEmptyBlock(pos.east()) || world.isEmptyBlock(pos.west()) || world.isEmptyBlock(pos.south()) || world.isEmptyBlock(pos.north()) || world.isEmptyBlock(pos.below());
         boolean waterFlag = world.isWaterAt(pos.east()) || world.isWaterAt(pos.west()) || world.isWaterAt(pos.south()) || world.isWaterAt(pos.north()) || world.isWaterAt(pos.below());
         if (isOpenAir) {

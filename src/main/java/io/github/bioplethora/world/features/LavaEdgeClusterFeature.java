@@ -5,19 +5,19 @@ import com.mojang.serialization.Codec;
 import io.github.bioplethora.api.world.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.ILevel;
-import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
-import net.minecraft.world.gen.feature.DefaultFlowersFeature;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.phys.AABB;
 
-public class LavaEdgeClusterFeature extends DefaultFlowersFeature {
+public class LavaEdgeClusterFeature extends RandomPatchFeature {
 
-    public LavaEdgeClusterFeature(Codec<BlockClusterFeatureConfig> codec) {
+    public LavaEdgeClusterFeature(Codec<RandomPatchConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean isValid(ILevel pLevel, BlockPos pPos, BlockClusterFeatureConfig pConfig) {
+    public boolean isValid(LevelAccessor pLevel, BlockPos pPos, RandomPatchConfiguration pConfig) {
         return super.isValid(pLevel, pPos, pConfig) && BlockUtils.checkNearestTaggedFluid(checkForLiquid(pPos), pLevel, FluidTags.LAVA);
     }
 
