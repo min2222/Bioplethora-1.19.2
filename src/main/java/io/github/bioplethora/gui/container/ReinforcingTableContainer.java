@@ -1,47 +1,48 @@
 package io.github.bioplethora.gui.container;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
 import io.github.bioplethora.registry.BPContainerTypes;
 import io.github.bioplethora.registry.BPRecipes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ReinforcingTableContainer extends AbstractReinforcingContainer {
 
-    private final World level;
+    private final Level level;
     @Nullable
     private ReinforcingRecipe selectedRecipe;
 
-    public ReinforcingTableContainer(int pContainerId, PlayerInventory pPlayerInventory) {
-        this(pContainerId, pPlayerInventory, IWorldPosCallable.NULL);
+    public ReinforcingTableContainer(int pContainerId, Inventory pPlayerInventory) {
+        this(pContainerId, pPlayerInventory, ContainerLevelAccess.NULL);
     }
 
-    public ReinforcingTableContainer(int pContainerId, PlayerInventory pPlayerInventory, IWorldPosCallable pAccess) {
+    public ReinforcingTableContainer(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(BPContainerTypes.REINFORCING_TABLE_CONTAINER.get(), pContainerId, pPlayerInventory, pAccess);
         this.level = pPlayerInventory.player.level;
     }
 
-    protected boolean mayPickup(PlayerEntity pPlayer, boolean pHasStack) {
+    protected boolean mayPickup(Player pPlayer, boolean pHasStack) {
         return this.selectedRecipe != null && this.selectedRecipe.matches(this.inputSlots, this.level);
     }
 
-    protected ItemStack onTake(PlayerEntity pPlayer, ItemStack pInputItem) {
+    protected ItemStack onTake(Player pPlayer, ItemStack pInputItem) {
         pInputItem.onCraftedBy(pPlayer.level, pPlayer, pInputItem.getCount());
 
         pPlayer.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 0.75F, 1.0F);
         pPlayer.playSound(SoundEvents.ANVIL_USE, 0.75F, 1.5F);
         if (!pPlayer.level.isClientSide()) {
-            ((ServerWorld) pPlayer.level).sendParticles(ParticleTypes.FIREWORK, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), 55, 0.65, 0.65, 0.65, 0.01);
+            ((ServerLevel) pPlayer.level).sendParticles(ParticleTypes.FIREWORK, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), 55, 0.65, 0.65, 0.65, 0.01);
         }
 
         this.resultSlots.awardUsedRecipes(pPlayer);

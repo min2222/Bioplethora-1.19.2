@@ -1,32 +1,31 @@
 package io.github.bioplethora.item.weapons.reinforced_fleignarite_set;
 
+import java.util.List;
+
 import io.github.bioplethora.api.BPItemSettings;
 import io.github.bioplethora.registry.BPDamageSources;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.List;
 
 public class ReinforcedFleignariteAbilities {
 
     public static void hitSkill(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity) {
-            if (!((PlayerEntity) attacker).getCooldowns().isOnCooldown(stack.getItem())) {
+        if (attacker instanceof Player) {
+            if (!((Player) attacker).getCooldowns().isOnCooldown(stack.getItem())) {
                 defaultHitSkill(target, attacker);
-                ((PlayerEntity) attacker).getCooldowns().addCooldown(stack.getItem(), 100);
+                ((Player) attacker).getCooldowns().addCooldown(stack.getItem(), 100);
             }
         } else {
             defaultHitSkill(target, attacker);
@@ -36,14 +35,14 @@ public class ReinforcedFleignariteAbilities {
     public static void defaultHitSkill(LivingEntity target, LivingEntity attacker) {
         target.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 0.75F);
         if (!target.level.isClientSide()) {
-            ((ServerWorld) target.level).sendParticles(ParticleTypes.FIREWORK, target.getX(), target.getY(), target.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
-            ((ServerWorld) target.level).sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(), target.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
+            ((ServerLevel) target.level).sendParticles(ParticleTypes.FIREWORK, target.getX(), target.getY(), target.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
+            ((ServerLevel) target.level).sendParticles(ParticleTypes.CRIT, target.getX(), target.getY(), target.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
         }
-        target.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, target.getRandom().nextBoolean() ? 70 : 90, 2, false, false, false));
-        target.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, target.getRandom().nextBoolean() ? 60 : 80, 0, false, false, false));
-        target.addEffect(new EffectInstance(Effects.CONFUSION, target.getRandom().nextBoolean() ? 80 : 60, 1, false, false, false));
+        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, target.getRandom().nextBoolean() ? 70 : 90, 2, false, false, false));
+        target.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, target.getRandom().nextBoolean() ? 60 : 80, 0, false, false, false));
+        target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, target.getRandom().nextBoolean() ? 80 : 60, 1, false, false, false));
 
-        target.knockback(2, MathHelper.sin(attacker.yRot * ((float) Math.PI / 180F)), -MathHelper.cos(attacker.yRot * ((float) Math.PI / 180F)));
+        target.knockback(2, Mth.sin(attacker.yRot * ((float) Math.PI / 180F)), -Mth.cos(attacker.yRot * ((float) Math.PI / 180F)));
         target.hurt(BPDamageSources.armorPiercingFleignarite(attacker, attacker), (float) 5);
     }
 
@@ -65,12 +64,12 @@ public class ReinforcedFleignariteAbilities {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void abilityTooltip(List<ITextComponent> tooltip) {
+    public static void abilityTooltip(List<Component> tooltip) {
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.reinforced_fleignarite_weapon.deadly_blow.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.reinforced_fleignarite_weapon.deadly_blow.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.reinforced_fleignarite_weapon.deadly_blow.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.reinforced_fleignarite_weapon.deadly_blow.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 }

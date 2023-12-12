@@ -1,36 +1,36 @@
 package io.github.bioplethora.item.weapons;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.api.BPItemSettings;
 import io.github.bioplethora.api.IReachWeapon;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class StellarScytheItem extends SwordItem implements IReachWeapon {
 
-    public StellarScytheItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties properties) {
+    public StellarScytheItem(Tier tier, int attackDamageIn, float attackSpeedIn, Properties properties) {
         super(tier, attackDamageIn, attackSpeedIn, properties);
     }
 
@@ -38,20 +38,20 @@ public class StellarScytheItem extends SwordItem implements IReachWeapon {
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity source) {
         boolean retval = super.hurtEnemy(stack, entity, source);
 
-        World world = entity.level;
+        Level world = entity.level;
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
         BlockPos pos = new BlockPos(x, y, z);
-        PlayerEntity player = (PlayerEntity) source;
+        Player player = (Player) source;
 
         if (!player.getCooldowns().isOnCooldown(stack.getItem())) {
             player.getCooldowns().addCooldown(stack.getItem(), 20);
-            world.playSound(null, pos, SoundEvents.PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1, 1);
+            world.playSound(null, pos, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1, 1);
             if(!world.isClientSide) {
-                double d0 = -MathHelper.sin(player.yRot * ((float)Math.PI / 180F));
-                double d1 = MathHelper.cos(player.yRot * ((float)Math.PI / 180F));
-                ((ServerWorld)world).sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
+                double d0 = -Mth.sin(player.yRot * ((float)Math.PI / 180F));
+                double d1 = Mth.cos(player.yRot * ((float)Math.PI / 180F));
+                ((ServerLevel)world).sendParticles(ParticleTypes.SWEEP_ATTACK, player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
             }
-            if(world instanceof ServerWorld) {
+            if(world instanceof ServerLevel) {
                 for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(2D, 1D, 2D))) {
                     if (entityIterator instanceof LivingEntity && entityIterator != player) {
                         if(entityIterator != entity) {
@@ -66,13 +66,13 @@ public class StellarScytheItem extends SwordItem implements IReachWeapon {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.stellar_scythe.radius_slash.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.stellar_scythe.radius_slash.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.stellar_scythe.radius_slash.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.stellar_scythe.radius_slash.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 

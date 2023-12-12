@@ -6,9 +6,9 @@ import io.github.bioplethora.world.blockplacers.LavaEdgeBlockPlacer;
 import io.github.bioplethora.world.blockplacers.MinishroomBlockPlacer;
 import io.github.bioplethora.world.blockplacers.WaterloggedDoublePlantBlockPlacer;
 import net.minecraft.world.gen.blockplacer.BlockPlacerType;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BPBlockPlacers {
     public static final DeferredRegister<BlockPlacerType<?>> BLOCK_PLACERS = DeferredRegister.create(ForgeRegistries.BLOCK_PLACER_TYPES, Bioplethora.MOD_ID);

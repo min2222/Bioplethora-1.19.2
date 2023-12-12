@@ -1,15 +1,5 @@
 package io.github.bioplethora.mixin;
 
-import io.github.bioplethora.entity.creatures.AlphemEntity;
-import io.github.bioplethora.entity.creatures.AlphemKingEntity;
-import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.tileentity.MobSpawnerTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.spawner.AbstractSpawner;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,20 +7,30 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MobSpawnerTileEntity.class)
-public abstract class MobSpawnerTileEntityMixin extends TileEntity {
+import io.github.bioplethora.entity.creatures.AlphemEntity;
+import io.github.bioplethora.entity.creatures.AlphemKingEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
-    @Shadow @Final private AbstractSpawner spawner;
+@Mixin(SpawnerBlockEntity.class)
+public abstract class MobSpawnerTileEntityMixin extends BlockEntity {
 
-    public MobSpawnerTileEntityMixin(TileEntityType<?> p_i48289_1_) {
-        super(p_i48289_1_);
+    @Shadow @Final private BaseSpawner spawner;
+
+    public MobSpawnerTileEntityMixin(BlockEntityType<?> p_i48289_1_, BlockPos pos, BlockState state) {
+        super(p_i48289_1_, pos, state);
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo ci) {
         if (this.spawner.getSpawnerEntity() instanceof AlphemEntity) {
             int areaint = 32;
-            AxisAlignedBB aabb = new AxisAlignedBB(
+            AABB aabb = new AABB(
                     getBlockPos().getX() - areaint, getBlockPos().getY() - areaint, getBlockPos().getZ() - areaint,
                     getBlockPos().getX() + areaint, getBlockPos().getY() + areaint, getBlockPos().getZ() + areaint
             );

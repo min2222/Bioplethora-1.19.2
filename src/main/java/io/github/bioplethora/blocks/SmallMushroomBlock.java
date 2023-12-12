@@ -1,23 +1,23 @@
 package io.github.bioplethora.blocks;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.enums.BioPlantShape;
 import io.github.bioplethora.enums.BioPlantType;
 import io.github.bioplethora.registry.BPBlockstateProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class SmallMushroomBlock extends BPPlantBlock {
     public static final IntegerProperty MINISHROOMS = BPBlockstateProperties.MINISHROOMS;
-    public static final DirectionProperty FACING_DIRECTION = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING_DIRECTION = HorizontalDirectionalBlock.FACING;
 
     public SmallMushroomBlock(BioPlantType type, Properties properties) {
         super(type, BioPlantShape.MINISHROOM, properties);
@@ -25,7 +25,7 @@ public class SmallMushroomBlock extends BPPlantBlock {
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext pContext) {
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockState blockstate = pContext.getLevel().getBlockState(pContext.getClickedPos());
 
         if (blockstate.is(this)) {
@@ -37,7 +37,7 @@ public class SmallMushroomBlock extends BPPlantBlock {
         }
     }
 
-    public boolean canBeReplaced(BlockState pState, BlockItemUseContext pUseContext) {
+    public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
         return pUseContext.getItemInHand().getItem() == this.asItem() && pState.getValue(MINISHROOMS) < 3 || super.canBeReplaced(pState, pUseContext);
     }
 
@@ -52,7 +52,7 @@ public class SmallMushroomBlock extends BPPlantBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING_DIRECTION, MINISHROOMS);
     }
 }

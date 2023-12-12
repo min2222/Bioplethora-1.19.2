@@ -1,22 +1,18 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.KelpTopBlock;
-import net.minecraft.block.TallSeaGrassBlock;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.ProbabilityConfig;
-import net.minecraft.world.gen.feature.SeaGrassFeature;
-
 import java.util.Random;
+
+import com.mojang.serialization.Codec;
+
+import io.github.bioplethora.registry.BPBlocks;
+import net.minecraft.block.TallSeaGrassBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.ProbabilityConfig;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class CorsascileFeature extends Feature<ProbabilityConfig> {
 

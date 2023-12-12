@@ -1,15 +1,15 @@
 package io.github.bioplethora.entity.ai.gecko;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.util.EntityPredicates;
-
 import java.util.EnumSet;
+
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public class GeckoMoveToTargetGoal<E extends MobEntity> extends GeckoMovableGoal<E> {
+public class GeckoMoveToTargetGoal<E extends Mob> extends GeckoMovableGoal<E> {
 
     public final double speedMultiplier;
     public final int checkRate;
@@ -45,7 +45,7 @@ public class GeckoMoveToTargetGoal<E extends MobEntity> extends GeckoMovableGoal
     @Override
     public void stop() {
         LivingEntity target = this.entity.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
         }
         this.entity.setAggressive(false);

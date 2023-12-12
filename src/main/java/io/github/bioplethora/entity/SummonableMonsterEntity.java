@@ -1,11 +1,11 @@
 package io.github.bioplethora.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -18,7 +18,7 @@ public abstract class SummonableMonsterEntity extends BPMonsterEntity implements
     private int lifeLimitBeforeDeath;
     private int limitedLifeTicks = 0;
 
-    public SummonableMonsterEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public SummonableMonsterEntity(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -36,7 +36,7 @@ public abstract class SummonableMonsterEntity extends BPMonsterEntity implements
         this.owner = mobEntity;
     }
 
-    public void addAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.putBoolean("HasLifeLimit", this.hasLimitedLife);
         if (this.hasLimitedLife) {
@@ -46,7 +46,7 @@ public abstract class SummonableMonsterEntity extends BPMonsterEntity implements
         }
     }
 
-    public void readAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         super.readAdditionalSaveData(compoundNBT);
         this.setHasLimitedLife(compoundNBT.getBoolean("HasLifeLimit"));
         this.setLimitedLifeTicks(compoundNBT.getInt("LifeTicks"));
@@ -77,14 +77,14 @@ public abstract class SummonableMonsterEntity extends BPMonsterEntity implements
 
             if (this.limitedLifeTicks >= this.lifeLimitBeforeDeath) {
                 if (this.explodeOnExpiry) {
-                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, Explosion.Mode.BREAK);
+                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, Explosion.BlockInteraction.BREAK);
                 }
-                this.remove();
+                this.discard();
             }
 
             if (this.getOwner() != null) {
                 if (!this.level.isClientSide && this.getOwner().isDeadOrDying() && this.explodeOnExpiry) {
-                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 2F, Explosion.Mode.BREAK);
+                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 2F, Explosion.BlockInteraction.BREAK);
                     this.kill();
                 }
             }

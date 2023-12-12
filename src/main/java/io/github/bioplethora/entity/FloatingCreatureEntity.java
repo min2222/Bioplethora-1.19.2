@@ -1,31 +1,32 @@
 package io.github.bioplethora.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import java.util.EnumSet;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 /**
  * Must implement a.i. goals {@link MoveRandomGoal} and move controller {@link MoveHelperController} for the floating to work.
  * {@link ChargeAttackGoal} is optional.
  */
-public abstract class FloatingCreatureEntity extends BPCreatureEntity implements IFlyingAnimal {
+public abstract class FloatingCreatureEntity extends BPCreatureEntity implements FlyingAnimal {
     public BlockPos boundOrigin;
 
-    public FloatingCreatureEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
+    public FloatingCreatureEntity(EntityType<? extends PathfinderMob> type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -35,14 +36,14 @@ public abstract class FloatingCreatureEntity extends BPCreatureEntity implements
     @Override
     public abstract AnimationFactory getFactory();
 
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("BoundX")) {
             this.boundOrigin = new BlockPos(pCompound.getInt("BoundX"), pCompound.getInt("BoundY"), pCompound.getInt("BoundZ"));
         }
     }
 
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         if (this.boundOrigin != null) {
             pCompound.putInt("BoundX", this.boundOrigin.getX());
@@ -95,7 +96,7 @@ public abstract class FloatingCreatureEntity extends BPCreatureEntity implements
 
         public void start() {
             LivingEntity livingentity = FloatingCreatureEntity.this.getTarget();
-            Vector3d vector3d = livingentity.getEyePosition(1.0F);
+            Vec3 vector3d = livingentity.getEyePosition(1.0F);
             FloatingCreatureEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
         }
 
@@ -108,35 +109,35 @@ public abstract class FloatingCreatureEntity extends BPCreatureEntity implements
             if (!FloatingCreatureEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 double d0 = FloatingCreatureEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                    Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     FloatingCreatureEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }
         }
     }
 
-    public class MoveHelperController extends MovementController {
+    public class MoveHelperController extends MoveControl {
         public MoveHelperController(FloatingCreatureEntity floatingMob) {
             super(floatingMob);
         }
 
         public void tick() {
-            if (this.operation == Action.MOVE_TO) {
-                Vector3d vector3d = new Vector3d(this.wantedX - FloatingCreatureEntity.this.getX(), this.wantedY - FloatingCreatureEntity.this.getY(), this.wantedZ - FloatingCreatureEntity.this.getZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 vector3d = new Vec3(this.wantedX - FloatingCreatureEntity.this.getX(), this.wantedY - FloatingCreatureEntity.this.getY(), this.wantedZ - FloatingCreatureEntity.this.getZ());
                 double d0 = vector3d.length();
                 if (d0 < FloatingCreatureEntity.this.getBoundingBox().getSize()) {
-                    this.operation = Action.WAIT;
+                    this.operation = MoveControl.Operation.WAIT;
                     FloatingCreatureEntity.this.setDeltaMovement(FloatingCreatureEntity.this.getDeltaMovement().scale(0.5D));
                 } else {
                     FloatingCreatureEntity.this.setDeltaMovement(FloatingCreatureEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                     if (FloatingCreatureEntity.this.getTarget() == null) {
-                        Vector3d vector3d1 = FloatingCreatureEntity.this.getDeltaMovement();
-                        FloatingCreatureEntity.this.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
+                        Vec3 vector3d1 = FloatingCreatureEntity.this.getDeltaMovement();
+                        FloatingCreatureEntity.this.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
                         FloatingCreatureEntity.this.yBodyRot = FloatingCreatureEntity.this.yRot;
                     } else {
                         double d2 = FloatingCreatureEntity.this.getTarget().getX() - FloatingCreatureEntity.this.getX();
                         double d1 = FloatingCreatureEntity.this.getTarget().getZ() - FloatingCreatureEntity.this.getZ();
-                        FloatingCreatureEntity.this.yRot = -((float)MathHelper.atan2(d2, d1)) * (180F / (float)Math.PI);
+                        FloatingCreatureEntity.this.yRot = -((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI);
                         FloatingCreatureEntity.this.yBodyRot = FloatingCreatureEntity.this.yRot;
                     }
                 }

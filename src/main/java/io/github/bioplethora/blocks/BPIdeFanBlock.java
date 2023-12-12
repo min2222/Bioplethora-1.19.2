@@ -1,18 +1,18 @@
 package io.github.bioplethora.blocks;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.enums.BioPlantShape;
 import io.github.bioplethora.enums.BioPlantType;
 import io.github.bioplethora.registry.BPBlockstateProperties;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class BPIdeFanBlock extends BPPlantBlock {
     public static final BooleanProperty BUDDED = BPBlockstateProperties.BUDDED;
@@ -24,13 +24,13 @@ public class BPIdeFanBlock extends BPPlantBlock {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext pContext) {
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return pContext.getLevel().random.nextInt(3) == 1 ?
                 super.getStateForPlacement(pContext).setValue(BUDDED, true) : super.getStateForPlacement(pContext);
     }
 
     @Override
-    public void entityInside(BlockState pState, World pLevel, BlockPos pPos, Entity pEntity) {
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         super.entityInside(pState, pLevel, pPos, pEntity);
         if (pState.getValue(BUDDED)) {
             pEntity.playSound(this.soundType.getPlaceSound(), 1.0F, 1.0F);
@@ -39,7 +39,7 @@ public class BPIdeFanBlock extends BPPlantBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BUDDED);
     }
 }

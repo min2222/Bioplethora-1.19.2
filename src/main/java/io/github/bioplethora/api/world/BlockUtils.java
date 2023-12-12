@@ -1,33 +1,30 @@
 package io.github.bioplethora.api.world;
 
-import com.google.common.collect.AbstractIterator;
 import io.github.bioplethora.registry.BPTags;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
 
 public class BlockUtils {
 
-    public static boolean checkBlockstate(IWorld world, BlockPos pos, BlockState requiredState) {
+    public static boolean checkBlockstate(BlockGetter world, BlockPos pos, BlockState requiredState) {
         return world.getBlockState(pos) == requiredState;
     }
 
-    public static boolean checkBlock(IWorld world, BlockPos pos, Block requiredBlock) {
+    public static boolean checkBlock(BlockGetter world, BlockPos pos, Block requiredBlock) {
         return checkBlockstate(world, pos, requiredBlock.defaultBlockState());
     }
 
@@ -35,14 +32,14 @@ public class BlockUtils {
         double d0 = pos2.getX() - pos1.getX();
         double d1 = pos2.getY() - pos1.getY();
         double d2 = pos2.getZ() - pos1.getZ();
-        return MathHelper.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
+        return Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
-    public static boolean checkNearestTaggedFluid(AxisAlignedBB pBb, IWorldReader level, ITag<Fluid> tag) {
-        int i = MathHelper.floor(pBb.minX), j = MathHelper.ceil(pBb.maxX);
-        int k = MathHelper.floor(pBb.minY), l = MathHelper.ceil(pBb.maxY);
-        int i1 = MathHelper.floor(pBb.minZ), j1 = MathHelper.ceil(pBb.maxZ);
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+    public static boolean checkNearestTaggedFluid(AABB pBb, LevelReader level, TagKey<Fluid> tag) {
+        int i = Mth.floor(pBb.minX), j = Mth.ceil(pBb.maxX);
+        int k = Mth.floor(pBb.minY), l = Mth.ceil(pBb.maxY);
+        int i1 = Mth.floor(pBb.minZ), j1 = Mth.ceil(pBb.maxZ);
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
         for(int k1 = i; k1 < j; ++k1) {
             for(int l1 = k; l1 < l; ++l1) {
@@ -58,7 +55,7 @@ public class BlockUtils {
         return false;
     }
 
-    public static void knockUpRandomNearbyBlocks(World world, double yDelta, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean sendParticles, boolean randomYDelta) {
+    public static void knockUpRandomNearbyBlocks(Level world, double yDelta, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean sendParticles, boolean randomYDelta) {
 
         for (int radY = point.getY(); radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {
@@ -68,7 +65,7 @@ public class BlockUtils {
                     BlockState blockState = world.getBlockState(pos);
                     Block block = blockState.getBlock();
 
-                    if (!BlockTags.DRAGON_IMMUNE.contains(block) && !BPTags.Blocks.ALPHANIA.contains(block)) {
+                    if (!blockState.is(BlockTags.DRAGON_IMMUNE) && !blockState.is(BPTags.Blocks.ALPHANIA)) {
                         if (Math.random() <= 0.3) {
                             FallingBlockEntity blockEntity = new FallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, blockState);
                             if (randomYDelta) {
@@ -79,8 +76,8 @@ public class BlockUtils {
                             world.addFreshEntity(blockEntity);
 
                             if (sendParticles) {
-                                if (world instanceof ServerWorld) {
-                                    ((ServerWorld) world).sendParticles(new BlockParticleData(ParticleTypes.BLOCK, blockState), pos.getX(), pos.getY() + 1, pos.getZ(),
+                                if (world instanceof ServerLevel) {
+                                    ((ServerLevel) world).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState), pos.getX(), pos.getY() + 1, pos.getZ(),
                                             5, 0.6, 0.8, 0.6, 0.1);
                                 }
                             }
@@ -91,18 +88,16 @@ public class BlockUtils {
         }
 
         BlockState pointstate = world.getBlockState(point);
-        world.playSound(null, point, pointstate.getSoundType().getBreakSound(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+        world.playSound(null, point, pointstate.getSoundType().getBreakSound(), SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
-    public static void destroyNearbySpecificBlocks(World world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop, Block... specifiedBlocks) {
+    public static void destroyNearbySpecificBlocks(Level world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop, Block... specifiedBlocks) {
 
         for (int radY = point.getY() - radiusX; radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {
                 for (int radZ = point.getZ() - radiusZ; radZ <= point.getZ() + radiusZ; radZ++) {
 
                     BlockPos pos = new BlockPos(radX, radY, radZ);
-                    BlockState blockState = world.getBlockState(pos);
-                    Block block = blockState.getBlock();
 
                     for (Block targetBlocks : specifiedBlocks) {
                         if (world.getBlockState(pos).getBlock() == targetBlocks) {
@@ -114,7 +109,7 @@ public class BlockUtils {
         }
     }
 
-    public static void destroyAllNearbyBlocks(World world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop) {
+    public static void destroyAllNearbyBlocks(Level world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop) {
 
         for (int radY = point.getY() - radiusX; radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {
@@ -122,7 +117,6 @@ public class BlockUtils {
 
                     BlockPos pos = new BlockPos(radX, radY, radZ);
                     BlockState blockState = world.getBlockState(pos);
-                    Block block = blockState.getBlock();
 
                     world.destroyBlock(pos, shouldDrop);
                 }

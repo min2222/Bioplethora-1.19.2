@@ -1,23 +1,23 @@
 package io.github.bioplethora.registry;
 
-import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.loot.conditions.InHellmode;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.bioplethora.Bioplethora;
+import io.github.bioplethora.loot.conditions.InHellmode;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+
 public class BPLootConditions {
-    private static final Map<ResourceLocation, LootConditionType> LOOT_CONDITIONS = new HashMap<>();
+    private static final Map<ResourceLocation, LootItemConditionType> LOOT_CONDITIONS = new HashMap<>();
 
-    public static final LootConditionType IN_HELLMODE = addCondition("in_hellmode", new InHellmode.Serializer());
+    public static final LootItemConditionType IN_HELLMODE = addCondition("in_hellmode", new InHellmode.HellSerializer());
 
-    private static LootConditionType addCondition(String name, ILootSerializer<? extends ILootCondition> serializer) {
-        LootConditionType condition = new LootConditionType(serializer);
+    private static LootItemConditionType addCondition(String name, Serializer<? extends LootItemCondition> serializer) {
+    	LootItemConditionType condition = new LootItemConditionType(serializer);
         LOOT_CONDITIONS.put(new ResourceLocation(Bioplethora.MOD_ID, name), condition);
         return condition;
     }

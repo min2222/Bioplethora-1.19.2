@@ -4,16 +4,33 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.blocks.BPIdeFanBlock;
 import io.github.bioplethora.blocks.SmallMushroomBlock;
 import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WoodButtonBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
+import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BioBlockstateProvider extends BlockStateProvider {
 
@@ -218,8 +235,8 @@ public class BioBlockstateProvider extends BlockStateProvider {
         this.fenceGateBlock((FenceGateBlock) fenceGate, bioResLoc(woodType + "_planks"));
         this.slabBlock((SlabBlock) slab, bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"));
         this.pressurePlateBlock((PressurePlateBlock) pressurePlate, bioResLoc(woodType + "_planks"));
-        this.stairsBlock((StairsBlock) stairs, bioResLoc(woodType + "_planks"));
-        this.buttonBlock((AbstractButtonBlock) button, bioResLoc(woodType + "_planks"));
+        this.stairsBlock((StairBlock) stairs, bioResLoc(woodType + "_planks"));
+        this.buttonBlock((ButtonBlock) button, bioResLoc(woodType + "_planks"));
         this.doorBlock((DoorBlock) door, bioResLoc(woodType + "_door_lower"), bioResLoc(woodType + "_door_upper"));
         this.trapdoorBlock((TrapDoorBlock) trapdoor, bioResLoc(woodType + "_trapdoor"), false);
         this.signBlock(sign, wallSign, bioResLoc(woodType + "_planks"));
@@ -231,15 +248,15 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void signBlock(Block sign, Block wallSign, ResourceLocation texture) {
-        BlockModelBuilder pSign = models().getBuilder(sign.getRegistryName().getPath()).texture("particle", texture);
-        BlockModelBuilder pWallSign = models().getBuilder(wallSign.getRegistryName().getPath()).texture("particle", texture);
+        BlockModelBuilder pSign = models().getBuilder(sign.getDescriptionId()).texture("particle", texture);
+        BlockModelBuilder pWallSign = models().getBuilder(wallSign.getDescriptionId()).texture("particle", texture);
 
         getVariantBuilder(sign).partialState().setModels(new ConfiguredModel(pSign));
         getVariantBuilder(wallSign).partialState().setModels(new ConfiguredModel(pWallSign));
     }
 
     public void bigMushroomBlock(Block block) {
-        BlockModelBuilder mushroom = models().singleTexture(block.getRegistryName().getPath(), bioResLoc("big_mushroom"), "0", blockTexture(block)).texture("particle", blockTexture(block));
+        BlockModelBuilder mushroom = models().singleTexture(ForgeRegistries.BLOCKS.getKey(block).getPath(), bioResLoc("big_mushroom"), "0", blockTexture(block)).texture("particle", blockTexture(block));
         getVariantBuilder(block).partialState().setModels(new ConfiguredModel(mushroom));
     }
 
@@ -252,9 +269,9 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public BlockModelBuilder getMinishroomModel(Block block, BlockState state) {
-        BlockModelBuilder mushroom1 = models().singleTexture(block.getRegistryName().getPath() + "_one", bioResLoc("small_mushroom_one"), "0", blockTexture(block)).texture("particle", blockTexture(block));
-        BlockModelBuilder mushroom2 = models().singleTexture(block.getRegistryName().getPath() + "_two", bioResLoc("small_mushroom_two"), "0", blockTexture(block)).texture("particle", blockTexture(block));
-        BlockModelBuilder mushroom3 = models().singleTexture(block.getRegistryName().getPath() + "_three", bioResLoc("small_mushroom_three"), "0", blockTexture(block)).texture("particle", blockTexture(block));
+        BlockModelBuilder mushroom1 = models().singleTexture(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_one", bioResLoc("small_mushroom_one"), "0", blockTexture(block)).texture("particle", blockTexture(block));
+        BlockModelBuilder mushroom2 = models().singleTexture(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_two", bioResLoc("small_mushroom_two"), "0", blockTexture(block)).texture("particle", blockTexture(block));
+        BlockModelBuilder mushroom3 = models().singleTexture(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_three", bioResLoc("small_mushroom_three"), "0", blockTexture(block)).texture("particle", blockTexture(block));
 
         IntegerProperty amount = SmallMushroomBlock.MINISHROOMS;
 
@@ -277,14 +294,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void ideFanSingularBlock(Block block) {
-        BlockModelBuilder fan = models().singleTexture(block.getRegistryName().getPath(), bioResLoc("ide_fan"), "0", blockTexture(block)).texture("particle", blockTexture(block));
+        BlockModelBuilder fan = models().singleTexture(ForgeRegistries.BLOCKS.getKey(block).getPath(), bioResLoc("ide_fan"), "0", blockTexture(block)).texture("particle", blockTexture(block));
         getVariantBuilder(block).partialState().setModels(new ConfiguredModel(fan));
     }
 
     public void ideFanBlock(Block block) {
-        String defTexture = block.getRegistryName().getPath();
+        String defTexture = ForgeRegistries.BLOCKS.getKey(block).getPath();
         BlockModelBuilder def = models().singleTexture(defTexture, bioResLoc("ide_fan"), "0", blockTexture(block)).texture("particle", blockTexture(block));
-        String buddedTexture = block.getRegistryName().getPath() + "_top";
+        String buddedTexture = ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top";
         BlockModelBuilder budded = models().singleTexture(buddedTexture, bioResLoc("ide_fan_budded"), "0", blockTexture(block)).texture("particle", blockTexture(block));
 
         getVariantBuilder(block)
@@ -295,9 +312,9 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void lanternPlantBlock(Block block) {
-        String bottomTexture = block.getRegistryName().getPath() + "_bottom";
+        String bottomTexture = ForgeRegistries.BLOCKS.getKey(block).getPath() + "_bottom";
         BlockModelBuilder bottom = models().singleTexture(bottomTexture, bioResLoc("lantern_plant_bottom"), "0", extend(blockTexture(block), "_bottom")).texture("particle", extend(blockTexture(block), "_bottom"));
-        String topTexture = block.getRegistryName().getPath() + "_top";
+        String topTexture = ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top";
         BlockModelBuilder top = models().singleTexture(topTexture, bioResLoc("lantern_plant_top"), "0", extend(blockTexture(block), "_top")).texture("particle", extend(blockTexture(block), "_top"));
 
         getVariantBuilder(block)
@@ -308,7 +325,7 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void corsascileBlock(Block block) {
-        String texture = block.getRegistryName().getPath();
+        String texture = ForgeRegistries.BLOCKS.getKey(block).getPath();
         BlockModelBuilder bottom = models().singleTexture(texture + "bottom", bioResLoc("corsascile_bottom"), "0", blockTexture(block)).texture("particle", blockTexture(block));
         BlockModelBuilder top = models().singleTexture(texture + "top", bioResLoc("corsascile_top"), "0", blockTexture(block)).texture("particle", blockTexture(block));
 
@@ -320,8 +337,8 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void doubleCrossPlantBlock(Block block) {
-        ModelFile lower = models().cross(block.getRegistryName().getPath() + "_lower", bioResLoc(block.getRegistryName().getPath() + "_bottom"));
-        ModelFile upper = models().cross(block.getRegistryName().getPath() + "_upper", bioResLoc(block.getRegistryName().getPath() + "_top"));
+        ModelFile lower = models().cross(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_lower", bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_bottom"));
+        ModelFile upper = models().cross(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_upper", bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top"));
 
         getVariantBuilder(block)
                 .partialState().with(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)
@@ -331,8 +348,8 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void doubleCropPlantBlock(Block block) {
-        ModelFile lower = models().crop(block.getRegistryName().getPath() + "_lower", bioResLoc(block.getRegistryName().getPath() + "_bottom"));
-        ModelFile upper = models().crop(block.getRegistryName().getPath() + "_upper", bioResLoc(block.getRegistryName().getPath() + "_top"));
+        ModelFile lower = models().crop(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_lower", bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_bottom"));
+        ModelFile upper = models().crop(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_upper", bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top"));
 
         getVariantBuilder(block)
                 .partialState().with(DoublePlantBlock.HALF, DoubleBlockHalf.LOWER)
@@ -344,14 +361,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void wsabbSoilMCResLoc(Block topAndSides, Block soil) {
         getVariantBuilder(topAndSides).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(topAndSides.getRegistryName().getPath(),
-                                mcResLoc(soil.getRegistryName().getPath()),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_top"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side")
-                        ).texture("particle", bioResLoc(topAndSides.getRegistryName().getPath() + "_top"))
+                        .cube(topAndSides.getDescriptionId(),
+                                mcResLoc(soil.getDescriptionId()),
+                                bioResLoc(topAndSides.getDescriptionId() + "_top"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side")
+                        ).texture("particle", bioResLoc(topAndSides.getDescriptionId() + "_top"))
                 )
         );
     }
@@ -359,14 +376,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void withSidesAndBottomBlock(Block topAndSides, Block soil) {
         getVariantBuilder(topAndSides).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(topAndSides.getRegistryName().getPath(),
-                                bioResLoc(soil.getRegistryName().getPath()),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_top"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side")
-                        ).texture("particle", bioResLoc(topAndSides.getRegistryName().getPath() + "_top"))
+                        .cube(topAndSides.getDescriptionId(),
+                                bioResLoc(soil.getDescriptionId()),
+                                bioResLoc(topAndSides.getDescriptionId() + "_top"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side")
+                        ).texture("particle", bioResLoc(topAndSides.getDescriptionId() + "_top"))
                 )
         );
     }
@@ -374,14 +391,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void mcWithSidesAndBottomBlock(Block topAndSides, Block soil) {
         getVariantBuilder(topAndSides).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(topAndSides.getRegistryName().getPath(),
-                                mcResLoc(soil.getRegistryName().getPath()),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_top"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side"),
-                                bioResLoc(topAndSides.getRegistryName().getPath() + "_side")
-                        ).texture("particle", bioResLoc(topAndSides.getRegistryName().getPath() + "_top"))
+                        .cube(topAndSides.getDescriptionId(),
+                                mcResLoc(soil.getDescriptionId()),
+                                bioResLoc(topAndSides.getDescriptionId() + "_top"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
+                                bioResLoc(topAndSides.getDescriptionId() + "_side")
+                        ).texture("particle", bioResLoc(topAndSides.getDescriptionId() + "_top"))
                 )
         );
     }
@@ -389,14 +406,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void withSidesBlock(Block block) {
         getVariantBuilder(block).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(block.getRegistryName().getPath(),
-                                bioResLoc(block.getRegistryName().getPath() + "_top"),
-                                bioResLoc(block.getRegistryName().getPath() + "_top"),
-                                bioResLoc(block.getRegistryName().getPath() + "_side"),
-                                bioResLoc(block.getRegistryName().getPath() + "_side"),
-                                bioResLoc(block.getRegistryName().getPath() + "_side"),
-                                bioResLoc(block.getRegistryName().getPath() + "_side")
-                        ).texture("particle", bioResLoc(block.getRegistryName().getPath() + "_top"))
+                        .cube(ForgeRegistries.BLOCKS.getKey(block).getPath(),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_side")
+                        ).texture("particle", bioResLoc(ForgeRegistries.BLOCKS.getKey(block).getPath() + "_top"))
                 )
         );
     }
@@ -404,26 +421,26 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void reinforcingTableBlock(Block block) {
         getVariantBuilder(block).partialState().addModels(
                 new ConfiguredModel(models()
-                        .singleTexture(block.getRegistryName().getPath(), bioResLoc("reinforcing_table_base"), "1", blockTexture(block))
+                        .singleTexture(ForgeRegistries.BLOCKS.getKey(block).getPath(), bioResLoc("reinforcing_table_base"), "1", blockTexture(block))
                         .texture("particle", blockTexture(block))
                 )
         );
     }
 
     public void simpleCarpetBlock(Block block) {
-        getVariantBuilder(block).partialState().setModels(new ConfiguredModel(models().carpet(block.getRegistryName().getPath(), blockTexture(block))));
+        getVariantBuilder(block).partialState().setModels(new ConfiguredModel(models().carpet(ForgeRegistries.BLOCKS.getKey(block).getPath(), blockTexture(block))));
     }
 
     public void simpleCarpetBlock(Block block, ResourceLocation textureLocation) {
-        getVariantBuilder(block).partialState().setModels(new ConfiguredModel(models().carpet(block.getRegistryName().getPath(), textureLocation)));
+        getVariantBuilder(block).partialState().setModels(new ConfiguredModel(models().carpet(ForgeRegistries.BLOCKS.getKey(block).getPath(), textureLocation)));
     }
 
     public void simpleCrossBlock(Block block) {
-        getVariantBuilder(block).partialState().setModels(new ConfiguredModel(models().cross(block.getRegistryName().getPath(), blockTexture(block))));
+        getVariantBuilder(block).partialState().setModels(new ConfiguredModel(models().cross(ForgeRegistries.BLOCKS.getKey(block).getPath(), blockTexture(block))));
     }
 
     public void pressurePlateBlock(PressurePlateBlock block, ResourceLocation all) {
-        pressurePlateBlockInternal(block, block.getRegistryName().getPath(), all);
+        pressurePlateBlockInternal(block, ForgeRegistries.BLOCKS.getKey(block).getPath(), all);
     }
 
     public void fixedLogBlock(RotatedPillarBlock block) {
@@ -453,9 +470,8 @@ public class BioBlockstateProvider extends BlockStateProvider {
         axisBlock(block, texture, texture);
     }
 
-    private void buttonBlock(AbstractButtonBlock block, ResourceLocation all) {
-
-        String baseName = block.getRegistryName().getPath();
+    public void buttonBlock(ButtonBlock block, ResourceLocation all) {
+        String baseName = ForgeRegistries.BLOCKS.getKey(block).getPath();
         ModelFile button = models().singleTexture(baseName, mcResLoc("button"), all);
         ModelFile buttonPressed = models().singleTexture(baseName + "_pressed", mcResLoc("button_pressed"), all);
         ModelFile buttonInventory = models().singleTexture(baseName + "_inventory", mcResLoc("button_inventory"), all);

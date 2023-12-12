@@ -11,9 +11,9 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 @JeiPlugin
 public class BPCompatJEI implements IModPlugin {
@@ -36,7 +36,7 @@ public class BPCompatJEI implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registry) {
         @SuppressWarnings("resource")
-        ClientWorld world = Minecraft.getInstance().level;
+        ClientLevel world = Minecraft.getInstance().level;
         registry.addRecipes(world.getRecipeManager().getAllRecipesFor(BPRecipes.REINFORCING), ReinforcingTableCategory.CATEGORY_ID);
         addDescription(registry, new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
     }

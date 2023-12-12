@@ -1,17 +1,12 @@
 package io.github.bioplethora.api.world;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.fml.RegistryObject;
-
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 
 public class WorldgenUtils {
 
@@ -30,20 +25,20 @@ public class WorldgenUtils {
         return "minecraft:" + biomeId;
     }
 
-    public static boolean getBiomeFromEvent(BiomeLoadingEvent event, String biome) {
+    /*public static boolean getBiomeFromEvent(BiomeLoadingEvent event, String biome) {
         return new ResourceLocation(biome).equals(event.getName());
     }
 
     public static boolean getBiomeFromEvent(BiomeLoadingEvent event, RegistryObject<Biome> biome) {
         return new ResourceLocation(biome.getId().toString()).equals(event.getName());
-    }
+    }*/
 
     public static abstract class NBTTree {
 
-        protected abstract ConfiguredFeature<?, ?> getTree(Random random);
+        protected abstract ConfiguredFeature<?, ?> getTree(RandomSource random);
 
-        public boolean placeAt(ISeedReader worldIn, ChunkGenerator chunkGenerator, BlockPos pos, BlockState belowPos, Random random) {
-
+        public boolean placeAt(WorldGenLevel worldIn, ChunkGenerator chunkGenerator, BlockPos pos, BlockState belowPos, RandomSource random) {
+        	
             ConfiguredFeature<?, ?> tree = this.getTree(random);
             if (tree == null) {
                 return false;

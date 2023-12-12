@@ -1,24 +1,24 @@
 package io.github.bioplethora.api.events.hooks;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 
 @Cancelable
 public class GrylynenSpawnEvent extends Event {
 
-    PlayerEntity player;
+	Player player;
 
-    public GrylynenSpawnEvent(PlayerEntity player) {
+    public GrylynenSpawnEvent(Player player) {
         this.player = player;
     }
 
-    public PlayerEntity getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
-    public World getWorld() {
+    public Level getLevel() {
         return player.level;
     }
 }

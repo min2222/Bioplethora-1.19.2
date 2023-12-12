@@ -1,17 +1,17 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.creatures.CavernFleignarEntity;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
 import io.github.bioplethora.world.featureconfigs.FleignariteSplotchConfig;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-
-import java.util.Random;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class FleignaritePatchFeature extends Feature<FleignariteSplotchConfig> {
 

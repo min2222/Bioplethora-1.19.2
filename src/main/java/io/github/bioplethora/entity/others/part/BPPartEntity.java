@@ -1,28 +1,28 @@
 package io.github.bioplethora.entity.others.part;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.Pose;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Pose;
 import net.minecraftforge.entity.PartEntity;
 
-public class BPPartEntity<T extends MobEntity> extends PartEntity<T> {
+public class BPPartEntity<T extends Mob> extends PartEntity<T> {
     public final T parentMob;
     public final String name;
-    private final EntitySize size;
+    private final EntityDimensions size;
 
     public BPPartEntity(T parent, String name, float width, float height) {
         super(parent);
-        size = EntitySize.scalable(width, height);
+        size = EntityDimensions.scalable(width, height);
         refreshDimensions();
         parentMob = parent;
         this.name = name;
     }
 
     @Override
-    public EntitySize getDimensions(Pose pPose) {
+    public EntityDimensions getDimensions(Pose pPose) {
         return size;
     }
 
@@ -46,10 +46,10 @@ public class BPPartEntity<T extends MobEntity> extends PartEntity<T> {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT pCompound) {
+    protected void readAdditionalSaveData(CompoundTag pCompound) {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT pCompound) {
+    protected void addAdditionalSaveData(CompoundTag pCompound) {
     }
 }

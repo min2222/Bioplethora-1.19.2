@@ -1,25 +1,24 @@
 package io.github.bioplethora.world;
 
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.worldgen.BPBiomes;
 import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
-import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
+import io.github.bioplethora.registry.worldgen.BPConfiguredLevelCarvers;
 import io.github.bioplethora.registry.worldgen.BPTreeConfiguredFeatures;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = Bioplethora.MOD_ID)
 public class BPCustomBiomeFeatureGeneration {
@@ -55,7 +54,7 @@ public class BPCustomBiomeFeatureGeneration {
             vegDeco.add(() -> BPConfiguredFeatures.BYRSS_LANTERN_PLANT_PATCH);
         }
         if (BiomeDictionary.hasType(key, BPBiomes.Type.CAERI_FOREST)) {
-            airCarver.add(() -> BPConfiguredWorldCarvers.CAERI_FORMERS);
+            airCarver.add(() -> BPConfiguredLevelCarvers.CAERI_FORMERS);
             undergroundDeco.add(() -> BPConfiguredFeatures.CAERI_CAVERN);
 
             //vegDeco.add(() -> BPConfiguredFeatures.CELESTIA_BUD);
@@ -74,7 +73,7 @@ public class BPCustomBiomeFeatureGeneration {
             vegDeco.add(() -> BPConfiguredFeatures.GLACYNTH);
         }
         if (BiomeDictionary.hasType(key, BPBiomes.Type.LAVENDER_LAKE)) {
-            //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) liqCarver.add(() -> BPConfiguredWorldCarvers.END_SPRINGS_CARVER);
+            //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) liqCarver.add(() -> BPConfiguredLevelCarvers.END_SPRINGS_CARVER);
             //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) undergroundDeco.add(() -> BPConfiguredFeatures.END_LAND_ROCK);
 
             vegDeco.add(() -> BPConfiguredFeatures.CHORUS_MYCHRODEGIA);
@@ -93,7 +92,7 @@ public class BPCustomBiomeFeatureGeneration {
             //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) localDeco.add(() -> BPConfiguredFeatures.END_LANDS_CAVERN);
         }
         if (BiomeDictionary.hasType(key, BPBiomes.Type.LAVENDER_POND)) {
-            //if (BPConfig.WORLDGEN.endSpongeMidlands.get()) liqCarver.add(() -> BPConfiguredWorldCarvers.END_SPRINGS_CARVER);
+            //if (BPConfig.WORLDGEN.endSpongeMidlands.get()) liqCarver.add(() -> BPConfiguredLevelCarvers.END_SPRINGS_CARVER);
 
             vegDeco.add(() -> BPConfiguredFeatures.CHORUS_MYCHRODEGIA);
 

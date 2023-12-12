@@ -1,7 +1,7 @@
 package io.github.bioplethora.registry.worldgen;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
@@ -12,11 +12,7 @@ import io.github.bioplethora.world.featureconfigs.ExpandedLakeFeatureConfig;
 import io.github.bioplethora.world.featureconfigs.FleignariteSplotchConfig;
 import io.github.bioplethora.world.featureconfigs.PendentBlocksFeatureConfig;
 import net.minecraft.block.AbstractTopPlantBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.util.registry.LevelGenRegistries;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.blockplacer.BlockPlacer;
 import net.minecraft.world.gen.blockplacer.DoublePlantBlockPlacer;
@@ -24,6 +20,8 @@ import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.*;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
 
 public class BPConfiguredFeatures {
 
@@ -306,7 +304,7 @@ public class BPConfiguredFeatures {
     //---------------------------
 
     private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> register(String pId, ConfiguredFeature<FC, ?> pConfiguredFeature) {
-        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, pId, pConfiguredFeature);
+        return Registry.register(LevelGenRegistries.CONFIGURED_FEATURE, pId, pConfiguredFeature);
     }
 
     public static ConfiguredFeature<?, ?> makePendentConfig(Block top, Block middle, Block end, ImmutableList<Block> whitelist, int minLength, int maxLength, int range, int count) {

@@ -2,23 +2,23 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.MyliothanEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class MyliothanEntityModel extends AnimatedGeoModel<MyliothanEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(MyliothanEntity entity) {
+    public ResourceLocation getModelResource(MyliothanEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/myliothan.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MyliothanEntity entity) {
+    public ResourceLocation getTextureResource(MyliothanEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/myliothan.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(MyliothanEntity entity) {
+    public ResourceLocation getAnimationResource(MyliothanEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/myliothan.animation.json");
     }
 

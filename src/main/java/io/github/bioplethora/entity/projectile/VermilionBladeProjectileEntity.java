@@ -3,40 +3,37 @@ package io.github.bioplethora.entity.projectile;
 import io.github.bioplethora.registry.BPDamageSources;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.ItemSupplier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class VermilionBladeProjectileEntity extends DamagingProjectileEntity implements IAnimatable, IRendersAsItem {
+public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile implements IAnimatable, ItemSupplier {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public double lifespan = 0;
     public int bladeSize = 1;
 
-    public VermilionBladeProjectileEntity(EntityType<? extends DamagingProjectileEntity> entityType, World world) {
+    public VermilionBladeProjectileEntity(EntityType<? extends AbstractHurtingProjectile> entityType, Level world) {
         super(entityType, world);
     }
 
-    public VermilionBladeProjectileEntity(World world, LivingEntity entity, double v, double v1, double v2) {
+    public VermilionBladeProjectileEntity(Level world, LivingEntity entity, double v, double v1, double v2) {
         super(BPEntities.VERMILION_BLADE_PROJECTILE.get(), entity, v, v1, v2, world);
     }
 
@@ -54,27 +51,27 @@ public class VermilionBladeProjectileEntity extends DamagingProjectileEntity imp
         super.tick();
         ++lifespan;
         if (lifespan == 100) {
-            this.remove();
+            this.discard();
         }
     }
 
     @Override
-    protected void onHitEntity(EntityRayTraceResult entityHitResult) {
+    protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
 
         entity.hurt(BPDamageSources.helioSlashed(this.getOwner(), this.getOwner()), 5 * ((float) this.bladeSize * 0.75F));
-        this.remove();
+        this.discard();
     }
 
     @Override
-    protected void onHit(RayTraceResult result) {
+    protected void onHit(HitResult result) {
         double x = this.getX(), y = this.getY(), z = this.getZ();
         Entity owner = this.getOwner();
         super.onHit(result);
 
-        if (result.getType() != RayTraceResult.Type.ENTITY || !((EntityRayTraceResult) result).getEntity().is(owner)) {
-            this.level.explode(this, x, y, z, 1.5F * ((float) this.bladeSize * 0.5F), Explosion.Mode.BREAK);
-            this.remove();
+        if (result.getType() != HitResult.Type.ENTITY || !((EntityHitResult) result).getEntity().is(owner)) {
+            this.level.explode(this, x, y, z, 1.5F * ((float) this.bladeSize * 0.5F), Explosion.BlockInteraction.BREAK);
+            this.discard();
         }
     }
 
@@ -83,11 +80,11 @@ public class VermilionBladeProjectileEntity extends DamagingProjectileEntity imp
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    protected IParticleData getTrailParticle() {
+    protected ParticleOptions getTrailParticle() {
         return ParticleTypes.SMOKE;
     }
 

@@ -1,18 +1,5 @@
 package io.github.bioplethora.mixin;
 
-import io.github.bioplethora.api.mixin.IPlayerEntityMixin;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.HandSide;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,26 +7,40 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerEntity.class)
+import io.github.bioplethora.api.mixin.IPlayerEntityMixin;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemCooldowns;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+@Mixin(Player.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerEntityMixin {
 
     //===========================================
     //             VARIABLES
     //===========================================
 
-    @Shadow @Final public PlayerInventory inventory;
-    @Shadow @Final protected static final DataParameter<Byte> DATA_PLAYER_MAIN_HAND = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.BYTE);
+    @Shadow @Final public Inventory inventory;
+    @Shadow @Final protected static final EntityDataAccessor<Byte> DATA_PLAYER_MAIN_HAND = SynchedEntityData.defineId(Player.class, EntityDataSerializers.BYTE);
 
-    @Shadow public abstract CooldownTracker getCooldowns();
+    @Shadow public abstract ItemCooldowns getCooldowns();
 
-    private static final DataParameter<Boolean> ALPHANUM_CURSE = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> SCREEN_SHAKING = EntityDataManager.defineId(PlayerEntity.class, DataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ALPHANUM_CURSE = SynchedEntityData.defineId(Player.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> SCREEN_SHAKING = SynchedEntityData.defineId(Player.class, EntityDataSerializers.INT);
 
     //===========================================
     //          DUMMY CONSTRUCTOR
     //===========================================
 
-    protected PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
+    protected PlayerEntityMixin(EntityType<? extends LivingEntity> type, Level world) {
         super(type, world);
     }
 
@@ -47,7 +48,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     //           MIXIN SECTION
     //===========================================
 
-    @Inject(at = @At("TAIL"), method = ("Lnet/minecraft/entity/player/PlayerEntity;defineSynchedData()V"))
+    @Inject(at = @At("TAIL"), method = ("Lnet/minecraft/entity/player/Player;defineSynchedData()V"))
     protected void defineSynchedData(CallbackInfo cbi) {
         this.entityData.define(ALPHANUM_CURSE, false);
         this.entityData.define(SCREEN_SHAKING, 0);
@@ -90,30 +91,30 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
         return this.inventory.armor;
     }
 
-    public ItemStack getItemBySlot(EquipmentSlotType pSlot) {
-        if (pSlot == EquipmentSlotType.MAINHAND) {
+    public ItemStack getItemBySlot(EquipmentSlot pSlot) {
+        if (pSlot == EquipmentSlot.MAINHAND) {
             return this.inventory.getSelected();
-        } else if (pSlot == EquipmentSlotType.OFFHAND) {
+        } else if (pSlot == EquipmentSlot.OFFHAND) {
             return this.inventory.offhand.get(0);
         } else {
-            return pSlot.getType() == EquipmentSlotType.Group.ARMOR ? this.inventory.armor.get(pSlot.getIndex()) : ItemStack.EMPTY;
+            return pSlot.getType() == EquipmentSlot.Type.ARMOR ? this.inventory.armor.get(pSlot.getIndex()) : ItemStack.EMPTY;
         }
     }
 
-    public void setItemSlot(EquipmentSlotType pSlot, ItemStack pStack) {
-        if (pSlot == EquipmentSlotType.MAINHAND) {
+    public void setItemSlot(EquipmentSlot pSlot, ItemStack pStack) {
+        if (pSlot == EquipmentSlot.MAINHAND) {
             this.playEquipSound(pStack);
             this.inventory.items.set(this.inventory.selected, pStack);
-        } else if (pSlot == EquipmentSlotType.OFFHAND) {
+        } else if (pSlot == EquipmentSlot.OFFHAND) {
             this.playEquipSound(pStack);
             this.inventory.offhand.set(0, pStack);
-        } else if (pSlot.getType() == EquipmentSlotType.Group.ARMOR) {
+        } else if (pSlot.getType() == EquipmentSlot.Type.ARMOR) {
             this.playEquipSound(pStack);
             this.inventory.armor.set(pSlot.getIndex(), pStack);
         }
     }
 
-    public HandSide getMainArm() {
-        return this.entityData.get(DATA_PLAYER_MAIN_HAND) == 0 ? HandSide.LEFT : HandSide.RIGHT;
+    public HumanoidArm getMainArm() {
+        return this.entityData.get(DATA_PLAYER_MAIN_HAND) == 0 ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
     }
 }

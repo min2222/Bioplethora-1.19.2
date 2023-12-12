@@ -1,16 +1,14 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-
 import java.util.Random;
+
+import com.mojang.serialization.Codec;
+
+import io.github.bioplethora.registry.BPBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class EndLandsCavernFeature extends Feature<NoFeatureConfig> {
 
@@ -26,7 +24,7 @@ public class EndLandsCavernFeature extends Feature<NoFeatureConfig> {
             for (int sy = -radius; sy <= radius; sy++) {
                 for (int sz = -radius; sz <= radius; sz++) {
                     if (sx * sx + sy * sy + sz * sz <= radius * radius) {
-                        BlockPos.Mutable tPos = pos.offset(sx, sy, sz).mutable();
+                        BlockPos.MutableBlockPos tPos = pos.offset(sx, sy, sz).mutable();
                         if (!world.getBlockState(tPos).isAir()) {
                             if (replaceWithEndurion(world, tPos)) {
                                 this.setBlock(world, tPos, BPBlocks.ENDURION.get().defaultBlockState());

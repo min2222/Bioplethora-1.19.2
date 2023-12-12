@@ -1,30 +1,32 @@
 package io.github.bioplethora.gui.recipe;
 
+import java.util.function.Consumer;
+
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
+
 import io.github.bioplethora.registry.BPRecipes;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-
-import javax.annotation.Nullable;
-import java.util.function.Consumer;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ReinforcingRecipeBuilder {
 
     private final Ingredient topIngredient, midIngredient, botIngredient;
     private final Item result;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
-    private final IRecipeSerializer<?> type;
+    private final RecipeSerializer<?> type;
 
-    public ReinforcingRecipeBuilder(IRecipeSerializer<?> pType, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult) {
+    public ReinforcingRecipeBuilder(RecipeSerializer<?> pType, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult) {
         this.type = pType;
         this.topIngredient = topIngredient;
         this.midIngredient = midIngredient;
@@ -36,18 +38,18 @@ public class ReinforcingRecipeBuilder {
         return new ReinforcingRecipeBuilder(BPRecipes.REINFORCING_SERIALIZER.get(), topIngredient, midIngredient, botIngredient, pResult);
     }
 
-    public ReinforcingRecipeBuilder unlocks(String pName, ICriterionInstance pCriterion) {
+    public ReinforcingRecipeBuilder unlocks(String pName, CriterionTriggerInstance pCriterion) {
         this.advancement.addCriterion(pName, pCriterion);
         return this;
     }
 
-    public void save(Consumer<IFinishedRecipe> pFinishedRecipeConsumer, String pId) {
+    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, String pId) {
         this.save(pFinishedRecipeConsumer, new ResourceLocation(pId));
     }
 
-    public void save(Consumer<IFinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pId) {
+    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pId) {
         this.ensureValid(pId);
-        this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pId)).rewards(AdvancementRewards.Builder.recipe(pId)).requirements(IRequirementsStrategy.OR);
+        this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pId)).rewards(AdvancementRewards.Builder.recipe(pId)).requirements(RequirementsStrategy.OR);
         pFinishedRecipeConsumer.accept(new ReinforcingRecipeBuilder.Result(pId, this.type, this.topIngredient, this.midIngredient, this.botIngredient, this.result, this.advancement, new ResourceLocation(pId.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + pId.getPath())));
     }
 
@@ -57,15 +59,15 @@ public class ReinforcingRecipeBuilder {
         }
     }
 
-    public static class Result implements IFinishedRecipe {
+    public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
         private final Ingredient topIngredient, midIngredient, botIngredient;
         private final Item result;
         private final Advancement.Builder advancement;
         private final ResourceLocation advancementId;
-        private final IRecipeSerializer<?> type;
+        private final RecipeSerializer<?> type;
 
-        public Result(ResourceLocation pId, IRecipeSerializer<?> pType, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
+        public Result(ResourceLocation pId, RecipeSerializer<?> pType, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult, Advancement.Builder pAdvancement, ResourceLocation pAdvancementId) {
             this.id = pId;
             this.type = pType;
             this.topIngredient = topIngredient;
@@ -81,7 +83,7 @@ public class ReinforcingRecipeBuilder {
             pJson.add("material", this.midIngredient.toJson());
             pJson.add("weapon", this.botIngredient.toJson());
             JsonObject jsonobject = new JsonObject();
-            jsonobject.addProperty("item", Registry.ITEM.getKey(this.result).toString());
+            jsonobject.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result).toString());
             pJson.add("result", jsonobject);
         }
 
@@ -92,7 +94,7 @@ public class ReinforcingRecipeBuilder {
             return this.id;
         }
 
-        public IRecipeSerializer<?> getType() {
+        public RecipeSerializer<?> getType() {
             return this.type;
         }
 

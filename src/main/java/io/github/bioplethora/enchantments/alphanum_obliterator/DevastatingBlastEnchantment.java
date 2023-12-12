@@ -1,14 +1,14 @@
 package io.github.bioplethora.enchantments.alphanum_obliterator;
 
 import io.github.bioplethora.enchantments.BPEnchantmentHelper;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class DevastatingBlastEnchantment extends Enchantment {
 
-    public DevastatingBlastEnchantment(Enchantment.Rarity rarity, EquipmentSlotType... slotTypes) {
+    public DevastatingBlastEnchantment(Enchantment.Rarity rarity, EquipmentSlot... slotTypes) {
         super(rarity, BPEnchantmentHelper.ALPHANUM_OBLITERATOR, slotTypes);
     }
 

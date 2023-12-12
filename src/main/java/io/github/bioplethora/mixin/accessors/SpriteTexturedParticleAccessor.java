@@ -1,10 +1,11 @@
 package io.github.bioplethora.mixin.accessors;
 
-import net.minecraft.client.particle.SpriteTexturedParticle;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(SpriteTexturedParticle.class)
+import net.minecraft.client.particle.TextureSheetParticle;
+
+@Mixin(TextureSheetParticle.class)
 public interface SpriteTexturedParticleAccessor {
 
     @Invoker("getU0")

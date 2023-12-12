@@ -1,34 +1,33 @@
 package io.github.bioplethora.world;
 
-import com.google.common.collect.ImmutableList;
-import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.api.world.WorldgenUtils;
-import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
-import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
-import io.github.bioplethora.registry.worldgen.BPWorldCarvers;
-import net.fabricmc.fabric.mixin.biome.MixinTheEndBiomeSource;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
+import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import com.google.common.collect.ImmutableList;
+
+import io.github.bioplethora.Bioplethora;
+import io.github.bioplethora.api.world.LevelgenUtils;
+import io.github.bioplethora.api.world.WorldgenUtils;
+import io.github.bioplethora.config.BPConfig;
+import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.carver.ConfiguredCarver;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Bioplethora.MOD_ID)
 public class BPVanillaBiomeFeatureGeneration {
@@ -53,27 +52,27 @@ public class BPVanillaBiomeFeatureGeneration {
         }
 
         if (types.contains(BiomeDictionary.Type.NETHER)) {
-            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.BASALT_DELTAS)) {
+            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.BASALT_DELTAS)) {
                 vegDeco.add(() -> BPConfiguredFeatures.BASALT_SPELEOTHERM);
 
                 vegDeco.add(() -> BPConfiguredFeatures.LAVA_SPIRE);
             }
-            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.NETHER_WASTES)) {
+            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.NETHER_WASTES)) {
                 vegDeco.add(() -> BPConfiguredFeatures.THONTUS_THISTLE);
 
                 vegDeco.add(() -> BPConfiguredFeatures.LAVA_SPIRE);
             }
-            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.WARPED_FOREST)) {
+            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.WARPED_FOREST)) {
                 vegDeco.add(() -> BPConfiguredFeatures.WARPED_DANCER);
 
                 vegDeco.add(() -> BPConfiguredFeatures.TURQUOISE_PENDENT);
             }
-            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.CRIMSON_FOREST)) {
+            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.CRIMSON_FOREST)) {
                 vegDeco.add(() -> BPConfiguredFeatures.CERISE_IVY);
 
                 vegDeco.add(() -> BPConfiguredFeatures.LAVA_SPIRE);
             }
-            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.SOUL_SAND_VALLEY)) {
+            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.SOUL_SAND_VALLEY)) {
                 vegDeco.add(() -> BPConfiguredFeatures.SOUL_MINISHROOM);
                 vegDeco.add(() -> BPConfiguredFeatures.SOUL_BIGSHROOM);
 
@@ -90,9 +89,9 @@ public class BPVanillaBiomeFeatureGeneration {
             if (BPConfig.WORLDGEN.cyraLakesEnd.get()) undergroundDeco.add(() -> BPConfiguredFeatures.CYRA_LAKE);
 
             if (!BPConfig.WORLDGEN.createNewSpongeBiome.get()) {
-                if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_HIGHLANDS)) {
+                if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.END_HIGHLANDS)) {
 
-                    //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) liqCarver.add(() -> BPConfiguredWorldCarvers.END_SPRINGS_CARVER);
+                    //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) liqCarver.add(() -> BPConfiguredLevelCarvers.END_SPRINGS_CARVER);
                     //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) undergroundDeco.add(() -> BPConfiguredFeatures.END_LAND_ROCK);
 
                     vegDeco.add(() -> BPConfiguredFeatures.CHORUS_MYCHRODEGIA);
@@ -112,9 +111,9 @@ public class BPVanillaBiomeFeatureGeneration {
                     //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) localDeco.add(() -> BPConfiguredFeatures.END_LANDS_CAVERN);
                 }
 
-                if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_MIDLANDS) || WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_BARRENS)) {
+                if (LevelgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_MIDLANDS) || LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.END_BARRENS)) {
 
-                    //if (BPConfig.WORLDGEN.endSpongeMidlands.get()) liqCarver.add(() -> BPConfiguredWorldCarvers.END_SPRINGS_CARVER);
+                    //if (BPConfig.WORLDGEN.endSpongeMidlands.get()) liqCarver.add(() -> BPConfiguredLevelCarvers.END_SPRINGS_CARVER);
 
                     vegDeco.add(() -> BPConfiguredFeatures.CHORUS_MYCHRODEGIA);
 
@@ -149,7 +148,7 @@ public class BPVanillaBiomeFeatureGeneration {
         return new Random(pSeed + ((long) pChunkX * pChunkX * 4987142) + (pChunkX * 5947611L) + (long) pChunkZ * pChunkZ * 4392871L + (pChunkZ * 389711L) ^ l);
     }
 
-    public static boolean isFleignariteChunk(BlockPos pos, ISeedReader seedReader) {
+    public static boolean isFleignariteChunk(BlockPos pos, WorldGenLevel seedReader) {
         ChunkPos chunkpos = new ChunkPos(pos);
         return seedFleignarChunk(chunkpos.x, chunkpos.z, seedReader.getSeed(), 987234911L).nextInt(20) == 0;
     }

@@ -1,22 +1,20 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.Bioplethora;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-
-import java.util.Random;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public abstract class NBTTreeFeature extends Feature<NoFeatureConfig> {
 
@@ -38,7 +36,7 @@ public abstract class NBTTreeFeature extends Feature<NoFeatureConfig> {
 
     public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
 
         TemplateManager tManager = world.getLevel().getStructureManager();
         Template template = tManager.get(new ResourceLocation(Bioplethora.MOD_ID, "features/" + getRandomNBTTree(random)));
@@ -49,7 +47,7 @@ public abstract class NBTTreeFeature extends Feature<NoFeatureConfig> {
         }
 
         BlockPos halfOfNBT = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
-        BlockPos.Mutable placementLocation = lowerYLevel(random) ?
+        BlockPos.MutableBlockPos placementLocation = lowerYLevel(random) ?
                 mutablePos.set(pos).move(-halfOfNBT.getX(), -2, -halfOfNBT.getZ()) :
                 mutablePos.set(pos).move(-halfOfNBT.getX(), -1, -halfOfNBT.getZ()
                 );
@@ -58,7 +56,7 @@ public abstract class NBTTreeFeature extends Feature<NoFeatureConfig> {
 
             Rotation rotation = Rotation.getRandom(random);
             PlacementSettings placementsettings = new PlacementSettings().setRotation(rotation).setRotationPivot(halfOfNBT).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR).setIgnoreEntities(true);
-            template.placeInWorldChunk(world, placementLocation, placementsettings, random);
+            template.placeInLevelChunk(world, placementLocation, placementsettings, random);
 
             return true;
         } else {
@@ -71,7 +69,7 @@ public abstract class NBTTreeFeature extends Feature<NoFeatureConfig> {
         int checkRad = 2;
         for (int x = -checkRad; x < checkRad; x++) {
             for (int z = -checkRad; z < checkRad; z++) {
-                BlockPos.Mutable checkPos = pos.mutable().move(x, move, z);
+                BlockPos.MutableBlockPos checkPos = pos.mutable().move(x, move, z);
                 if (world.isEmptyBlock(checkPos) || world.isWaterAt(checkPos) || world.getBlockState(checkPos).getBlock() instanceof LeavesBlock) {
                     return false;
                 }

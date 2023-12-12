@@ -1,43 +1,49 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.FloatingMonsterEntity;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
+public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification {
 
-public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, IFlyingAnimal, IBioClassification {
-
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public Variant variant;
     public int descendTimer;
 
-    public EurydnEntity(EntityType<? extends MonsterEntity> type, World worldIn, Variant variant) {
+    public EurydnEntity(EntityType<? extends Monster> type, Level worldIn, Variant variant) {
         super(type, worldIn);
         this.variant = variant;
         this.noPhysics = true;
@@ -46,8 +52,8 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
         this.moveControl = new MoveHelperController(this);
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, (BPConfig.IN_HELLMODE ? 6 : 4) * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 0.1)
                 .add(Attributes.ATTACK_KNOCKBACK, 0)
@@ -74,7 +80,7 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
             switch (variant) {
                 case SOUL:
                     attacker.setSecondsOnFire(3);
-                    attacker.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60));
+                    attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60));
                 case FIERY:
                     attacker.setSecondsOnFire(5);
             }
@@ -84,7 +90,7 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
     }
 
     @Override
-    public void move(MoverType pType, Vector3d pPos) {
+    public void move(MoverType pType, Vec3 pPos) {
         super.move(pType, pPos);
         this.checkInsideBlocks();
     }
@@ -106,7 +112,7 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
     }
 
     @Override
-    protected float getVoicePitch() {
+	public float getVoicePitch() {
         return 1.5F;
     }
 
@@ -115,8 +121,8 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
         super.registerGoals();
         this.goalSelector.addGoal(2, new WaterAvoidingRandomFlyingGoal(this, 1.2));
         this.goalSelector.addGoal(4, new MoveRandomGoal());
-        this.goalSelector.addGoal(5, new SwimGoal(this));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, new FloatGoal(this));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -136,14 +142,14 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
         }
 
         if (this.level.isClientSide) {
-            float f = MathHelper.cos((float)(this.getId() * 3 + this.tickCount) * 0.13F + (float)Math.PI);
-            float f1 = MathHelper.cos((float)(this.getId() * 3 + this.tickCount + 1) * 0.13F + (float)Math.PI);
+            float f = Mth.cos((float)(this.getId() * 3 + this.tickCount) * 0.13F + (float)Math.PI);
+            float f1 = Mth.cos((float)(this.getId() * 3 + this.tickCount + 1) * 0.13F + (float)Math.PI);
             if (f > 0.0F && f1 <= 0.0F) {
                 this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.PHANTOM_FLAP, this.getSoundSource(), 0.95F + this.random.nextFloat() * 0.05F, 0.95F + this.random.nextFloat() * 0.05F, false);
             }
 
-            float f2 = MathHelper.cos(this.yRot * ((float)Math.PI / 180F)) * (1.3F + 0.21F);
-            float f3 = MathHelper.sin(this.yRot * ((float)Math.PI / 180F)) * (1.3F + 0.21F);
+            float f2 = Mth.cos(this.yRot * ((float)Math.PI / 180F)) * (1.3F + 0.21F);
+            float f3 = Mth.sin(this.yRot * ((float)Math.PI / 180F)) * (1.3F + 0.21F);
             float f4 = (0.3F + f * 0.45F) * ((float)0.2F + 1.0F);
 
             if (this.variant == Variant.SOUL) {
@@ -179,7 +185,7 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eurydn.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.eurydn.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -187,4 +193,9 @@ public class EurydnEntity extends FloatingMonsterEntity implements IAnimatable, 
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "grylynen_controller", 0, this::predicate));
     }
+
+	@Override
+	public boolean isFlying() {
+		return false;
+	}
 }

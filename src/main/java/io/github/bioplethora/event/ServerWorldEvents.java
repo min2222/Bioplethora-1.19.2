@@ -8,40 +8,59 @@ import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.creatures.AltyrusEntity;
 import io.github.bioplethora.entity.creatures.ShachathEntity;
 import io.github.bioplethora.entity.others.PrimordialRingEntity;
-import io.github.bioplethora.event.helper.*;
+import io.github.bioplethora.event.helper.AlphemKingSpawnHelper;
+import io.github.bioplethora.event.helper.ArrowMixinHelper;
+import io.github.bioplethora.event.helper.BonemealBlocksHelper;
+import io.github.bioplethora.event.helper.GrylynenSpawnHelper;
+import io.github.bioplethora.event.helper.MobCapEventHelper;
+import io.github.bioplethora.event.helper.RenderEventHelper;
+import io.github.bioplethora.event.helper.ShachathCurseHelper;
+import io.github.bioplethora.event.helper.TooltipEventHelper;
 import io.github.bioplethora.item.ExperimentalItem;
 import io.github.bioplethora.item.functionals.SwervingTotemItem;
-import io.github.bioplethora.item.weapons.*;
+import io.github.bioplethora.item.weapons.AbyssalBladeItem;
+import io.github.bioplethora.item.weapons.FrostbiteMetalShieldItem;
+import io.github.bioplethora.item.weapons.GrylynenShieldBaseItem;
+import io.github.bioplethora.item.weapons.InfernalQuarterstaffItem;
+import io.github.bioplethora.item.weapons.VermilionBladeItem;
 import io.github.bioplethora.network.BPNetwork;
 import io.github.bioplethora.network.functions.LeftSwingPacket;
 import io.github.bioplethora.network.functions.RightSwingPacket;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPEffects;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -51,7 +70,7 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -73,10 +92,10 @@ public class ServerWorldEvents {
     @SubscribeEvent
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 
-        hitHandler(event.getPlayer(), event.getItemStack());
+        hitHandler(event.getEntity(), event.getItemStack());
 
         if (event.getItemStack().getItem() instanceof IReachWeapon) {
-            if (event.getWorld().isClientSide()) {
+            if (event.getLevel().isClientSide()) {
                 BPNetwork.CHANNEL.sendToServer(new LeftSwingPacket());
             }
         }
@@ -91,27 +110,27 @@ public class ServerWorldEvents {
 
         if (ModList.get().isLoaded("offhandcombat")) {
 
-            hitHandler(event.getPlayer(), event.getItemStack());
+            hitHandler(event.getEntity(), event.getItemStack());
 
             if (event.getItemStack().getItem() instanceof IReachWeapon) {
-                if (event.getWorld().isClientSide()) {
+                if (event.getLevel().isClientSide()) {
                     BPNetwork.CHANNEL.sendToServer(new RightSwingPacket());
                 }
             }
         }
     }
 
-    public static void hitHandler(PlayerEntity entity, ItemStack stack) {
+    public static void hitHandler(Player entity, ItemStack stack) {
 
         if (stack.getItem() instanceof IReachWeapon) {
 
             double range = ((IReachWeapon) stack.getItem()).getReachDistance();
             double distance = range * range;
-            Vector3d vec = entity.getEyePosition(1);
-            Vector3d vec1 = entity.getViewVector(1);
-            Vector3d targetVec = vec.add(vec1.x * range, vec1.y * range, vec1.z * range);
-            AxisAlignedBB aabb = entity.getBoundingBox().expandTowards(vec1.scale(range)).inflate(4.0D, 4.0D, 4.0D);
-            EntityRayTraceResult result = ProjectileHelper.getEntityHitResult(entity, vec, targetVec, aabb, EntityPredicates.NO_CREATIVE_OR_SPECTATOR, distance);
+            Vec3 vec = entity.getEyePosition(1);
+            Vec3 vec1 = entity.getViewVector(1);
+            Vec3 targetVec = vec.add(vec1.x * range, vec1.y * range, vec1.z * range);
+            AABB aabb = entity.getBoundingBox().expandTowards(vec1.scale(range)).inflate(4.0D, 4.0D, 4.0D);
+            EntityHitResult result = ProjectileUtil.getEntityHitResult(entity, vec, targetVec, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR, distance);
 
             if ((result != null ? result.getEntity() : null) != null) {
                 entity.attack(result.getEntity());
@@ -138,12 +157,12 @@ public class ServerWorldEvents {
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 
-        PlayerEntity eventEntity = event.getPlayer();
+        Player eventEntity = event.getEntity();
 
         if (eventEntity != null) {
             if (BPConfig.COMMON.hellMode.get() && BPConfig.COMMON.hellModeReminder.get()) {
                 if (!eventEntity.level.isClientSide()) {
-                    eventEntity.displayClientMessage(new StringTextComponent("\u00A7cQuick Reminder: You are in Bioplethora Hell Mode. Most Bioplethora creatures will become stronger and more powerful."), (false));
+                    eventEntity.displayClientMessage(Component.literal("\u00A7cQuick Reminder: You are in Bioplethora Hell Mode. Most Bioplethora creatures will become stronger and more powerful."), (false));
                 }
             }
 
@@ -153,15 +172,15 @@ public class ServerWorldEvents {
 
             if (BPConfig.COMMON.startupBiopedia.get()) {
 
-                CompoundNBT playerData = event.getPlayer().getPersistentData();
-                CompoundNBT data = playerData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+                CompoundTag playerData = event.getEntity().getPersistentData();
+                CompoundTag data = playerData.getCompound(Player.PERSISTED_NBT_TAG);
 
                 if (!data.getBoolean("bioplethora.has_biopedia")) {
                     ItemStack stack = new ItemStack(BPItems.BIOPEDIA.get());
                     stack.setCount(1);
                     ItemHandlerHelper.giveItemToPlayer(eventEntity, stack);
                     data.putBoolean("bioplethora.has_biopedia", true);
-                    playerData.put(PlayerEntity.PERSISTED_NBT_TAG, data);
+                    playerData.put(Player.PERSISTED_NBT_TAG, data);
                 }
             }
         }
@@ -189,9 +208,9 @@ public class ServerWorldEvents {
         Entity defendantEnt = event.getEntity();
         Entity attackerEnt = event.getSource().getEntity();
 
-        if (defendantEnt instanceof PlayerEntity) {
+        if (defendantEnt instanceof Player) {
 
-            ItemStack getUseItem = ((PlayerEntity) defendantEnt).getUseItem();
+            ItemStack getUseItem = ((Player) defendantEnt).getUseItem();
             Item getItem = getUseItem.getItem();
 
             boolean[] dmgEx = new boolean[]{
@@ -213,14 +232,14 @@ public class ServerWorldEvents {
 
                     ((GrylynenShieldBaseItem) getItem).blockingSkill(getUseItem, defendantLiving, attackerEnt, event.getEntity().level);
 
-                    defendantLiving.getItemBySlot(EquipmentSlotType.HEAD)
-                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlotType.HEAD).getDamageValue() - recoveryAmount);
-                    defendantLiving.getItemBySlot(EquipmentSlotType.CHEST)
-                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlotType.CHEST).getDamageValue() - recoveryAmount);
-                    defendantLiving.getItemBySlot(EquipmentSlotType.LEGS)
-                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlotType.LEGS).getDamageValue() - recoveryAmount);
-                    defendantLiving.getItemBySlot(EquipmentSlotType.FEET)
-                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlotType.FEET).getDamageValue() - recoveryAmount);
+                    defendantLiving.getItemBySlot(EquipmentSlot.HEAD)
+                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlot.HEAD).getDamageValue() - recoveryAmount);
+                    defendantLiving.getItemBySlot(EquipmentSlot.CHEST)
+                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlot.CHEST).getDamageValue() - recoveryAmount);
+                    defendantLiving.getItemBySlot(EquipmentSlot.LEGS)
+                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlot.LEGS).getDamageValue() - recoveryAmount);
+                    defendantLiving.getItemBySlot(EquipmentSlot.FEET)
+                            .setDamageValue(defendantLiving.getItemBySlot(EquipmentSlot.FEET).getDamageValue() - recoveryAmount);
                 }
             }
         }
@@ -241,10 +260,10 @@ public class ServerWorldEvents {
         if (event.getEntity() instanceof LivingEntity) {
 
             LivingEntity living = (LivingEntity) event.getEntity();
-            ItemStack sHead = living.getItemBySlot(EquipmentSlotType.HEAD);
-            ItemStack sChest = living.getItemBySlot(EquipmentSlotType.CHEST);
-            ItemStack sLegs = living.getItemBySlot(EquipmentSlotType.LEGS);
-            ItemStack sFeet = living.getItemBySlot(EquipmentSlotType.FEET);
+            ItemStack sHead = living.getItemBySlot(EquipmentSlot.HEAD);
+            ItemStack sChest = living.getItemBySlot(EquipmentSlot.CHEST);
+            ItemStack sLegs = living.getItemBySlot(EquipmentSlot.LEGS);
+            ItemStack sFeet = living.getItemBySlot(EquipmentSlot.FEET);
 
             if (event.getSource().getEntity() instanceof LivingEntity) {
                 if (sHead.getItem() instanceof IHurtSkillArmor) {
@@ -265,10 +284,10 @@ public class ServerWorldEvents {
         if (event.getSource().getEntity() instanceof LivingEntity && event.getEntity() instanceof LivingEntity) {
             if (((LivingEntity) event.getSource().getEntity()).hasEffect(BPEffects.SPIRIT_STRENGTHENING.get())) {
                 float dmgCap = BPConfig.IN_HELLMODE ? 7 : 12;
-                float floorReduction = MathHelper.ceil(((LivingEntity) event.getEntity()).getHealth() * 0.025F);
-                float floor = MathHelper.floor(((LivingEntity) event.getEntity()).getHealth() * 0.05F);
-                float armorReduction = MathHelper.ceil(((LivingEntity) event.getEntity()).getArmorValue() / 4F);
-                float healthScaledDmg = MathHelper.clamp(floor - floorReduction, 0.0F, dmgCap);
+                float floorReduction = Mth.ceil(((LivingEntity) event.getEntity()).getHealth() * 0.025F);
+                float floor = Mth.floor(((LivingEntity) event.getEntity()).getHealth() * 0.05F);
+                float armorReduction = Mth.ceil(((LivingEntity) event.getEntity()).getArmorValue() / 4F);
+                float healthScaledDmg = Mth.clamp(floor - floorReduction, 0.0F, dmgCap);
                 event.setAmount((event.getAmount() * 1.10F) + healthScaledDmg - armorReduction);
             }
         }
@@ -296,21 +315,21 @@ public class ServerWorldEvents {
         AlphemKingSpawnHelper.onProjectileImpact(event);
 
         Entity projectile = event.getEntity();
-        RayTraceResult result = event.getRayTraceResult();
+        HitResult result = event.getRayTraceResult();
 
-        if (result instanceof EntityRayTraceResult) {
+        if (result instanceof EntityHitResult) {
 
             //=================================================
             //          Totem of Swerving Skill
             //=================================================
-            boolean targetIsEntity = ((EntityRayTraceResult) result).getEntity() instanceof LivingEntity;
+            boolean targetIsEntity = ((EntityHitResult) result).getEntity() instanceof LivingEntity;
 
-            if (projectile instanceof AbstractArrowEntity) {
-                ((AbstractArrowEntity) projectile).setPierceLevel((byte) 0);
+            if (projectile instanceof AbstractArrow) {
+                ((AbstractArrow) projectile).setPierceLevel((byte) 0);
             }
 
             if (!projectile.level.isClientSide && targetIsEntity) {
-                LivingEntity user = ((LivingEntity) ((EntityRayTraceResult) result).getEntity());
+                LivingEntity user = ((LivingEntity) ((EntityHitResult) result).getEntity());
 
                 int shouldDodge = user.getRandom().nextInt(3);
 
@@ -321,9 +340,9 @@ public class ServerWorldEvents {
                         boolean isNegVal = user.getRandom().nextBoolean();
                         int tpLoc = 1 + user.getRandom().nextInt(2);
 
-                        user.level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.GHAST_SHOOT, SoundCategory.PLAYERS, 1, 1);
-                        if (user.level instanceof ServerWorld) {
-                            ((ServerWorld) user.level).sendParticles(ParticleTypes.POOF, user.getX(), user.getY(), user.getZ(), 50, 0.65, 0.65, 0.65, 0.01);
+                        user.level.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.GHAST_SHOOT, SoundSource.PLAYERS, 1, 1);
+                        if (user.level instanceof ServerLevel) {
+                            ((ServerLevel) user.level).sendParticles(ParticleTypes.POOF, user.getX(), user.getY(), user.getZ(), 50, 0.65, 0.65, 0.65, 0.01);
                         }
 
                         BlockPos blockpos = new BlockPos(user.getX() + (isNegVal ? tpLoc : -tpLoc), user.getY(), user.getZ() + (isNegVal ? tpLoc : -tpLoc));
@@ -340,21 +359,21 @@ public class ServerWorldEvents {
             //=================================================
             //            Mob Special Skills
             //=================================================
-            boolean targetIsAltyrus = ((EntityRayTraceResult) result).getEntity() instanceof AltyrusEntity;
+            boolean targetIsAltyrus = ((EntityHitResult) result).getEntity() instanceof AltyrusEntity;
 
-            if (projectile instanceof AbstractArrowEntity) {
-                ((AbstractArrowEntity) projectile).setPierceLevel((byte) 0);
+            if (projectile instanceof AbstractArrow) {
+                ((AbstractArrow) projectile).setPierceLevel((byte) 0);
             }
 
             if (!projectile.level.isClientSide() && targetIsAltyrus) {
-                AltyrusEntity altyrus = ((AltyrusEntity) ((EntityRayTraceResult) result).getEntity());
+                AltyrusEntity altyrus = ((AltyrusEntity) ((EntityHitResult) result).getEntity());
                 int shouldDodge = altyrus.getRandom().nextInt(3);
 
                 if (shouldDodge == 1 && !altyrus.isCharging() && !altyrus.isSummoning()) {
 
-                    Vector3d projectilePos = event.getEntity().position();
-                    Vector3d rVec = altyrus.getLookAngle().yRot(0.5F + (float) Math.PI).add(altyrus.position());
-                    Vector3d lVec = altyrus.getLookAngle().yRot(0.5F + (float) Math.PI).add(altyrus.position());
+                    Vec3 projectilePos = event.getEntity().position();
+                    Vec3 rVec = altyrus.getLookAngle().yRot(0.5F + (float) Math.PI).add(altyrus.position());
+                    Vec3 lVec = altyrus.getLookAngle().yRot(0.5F + (float) Math.PI).add(altyrus.position());
                     BlockPos pos = new BlockPos((int) altyrus.getX(), (int) altyrus.getY(), (int) altyrus.getZ());
 
                     boolean rDir;
@@ -367,31 +386,31 @@ public class ServerWorldEvents {
                         rDir = altyrus.getRandom().nextBoolean();
                     }
 
-                    Vector3d vectorThingy = event.getEntity().getDeltaMovement().yRot((float) ((rDir ? 0.5F : -0.5F) * Math.PI)).normalize();
+                    Vec3 vectorThingy = event.getEntity().getDeltaMovement().yRot((float) ((rDir ? 0.5F : -0.5F) * Math.PI)).normalize();
 
                     altyrus.setDodging(true);
-                    altyrus.level.playSound(null, pos, altyrus.getDodgeSound(), SoundCategory.HOSTILE, (float) 1, (float) 1);
+                    altyrus.level.playSound(null, pos, altyrus.getDodgeSound(), SoundSource.HOSTILE, (float) 1, (float) 1);
                     altyrus.setDeltaMovement(altyrus.getDeltaMovement().add(vectorThingy.x() * 0.5F, 0, vectorThingy.z() * 0.5F));
 
                     event.setCanceled(true);
                 }
             }
 
-            boolean targetIsShachath = ((EntityRayTraceResult) result).getEntity() instanceof ShachathEntity;
+            boolean targetIsShachath = ((EntityHitResult) result).getEntity() instanceof ShachathEntity;
 
             if (!projectile.level.isClientSide && targetIsShachath) {
-                ShachathEntity shachath = ((ShachathEntity) ((EntityRayTraceResult) result).getEntity());
+                ShachathEntity shachath = ((ShachathEntity) ((EntityHitResult) result).getEntity());
                 int shouldDodge = shachath.getRandom().nextInt(3);
 
-                if (projectile instanceof AbstractArrowEntity) {
-                    ((AbstractArrowEntity) projectile).setPierceLevel((byte) 0);
+                if (projectile instanceof AbstractArrow) {
+                    ((AbstractArrow) projectile).setPierceLevel((byte) 0);
                 }
 
                 if ((shouldDodge == 1) || (shouldDodge == 2)) {
 
-                    Vector3d projectilePos = event.getEntity().position();
-                    Vector3d rVec = shachath.getLookAngle().yRot(0.5F + (float) Math.PI).add(shachath.position());
-                    Vector3d lVec = shachath.getLookAngle().yRot(0.5F + (float) Math.PI).add(shachath.position());
+                    Vec3 projectilePos = event.getEntity().position();
+                    Vec3 rVec = shachath.getLookAngle().yRot(0.5F + (float) Math.PI).add(shachath.position());
+                    Vec3 lVec = shachath.getLookAngle().yRot(0.5F + (float) Math.PI).add(shachath.position());
                     BlockPos pos = new BlockPos((int) shachath.getX(), (int) shachath.getY(), (int) shachath.getZ());
 
                     boolean rDir;
@@ -404,7 +423,7 @@ public class ServerWorldEvents {
                         rDir = shachath.getRandom().nextBoolean();
                     }
 
-                    Vector3d vectorThingy = event.getEntity().getDeltaMovement().yRot((float) ((rDir ? 0.5F : -0.5F) * Math.PI)).normalize();
+                    Vec3 vectorThingy = event.getEntity().getDeltaMovement().yRot((float) ((rDir ? 0.5F : -0.5F) * Math.PI)).normalize();
 
                     shachath.setDeltaMovement(shachath.getDeltaMovement().add(vectorThingy.x() * 1F, 0, vectorThingy.z() * 1F));
 
@@ -412,18 +431,18 @@ public class ServerWorldEvents {
                 }
             }
 
-            boolean targetIsPrimordialRing = ((EntityRayTraceResult) result).getEntity() instanceof PrimordialRingEntity;
+            boolean targetIsPrimordialRing = ((EntityHitResult) result).getEntity() instanceof PrimordialRingEntity;
 
             if (!projectile.level.isClientSide && targetIsPrimordialRing) {
-                PrimordialRingEntity primordialRing = ((PrimordialRingEntity) ((EntityRayTraceResult) result).getEntity());
+                PrimordialRingEntity primordialRing = ((PrimordialRingEntity) ((EntityHitResult) result).getEntity());
 
-                if (projectile instanceof AbstractArrowEntity) {
-                    ((AbstractArrowEntity) projectile).setPierceLevel((byte) 0);
+                if (projectile instanceof AbstractArrow) {
+                    ((AbstractArrow) projectile).setPierceLevel((byte) 0);
                 }
 
-                Vector3d projectilePos = event.getEntity().position();
-                Vector3d rVec = primordialRing.getLookAngle().yRot(0.5F + (float) Math.PI).add(primordialRing.position());
-                Vector3d lVec = primordialRing.getLookAngle().yRot(0.5F + (float) Math.PI).add(primordialRing.position());
+                Vec3 projectilePos = event.getEntity().position();
+                Vec3 rVec = primordialRing.getLookAngle().yRot(0.5F + (float) Math.PI).add(primordialRing.position());
+                Vec3 lVec = primordialRing.getLookAngle().yRot(0.5F + (float) Math.PI).add(primordialRing.position());
 
                 boolean rDir;
 
@@ -435,7 +454,7 @@ public class ServerWorldEvents {
                     rDir = primordialRing.getRandom().nextBoolean();
                 }
 
-                Vector3d vectorThingy = event.getEntity().getDeltaMovement().yRot((float) ((rDir ? 0.5F : -0.5F) * Math.PI)).normalize();
+                Vec3 vectorThingy = event.getEntity().getDeltaMovement().yRot((float) ((rDir ? 0.5F : -0.5F) * Math.PI)).normalize();
 
                 primordialRing.setDeltaMovement(primordialRing.getDeltaMovement().add(vectorThingy.x() * 1F, 0, vectorThingy.z() * 1F));
 
@@ -447,10 +466,10 @@ public class ServerWorldEvents {
     @SubscribeEvent
     public static void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         BlockPos pos = event.getPos();
-        World world = event.getWorld();
+        Level world = event.getLevel();
         BlockState blockState = world.getBlockState(pos);
         Block block = blockState.getBlock();
-        PlayerEntity player = event.getPlayer();
+        Player player = event.getEntity();
 
         if (player.getMainHandItem().getItem() instanceof ExperimentalItem) {
             BlockUtils.knockUpRandomNearbyBlocks(world, 0.5D, pos, 4, 2, 4, false, true);
@@ -458,12 +477,12 @@ public class ServerWorldEvents {
 
         if (block == BPBlocks.FIERY_BASALT_SPELEOTHERM.get()) {
             if (player.getMainHandItem().getItem() == Items.GLASS_BOTTLE) {
-                player.swing(Hand.MAIN_HAND);
+                player.swing(InteractionHand.MAIN_HAND);
                 player.addItem(new ItemStack(BPItems.FIERY_SAP_BOTTLE.get()));
                 world.setBlock(pos, BPBlocks.BASALT_SPELEOTHERM_PLANT.get().defaultBlockState(), 2);
                 player.getMainHandItem().shrink(1);
             } else if (player.getOffhandItem().getItem() == Items.GLASS_BOTTLE) {
-                player.swing(Hand.OFF_HAND);
+                player.swing(InteractionHand.OFF_HAND);
                 player.addItem(new ItemStack(BPItems.FIERY_SAP_BOTTLE.get()));
                 world.setBlock(pos, BPBlocks.BASALT_SPELEOTHERM_PLANT.get().defaultBlockState(), 2);
                 player.getOffhandItem().shrink(1);
@@ -478,7 +497,7 @@ public class ServerWorldEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
+    public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
         RenderEventHelper.onCameraSetup(event);
     }
 
@@ -490,13 +509,13 @@ public class ServerWorldEvents {
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void onRenderingOverlay(RenderGameOverlayEvent.Pre event) {
+    public static void onRenderingOverlay(RenderGuiOverlayEvent.Pre event) {
         RenderEventHelper.onRenderingOverlay(event);
     }
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void onFogDensity(EntityViewRenderEvent.FogDensity event) {
+    public static void onFogDensity(ViewportEvent.RenderFog event) {
         RenderEventHelper.onFogDensity(event);
     }
 }

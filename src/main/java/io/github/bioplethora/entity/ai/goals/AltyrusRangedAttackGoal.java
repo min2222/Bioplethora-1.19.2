@@ -5,17 +5,17 @@ import io.github.bioplethora.entity.creatures.AlphemEntity;
 import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import io.github.bioplethora.entity.creatures.AltyrusEntity;
 import io.github.bioplethora.entity.projectile.UltimateFrostbiteMetalClusterEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class AltyrusRangedAttackGoal extends Goal {
 
@@ -47,11 +47,11 @@ public class AltyrusRangedAttackGoal extends Goal {
     public void tick() {
         LivingEntity target = this.altyrus.getTarget();
 
-        if (target != null && target.distanceToSqr(this.altyrus) < 4096.0D /*&& this.altyrus.canSee(target)*/) {
+        if (target != null && target.distanceToSqr(this.altyrus) < 4096.0D /*&& this.altyrus.hasLineOfSight(target)*/) {
 
             ++this.chargeTime;
 
-            World world = this.altyrus.level;
+            Level world = this.altyrus.level;
             BlockPos pos = new BlockPos((int) this.altyrus.getX(), (int) this.altyrus.getY(), (int) this.altyrus.getZ());
 
             if (this.goingUp) {
@@ -92,14 +92,14 @@ public class AltyrusRangedAttackGoal extends Goal {
         this.altyrus.setCharging(this.chargeTime > 10);
     }
 
-    public void shootProjectile(World world) {
+    public void shootProjectile(Level world) {
 
         int rad = 128;
-        AxisAlignedBB aabb = new AxisAlignedBB(altyrus.getX() - (rad / 2d), altyrus.getY() - (rad / 2d), altyrus.getZ() - (rad / 2d), altyrus.getX() + (rad / 2d), altyrus.getY() + (rad / 2d), altyrus.getZ() + (rad / 2d));
+        AABB aabb = new AABB(altyrus.getX() - (rad / 2d), altyrus.getY() - (rad / 2d), altyrus.getZ() - (rad / 2d), altyrus.getX() + (rad / 2d), altyrus.getY() + (rad / 2d), altyrus.getZ() + (rad / 2d));
 
         for (LivingEntity targetCandidates : world.getEntitiesOfClass(LivingEntity.class, aabb)) {
             if (isValidTarget(targetCandidates)) {
-                Vector3d vector3d = this.altyrus.getViewVector(1.0F);
+                Vec3 vector3d = this.altyrus.getViewVector(1.0F);
                 double d2 = targetCandidates.getX() - (this.altyrus.getX() + vector3d.x * 4.0D);
                 double d3 = targetCandidates.getY(0.5D) - (0.5D + this.altyrus.getY(0.5D));
                 double d4 = targetCandidates.getZ() - (this.altyrus.getZ() + vector3d.z * 4.0D);
@@ -112,21 +112,21 @@ public class AltyrusRangedAttackGoal extends Goal {
     }
 
     public boolean isValidTarget(LivingEntity target) {
-        if (target instanceof MobEntity) {
+        if (target instanceof Mob) {
             if (target instanceof AlphemEntity || target instanceof AlphemKingEntity) {
                 return true;
 
-            } else if (((MobEntity) target).getTarget() instanceof SummonableMonsterEntity) {
-                return ((SummonableMonsterEntity) ((MobEntity) target).getTarget()).getOwner() == this.altyrus;
+            } else if (((Mob) target).getTarget() instanceof SummonableMonsterEntity) {
+                return ((SummonableMonsterEntity) ((Mob) target).getTarget()).getOwner() == this.altyrus;
 
-            } else if (((MobEntity) target).getTarget() instanceof TameableEntity) {
-                return ((TameableEntity) ((MobEntity) target).getTarget()).getOwner() == this.altyrus;
+            } else if (((Mob) target).getTarget() instanceof TamableAnimal) {
+                return ((TamableAnimal) ((Mob) target).getTarget()).getOwner() == this.altyrus;
 
             } else {
-                return ((MobEntity) target).getTarget() == this.altyrus;
+                return ((Mob) target).getTarget() == this.altyrus;
             }
         } else {
-            return target instanceof PlayerEntity && EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target);
+            return target instanceof Player && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target);
         }
     }
 }

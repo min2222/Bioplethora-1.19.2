@@ -1,63 +1,69 @@
 package io.github.bioplethora.entity.projectile;
 
-import io.github.bioplethora.entity.SummonableMonsterEntity;
-import io.github.bioplethora.registry.BPDamageSources;
-import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.*;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UltimateFrostbiteMetalClusterEntity extends DamagingProjectileEntity implements IAnimatable {
+import io.github.bioplethora.entity.SummonableMonsterEntity;
+import io.github.bioplethora.registry.BPDamageSources;
+import io.github.bioplethora.registry.BPEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.network.NetworkHooks;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
+
+public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjectile implements IAnimatable {
 
     public double xPower;
     public double yPower;
     public double zPower;
     public int lifespan = 0;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public UltimateFrostbiteMetalClusterEntity(EntityType<? extends DamagingProjectileEntity> type, World world) {
+    public UltimateFrostbiteMetalClusterEntity(EntityType<? extends AbstractHurtingProjectile> type, Level world) {
         super(type, world);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public UltimateFrostbiteMetalClusterEntity(World world, double v, double v1, double v2, double v3, double v4, double v5) {
+    public UltimateFrostbiteMetalClusterEntity(Level world, double v, double v1, double v2, double v3, double v4, double v5) {
         super(BPEntities.ULTIMATE_BELLOPHITE_CLUSTER.get(), v, v1, v2, v3, v4, v5, world);
     }
 
-    public UltimateFrostbiteMetalClusterEntity(World world, LivingEntity entity, double v, double v1, double v2) {
+    public UltimateFrostbiteMetalClusterEntity(Level world, LivingEntity entity, double v, double v1, double v2) {
         super(BPEntities.ULTIMATE_BELLOPHITE_CLUSTER.get(), entity, v, v1, v2, world);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_cluster.main", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_cluster.main", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -72,25 +78,25 @@ public class UltimateFrostbiteMetalClusterEntity extends DamagingProjectileEntit
     }
 
     @Override
-    protected void onHit(RayTraceResult result) {
+    protected void onHit(HitResult result) {
         super.onHit(result);
     }
 
     @Override
-    protected void onHitBlock(BlockRayTraceResult p_230299_1_) {
+    protected void onHitBlock(BlockHitResult p_230299_1_) {
         super.onHitBlock(p_230299_1_);
         this.hitAndExplode();
     }
 
     @Override
-    protected void onHitEntity(EntityRayTraceResult entityHitResult) {
+    protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof ProjectileEntity) {
-            if (((ProjectileEntity) entity).getOwner() != this.getOwner()) {
+        if (entity instanceof Projectile) {
+            if (((Projectile) entity).getOwner() != this.getOwner()) {
                 this.hitAndExplode();
             }
-        } else if (entity instanceof TameableEntity) {
-            if (((TameableEntity) entity).getOwner() != this.getOwner()) {
+        } else if (entity instanceof TamableAnimal) {
+            if (((TamableAnimal) entity).getOwner() != this.getOwner()) {
                 this.hitAndExplode();
             }
         } else if (entity instanceof SummonableMonsterEntity) {
@@ -107,23 +113,23 @@ public class UltimateFrostbiteMetalClusterEntity extends DamagingProjectileEntit
 
         ++lifespan;
         if (lifespan == 100) {
-            this.remove();
+            this.discard();
         }
     }
 
     public void hitAndExplode() {
         double x = this.getX(), y = this.getY(), z = this.getZ();
         BlockPos blockPos = new BlockPos(x, y, z);
-        AxisAlignedBB area = new AxisAlignedBB(x - (7 / 2d), y, z - (7 / 2d), x + (7 / 2d), y + (7 / 2d), z + (7 / 2d));
+        AABB area = new AABB(x - (7 / 2d), y, z - (7 / 2d), x + (7 / 2d), y + (7 / 2d), z + (7 / 2d));
         DamageSource castration = BPDamageSources.indirectCastration(this.getOwner(), this.getOwner());
 
-        if (this.level instanceof ServerWorld) {
-            ((ServerWorld) this.level).sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 40, 0.6, 0.6, 0.6, 0.1);
+        if (this.level instanceof ServerLevel) {
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 40, 0.6, 0.6, 0.6, 0.1);
         }
 
-        this.level.playSound(null, blockPos, SoundEvents.GLASS_BREAK, SoundCategory.NEUTRAL, (float) 1, (float) 1);
+        this.level.playSound(null, blockPos, SoundEvents.GLASS_BREAK, SoundSource.NEUTRAL, (float) 1, (float) 1);
 
-        if (this.level instanceof ServerWorld) {
+        if (this.level instanceof ServerLevel) {
             List<Entity> nearEntities = this.level
                     .getEntitiesOfClass(Entity.class, area, null)
                     .stream().sorted(new Object() {
@@ -136,21 +142,21 @@ public class UltimateFrostbiteMetalClusterEntity extends DamagingProjectileEntit
 
                     entityArea.hurt(castration, (float) 15);
 
-                    ((LivingEntity) entityArea).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 3));
-                    ((LivingEntity) entityArea).addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 100, 2));
-                    ((LivingEntity) entityArea).addEffect(new EffectInstance(Effects.WEAKNESS, 100, 1));
+                    ((LivingEntity) entityArea).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 3));
+                    ((LivingEntity) entityArea).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 100, 2));
+                    ((LivingEntity) entityArea).addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 1));
                 }
             }
         }
 
         if (!this.level.isClientSide) {
-            this.level.explode(this, x, this.getY(0.0625D), z, 3F, Explosion.Mode.BREAK);
-            this.remove();
+            this.level.explode(this, x, this.getY(0.0625D), z, 3F, Explosion.BlockInteraction.BREAK);
+            this.discard();
         }
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

@@ -1,72 +1,72 @@
 package io.github.bioplethora.item.weapons;
 
-import io.github.bioplethora.api.BPItemSettings;
-import io.github.bioplethora.config.BPConfig;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.stats.Stats;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import io.github.bioplethora.api.BPItemSettings;
+import io.github.bioplethora.config.BPConfig;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NandbricShortswordItem extends SwordItem {
     private LivingEntity target;
     private boolean using;
 
-    public NandbricShortswordItem(IItemTier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
+    public NandbricShortswordItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
         super(tier, attackDamageModifier, attackSpeedModifier, properties);
         this.target = null;
         this.using = false;
     }
 
-    public void inventoryTick(ItemStack itemstack, World world, Entity entity, int slot, boolean selected) {
+    public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
         LivingEntity attacker = (LivingEntity)entity;
         if(selected) {
             if(using) {
-                Hand hand = attacker.getUsedItemHand();
+                InteractionHand hand = attacker.getUsedItemHand();
                 BlockPos attackerPos = new BlockPos(attacker.getX(), attacker.getY(), attacker.getZ());
 
                 if (this.target != null) {
-                    AxisAlignedBB hitrange = attacker.getBoundingBox().inflate(2);
+                    AABB hitrange = attacker.getBoundingBox().inflate(2);
 
                     if (hitrange.intersects(this.target.getBoundingBox())) {
                         this.target.hurt(DamageSource.mobAttack(attacker), 7);
-                        this.target.addEffect(new EffectInstance(Effects.POISON, 200, 1));
-                        if (attacker instanceof PlayerEntity) {
-                            ((PlayerEntity) attacker).getCooldowns().addCooldown(itemstack.getItem(), 22);
-                            ((PlayerEntity) attacker).awardStat(Stats.ITEM_USED.get(this));
-                            if (!((PlayerEntity) attacker).abilities.instabuild) {
+                        this.target.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 1));
+                        if (attacker instanceof Player) {
+                            ((Player) attacker).getCooldowns().addCooldown(itemstack.getItem(), 22);
+                            ((Player) attacker).awardStat(Stats.ITEM_USED.get(this));
+                            if (!((Player) attacker).getAbilities().instabuild) {
                                 itemstack.hurtAndBreak(1, attacker, (user) -> user.broadcastBreakEvent(hand));
                             }
                         }
-                        world.playSound(null, attackerPos, SoundEvents.ZOMBIE_INFECT, SoundCategory.PLAYERS, 1, 1);
-                        world.playSound(null, attackerPos, SoundEvents.PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1, 1);
-                        if (world instanceof ServerWorld) {
-                            ((ServerWorld) world).sendParticles(ParticleTypes.SNEEZE, this.target.getX(), this.target.getY() - (this.target.getBbHeight() / 2), this.target.getZ(), 30, 0.8, 1.2, 0.8, 0);
+                        world.playSound(null, attackerPos, SoundEvents.ZOMBIE_INFECT, SoundSource.PLAYERS, 1, 1);
+                        world.playSound(null, attackerPos, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1, 1);
+                        if (world instanceof ServerLevel) {
+                            ((ServerLevel) world).sendParticles(ParticleTypes.SNEEZE, this.target.getX(), this.target.getY() - (this.target.getBbHeight() / 2), this.target.getZ(), 30, 0.8, 1.2, 0.8, 0);
                         }
                         using = false;
                     } else {
@@ -82,7 +82,7 @@ public class NandbricShortswordItem extends SwordItem {
                         vecY = (vecY / vecM) * speedModifier;
                         vecZ = (vecZ / vecM) * speedModifier;
 
-                        if (((PlayerEntity) attacker).abilities.instabuild || canUseInNonCreative) {
+                        if (((Player) attacker).getAbilities().instabuild || canUseInNonCreative) {
                             attacker.setDeltaMovement(vecX, vecY, vecZ);
                         } else using = false;
                     }
@@ -93,33 +93,33 @@ public class NandbricShortswordItem extends SwordItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.nandbric_shortsword.fast_strike.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.nandbric_shortsword.fast_strike.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if(Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.nandbric_shortsword.fast_strike.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.nandbric_shortsword.fast_strike.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.nandbric_shortsword.toxin_rush.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.nandbric_shortsword.toxin_rush.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if(Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.nandbric_shortsword.toxin_rush.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.nandbric_shortsword.toxin_rush.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity source) {
         boolean retval = super.hurtEnemy(stack, entity, source);
-        World world = entity.level;
+        Level world = entity.level;
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
         BlockPos pos = new BlockPos(x, y, z);
 
         if(retval) {
-            entity.addEffect(new EffectInstance(Effects.POISON, 60, 5));
+            entity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 5));
             entity.invulnerableTime = 5;
 
-            world.playSound(null, pos, SoundEvents.ZOMBIE_INFECT, SoundCategory.HOSTILE, 1, 1);
+            world.playSound(null, pos, SoundEvents.ZOMBIE_INFECT, SoundSource.HOSTILE, 1, 1);
         }
 
         return retval;
@@ -129,14 +129,14 @@ public class NandbricShortswordItem extends SwordItem {
     public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
         double range = 24.0D;
         double distance = range * range;
-        Vector3d vec = entity.getEyePosition(1);
-        Vector3d vec1 = entity.getViewVector(1);
-        Vector3d targetVec = vec.add(vec1.x * range, vec1.y * range, vec1.z * range);
-        AxisAlignedBB aabb = entity.getBoundingBox().expandTowards(vec1.scale(range)).inflate(4.0D, 4.0D, 4.0D);
-        EntityRayTraceResult result = ProjectileHelper.getEntityHitResult(entity, vec, targetVec, aabb, (filter) -> !filter.isSpectator() && filter != entity, distance);
+        Vec3 vec = entity.getEyePosition(1);
+        Vec3 vec1 = entity.getViewVector(1);
+        Vec3 targetVec = vec.add(vec1.x * range, vec1.y * range, vec1.z * range);
+        AABB aabb = entity.getBoundingBox().expandTowards(vec1.scale(range)).inflate(4.0D, 4.0D, 4.0D);
+        EntityHitResult result = ProjectileUtil.getEntityHitResult(entity, vec, targetVec, aabb, (filter) -> !filter.isSpectator() && filter != entity, distance);
         boolean flag = result != null && result.getEntity() instanceof LivingEntity && result.getEntity().isAlive();
 
-        if(flag && !((PlayerEntity)entity).getCooldowns().isOnCooldown(itemstack.getItem())) {
+        if(flag && !((Player)entity).getCooldowns().isOnCooldown(itemstack.getItem())) {
             this.target = (LivingEntity)result.getEntity();
             this.using = true;
         }

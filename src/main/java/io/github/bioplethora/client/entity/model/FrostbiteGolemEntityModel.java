@@ -2,7 +2,7 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.FrostbiteGolemEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -11,17 +11,17 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class FrostbiteGolemEntityModel extends AnimatedGeoModel<FrostbiteGolemEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(FrostbiteGolemEntity entity) {
+    public ResourceLocation getModelResource(FrostbiteGolemEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/frostbite_golem.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FrostbiteGolemEntity entity) {
+    public ResourceLocation getTextureResource(FrostbiteGolemEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/frostbite_golem.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(FrostbiteGolemEntity entity) {
+    public ResourceLocation getAnimationResource(FrostbiteGolemEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/frostbite_golem.animation.json");
     }
 

@@ -1,15 +1,15 @@
 package io.github.bioplethora.entity.ai.gecko;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.Goal;
-
 import java.util.Random;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public abstract class GeckoGoal<E extends MobEntity> extends Goal {
+public abstract class GeckoGoal<E extends Mob> extends Goal {
 
     protected static final Random RANDOM = new Random();
     public E entity;

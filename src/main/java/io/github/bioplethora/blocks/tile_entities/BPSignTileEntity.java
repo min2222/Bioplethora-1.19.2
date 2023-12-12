@@ -1,17 +1,19 @@
 package io.github.bioplethora.blocks.tile_entities;
 
 import io.github.bioplethora.registry.BPTileEntities;
-import net.minecraft.tileentity.SignTileEntity;
-import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class BPSignTileEntity extends SignTileEntity {
+public class BPSignTileEntity extends SignBlockEntity {
 
-    public BPSignTileEntity() {
-        super();
+    public BPSignTileEntity(BlockPos pos, BlockState state) {
+        super(pos, state);
     }
 
     @Override
-    public TileEntityType<?> getType() {
+    public BlockEntityType<?> getType() {
         return BPTileEntities.BP_SIGN.get();
     }
 }

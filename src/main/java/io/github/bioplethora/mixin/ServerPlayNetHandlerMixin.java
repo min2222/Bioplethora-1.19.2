@@ -24,32 +24,33 @@
 
 package io.github.bioplethora.mixin;
 
-import io.github.bioplethora.entity.creatures.MyliothanEntity;
-import io.github.bioplethora.entity.others.part.BPPartEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.play.ServerPlayNetHandler;
-import net.minecraft.util.math.AxisAlignedBB;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ServerPlayNetHandler.class)
+import io.github.bioplethora.entity.creatures.MyliothanEntity;
+import io.github.bioplethora.entity.others.part.BPPartEntity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.AABB;
+
+@Mixin(ServerGamePacketListenerImpl.class)
 public class ServerPlayNetHandlerMixin {
 
-    @Shadow public ServerPlayerEntity player;
+    @Shadow public ServerPlayer player;
     @Unique
     private double aabbRadius;
 
-    @Redirect(method = "handleInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;distanceToSqr(Lnet/minecraft/entity/Entity;)D"))
-    public double hitboxFix(ServerPlayerEntity player, Entity target) {
+    @Redirect(method = "handleInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayer;distanceToSqr(Lnet/minecraft/entity/Entity;)D"))
+    public double hitboxFix(ServerPlayer player, Entity target) {
 
         // Fix Multipart Hitbox for Myliothan
 
         if (target instanceof MyliothanEntity || target instanceof BPPartEntity) {
-            AxisAlignedBB aabb = target.getBoundingBox();
+            AABB aabb = target.getBoundingBox();
             float collisionBorderSize = target.getPickRadius();
             if (collisionBorderSize != 0.0F) {
                 aabb = aabb.inflate(collisionBorderSize);

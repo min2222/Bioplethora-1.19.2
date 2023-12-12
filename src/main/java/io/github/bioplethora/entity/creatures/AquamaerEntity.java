@@ -1,44 +1,52 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.entity.BPAirWaterLandEntity;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.entity.ISaddleable;
 import io.github.bioplethora.entity.IVerticalMount;
 import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.Direction;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.TransportationHelper;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.ItemSteerable;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
+public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable, IBioClassification, ItemSteerable, IVerticalMount, ISaddleable {
 
-public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable, IBioClassification, IRideable, IVerticalMount, ISaddleable {
+    private static final EntityDataAccessor<Boolean> HAS_SADDLE = SynchedEntityData.defineId(TrapjawEntity.class, EntityDataSerializers.BOOLEAN);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    private static final DataParameter<Boolean> HAS_SADDLE = EntityDataManager.defineId(TrapjawEntity.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
-
-    public AquamaerEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+    public AquamaerEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
         this.setTame(false);
         this.noCulling = true;
@@ -56,7 +64,7 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
 
     @Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return null;
     }
 
@@ -99,21 +107,21 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
         return 0.5F;
     }
 
-    public boolean canBeLeashed(PlayerEntity entity) {
+    public boolean canBeLeashed(Player entity) {
         return this.isTame() && super.canBeLeashed(entity);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Vector3d getLeashOffset() {
-        return new Vector3d(0.0D, 0.6D * this.getEyeHeight(), this.getBbWidth() * 0.4F);
+    public Vec3 getLeashOffset() {
+        return new Vec3(0.0D, 0.6D * this.getEyeHeight(), this.getBbWidth() * 0.4F);
     }
 
     public boolean canBreatheUnderwater() {
         return true;
     }
 
-    public CreatureAttribute getMobType() {
-        return CreatureAttribute.WATER;
+    public MobType getMobType() {
+        return MobType.WATER;
     }
 
     @Override
@@ -139,7 +147,7 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
         return 120;
     }
 
-    protected int getExperienceReward(PlayerEntity playerEntity) {
+    protected int getExperienceReward(Player playerEntity) {
         return 2 + this.level.random.nextInt(3);
     }
 
@@ -157,7 +165,7 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     }
 
     @Override
-    public void travel(Vector3d dir) {
+    public void travel(Vec3 dir) {
         Entity entity = this.getControllingPassenger();
         if (this.isVehicle()) {
             assert entity != null;
@@ -173,12 +181,12 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
                 this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
                 float forward = ((LivingEntity) entity).zza;
                 float strafe = ((LivingEntity) entity).xxa;
-                super.travel(new Vector3d(strafe, 0, forward));
+                super.travel(new Vec3(strafe, 0, forward));
             }
             this.animationSpeedOld = this.animationSpeed;
             double d1 = this.getX() - this.xo;
             double d0 = this.getZ() - this.zo;
-            float f1 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+            float f1 = Mth.sqrt((float) (d1 * d1 + d0 * d0)) * 4.0F;
             if (f1 > 1.0F)
                 f1 = 1.0F;
             this.animationSpeed += (f1 - this.animationSpeed) * 0.4F;
@@ -190,24 +198,24 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
         super.travel(dir);
     }
 
-    public Vector3d getDismountLocationForPassenger(LivingEntity pLivingEntity) {
-        Vector3d vector3d = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HandSide.RIGHT ? 90.0F : -90.0F));
-        Vector3d vector3d1 = this.getDismountLocationInDirection(vector3d, pLivingEntity);
+    public Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
+        Vec3 vector3d = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HumanoidArm.RIGHT ? 90.0F : -90.0F));
+        Vec3 vector3d1 = this.getDismountLocationInDirection(vector3d, pLivingEntity);
         if (vector3d1 != null) {
             return vector3d1;
         } else {
-            Vector3d vector3d2 = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HandSide.LEFT ? 90.0F : -90.0F));
-            Vector3d vector3d3 = this.getDismountLocationInDirection(vector3d2, pLivingEntity);
+            Vec3 vector3d2 = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HumanoidArm.LEFT ? 90.0F : -90.0F));
+            Vec3 vector3d3 = this.getDismountLocationInDirection(vector3d2, pLivingEntity);
             return vector3d3 != null ? vector3d3 : this.position();
         }
     }
 
     @Nullable
-    private Vector3d getDismountLocationInDirection(Vector3d vector3d1, LivingEntity entity) {
+    private Vec3 getDismountLocationInDirection(Vec3 vector3d1, LivingEntity entity) {
         double d0 = this.getX() + vector3d1.x;
         double d1 = this.getBoundingBox().minY;
         double d2 = this.getZ() + vector3d1.z;
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
         for(Pose pose : entity.getDismountPoses()) {
             mutable.set(d0, d1, d2);
@@ -218,11 +226,11 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
                 if ((double)mutable.getY() + d4 > d3) {
                     break;
                 }
-
-                if (TransportationHelper.isBlockFloorValid(d4)) {
-                    AxisAlignedBB axisalignedbb = entity.getLocalBoundsForPose(pose);
-                    Vector3d vector3d = new Vector3d(d0, (double)mutable.getY() + d4, d2);
-                    if (TransportationHelper.canDismountTo(this.level, entity, axisalignedbb.move(vector3d))) {
+                
+                if (DismountHelper.isBlockFloorValid(d4)) {
+                    AABB axisalignedbb = entity.getLocalBoundsForPose(pose);
+                    Vec3 vector3d = new Vec3(d0, (double)mutable.getY() + d4, d2);
+                    if (DismountHelper.canDismountTo(this.level, entity, axisalignedbb.move(vector3d))) {
                         entity.setPose(pose);
                         return vector3d;
                     }
@@ -239,15 +247,15 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     }
 
     @Override
-    public void travelWithInput(Vector3d pTravelVec) {
+    public void travelWithInput(Vec3 pTravelVec) {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving() && this.getTarget() == null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.walk", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 

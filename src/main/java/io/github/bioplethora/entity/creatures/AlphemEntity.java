@@ -1,5 +1,7 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.api.advancements.AdvancementUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.IBioClassification;
@@ -10,46 +12,57 @@ import io.github.bioplethora.entity.ai.goals.AlphemRangedAttackGoal;
 import io.github.bioplethora.entity.ai.goals.CopyTargetOwnerGoal;
 import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPSoundEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.FollowMobGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable, IBioClassification {
 
-    private static final DataParameter<Boolean> DATA_IS_CHARGING = EntityDataManager.defineId(AlphemEntity.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(AlphemEntity.class, EntityDataSerializers.BOOLEAN);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public AlphemEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public AlphemEntity(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
         this.noCulling = true;
     }
@@ -59,8 +72,8 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
         return BPEntityClasses.DANGERUM;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 4 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 10)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.35D)
@@ -73,21 +86,21 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 24.0F));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, AnimalEntity.class, 24.0F));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, FrostbiteGolemEntity.class, 24.0F));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, AltyrusEntity.class, 24.0F));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, ShachathEntity.class, 24.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 24.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Animal.class, 24.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, FrostbiteGolemEntity.class, 24.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, AltyrusEntity.class, 24.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, ShachathEntity.class, 24.0F));
         this.goalSelector.addGoal(2, new GeckoMoveToTargetGoal<>(this, 1.6, 8));
         this.goalSelector.addGoal(2, new GeckoMeleeGoal<>(this, 40, 0.5, 0.6));
-        this.goalSelector.addGoal(3, new RandomWalkingGoal(this, 1.2));
+        this.goalSelector.addGoal(3, new RandomStrollGoal(this, 1.2));
         this.goalSelector.addGoal(3, new AlphemRangedAttackGoal(this));
-        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(7, new SwimGoal(this));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(7, new FloatGoal(this));
         this.goalSelector.addGoal(6, new FollowMobGoal(this, (float) 1, 10, 5));
         this.targetSelector.addGoal(1, new CopyTargetOwnerGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, FrostbiteGolemEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AltyrusEntity.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, ShachathEntity.class, true));
@@ -96,26 +109,26 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.death", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.death", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.attack", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.attack", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.attack", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.attack", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.walking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.walking", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -130,10 +143,10 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
     }
 
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld iServerWorld, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData iLivingEntityData, @Nullable CompoundNBT compoundNBT) {
-        iLivingEntityData = super.finalizeSpawn(iServerWorld, difficultyInstance, spawnReason, iLivingEntityData, compoundNBT);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor iServerLevel, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData iLivingEntityData, @Nullable CompoundTag compoundNBT) {
+        iLivingEntityData = super.finalizeSpawn(iServerLevel, difficultyInstance, spawnReason, iLivingEntityData, compoundNBT);
 
-        if (iServerWorld instanceof ServerWorld && BPConfig.COMMON.hellMode.get()) {
+        if (iServerLevel instanceof ServerLevel && BPConfig.COMMON.hellMode.get()) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get());
             this.getAttribute(Attributes.ARMOR).setBaseValue(6.5 * BPConfig.COMMON.mobArmorMultiplier.get());
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(40 * BPConfig.COMMON.mobHealthMultiplier.get());
@@ -144,23 +157,23 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
             if (Math.random() < 0.5) {
                 if (!this.level.isClientSide())
                     if (Math.random() < 0.5) {
-                        this.setItemSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.TOTEM_OF_UNDYING));
+                        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.TOTEM_OF_UNDYING));
                     }
-                    this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
+                    this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
             } else {
                 if (!this.level.isClientSide())
                     if (Math.random() < 0.5) {
-                        this.setItemSlot(EquipmentSlotType.OFFHAND, new ItemStack(Items.TOTEM_OF_UNDYING));
+                        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.TOTEM_OF_UNDYING));
                     }
-                    this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.IRON_AXE));
+                    this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_AXE));
             }
         } else {
             if (Math.random() < 0.5) {
                 if (!this.level.isClientSide())
-                    this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.STONE_SWORD));
+                    this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
             } else {
                 if (!this.level.isClientSide())
-                    this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.WOODEN_AXE));
+                    this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WOODEN_AXE));
             }
         }
 
@@ -179,17 +192,17 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
         return 8;
     }
 
-    public net.minecraft.util.SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return SoundEvents.VEX_CHARGE;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getHurtSound(DamageSource damageSource) {
+    public SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.RABBIT_HURT;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return SoundEvents.RABBIT_DEATH;
     }
 
@@ -213,12 +226,12 @@ public class AlphemEntity extends SummonableMonsterEntity implements IAnimatable
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         super.readAdditionalSaveData(compoundNBT);
     }
 }

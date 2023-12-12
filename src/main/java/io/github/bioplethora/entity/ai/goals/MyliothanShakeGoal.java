@@ -1,13 +1,13 @@
 package io.github.bioplethora.entity.ai.goals;
 
+import java.util.Random;
+
 import io.github.bioplethora.entity.creatures.MyliothanEntity;
 import io.github.bioplethora.entity.projectile.AbyssalScalesEntity;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ItemStack;
-
-import java.util.Random;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
 
 public class MyliothanShakeGoal extends Goal {
 
@@ -34,7 +34,7 @@ public class MyliothanShakeGoal extends Goal {
 
     public void tick() {
         LivingEntity target = this.myliothan.getTarget();
-        if (target.distanceToSqr(this.myliothan) < 4096.0D /*&& this.myliothan.canSee(target)*/) {
+        if (target.distanceToSqr(this.myliothan) < 4096.0D /*&& this.myliothan.hasLineOfSight(target)*/) {
             ++this.chargeTime;
 
             if (this.chargeTime >= 200) {

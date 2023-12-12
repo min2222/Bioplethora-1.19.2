@@ -1,19 +1,25 @@
 package io.github.bioplethora.data;
 
+import java.util.Collection;
+
+import javax.annotation.Nonnull;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BoatItem;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
-
-import javax.annotation.Nonnull;
-import java.util.Collection;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BioItemModelProvider extends ItemModelProvider {
 
@@ -113,7 +119,7 @@ public class BioItemModelProvider extends ItemModelProvider {
             Item getItem = item.get();
             ResourceLocation datagenLoc = new ResourceLocation(Bioplethora.MOD_ID, "item/" + name);
 
-            ModelFile.ExistingModelFile modelType = getItem instanceof ToolItem || getItem instanceof SwordItem ?
+            ModelFile.ExistingModelFile modelType = getItem instanceof DiggerItem || getItem instanceof SwordItem ?
                     getMcLoc("item/handheld") : getMcLoc("item/generated");
 
             if (!existingFileHelper.exists(datagenLoc, TEXTURE) || existingFileHelper.exists(datagenLoc, MODEL))
@@ -127,7 +133,7 @@ public class BioItemModelProvider extends ItemModelProvider {
     public void defaultItem(RegistryObject<Item> item) {
         String name = item.getId().getPath();
         Item getItem = item.get();
-        ModelFile.ExistingModelFile modelType = getItem instanceof ToolItem || getItem instanceof SwordItem ?
+        ModelFile.ExistingModelFile modelType = getItem instanceof DiggerItem || getItem instanceof SwordItem ?
                 getMcLoc("item/handheld") : getMcLoc("item/generated");
 
         this.getBuilder(name).parent(modelType).texture("layer0", ITEM_FOLDER + "/" + name);
@@ -154,7 +160,7 @@ public class BioItemModelProvider extends ItemModelProvider {
 
     public void createBow(RegistryObject<Item> item) {
         Item items = item.get();
-        String name = items.getRegistryName().getPath();
+        String name = items.getDescriptionId();
         ResourceLocation datagenLoc = new ResourceLocation(Bioplethora.MOD_ID, "item/" + name);
 
         if (items instanceof ShieldItem) {
@@ -169,7 +175,7 @@ public class BioItemModelProvider extends ItemModelProvider {
     public void grylynenShield(RegistryObject<Item> item) {
 
         Item items = item.get();
-        String name = items.getRegistryName().getPath();
+        String name = items.getDescriptionId();
         ResourceLocation datagenLoc = new ResourceLocation(Bioplethora.MOD_ID, "item/" + name);
 
         ModelFile.ExistingModelFile modelType = getBioLoc("item/grylynen_shield_base");
@@ -205,11 +211,11 @@ public class BioItemModelProvider extends ItemModelProvider {
     }
 
     public void flatBlock(RegistryObject<? extends Block> block, RegistryObject<? extends Block> textureBlock) {
-        this.flatBlock(block, textureBlock.get().getRegistryName().getPath());
+        this.flatBlock(block, textureBlock.get().getDescriptionId());
     }
 
     public void flatBlock(RegistryObject<? extends Block> block, RegistryObject<? extends Block> textureBlock, String fileDirectory) {
-        flatBlock(block, textureBlock.get().getRegistryName().getPath(), fileDirectory);
+        flatBlock(block, textureBlock.get().getDescriptionId(), fileDirectory);
     }
 
     public void flatBlock(RegistryObject<? extends Block> block, String texture) {

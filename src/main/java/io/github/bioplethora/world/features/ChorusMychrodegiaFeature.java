@@ -1,24 +1,23 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.api.world.BlockUtils;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPTags;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ChorusFlowerBlock;
-import net.minecraft.block.ChorusPlantBlock;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ILevel;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ChorusPlantFeature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-
-import javax.annotation.Nullable;
-import java.util.Random;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.ChorusFlowerBlock;
+import net.minecraft.world.level.block.ChorusPlantBlock;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ChorusPlantFeature;
 
 public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
 
@@ -37,7 +36,7 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         }
     }
 
-    private static void growTreeRecursive(IWorld pLevel, BlockPos pBranchPos, Random pRand, BlockPos pOriginalBranchPos, int pMaxHorizontalDistance, int pIterations) {
+    private static void growTreeRecursive(ILevel pLevel, BlockPos pBranchPos, Random pRand, BlockPos pOriginalBranchPos, int pMaxHorizontalDistance, int pIterations) {
         ChorusPlantBlock chorusplantblock = (ChorusPlantBlock) Blocks.CHORUS_PLANT;
         int i = pRand.nextInt(7) + 3;
         if (pIterations == 0) {
@@ -82,13 +81,13 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         }
     }
 
-    public static void createPetals(IWorld world, BlockPos pos, Random pRand, BlockPos pOriginalBranchPos, int pIterations) {
+    public static void createPetals(ILevel world, BlockPos pos, Random pRand, BlockPos pOriginalBranchPos, int pIterations) {
         int size = 6 + pRand.nextInt(10);
         if (world.isAreaLoaded(pos, size)) {
             for (int x = -size; x < size; x++) {
                 for (int z = -size; z < size; z++) {
                     if (x * x + z * z <= size * size) {
-                        BlockPos.Mutable mutPos = pos.mutable().move(x, 0, z);
+                        BlockPos.MutableBlockPos mutPos = pos.mutable().move(x, 0, z);
                         mutPos = mutPos.move(0, (int) -(BlockUtils.blockDistance(pos, mutPos) / 3), 0);
                         world.setBlock(mutPos, BPBlocks.CHORUS_MYCHRODEGIA.get().defaultBlockState(), 2);
                         if (pRand.nextInt(2) == 0) {
@@ -107,7 +106,7 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         int size = 1 + pRand.nextInt(3);
         for (int x = -size; x < size; x++) {
             for (int z = -size; z < size; z++) {
-                BlockPos.Mutable squarePos = pos.mutable().move(x, 0, z);
+                BlockPos.MutableBlockPos squarePos = pos.mutable().move(x, 0, z);
                 world.setBlock(squarePos, BPBlocks.CHORUS_MYCHRODEGIA.get().defaultBlockState(), 2);
                 if (pRand.nextInt(2) == 0) {
                     if (world.isEmptyBlock(squarePos.below())) {
@@ -119,7 +118,7 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         int petalLength = 5 + pRand.nextInt(5) * (size / 2);
         for (int l = 0; l < petalLength; l++) {
             for (Direction direction : Direction.Plane.HORIZONTAL) {
-                BlockPos.Mutable petalPos = pos.relative(direction, size + l).mutable();
+                BlockPos.MutableBlockPos petalPos = pos.relative(direction, size + l).mutable();
                 int petalDeg = l == petalLength / 2 ? 0 : 1;
                 for (int t = -size; t < size; t++) {
                     world.setBlock(petalPos.offset(t, petalDeg, t), BPBlocks.CHORUS_MYCHRODEGIA.get().defaultBlockState(), 2);
@@ -133,7 +132,7 @@ public class ChorusMychrodegiaFeature extends ChorusPlantFeature {
         }*/
     }
 
-    private static boolean allNeighborsEmpty(IWorldReader pLevel, BlockPos pPos, @Nullable Direction pExcludingSide) {
+    private static boolean allNeighborsEmpty(LevelReader pLevel, BlockPos pPos, @Nullable Direction pExcludingSide) {
         for(Direction direction : Direction.Plane.HORIZONTAL) {
             if (direction != pExcludingSide && !pLevel.isEmptyBlock(pPos.relative(direction))) {
                 return false;

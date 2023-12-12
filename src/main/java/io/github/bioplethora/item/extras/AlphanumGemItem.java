@@ -1,13 +1,13 @@
 package io.github.bioplethora.item.extras;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.world.World;
-
 import javax.annotation.Nullable;
+
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class AlphanumGemItem extends Item {
 
@@ -20,7 +20,7 @@ public class AlphanumGemItem extends Item {
     }
 
     @Nullable
-    public Entity createEntity(World world, Entity entity, ItemStack itemstack) {
+    public Entity createEntity(Level world, Entity entity, ItemStack itemstack) {
         entity.setNoGravity(true);
         return null;
     }

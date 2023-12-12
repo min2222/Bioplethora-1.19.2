@@ -1,12 +1,12 @@
 package io.github.bioplethora.entity.ai.goals;
 
-import io.github.bioplethora.entity.SummonableMonsterEntity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.TargetGoal;
-
 import java.util.EnumSet;
+
+import io.github.bioplethora.entity.SummonableMonsterEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 public class PrimordialRingOwnerHurtByTargetGoal extends TargetGoal {
     private final SummonableMonsterEntity tameAnimal;
@@ -26,7 +26,7 @@ public class PrimordialRingOwnerHurtByTargetGoal extends TargetGoal {
         } else {
             this.ownerLastHurtBy = livingentity.getLastHurtByMob();
             int i = livingentity.getLastHurtByMobTimestamp();
-            return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, EntityPredicate.DEFAULT);
+            return i != this.timestamp && this.canAttack(this.ownerLastHurtBy, TargetingConditions.DEFAULT);
         }
     }
 

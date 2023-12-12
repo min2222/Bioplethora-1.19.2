@@ -1,31 +1,32 @@
 package io.github.bioplethora.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import java.util.EnumSet;
 
 import javax.annotation.Nullable;
-import java.util.EnumSet;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 /**
  * Must implement a.i. goals {@link MoveRandomGoal} and move controller {@link MoveHelperController} for the floating to work.
  * {@link ChargeAttackGoal} is optional.
  */
-public abstract class FloatingMonsterEntity extends BPMonsterEntity implements IFlyingAnimal {
+public abstract class FloatingMonsterEntity extends BPMonsterEntity implements FlyingAnimal {
     public BlockPos boundOrigin;
     
-    public FloatingMonsterEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public FloatingMonsterEntity(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -35,14 +36,14 @@ public abstract class FloatingMonsterEntity extends BPMonsterEntity implements I
     @Override
     public abstract AnimationFactory getFactory();
 
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("BoundX")) {
             this.boundOrigin = new BlockPos(pCompound.getInt("BoundX"), pCompound.getInt("BoundY"), pCompound.getInt("BoundZ"));
         }
     }
 
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         if (this.boundOrigin != null) {
             pCompound.putInt("BoundX", this.boundOrigin.getX());
@@ -91,7 +92,7 @@ public abstract class FloatingMonsterEntity extends BPMonsterEntity implements I
 
         public void start() {
             LivingEntity livingentity = FloatingMonsterEntity.this.getTarget();
-            Vector3d vector3d = livingentity.getEyePosition(1.0F);
+            Vec3 vector3d = livingentity.getEyePosition(1.0F);
             FloatingMonsterEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
         }
 
@@ -104,34 +105,34 @@ public abstract class FloatingMonsterEntity extends BPMonsterEntity implements I
             if (!FloatingMonsterEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 double d0 = FloatingMonsterEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                    Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     FloatingMonsterEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }
         }
     }
 
-    public class MoveHelperController extends MovementController {
+    public class MoveHelperController extends MoveControl {
         public MoveHelperController(FloatingMonsterEntity floatingMob) {
             super(floatingMob);
         }
 
         public void tick() {
-            if (this.operation == MovementController.Action.MOVE_TO) {
-                Vector3d vector3d = new Vector3d(this.wantedX - FloatingMonsterEntity.this.getX(), this.wantedY - FloatingMonsterEntity.this.getY(), this.wantedZ - FloatingMonsterEntity.this.getZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 vector3d = new Vec3(this.wantedX - FloatingMonsterEntity.this.getX(), this.wantedY - FloatingMonsterEntity.this.getY(), this.wantedZ - FloatingMonsterEntity.this.getZ());
                 double d0 = vector3d.length();
                 if (d0 < FloatingMonsterEntity.this.getBoundingBox().getSize()) {
-                    this.operation = MovementController.Action.WAIT;
+                    this.operation = MoveControl.Operation.WAIT;
                     FloatingMonsterEntity.this.setDeltaMovement(FloatingMonsterEntity.this.getDeltaMovement().scale(0.5D));
                 } else {
                     FloatingMonsterEntity.this.setDeltaMovement(FloatingMonsterEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                     if (FloatingMonsterEntity.this.getTarget() == null) {
-                        Vector3d vector3d1 = FloatingMonsterEntity.this.getDeltaMovement();
-                        FloatingMonsterEntity.this.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
+                        Vec3 vector3d1 = FloatingMonsterEntity.this.getDeltaMovement();
+                        FloatingMonsterEntity.this.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
                     } else {
                         double d2 = FloatingMonsterEntity.this.getTarget().getX() - FloatingMonsterEntity.this.getX();
                         double d1 = FloatingMonsterEntity.this.getTarget().getZ() - FloatingMonsterEntity.this.getZ();
-                        FloatingMonsterEntity.this.yRot = -((float)MathHelper.atan2(d2, d1)) * (180F / (float)Math.PI);
+                        FloatingMonsterEntity.this.yRot = -((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI);
                     }
                     FloatingMonsterEntity.this.yBodyRot = FloatingMonsterEntity.this.yRot;
                 }

@@ -3,15 +3,15 @@ package io.github.bioplethora.entity.ai.goals;
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
 import io.github.bioplethora.entity.creatures.NandbriEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 public class NandbriScratchAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
     public NandbriEntity nandbri = entity;
@@ -23,7 +23,7 @@ public class NandbriScratchAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
     public static boolean checkIfValid(NandbriScratchAttackGoal goal, NandbriEntity attacker, LivingEntity target) {
         if(target == null) return false;
         if(target.isAlive() && !target.isSpectator()){
-            if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+            if (target instanceof Player && ((Player) target).isCreative()) {
                 attacker.setScratching(false);
                 return false;
             }
@@ -71,7 +71,7 @@ public class NandbriScratchAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
     @Override
     public void stop() {
         LivingEntity target = this.nandbri.getTarget();
-        if(!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if(!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.nandbri.setTarget(null);
         }
         this.nandbri.setScratching(false);
@@ -93,7 +93,7 @@ public class NandbriScratchAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
 
     @Override
     public void tick() {
-        World world = nandbri.level;
+        Level world = nandbri.level;
         this.baseTick();
         LivingEntity target = this.nandbri.getTarget();
         if (target != null) {
@@ -103,8 +103,8 @@ public class NandbriScratchAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
             if (this.attackPredicate.apply(this.animationProgress, this.animationLength) && !this.hasHit) {
                 target.hurt(DamageSource.mobAttack(this.nandbri), 9.0F);
                 target.knockback(2, 2, 2);
-                world.playSound(null, this.nandbri, SoundEvents.PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1, 1);
-                for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AxisAlignedBB(x - (3 / 2d), y, z - (3 / 2d), x + (3 / 2d), y + (3 / 2d), z + (3 / 2d)))) {
+                world.playSound(null, this.nandbri, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.HOSTILE, 1, 1);
+                for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (3 / 2d), y, z - (3 / 2d), x + (3 / 2d), y + (3 / 2d), z + (3 / 2d)))) {
                     if(entityIterator != nandbri && entityIterator != target) {
                         entityIterator.hurt(DamageSource.mobAttack(nandbri), 4);
                     }

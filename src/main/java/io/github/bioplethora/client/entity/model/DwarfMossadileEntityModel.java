@@ -2,18 +2,18 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.DwarfMossadileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class DwarfMossadileEntityModel extends AnimatedGeoModel<DwarfMossadileEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(DwarfMossadileEntity entity) {
+    public ResourceLocation getModelResource(DwarfMossadileEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/dwarf_mossadile.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DwarfMossadileEntity entity) {
+    public ResourceLocation getTextureResource(DwarfMossadileEntity entity) {
         if (entity.isNetherVariant()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/dwarf_mossadile_nether.png");
         } else {
@@ -22,7 +22,7 @@ public class DwarfMossadileEntityModel extends AnimatedGeoModel<DwarfMossadileEn
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(DwarfMossadileEntity entity) {
+    public ResourceLocation getAnimationResource(DwarfMossadileEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/dwarf_mossadile.animation.json");
     }
 

@@ -1,11 +1,12 @@
 package io.github.bioplethora.enums;
 
-import com.google.common.collect.ImmutableList;
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-
 import java.util.function.Supplier;
+
+import com.google.common.collect.ImmutableList;
+
+import io.github.bioplethora.registry.BPBlocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public enum BioPlantType {
 

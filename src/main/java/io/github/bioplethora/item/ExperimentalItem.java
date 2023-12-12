@@ -1,23 +1,21 @@
 package io.github.bioplethora.item;
 
-import io.github.bioplethora.api.IReachWeapon;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.*;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import io.github.bioplethora.api.IReachWeapon;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ExperimentalItem extends Item implements IReachWeapon {
 
@@ -36,7 +34,7 @@ public class ExperimentalItem extends Item implements IReachWeapon {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack stack, Level world, Entity entity, int pItemSlot, boolean pIsSelected) {
         super.inventoryTick(stack, world, entity, pItemSlot, pIsSelected);
     }
 
@@ -52,9 +50,9 @@ public class ExperimentalItem extends Item implements IReachWeapon {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("item.bioplethora.boss_level.desc").withStyle(TextFormatting.AQUA));
-        tooltip.add(new TranslationTextComponent("item.bioplethora.test_item.desc").withStyle(TextFormatting.GRAY));
+        tooltip.add(Component.translatable("item.bioplethora.boss_level.desc").withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("item.bioplethora.test_item.desc").withStyle(ChatFormatting.GRAY));
     }
 }

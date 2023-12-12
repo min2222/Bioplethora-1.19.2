@@ -2,7 +2,8 @@ package io.github.bioplethora.world.featureconfigs;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.MathHelper;
+
+import net.minecraft.util.Mth;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 
 public class NBTFeatureConfig implements IFeatureConfig {
@@ -41,7 +42,7 @@ public class NBTFeatureConfig implements IFeatureConfig {
          * Sets the Y Level Offset for the feature.
          */
         public NBTFeatureConfig.Builder setYOffset(int yOffset) {
-            this.yOffset = MathHelper.clamp(yOffset, -255, 255);
+            this.yOffset = Mth.clamp(yOffset, -255, 255);
             return this;
         }
 

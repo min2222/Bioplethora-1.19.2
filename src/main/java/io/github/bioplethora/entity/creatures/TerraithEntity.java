@@ -4,38 +4,40 @@ import io.github.bioplethora.entity.FloatingMonsterEntity;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
 import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class TerraithEntity extends FloatingMonsterEntity implements IAnimatable, IFlyingAnimal, IBioClassification {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class TerraithEntity extends FloatingMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification {
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public TerraithEntity(EntityType<? extends MonsterEntity> type, World world) {
+    public TerraithEntity(EntityType<? extends Monster> type, Level world) {
         super(type, world);
         this.moveControl = new MoveHelperController(this);
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ATTACK_DAMAGE, 3)
                 .add(Attributes.ATTACK_SPEED, 10.5)
                 .add(Attributes.MAX_HEALTH, 20)
@@ -64,12 +66,12 @@ public class TerraithEntity extends FloatingMonsterEntity implements IAnimatable
         this.goalSelector.addGoal(4, new TerraithEntity.MoveRandomGoal());
         this.goalSelector.addGoal(3, new TerraithEntity.ChargeAttackGoal());
         this.goalSelector.addGoal(1, new GeckoMeleeGoal<>(this, 20, 0.6, 0.7));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, VillagerEntity.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Villager.class, true));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, TerraithEntity.class)).setAlertOthers());
     }
 
-    public void move(MoverType pType, Vector3d pPos) {
+    public void move(MoverType pType, Vec3 pPos) {
         super.move(pType, pPos);
         this.checkInsideBlocks();
     }
@@ -86,15 +88,20 @@ public class TerraithEntity extends FloatingMonsterEntity implements IAnimatable
 
     private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event) {
         if(this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.attack", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.attack", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if(event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.move", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.move", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.idle"));
         return PlayState.CONTINUE;
     }
+
+	@Override
+	public boolean isFlying() {
+		return false;
+	}
 }

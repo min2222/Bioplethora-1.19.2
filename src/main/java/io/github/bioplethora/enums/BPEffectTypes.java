@@ -1,7 +1,5 @@
 package io.github.bioplethora.enums;
 
-import io.github.bioplethora.entity.others.BPEffectEntity;
-
 public enum BPEffectTypes {
 
     // Weapons

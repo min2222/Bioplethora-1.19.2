@@ -23,7 +23,7 @@ group = project.group
 archivesBaseName = project.modid
 version = project.mod_version
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     mappings channel: "${mappings_channel}", version: "${mappings_version}"
@@ -141,42 +141,15 @@ repositories {
 }
 
 dependencies {
+    
 	// Base
 	minecraft("net.minecraftforge:forge:${mc_version}-${forge_version}")
 	annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 	implementation("org.jetbrains:annotations:23.0.0")
 
 	// Dependencies
-	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${mc_version}:${geckolib_version}")
+	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
 	implementation fg.deobf("com.github.Reforged-Mods:FabricBiomeApiReforged:${fbApi_version}")
-
-        // Extras
-	compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
-	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
-
-	implementation fg.deobf("curse.maven:just-enough-resources-jer-240630:${jer_version}")
-	implementation fg.deobf("curse.maven:just-enough-effect-descriptions-jeed-532286:${jeed_version}")
-
-	implementation fg.deobf("curse.maven:appleskin-248787:${appleskin_version}")
-	
-	implementation fg.deobf("curse.maven:the-one-probe-245211:${top_version}")
-	implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
-
-	implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
-	implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
-	
-	implementation fg.deobf("curse.maven:gamemenumodoption-353051:${gmmo_version}")
-	
-	implementation fg.deobf("curse.maven:datafixerslayer-416519:${dfs_version}")
-
-	compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
-	runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
-
-	runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-	compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
-
-	implementation fg.deobf("curse.maven:damage-indicator-mod-for-forge-557596:${damage_indicators_version}")
-	implementation fg.deobf("curse.maven:forge-criticalib-560696:${criticallib_version}")
 
     //Rubidium
     //implementation fg.deobf("curse.maven:rubidium-574856:3769736")

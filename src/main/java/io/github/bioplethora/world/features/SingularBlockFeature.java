@@ -1,16 +1,16 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import io.github.bioplethora.blocks.BPLanternPlantBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoublePlantBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-
 import java.util.Random;
+
+import com.mojang.serialization.Codec;
+
+import io.github.bioplethora.blocks.BPLanternPlantBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class SingularBlockFeature extends Feature<BlockClusterFeatureConfig> {
 

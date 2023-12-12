@@ -1,10 +1,10 @@
 package io.github.bioplethora.api.extras;
 
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.phys.Vec3;
 
 public class MathUtils {
 
-    public static Vector3d transform(Vector3d axis, double angle, Vector3d normal) {
+    public static Vec3 transform(Vec3 axis, double angle, Vec3 normal) {
 
         double m00 = 1, m01 = 0, m02 = 0;
         double m10 = 0, m11 = 1, m12 = 0;
@@ -32,10 +32,10 @@ public class MathUtils {
             m21 = t * yz + sinTheta * ax;
             m22 = t * az * az + cosTheta;
         }
-        return new Vector3d(m00 * normal.x + m01 * normal.y + m02 * normal.z, m10 * normal.x + m11 * normal.y + m12 * normal.z, m20 * normal.x + m21 * normal.y + m22 * normal.z);
+        return new Vec3(m00 * normal.x + m01 * normal.y + m02 * normal.z, m10 * normal.x + m11 * normal.y + m12 * normal.z, m20 * normal.x + m21 * normal.y + m22 * normal.z);
     }
 
-    public static double angleBetween(Vector3d v1, Vector3d v2) {
+    public static double angleBetween(Vec3 v1, Vec3 v2) {
         double vDot = v1.dot(v2) / (v1.length() * v2.length());
         if (vDot < -1.0) {
             vDot = -1.0;

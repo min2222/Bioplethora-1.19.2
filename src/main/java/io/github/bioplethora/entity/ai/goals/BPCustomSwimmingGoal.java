@@ -1,10 +1,10 @@
 package io.github.bioplethora.entity.ai.goals;
 
-import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
-
 import java.util.EnumSet;
+
+import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class BPCustomSwimmingGoal extends Goal {
 

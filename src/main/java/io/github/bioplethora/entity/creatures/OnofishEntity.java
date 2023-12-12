@@ -1,50 +1,51 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.FloatingCreatureEntity;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
-import java.util.Random;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable, IBioClassification {
-    private static final DataParameter<Integer> DATA_VARIANT = EntityDataManager.defineId(OnofishEntity.class, DataSerializers.INT);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(OnofishEntity.class, EntityDataSerializers.INT);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public int particleTime;
     public int jumpTime;
 
-    public OnofishEntity(EntityType<? extends FloatingCreatureEntity> type, World worldIn) {
+    public OnofishEntity(EntityType<? extends FloatingCreatureEntity> type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new MoveHelperController(this);
     }
@@ -54,8 +55,8 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
         return BPEntityClasses.ECOHARMLESS;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 2 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 2 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -69,8 +70,8 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new MoveRandomGoal());
-        this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 24.0F));
-        this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 24.0F));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     @Override
@@ -97,7 +98,7 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
     protected void tickDeath() {
         ++this.deathTime;
         if (this.deathTime == 20) {
-            this.remove();
+            this.discard();
 
             for (int i = 0; i < 20; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
@@ -109,14 +110,14 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
         }
     }
 
-    public static boolean checkOnofishSpawnRules(EntityType<OnofishEntity> onofishEntityEntityType, IWorld pLevel, SpawnReason pSpawnType, BlockPos pPos, Random pRandom) {
+    public static boolean checkOnofishSpawnRules(EntityType<OnofishEntity> onofishEntityEntityType, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
         return pPos.getY() > 30 && pRandom.nextInt(4) == 1;
     }
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld pLevel, DifficultyInstance pDifficulty, SpawnReason pReason, @Nullable ILivingEntityData pSpawnData, @Nullable CompoundNBT pDataTag) {
-        this.setVariant(MathHelper.clamp(1 + this.random.nextInt(5), 1, 4));
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+        this.setVariant(Mth.clamp(1 + this.random.nextInt(5), 1, 4));
 
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
@@ -141,19 +142,19 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("ono_variant", getVariant());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setVariant(pCompound.getInt("ono_variant"));
     }
 
     @Override
-    protected float getVoicePitch() {
+	public float getVoicePitch() {
         return 2.0F + this.random.nextFloat();
     }
 
@@ -176,11 +177,11 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
         if (this.isDeadOrDying()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.onofish.death", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.onofish.death", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.onofish.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.onofish.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -193,4 +194,9 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
     public AnimationFactory getFactory() {
         return this.factory;
     }
+
+	@Override
+	public boolean isFlying() {
+		return false;
+	}
 }

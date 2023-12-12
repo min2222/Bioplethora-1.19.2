@@ -1,22 +1,22 @@
 package io.github.bioplethora.event.helper;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.mixin.IPlayerEntityMixin;
 import io.github.bioplethora.config.BPConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 
 public class RenderEventHelper {
@@ -27,22 +27,22 @@ public class RenderEventHelper {
     public static void onRenderingPlayer(RenderPlayerEvent event) {
     }
 
-    public static void onRenderingOverlay(RenderGameOverlayEvent.Pre event) {
+    public static void onRenderingOverlay(RenderGuiOverlayEvent.Pre event) {
 
         int getWidth = event.getWindow().getGuiScaledWidth(), getHeight = event.getWindow().getGuiScaledHeight();
         Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
+        Player player = mc.player;
         IPlayerEntityMixin mxPlayer = (IPlayerEntityMixin) player;
 
         if (mxPlayer.hasAlphanumCurse()) {
-            if (EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(player)) {
+            if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(player)) {
                 renderAlphanumCurse(getWidth, getHeight);
             }
         }
     }
 
-    public static void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
-        PlayerEntity player = Minecraft.getInstance().player;
+    public static void onCameraSetup(ViewportEvent.ComputeCameraAngles event) {
+        Player player = Minecraft.getInstance().player;
         IPlayerEntityMixin playermx = (IPlayerEntityMixin) player;
         float delta = Minecraft.getInstance().getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
@@ -56,7 +56,7 @@ public class RenderEventHelper {
         }
     }
 
-    public static void onFogDensity(EntityViewRenderEvent.FogDensity event) {
+    public static void onFogDensity(ViewportEvent.RenderFog event) {
         Minecraft mc = Minecraft.getInstance();
         BlockPos blockpos = Minecraft.getInstance().getCameraEntity().blockPosition();
     }
@@ -72,11 +72,12 @@ public class RenderEventHelper {
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(770, 771);
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, (float) curseAlpha);
-            Minecraft.getInstance().getTextureManager().bind(new ResourceLocation(Bioplethora.MOD_ID, "textures/misc/alphanum_curse.png"));
-            Tessellator tessellator = Tessellator.getInstance();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, (float) curseAlpha);
+            RenderSystem.enableTexture();
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Bioplethora.MOD_ID, "textures/misc/alphanum_curse.png"));
+            Tesselator tessellator = Tesselator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuilder();
-            bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+            bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
             bufferbuilder.vertex(0.0D, height, -90.0D).uv(0.0F, 1.0F).endVertex();
             bufferbuilder.vertex(width, height, -90.0D).uv(1.0F, 1.0F).endVertex();
             bufferbuilder.vertex(width, 0.0D, -90.0D).uv(1.0F, 0.0F).endVertex();

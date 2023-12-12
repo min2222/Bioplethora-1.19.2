@@ -2,19 +2,19 @@ package io.github.bioplethora.registry;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BPItemGroup {
-    public static ItemGroup BioplethoraItemItemGroup = new ItemGroup("bioplethora_item_item_group") {
+    public static CreativeModeTab BioplethoraItemItemGroup = new CreativeModeTab("bioplethora_item_item_group") {
 
         @Override
         public ItemStack makeIcon() {
@@ -49,13 +49,13 @@ public class BPItemGroup {
                 Enchantment enchantment = enchants.get();
 
                 if (enchantment.isAllowedOnBooks()) {
-                    items.add(EnchantedBookItem.createForEnchantment(new EnchantmentData(enchantment, enchantment.getMaxLevel())));
+                    items.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, enchantment.getMaxLevel())));
                 }
             }
         }
     };
 
-    public static ItemGroup BioplethoraSpawnEggsItemGroup = new ItemGroup("bioplethora_spawn_eggs_item_group") {
+    public static CreativeModeTab BioplethoraSpawnEggsItemGroup = new CreativeModeTab("bioplethora_spawn_eggs_item_group") {
 
         @Override
         public ItemStack makeIcon() {

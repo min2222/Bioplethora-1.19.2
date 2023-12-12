@@ -1,24 +1,24 @@
 package io.github.bioplethora.entity.ai.goals;
 
-import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.WalkNodeProcessor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-
 import java.util.EnumSet;
+
+import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class WaterFollowOwnerGoal extends Goal {
     private final WaterAndLandAnimalEntity tamable;
     private LivingEntity owner;
-    private final IWorldReader level;
+    private final LevelReader level;
     private final double speedModifier;
-    private final PathNavigator navigation;
+    private final PathNavigation navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private final float startDistance;
@@ -64,14 +64,14 @@ public class WaterFollowOwnerGoal extends Goal {
 
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.tamable.getPathfindingMalus(PathNodeType.WATER);
-        this.tamable.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.tamable.getPathfindingMalus(BlockPathTypes.WATER);
+        this.tamable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public void stop() {
         this.owner = null;
         this.navigation.stop();
-        this.tamable.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+        this.tamable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
     }
 
     public void tick() {
@@ -116,8 +116,8 @@ public class WaterFollowOwnerGoal extends Goal {
     }
 
     private boolean canTeleportTo(BlockPos p_226329_1_) {
-        PathNodeType pathnodetype = WalkNodeProcessor.getBlockPathTypeStatic(this.level, p_226329_1_.mutable());
-        if (pathnodetype != PathNodeType.WALKABLE) {
+        BlockPathTypes pathnodetype = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, p_226329_1_.mutable());
+        if (pathnodetype != BlockPathTypes.WALKABLE) {
             return false;
         } else {
             BlockState blockstate = this.level.getBlockState(p_226329_1_.below());

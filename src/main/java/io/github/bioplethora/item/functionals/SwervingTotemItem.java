@@ -1,18 +1,18 @@
 package io.github.bioplethora.item.functionals;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SwervingTotemItem extends Item {
 
@@ -22,14 +22,14 @@ public class SwervingTotemItem extends Item {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("item.bioplethora.boss_level.desc").withStyle(TextFormatting.AQUA));
-        tooltip.add(new TranslationTextComponent("item.bioplethora.shift_reminder.desc").withStyle(TextFormatting.GRAY));
+        tooltip.add(Component.translatable("item.bioplethora.boss_level.desc").withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("item.bioplethora.shift_reminder.desc").withStyle(ChatFormatting.GRAY));
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.totem_of_swerving.blessed_instinct.skill").withStyle(TextFormatting.GOLD));
+        tooltip.add(Component.translatable("item.bioplethora.totem_of_swerving.blessed_instinct.skill").withStyle(ChatFormatting.GOLD));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.totem_of_swerving.blessed_instinct.desc").withStyle(TextFormatting.GRAY));
+            tooltip.add(Component.translatable("item.bioplethora.totem_of_swerving.blessed_instinct.desc").withStyle(ChatFormatting.GRAY));
         }
     }
 }

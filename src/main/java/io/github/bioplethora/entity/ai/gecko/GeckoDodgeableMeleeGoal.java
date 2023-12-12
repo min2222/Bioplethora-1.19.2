@@ -1,13 +1,13 @@
 package io.github.bioplethora.entity.ai.gecko;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public class GeckoDodgeableMeleeGoal<E extends MobEntity> extends GeckoMeleeGoal<E> {
+public class GeckoDodgeableMeleeGoal<E extends Mob> extends GeckoMeleeGoal<E> {
 
      public boolean isInAttackState;
 
@@ -41,7 +41,7 @@ public class GeckoDodgeableMeleeGoal<E extends MobEntity> extends GeckoMeleeGoal
         if (target != null) {
             if (this.attackPredicate.apply(this.animationProgress, this.animationLength) && !this.hasHit) {
                 this.entity.lookAt(target, 30.0F, 30.0F);
-                this.entity.swing(Hand.MAIN_HAND);
+                this.entity.swing(InteractionHand.MAIN_HAND);
                 if (canReachTarget()) {
                     this.entity.doHurtTarget(target);
                 }

@@ -1,61 +1,58 @@
 package io.github.bioplethora.event.helper;
 
+import java.util.List;
+
 import io.github.bioplethora.blocks.tile_entities.AlphanumNucleusBlock;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.projectile.WindArrowEntity;
-import io.github.bioplethora.network.BPNetwork;
-import io.github.bioplethora.network.functions.NucleusActivatePacket;
 import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-
-import java.util.List;
 
 public class AlphemKingSpawnHelper {
 
     public static void onProjectileImpact(ProjectileImpactEvent event) {
         Entity projectile = event.getEntity();
-        World world = projectile.level;
-        RayTraceResult result = event.getRayTraceResult();
+        Level world = projectile.level;
+        HitResult result = event.getRayTraceResult();
 
         if (projectile instanceof WindArrowEntity) {
             WindArrowEntity windArrow = (WindArrowEntity) projectile;
-            if (result instanceof BlockRayTraceResult) {
-                BlockRayTraceResult blockResult = (BlockRayTraceResult) result;
+            if (result instanceof BlockHitResult) {
+                BlockHitResult blockResult = (BlockHitResult) result;
                 BlockPos pos = blockResult.getBlockPos();
 
                 if (world.getBlockState(blockResult.getBlockPos()).getBlock() == BPBlocks.ALPHANUM_NUCLEUS.get()) {
 
-                    if (windArrow.getOwner() instanceof ServerPlayerEntity) {
+                    if (windArrow.getOwner() instanceof ServerPlayer) {
                         world.setBlock(pos, world.getBlockState(blockResult.getBlockPos()).setValue(AlphanumNucleusBlock.ACTIVATED, true), 2);
 
                         if (!world.isClientSide()) {
-                            ((ServerWorld) world).sendParticles(ParticleTypes.CLOUD, windArrow.getX(), windArrow.getY(), windArrow.getZ(),
+                            ((ServerLevel) world).sendParticles(ParticleTypes.CLOUD, windArrow.getX(), windArrow.getY(), windArrow.getZ(),
                                     30, 1.2, 1.2, 1.2, 0.1);
 
                             if (BPConfig.COMMON.announceAlphemKing.get()) {
-                                List<ServerPlayerEntity> list = ((ServerWorld) world).getPlayers((playerEntity) -> true);
-                                for (ServerPlayerEntity serverplayerentity : list) {
-                                    serverplayerentity.displayClientMessage(new TranslationTextComponent("message.bioplethora.alphem_king.summon",
+                                List<ServerPlayer> list = ((ServerLevel) world).getPlayers((playerEntity) -> true);
+                                for (ServerPlayer serverplayerentity : list) {
+                                    serverplayerentity.displayClientMessage(Component.translatable("message.bioplethora.alphem_king.summon",
                                                     windArrow.getOwner().getDisplayName(), (float) windArrow.getX(), (float) windArrow.getY(), (float) windArrow.getZ())
-                                                    .withStyle(TextFormatting.RED).withStyle(TextFormatting.ITALIC),
+                                                    .withStyle(ChatFormatting.RED).withStyle(ChatFormatting.ITALIC),
                                             false);
                                 }
                             }
                         }
                     }
 
-                    windArrow.remove();
+                    windArrow.discard();
                 }
             }
         }

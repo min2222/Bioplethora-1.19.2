@@ -2,34 +2,36 @@ package io.github.bioplethora.entity.others;
 
 import io.github.bioplethora.entity.creatures.AlphemEntity;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class AlphanumShardEntity extends Entity implements IAnimatable {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public LivingEntity owner;
     public LivingEntity target;
     public int timeBeforeExpire;
 
-    public AlphanumShardEntity(EntityType<?> entityType, World world) {
+    public AlphanumShardEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -38,11 +40,11 @@ public class AlphanumShardEntity extends Entity implements IAnimatable {
 
         ++timeBeforeExpire;
         if (timeBeforeExpire >= 40) {
-            this.level.explode(this, getX(), getY(), getZ(), 0.5F, Explosion.Mode.NONE);
+            this.level.explode(this, getX(), getY(), getZ(), 0.5F, Explosion.BlockInteraction.NONE);
             if (!this.level.isClientSide()) {
-                ((ServerWorld) this.level).sendParticles(ParticleTypes.FIREWORK, getX(), getY(), getZ(), 45, 0.45, 0.45, 0.45, 0.01);
+                ((ServerLevel) this.level).sendParticles(ParticleTypes.FIREWORK, getX(), getY(), getZ(), 45, 0.45, 0.45, 0.45, 0.01);
 
-                ServerWorld serverworld = (ServerWorld)this.level;
+                ServerLevel serverworld = (ServerLevel)this.level;
                 BlockPos blockpos = new BlockPos(getX(), getY(), getZ());
                 AlphemEntity alphem = BPEntities.ALPHEM.get().create(this.level);
 
@@ -50,7 +52,7 @@ public class AlphanumShardEntity extends Entity implements IAnimatable {
                 alphem.setExplodeOnExpiry(false);
                 alphem.setLifeLimitBeforeDeath(200);
 
-                alphem.finalizeSpawn(serverworld, this.level.getCurrentDifficultyAt(blockpos), SpawnReason.MOB_SUMMONED, null, null);
+                alphem.finalizeSpawn(serverworld, this.level.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
                 alphem.moveTo(blockpos, 0.0F, 0.0F);
                 if (this.target != null) {
                     alphem.setTarget(this.getTarget());
@@ -63,7 +65,7 @@ public class AlphanumShardEntity extends Entity implements IAnimatable {
                     this.level.addFreshEntity(alphem);
                 }
             }
-            this.remove();
+            this.discard();
         }
     }
 
@@ -85,7 +87,7 @@ public class AlphanumShardEntity extends Entity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphanum_shard.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphanum_shard.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -104,15 +106,15 @@ public class AlphanumShardEntity extends Entity implements IAnimatable {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT p_70037_1_) {
+    protected void readAdditionalSaveData(CompoundTag p_70037_1_) {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT p_213281_1_) {
+    protected void addAdditionalSaveData(CompoundTag p_213281_1_) {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

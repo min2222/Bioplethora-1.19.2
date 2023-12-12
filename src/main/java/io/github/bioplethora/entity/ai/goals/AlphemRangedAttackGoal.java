@@ -2,10 +2,10 @@ package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.creatures.AlphemEntity;
 import io.github.bioplethora.entity.projectile.WindblazeEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
 
 public class AlphemRangedAttackGoal extends Goal {
 
@@ -30,8 +30,8 @@ public class AlphemRangedAttackGoal extends Goal {
 
     public void tick() {
         LivingEntity livingentity = this.alphem.getTarget();
-        if (livingentity.distanceToSqr(this.alphem) < 4096.0D && this.alphem.canSee(livingentity)) {
-            World world = this.alphem.level;
+        if (livingentity.distanceToSqr(this.alphem) < 4096.0D && this.alphem.hasLineOfSight(livingentity)) {
+            Level world = this.alphem.level;
 
             this.alphem.getLookControl().setLookAt(alphem.getTarget(), 30.0F, 30.0F);
 

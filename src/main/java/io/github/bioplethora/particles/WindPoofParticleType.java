@@ -1,15 +1,16 @@
 package io.github.bioplethora.particles;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.util.registry.Registry;
+
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @Credit MaxBogomol
  */
-public class WindPoofParticleType extends ParticleType<WindPoofParticleData> implements IParticleData {
+public class WindPoofParticleType extends ParticleType<WindPoofParticleData> implements ParticleOptions {
 
     private static final boolean ALWAYS_SHOW_REGARDLESS_OF_DISTANCE_FROM_PLAYER = false;
 
@@ -27,12 +28,12 @@ public class WindPoofParticleType extends ParticleType<WindPoofParticleData> imp
     }
 
     @Override
-    public void writeToNetwork(PacketBuffer pBuffer) {
+    public void writeToNetwork(FriendlyByteBuf pBuffer) {
 
     }
 
     @Override
     public String writeToString() {
-        return Registry.PARTICLE_TYPE.getKey(this).toString();
+        return ForgeRegistries.PARTICLE_TYPES.getKey(this).toString();
     }
 }

@@ -1,36 +1,35 @@
 package io.github.bioplethora.mixin;
 
-import io.github.bioplethora.registry.BPTags;
-import net.minecraft.block.*;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import org.jetbrains.annotations.Nullable;
+import java.util.Random;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Random;
+import io.github.bioplethora.registry.BPTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.ChorusFlowerBlock;
+import net.minecraft.world.level.block.ChorusPlantBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
 @Mixin(ChorusFlowerBlock.class)
 public abstract class ChorusFlowerBlockMixin {
 
     @Shadow @Final private ChorusPlantBlock plant;
 
-    @Shadow protected abstract void placeGrownFlower(World pLevel, BlockPos pPos, int pAge);
+    @Shadow protected abstract void placeGrownFlower(Level pLevel, BlockPos pPos, int pAge);
 
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-    public void randomTick(BlockState pState, ServerWorld pLevel, BlockPos pPos, Random pRandom, CallbackInfo ci) {
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom, CallbackInfo ci) {
         BlockState blockstate = pLevel.getBlockState(pPos.below());
-        if (BPTags.Blocks.CHORUS_GROWABLE.contains(blockstate.getBlock())) {
+        if (blockstate.is(BPTags.Blocks.CHORUS_GROWABLE)) {
             BlockPos abovePos = pPos.above();
             if (pLevel.isEmptyBlock(abovePos) && abovePos.getY() < 256) {
                 int i = pState.getValue(ChorusFlowerBlock.AGE);
@@ -44,9 +43,9 @@ public abstract class ChorusFlowerBlockMixin {
     }
 
     @Inject(method = "canSurvive", at = @At("HEAD"), cancellable = true)
-    public void canSurvive(BlockState pState, IWorldReader pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
+    public void canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos, CallbackInfoReturnable<Boolean> cir) {
         BlockState blockstate = pLevel.getBlockState(pPos.below());
-        if (BPTags.Blocks.CHORUS_GROWABLE.contains(blockstate.getBlock())) {
+        if (blockstate.is(BPTags.Blocks.CHORUS_GROWABLE)) {
             cir.setReturnValue(true);
             cir.cancel();
         }

@@ -2,14 +2,14 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.PeaguinEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class PeaguinEntityModel extends AnimatedGeoModel<PeaguinEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(PeaguinEntity entity) {
+    public ResourceLocation getModelResource(PeaguinEntity entity) {
         if (((LivingEntity) entity).isBaby()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "geo/baby_peaguin.geo.json");
         } else {
@@ -18,7 +18,7 @@ public class PeaguinEntityModel extends AnimatedGeoModel<PeaguinEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(PeaguinEntity entity) {
+    public ResourceLocation getTextureResource(PeaguinEntity entity) {
         if (((LivingEntity) entity).isBaby()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/baby_peaguin.png");
         } else {
@@ -27,7 +27,7 @@ public class PeaguinEntityModel extends AnimatedGeoModel<PeaguinEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(PeaguinEntity entity) {
+    public ResourceLocation getAnimationResource(PeaguinEntity entity) {
         if (((LivingEntity) entity).isBaby()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "animations/baby_peaguin.animation.json");
         } else {

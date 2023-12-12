@@ -2,13 +2,11 @@ package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.ai.gecko.GeckoDodgeableMeleeGoal;
-import io.github.bioplethora.entity.ai.gecko.GeckoGoal;
-import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
 import io.github.bioplethora.entity.creatures.AlphemKingEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class AlphemKingMeeleeGoal extends GeckoDodgeableMeleeGoal<AlphemKingEntity> {
     
@@ -33,7 +31,7 @@ public class AlphemKingMeeleeGoal extends GeckoDodgeableMeleeGoal<AlphemKingEnti
     public static boolean checkIfValid(AlphemKingMeeleeGoal goal, AlphemKingEntity attacker, LivingEntity target) {
         if (target == null) return false;
         if (target.isAlive() && !target.isSpectator()) {
-            if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+            if (target instanceof Player && ((Player) target).isCreative()) {
                 goal.doCIV(attacker);
                 return false;
             }
@@ -84,7 +82,7 @@ public class AlphemKingMeeleeGoal extends GeckoDodgeableMeleeGoal<AlphemKingEnti
         this.animationProgress = 0;
         this.isInAttackState = false;
         LivingEntity target = this.entity.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
         }
         king.setAttacking(false);
@@ -102,7 +100,7 @@ public class AlphemKingMeeleeGoal extends GeckoDodgeableMeleeGoal<AlphemKingEnti
         if (target != null) {
             if (this.attackPredicate.apply(this.animationProgress, this.animationLength) && !this.hasHit) {
                 this.king.lookAt(target, 30.0F, 30.0F);
-                this.king.swing(Hand.MAIN_HAND);
+                this.king.swing(InteractionHand.MAIN_HAND);
                 if (canReachTarget()) {
                     this.king.doHurtTarget(target);
                 }

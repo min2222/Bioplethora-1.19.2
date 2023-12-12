@@ -2,13 +2,13 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.TrapjawEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class TrapjawEntityModel extends AnimatedGeoModel<TrapjawEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(TrapjawEntity entity) {
+    public ResourceLocation getModelResource(TrapjawEntity entity) {
         if (!entity.isSaddled()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "geo/trapjaw.geo.json");
         } else {
@@ -17,7 +17,7 @@ public class TrapjawEntityModel extends AnimatedGeoModel<TrapjawEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(TrapjawEntity entity) {
+    public ResourceLocation getTextureResource(TrapjawEntity entity) {
         if (entity.isCardinalVariant()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/cardinal_trapjaw.png");
         } else {
@@ -26,7 +26,7 @@ public class TrapjawEntityModel extends AnimatedGeoModel<TrapjawEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(TrapjawEntity entity) {
+    public ResourceLocation getAnimationResource(TrapjawEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/trapjaw.animation.json");
     }
 }

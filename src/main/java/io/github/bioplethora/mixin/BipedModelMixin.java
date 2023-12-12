@@ -1,24 +1,13 @@
 package io.github.bioplethora.mixin;
 
-import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.item.weapons.InfernalQuarterstaffItem;
-import net.minecraft.client.renderer.entity.model.AgeableModel;
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.PiglinModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(BipedModel.class)
-public abstract class BipedModelMixin<T extends LivingEntity> extends AgeableModel<T> {
+import net.minecraft.client.model.AgeableListModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.world.entity.LivingEntity;
+
+@Mixin(HumanoidModel.class)
+public abstract class BipedModelMixin<T extends LivingEntity> extends AgeableListModel<T> {
 
     /**
     @Shadow public ModelRenderer rightArm;
@@ -41,7 +30,7 @@ public abstract class BipedModelMixin<T extends LivingEntity> extends AgeableMod
             boolean IQOffHandL = living.getOffhandItem().getItem() instanceof InfernalQuarterstaffItem;
             boolean IQBothHands = IQMainHandR && IQOffHandL;
 
-            if (living instanceof PlayerEntity) {
+            if (living instanceof Player) {
                 if (!(living.getUseItem().getItem() instanceof ShieldItem)) {
 
                     if (IQMainHandR && !IQOffHandL) {
@@ -80,7 +69,7 @@ public abstract class BipedModelMixin<T extends LivingEntity> extends AgeableMod
             boolean IQOffHandL = living.getOffhandItem().getItem() instanceof InfernalQuarterstaffItem;
             boolean IQBothHands = IQMainHandR && IQOffHandL;
 
-            if (living instanceof PlayerEntity) {
+            if (living instanceof Player) {
                 if (!(living.getUseItem().getItem() instanceof ShieldItem)) {
 
                     if (IQMainHandR && !IQOffHandL) {
@@ -119,7 +108,7 @@ public abstract class BipedModelMixin<T extends LivingEntity> extends AgeableMod
     public void setupAttack(T livingEntity, float a, CallbackInfo ci) {
 
         if (BPConfig.COMMON.enableCustomModelAnimations.get()) {
-            if (livingEntity instanceof PlayerEntity) {
+            if (livingEntity instanceof Player) {
                 if (!(this.attackTime <= 0.0F)) {
                     if (livingEntity.getMainHandItem().getItem() instanceof InfernalQuarterstaffItem) {
 
@@ -132,11 +121,11 @@ public abstract class BipedModelMixin<T extends LivingEntity> extends AgeableMod
                         f = f * f;
                         f = 1.0F - f;
 
-                        float f1 = MathHelper.sin(f * (float) Math.PI);
-                        float f2 = MathHelper.sin(this.attackTime * (float) Math.PI) * -(this.head.xRot - 0.7F) * 0.75F;
+                        float f1 = Mth.sin(f * (float) Math.PI);
+                        float f2 = Mth.sin(this.attackTime * (float) Math.PI) * -(this.head.xRot - 0.7F) * 0.75F;
 
                         modelrenderer.xRot = (float) ((double) modelrenderer.xRot - ((double) f1 * 1.2D + (double) f2)) * 2;
-                        modelrenderer.xRot += MathHelper.sin(this.attackTime * (float) Math.PI) * 0.75F;
+                        modelrenderer.xRot += Mth.sin(this.attackTime * (float) Math.PI) * 0.75F;
                     }
                 }
             }

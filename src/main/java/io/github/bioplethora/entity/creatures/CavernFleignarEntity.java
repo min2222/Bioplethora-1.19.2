@@ -1,5 +1,7 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.IBioClassification;
@@ -9,47 +11,58 @@ import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPEffects;
 import io.github.bioplethora.registry.BPTags;
 import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zoglin;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public boolean isHuge;
     public boolean finalize = false;
 
     //public final BPPartEntity[] subEntities;
     //public final BPPartEntity testPart;
 
-    public CavernFleignarEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public CavernFleignarEntity(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
         this.noCulling = true;
 
@@ -73,8 +86,8 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
     @Override
     public void tick() {
         super.tick();
-        if (this.hasEffect(Effects.POISON)) {
-            this.removeEffect(Effects.POISON);
+        if (this.hasEffect(MobEffects.POISON)) {
+            this.removeEffect(MobEffects.POISON);
         }
 
         //tickPart(testPart, 3, 0, 3);
@@ -87,10 +100,10 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
         }
 
         /*
-        Vector3d[] subVec = new Vector3d[subEntities.length];
+        Vec3[] subVec = new Vec3[subEntities.length];
 
         for (int i = 0; i < subEntities.length; ++i) {
-            subVec[i] = new Vector3d(subEntities[i].getX(), subEntities[i].getY(), subEntities[i].getZ());
+            subVec[i] = new Vec3(subEntities[i].getX(), subEntities[i].getY(), subEntities[i].getZ());
         }
 
         for (int i = 0; i < subEntities.length; ++i) {
@@ -113,8 +126,8 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
         return BPEntityClasses.PLETHONEUTRAL;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 4 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 10)
                 .add(Attributes.ATTACK_DAMAGE, 8 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -128,9 +141,9 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 24.0F));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 24.0F));
         this.goalSelector.addGoal(2, new CavernFleignarMeleeGoal(this, 20, 0.8, 0.9));
-        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
         //this.targetSelector.addGoal(2, new CavernFleignarTargetGoal(this, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, false, false, this::validTarget));
@@ -139,16 +152,16 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.death", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.death", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.attack", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.attack", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -158,8 +171,8 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
     }
 
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (worldIn instanceof ServerWorld && BPConfig.COMMON.hellMode.get()) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        if (worldIn instanceof ServerLevel && BPConfig.COMMON.hellMode.get()) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get());
             this.getAttribute(Attributes.ARMOR).setBaseValue(8 * BPConfig.COMMON.mobArmorMultiplier.get());
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(80 * BPConfig.COMMON.mobHealthMultiplier.get());
@@ -180,22 +193,22 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return SoundEvents.SQUID_AMBIENT;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getHurtSound(DamageSource damageSource) {
+    public SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.SQUID_HURT;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return SoundEvents.SQUID_DEATH;
     }
 
     @Override
-    protected float getVoicePitch() {
+	public float getVoicePitch() {
         return 0.5F;
     }
 
@@ -209,14 +222,14 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
                 int poisonDuration = BPConfig.IN_HELLMODE ? 60 : 100;
                 int poisonAmplification = BPConfig.IN_HELLMODE ? 0 : 1;
 
-                if (this.level instanceof ServerWorld) {
-                    ((ServerWorld) this.level).sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 15, 1.2, 0.2, 1.2, 0.01);
+                if (this.level instanceof ServerLevel) {
+                    ((ServerLevel) this.level).sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), 15, 1.2, 0.2, 1.2, 0.01);
                 }
 
-                targetArea.knockback(knockbackValue * 0.5F, MathHelper.sin(this.yRot * ((float) Math.PI / 180F)), -MathHelper.cos(this.yRot * ((float) Math.PI / 180F)));
+                targetArea.knockback(knockbackValue * 0.5F, Mth.sin(this.yRot * ((float) Math.PI / 180F)), -Mth.cos(this.yRot * ((float) Math.PI / 180F)));
                 targetArea.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * 0.75));
                 if (targetArea instanceof CavernFleignarEntity) {
-                    targetArea.addEffect(new EffectInstance(Effects.POISON, poisonDuration, poisonAmplification));
+                    targetArea.addEffect(new MobEffectInstance(MobEffects.POISON, poisonDuration, poisonAmplification));
                 }
             }
         }
@@ -229,7 +242,7 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
         ++this.deathTime;
 
         if (this.deathTime == 40) {
-            this.remove();
+            this.discard();
 
             for (int i = 0; i < 100; ++i) {
                 double d0 = this.random.nextGaussian() * 0.02D;
@@ -248,19 +261,19 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
             super.checkDespawn();
         } else {
             if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
-                this.remove();
+                this.discard();
             }
         }
     }
 
     @Override
-    public boolean checkSpawnRules(IWorld world, SpawnReason reason) {
+    public boolean checkSpawnRules(LevelAccessor world, MobSpawnType reason) {
         return super.checkSpawnRules(world, reason) && CavernFleignarEntity.checkFleignarSpawnRules(level, blockPosition());
     }
 
-    public static boolean checkFleignarSpawnRules(IWorld world, BlockPos pos) {
-        if (world instanceof ISeedReader) {
-            return pos.getY() <= 50 && BPVanillaBiomeFeatureGeneration.isFleignariteChunk(pos, (ISeedReader) world);
+    public static boolean checkFleignarSpawnRules(LevelAccessor world, BlockPos pos) {
+        if (world instanceof WorldGenLevel) {
+            return pos.getY() <= 50 && BPVanillaBiomeFeatureGeneration.isFleignariteChunk(pos, (WorldGenLevel) world);
         } else {
             return  false;
         }
@@ -271,9 +284,9 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
     }
 
     public boolean validTarget(LivingEntity target) {
-        boolean getTag = EntityTypeTags.getAllTags().getTagOrEmpty(BPTags.Entities.FLEIGNAR_TARGETS.getName()).contains(target.getType());
-
-        if (EntityPredicates.ATTACK_ALLOWED.test(target) && (getTag || target instanceof PlayerEntity)) {
+        boolean getTag = target.getType().is(BPTags.Entities.FLEIGNAR_TARGETS);
+        
+        if (this.canAttack(target) && (getTag || target instanceof Player)) {
             return !target.hasEffect(BPEffects.SPIRIT_MANIPULATION.get());
         } else {
             return false;
@@ -281,14 +294,14 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("fleignar_huge", this.isHuge);
         pCompound.putBoolean("hasFinalized", this.finalize);
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         this.isHuge = pCompound.getBoolean("fleignar_huge");
         this.finalize = pCompound.getBoolean("hasFinalized");
     }

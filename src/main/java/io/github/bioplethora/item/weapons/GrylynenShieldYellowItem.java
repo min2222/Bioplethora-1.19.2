@@ -1,19 +1,19 @@
 package io.github.bioplethora.item.weapons;
 
-import io.github.bioplethora.api.BPItemSettings;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import io.github.bioplethora.api.BPItemSettings;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GrylynenShieldYellowItem extends GrylynenShieldBaseItem {
 
@@ -32,7 +32,7 @@ public class GrylynenShieldYellowItem extends GrylynenShieldBaseItem {
     }
 
     @Override
-    public void blockingSkill(ItemStack stack, LivingEntity user, Entity attacker, World world) {
+    public void blockingSkill(ItemStack stack, LivingEntity user, Entity attacker, Level world) {
         // Checks if it is a 50% chance
         if (Math.random() <= 0.5) {
             // Regenerates the user's health by 2 hearts
@@ -42,13 +42,13 @@ public class GrylynenShieldYellowItem extends GrylynenShieldBaseItem {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.yellow_grylynen_shield.yellow_crystal_energy.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.yellow_grylynen_shield.yellow_crystal_energy.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.yellow_grylynen_shield.yellow_crystal_energy.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.yellow_grylynen_shield.yellow_crystal_energy.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 }

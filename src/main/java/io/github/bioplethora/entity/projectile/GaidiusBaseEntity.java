@@ -1,36 +1,36 @@
 package io.github.bioplethora.entity.projectile;
 
 import io.github.bioplethora.registry.BPEnchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
-public abstract class GaidiusBaseEntity extends ProjectileItemEntity {
+public abstract class GaidiusBaseEntity extends ThrowableItemProjectile {
     public boolean isCrit;
 
-    public GaidiusBaseEntity(EntityType<? extends ProjectileItemEntity> type, World world) {
+    public GaidiusBaseEntity(EntityType<? extends ThrowableItemProjectile> type, Level world) {
         super(type, world);
     }
 
-    public GaidiusBaseEntity(EntityType<? extends ProjectileItemEntity> type, LivingEntity entity, World world) {
+    public GaidiusBaseEntity(EntityType<? extends ThrowableItemProjectile> type, LivingEntity entity, Level world) {
         super(type, entity, world);
     }
 
-    public GaidiusBaseEntity(EntityType<? extends ProjectileItemEntity> type, World world, double v, double v1, double v2) {
+    public GaidiusBaseEntity(EntityType<? extends ThrowableItemProjectile> type, Level world, double v, double v1, double v2) {
         super(type, v, v1, v2, world);
     }
 
     @Override
-    protected void onHitEntity(EntityRayTraceResult result) {
+    protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();
         entity.hurt(DamageSource.thrown(this, this.getOwner()), getProjectileDamage(result)
@@ -42,7 +42,7 @@ public abstract class GaidiusBaseEntity extends ProjectileItemEntity {
     public void tick() {
         super.tick();
 
-        Vector3d vector3d = this.getDeltaMovement();
+        Vec3 vector3d = this.getDeltaMovement();
         double d3 = vector3d.x;
         double d4 = vector3d.y;
         double d0 = vector3d.z;
@@ -65,10 +65,10 @@ public abstract class GaidiusBaseEntity extends ProjectileItemEntity {
         return false;
     }
 
-    public abstract int getProjectileDamage(EntityRayTraceResult result);
+    public abstract int getProjectileDamage(EntityHitResult result);
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

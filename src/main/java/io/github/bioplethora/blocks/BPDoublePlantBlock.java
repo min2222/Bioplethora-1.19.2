@@ -1,20 +1,19 @@
 package io.github.bioplethora.blocks;
 
 import com.google.common.collect.ImmutableList;
+
 import io.github.bioplethora.enums.BioPlantShape;
 import io.github.bioplethora.enums.BioPlantType;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoublePlantBlock;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.PlantType;
 
 public class BPDoublePlantBlock extends DoublePlantBlock {
@@ -22,14 +21,14 @@ public class BPDoublePlantBlock extends DoublePlantBlock {
     public BioPlantType type;
     public BioPlantShape shape;
 
-    public BPDoublePlantBlock(BioPlantType type, BioPlantShape shape, Properties properties) {
+    public BPDoublePlantBlock(BioPlantType type, BioPlantShape shape, BlockBehaviour.Properties properties) {
         super(properties);
         this.type = type;
         this.shape = shape;
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, IWorldReader pLevel, BlockPos pPos) {
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos blockpos = pPos.below();
         BlockState groundState = pLevel.getBlockState(blockpos);
         if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
@@ -42,25 +41,20 @@ public class BPDoublePlantBlock extends DoublePlantBlock {
     }
 
     @Override
-    public PlantType getPlantType(IBlockReader world, BlockPos pos) {
+    public PlantType getPlantType(BlockGetter world, BlockPos pos) {
         return PlantType.NETHER;
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, IBlockReader reader, BlockPos pos) {
+    protected boolean mayPlaceOn(BlockState state, BlockGetter reader, BlockPos pos) {
         return getWhitelist().contains(state.getBlock());
     }
 
-    public boolean surviveCondition(BlockState pState, IWorldReader pLevel, BlockPos pPos) {
+    public boolean surviveCondition(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos blockpos = pPos.below();
         if (pState.getBlock() == this)
             return getWhitelist().contains(pLevel.getBlockState(blockpos).getBlock());
         return this.mayPlaceOn(pLevel.getBlockState(blockpos), pLevel, blockpos);
-    }
-
-    @Override
-    public void placeAt(IWorld p_196390_1_, BlockPos p_196390_2_, int p_196390_3_) {
-        super.placeAt(p_196390_1_, p_196390_2_, p_196390_3_);
     }
 
     public ImmutableList<Block> getWhitelist() {
@@ -68,7 +62,7 @@ public class BPDoublePlantBlock extends DoublePlantBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, IBlockReader pLevel, BlockPos pPos, ISelectionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return getShape();
     }
 

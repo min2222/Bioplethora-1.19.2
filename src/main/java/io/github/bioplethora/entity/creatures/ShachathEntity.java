@@ -1,71 +1,92 @@
 package io.github.bioplethora.entity.creatures;
 
-import io.github.bioplethora.api.world.BlockUtils;
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.api.world.EffectUtils;
-import io.github.bioplethora.api.world.WorldgenUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.entity.IMobCappedEntity;
 import io.github.bioplethora.entity.SummonableMonsterEntity;
-import io.github.bioplethora.entity.ai.goals.*;
+import io.github.bioplethora.entity.ai.goals.CopyTargetOwnerGoal;
+import io.github.bioplethora.entity.ai.goals.ShachathAttackWaveGoal;
+import io.github.bioplethora.entity.ai.goals.ShachathCloningGoal;
+import io.github.bioplethora.entity.ai.goals.ShachathEntityStrikeGoal;
+import io.github.bioplethora.entity.ai.goals.ShachathQuickShootingGoal;
 import io.github.bioplethora.entity.others.BPEffectEntity;
 import io.github.bioplethora.enums.BPEffectTypes;
 import io.github.bioplethora.enums.BPEntityClasses;
-import io.github.bioplethora.registry.*;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.*;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.BossInfo;
+import io.github.bioplethora.registry.BPAttributes;
+import io.github.bioplethora.registry.BPItems;
+import io.github.bioplethora.registry.BPParticles;
+import io.github.bioplethora.registry.BPSoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent.BossBarColor;
+import net.minecraft.world.BossEvent.BossBarOverlay;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class ShachathEntity extends SummonableMonsterEntity implements IAnimatable, IBioClassification, IMobCappedEntity {
-    protected static final DataParameter<Boolean> ATTACKING2 = EntityDataManager.defineId(ShachathEntity.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> STRIKING = EntityDataManager.defineId(ShachathEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DATA_IS_QUICKSHOOTING = EntityDataManager.defineId(ShachathEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DATA_IS_CLONE = EntityDataManager.defineId(ShachathEntity.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> ATTACKING2 = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> STRIKING = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_IS_QUICKSHOOTING = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_IS_CLONE = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private final TranslationTextComponent cloneProgText = new TranslationTextComponent("bossbar.bioplethora.shachath.clone_progress");
+    private final Component cloneProgText = Component.translatable("bossbar.bioplethora.shachath.clone_progress");
 
-    private final ServerBossInfo bossInfo = new ServerBossInfo(this.getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
-    private final ServerBossInfo cloneProgress = new ServerBossInfo(cloneProgText, BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossBarColor.RED, BossBarOverlay.PROGRESS);
+    private final ServerBossEvent cloneProgress = new ServerBossEvent(cloneProgText, BossBarColor.WHITE, BossBarOverlay.PROGRESS);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public BlockPos boundOrigin;
     protected int tpParticleAmount = 30;
     protected double tpParticleRadius = 0.3;
@@ -74,15 +95,15 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     public int tpTimer;
     public int jumpTimer;
 
-    public ShachathEntity(EntityType<? extends MonsterEntity> type, World world) {
+    public ShachathEntity(EntityType<? extends Monster> type, Level world) {
         super(type, world);
         this.moveControl = new ShachathEntity.NonGroundController(this);
         this.noCulling = true;
         this.tpTimer = 0;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 15 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 15 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -102,7 +123,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 24.0F));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 24.0F));
         this.goalSelector.addGoal(1, new ShachathEntity.NonGroundMoveRandomGoal());
         this.goalSelector.addGoal(2, new ShachathEntity.NonGroundMoveToTargetGoal());
         this.goalSelector.addGoal(2, new ShachathAttackWaveGoal.Wave1(this, 30, 0.5, 0.6));
@@ -110,8 +131,8 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
         this.goalSelector.addGoal(2, new ShachathEntityStrikeGoal(this));
         this.goalSelector.addGoal(3, new ShachathQuickShootingGoal(this));
         this.goalSelector.addGoal(3, new ShachathCloningGoal(this));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this, ShachathEntity.class).setAlertOthers());
         this.targetSelector.addGoal(1, new CopyTargetOwnerGoal(this));
 
@@ -134,51 +155,51 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event) {
 
         if (this.isQuickShooting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.quick_shooting", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.quick_shooting", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 0;
             return PlayState.CONTINUE;
         }
 
         if (this.getStriking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.striking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.striking", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 0;
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking2()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.attacking2", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.attacking2", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 0;
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.attacking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.attacking", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 0;
             return PlayState.CONTINUE;
         }
 
         if (isInWater() || level.isEmptyBlock(blockPosition().below())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.float", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.float", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 5;
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.running", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.running", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 5;
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.idle", EDefaultLoopTypes.LOOP));
         event.getController().transitionLengthTicks = 5;
         return PlayState.CONTINUE;
     }
 
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld iServerWorld, DifficultyInstance difficultyInstance, SpawnReason spawnReason, @Nullable ILivingEntityData iLivingEntityData, @Nullable CompoundNBT compoundNBT) {
-        iLivingEntityData = super.finalizeSpawn(iServerWorld, difficultyInstance, spawnReason, iLivingEntityData, compoundNBT);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor iServerLevel, DifficultyInstance difficultyInstance, MobSpawnType spawnReason, @Nullable SpawnGroupData iLivingEntityData, @Nullable CompoundTag compoundNBT) {
+        iLivingEntityData = super.finalizeSpawn(iServerLevel, difficultyInstance, spawnReason, iLivingEntityData, compoundNBT);
         if (!this.level.isClientSide()) {
-            this.setItemSlot(EquipmentSlotType.MAINHAND, new ItemStack(BPItems.VERMILION_BLADE.get()));
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(BPItems.VERMILION_BLADE.get()));
         }
         return iLivingEntityData;
     }
@@ -186,14 +207,14 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     public void aiStep() {
         super.aiStep();
         if (!this.isClone()) {
-            this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
-            this.cloneProgress.setPercent((float) this.cloneChargeTime / 300f);
+            this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+            this.cloneProgress.setProgress((float) this.cloneChargeTime / 300f);
         }
         if (this.getTarget() != null) {
             int areaint = 3;
             double x = this.getX(), y = this.getY(), z = this.getZ();
-            AxisAlignedBB area = new AxisAlignedBB(x - (areaint / 2d), y, z - (areaint / 2d), x + (areaint / 2d), y + (areaint / 2d), z + (areaint / 2d));
-            World world = this.level;
+            AABB area = new AABB(x - (areaint / 2d), y, z - (areaint / 2d), x + (areaint / 2d), y + (areaint / 2d), z + (areaint / 2d));
+            Level world = this.level;
             for (LivingEntity entityIterator : world.getEntitiesOfClass(LivingEntity.class, area)) {
                 if (entityIterator == this.getTarget()) {
                     //entityIterator.hurt(BPDamageSources.helioSlashed(this, this), this.isClone() ? 1F : 1.5F);
@@ -203,8 +224,8 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
                         this.tpTimer = 0;
                     }
                 }
-                if ((entityIterator instanceof MobEntity)) {
-                    if (((MobEntity) entityIterator).getTarget() == this) {
+                if ((entityIterator instanceof Mob)) {
+                    if (((Mob) entityIterator).getTarget() == this) {
                         //entityIterator.hurt(BPDamageSources.helioSlashed(this, this), this.isClone() ? 1F : 1.5F);
                     }
                 }
@@ -219,28 +240,28 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
 
     public void particleCharge(int index) {
         if (!level.isClientSide()) {
-            Vector3d from = new Vector3d(getX(), getY(), getZ());
+            Vec3 from = new Vec3(getX(), getY(), getZ());
             if (index == 0) {
-                Vector3d to = new Vector3d(getX() + (-40 + getRandom().nextInt(80)), 255, getZ() + (-40 + getRandom().nextInt(80)));
-                Vector3d per = to.subtract(from).normalize();
-                Vector3d current = from.add(0, 0, 0);
+                Vec3 to = new Vec3(getX() + (-40 + getRandom().nextInt(80)), 255, getZ() + (-40 + getRandom().nextInt(80)));
+                Vec3 per = to.subtract(from).normalize();
+                Vec3 current = from.add(0, 0, 0);
                 double distance = from.distanceTo(to);
                 for (double i = 0; i < distance; i++) {
                     if (distance < 64) {
-                        EffectUtils.sendParticles((ServerWorld) level, ParticleTypes.POOF, current.x(), current.y(), current.z(), 1, 0, 0, 0, 0.01, 0.1, 0.01);
+                        EffectUtils.sendParticles((ServerLevel) level, ParticleTypes.POOF, current.x(), current.y(), current.z(), 1, 0, 0, 0, 0.01, 0.1, 0.01);
                         current = current.add(per);
                     }
                 }
             } else if (index == 1 || index == 2 || index == 3) {
                 for (int i = 0; i < 180; i++) {
-                    Vector3d to = new Vector3d(getX() + ((Math.sin(i) * 200) * index), 255, getZ() + ((Math.cos(i) * 200) * index));
-                    Vector3d per = to.subtract(from).normalize();
-                    Vector3d current = from.add(0, 0, 0);
+                    Vec3 to = new Vec3(getX() + ((Math.sin(i) * 200) * index), 255, getZ() + ((Math.cos(i) * 200) * index));
+                    Vec3 per = to.subtract(from).normalize();
+                    Vec3 current = from.add(0, 0, 0);
                     double distance = from.distanceTo(to);
                     for (double j = 0; j < distance; j++) {
                         if (distance < 64) {
-                            IParticleData particle = index == 3 ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME;
-                            EffectUtils.sendParticles((ServerWorld) level, particle, current.x(), current.y(), current.z(), 1, 0, 0, 0, Math.sin(i) / 4, 0.1, Math.cos(i) / 4);
+                            ParticleOptions particle = index == 3 ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME;
+                            EffectUtils.sendParticles((ServerLevel) level, particle, current.x(), current.y(), current.z(), 1, 0, 0, 0, Math.sin(i) / 4, 0.1, Math.cos(i) / 4);
                             current = current.add(per);
                         }
                     }
@@ -250,7 +271,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public void swing(Hand pHand) {
+    public void swing(InteractionHand pHand) {
         super.swing(pHand);
         if (attackPhase == 0) {
             BPEffectEntity.createInstance(this, BPEffectTypes.SHACHATH_SLASH_FLAT);
@@ -264,12 +285,12 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
                 }
             }
         }
-        double d0 = -MathHelper.sin(this.yRot * ((float)Math.PI / 180F)) * 6;
-        double d1 = MathHelper.cos(this.yRot * ((float)Math.PI / 180F)) * 6;
+        double d0 = -Mth.sin(this.yRot * ((float)Math.PI / 180F)) * 6;
+        double d1 = Mth.cos(this.yRot * ((float)Math.PI / 180F)) * 6;
         if (attackPhase == 1) {
             BPEffectEntity.createInstance(this, BPEffectTypes.SHACHATH_SLASH_FRONT);
             this.playSound(BPSoundEvents.SHACHATH_SLASH.get(), 0.75F, 0.75F + random.nextFloat());
-            for (LivingEntity entities : level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(getX() - d0, getY() - 2.5, getZ() - d1, getX() + d0, getY() + 2.5, getZ() + d1))) {
+            for (LivingEntity entities : level.getEntitiesOfClass(LivingEntity.class, new AABB(getX() - d0, getY() - 2.5, getZ() - d1, getX() + d0, getY() + 2.5, getZ() + d1))) {
                 if (entities != this) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
                     entities.hurt(DamageSource.mobAttack(this), this.isClone() ? 8F : 12F);
@@ -281,7 +302,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayerEntity player) {
+    public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
         if (!this.isClone()) {
             this.bossInfo.addPlayer(player);
@@ -290,7 +311,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayerEntity player) {
+    public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         if (!this.isClone()) {
             this.bossInfo.removePlayer(player);
@@ -350,10 +371,10 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
         boolean isNegVal = this.getRandom().nextBoolean();
         int tpLoc = this.getRandom().nextInt(15);
 
-        this.level.playSound(null, this.getX(), this.getY(), this.getZ(), this.getTeleportSound(), SoundCategory.HOSTILE, (float) 1, (float) 1);
+        this.level.playSound(null, this.getX(), this.getY(), this.getZ(), this.getTeleportSound(), SoundSource.HOSTILE, (float) 1, (float) 1);
 
-        if (this.level instanceof ServerWorld) {
-            ((ServerWorld) this.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY(), this.getZ(), this.tpParticleAmount, this.tpParticleRadius, this.tpParticleRadius, this.tpParticleRadius, 0.01);
+        if (this.level instanceof ServerLevel) {
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY(), this.getZ(), this.tpParticleAmount, this.tpParticleRadius, this.tpParticleRadius, this.tpParticleRadius, 0.01);
         }
 
         BlockPos blockpos = new BlockPos(this.getX() + (isNegVal ? tpLoc : -tpLoc), this.getY(), this.getZ() + (isNegVal ? tpLoc : -tpLoc));
@@ -364,10 +385,10 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     public boolean canSeePos(BlockPos pEntity) {
-        Vector3d vector3d = new Vector3d(this.getX(), this.getEyeY(), this.getZ());
-        Vector3d vector3d1 = new Vector3d(pEntity.getX(), pEntity.getY(), pEntity.getZ());
+        Vec3 vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
+        Vec3 vector3d1 = new Vec3(pEntity.getX(), pEntity.getY(), pEntity.getZ());
         if (vector3d1.distanceToSqr(vector3d) > 128.0D * 128.0D) return false; //Forge Backport MC-209819
-        return this.level.clip(new RayTraceContext(vector3d, vector3d1, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this)).getType() == RayTraceResult.Type.MISS;
+        return this.level.clip(new ClipContext(vector3d, vector3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
     }
 
     public void descendEffect() {
@@ -379,9 +400,9 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     public void teleportWithEffect(double xLoc, double yLoc, double zLoc) {
-        this.level.playSound(null, xLoc, yLoc, zLoc, this.getTeleportSound(), SoundCategory.HOSTILE, (float) 1, (float) 1);
-        if (this.level instanceof ServerWorld) {
-            ((ServerWorld) this.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, xLoc, yLoc, zLoc, this.tpParticleAmount, this.tpParticleRadius, this.tpParticleRadius, this.tpParticleRadius, 0.01);
+        this.level.playSound(null, xLoc, yLoc, zLoc, this.getTeleportSound(), SoundSource.HOSTILE, (float) 1, (float) 1);
+        if (this.level instanceof ServerLevel) {
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, xLoc, yLoc, zLoc, this.tpParticleAmount, this.tpParticleRadius, this.tpParticleRadius, this.tpParticleRadius, 0.01);
         }
         this.moveTo(xLoc, yLoc, zLoc);
     }
@@ -390,7 +411,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
         return 0.6F;
     }
 
-    public net.minecraft.util.SoundEvent getTeleportSound() {
+    public SoundEvent getTeleportSound() {
         return SoundEvents.BLAZE_SHOOT;
     }
 
@@ -402,7 +423,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.putBoolean("isClone", entityData.get(DATA_IS_CLONE));
 
@@ -414,7 +435,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         super.readAdditionalSaveData(compoundNBT);
         this.setClone(compoundNBT.getBoolean("isClone"));
         if (compoundNBT.contains("BoundX")) {
@@ -423,17 +444,17 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return BPSoundEvents.SHACHATH_IDLE.get();
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getHurtSound(DamageSource damageSource) {
+    public SoundEvent getHurtSound(DamageSource damageSource) {
         return BPSoundEvents.SHACHATH_HURT.get();
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return BPSoundEvents.SHACHATH_DEATH.get();
     }
 
@@ -451,28 +472,28 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
         return this.boundOrigin;
     }
 
-    public class NonGroundController extends MovementController {
+    public class NonGroundController extends MoveControl {
         public NonGroundController(ShachathEntity floatingMob) {
             super(floatingMob);
         }
 
         public void tick() {
             ShachathEntity shachath = ShachathEntity.this;
-            if (this.operation == MovementController.Action.MOVE_TO && !shachath.isVehicle()) {
-                Vector3d vector3d = new Vector3d(this.wantedX - shachath.getX(), this.wantedY - shachath.getY(), this.wantedZ - shachath.getZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO && !shachath.isVehicle()) {
+                Vec3 vector3d = new Vec3(this.wantedX - shachath.getX(), this.wantedY - shachath.getY(), this.wantedZ - shachath.getZ());
                 double d0 = vector3d.length();
                 if (d0 < shachath.getBoundingBox().getSize()) {
-                    this.operation = MovementController.Action.WAIT;
+                    this.operation = MoveControl.Operation.WAIT;
                     shachath.setDeltaMovement(shachath.getDeltaMovement().scale(0.5D));
                 } else {
                     shachath.setDeltaMovement(shachath.getDeltaMovement().add(vector3d.scale((this.speedModifier * 0.05D / d0) * (shachath.isInWater() ? 2.2 : 1))));
                     if (shachath.getTarget() == null) {
-                        Vector3d vector3d1 = shachath.getDeltaMovement();
-                        shachath.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+                        Vec3 vector3d1 = shachath.getDeltaMovement();
+                        shachath.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
                     } else {
                         double d2 = shachath.getTarget().getX() - shachath.getX();
                         double d1 = shachath.getTarget().getZ() - shachath.getZ();
-                        shachath.yRot = -((float) MathHelper.atan2(d2, d1)) * (180F / (float) Math.PI);
+                        shachath.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
                     }
                     shachath.yBodyRot = shachath.yRot;
                 }
@@ -505,7 +526,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
 
         public void start() {
             LivingEntity livingentity = ShachathEntity.this.getTarget();
-            Vector3d vector3d = livingentity.getEyePosition(1.0F);
+            Vec3 vector3d = livingentity.getEyePosition(1.0F);
             ShachathEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.75D);
         }
 
@@ -518,7 +539,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
             if (!ShachathEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 double d0 = ShachathEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                    Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     ShachathEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }

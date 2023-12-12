@@ -1,12 +1,13 @@
 package io.github.bioplethora.registry;
 
 import com.google.common.collect.Maps;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ComposterBlock;
-import net.minecraft.block.FireBlock;
-import net.minecraft.item.AxeItem;
-import net.minecraft.util.IItemProvider;
+
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraft.world.level.block.FireBlock;
 
 public class BPExtras {
 
@@ -52,12 +53,12 @@ public class BPExtras {
         fireblock.setFlammable(block, encouragement, flammability);
     }
 
-    public static void addCompostableBlock(IItemProvider item, float chance) {
+    public static void addCompostableBlock(ItemLike item, float chance) {
         ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
     }
 
     public static void addStripableBlock(Block beforeResult, Block afterResult) {
-        AxeItem.STRIPABLES = Maps.newHashMap(AxeItem.STRIPABLES);
-        AxeItem.STRIPABLES.put(beforeResult, afterResult);
+        AxeItem.STRIPPABLES = Maps.newHashMap(AxeItem.STRIPPABLES);
+        AxeItem.STRIPPABLES.put(beforeResult, afterResult);
     }
 }

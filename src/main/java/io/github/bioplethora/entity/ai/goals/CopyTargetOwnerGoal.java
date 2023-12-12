@@ -1,13 +1,13 @@
 package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.SummonableMonsterEntity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.goal.TargetGoal;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 
 public class CopyTargetOwnerGoal extends TargetGoal {
 
-    private final EntityPredicate copyOwnerTargeting = (new EntityPredicate()).allowUnseeable().ignoreInvisibilityTesting();
+    private final TargetingConditions copyOwnerTargeting = TargetingConditions.forCombat().ignoreLineOfSight().ignoreInvisibilityTesting();
     private final SummonableMonsterEntity summonableMonster;
 
     public CopyTargetOwnerGoal(SummonableMonsterEntity summonableMonster) {
@@ -16,13 +16,13 @@ public class CopyTargetOwnerGoal extends TargetGoal {
     }
 
     public boolean canUse() {
-        return this.summonableMonster.getOwner() != null && this.summonableMonster.getOwner() instanceof MobEntity &&
-                ((MobEntity) this.summonableMonster.getOwner()).getTarget() != null &&
-                this.canAttack(((MobEntity) this.summonableMonster.getOwner()).getTarget(), this.copyOwnerTargeting);
+        return this.summonableMonster.getOwner() != null && this.summonableMonster.getOwner() instanceof Mob &&
+                ((Mob) this.summonableMonster.getOwner()).getTarget() != null &&
+                this.canAttack(((Mob) this.summonableMonster.getOwner()).getTarget(), this.copyOwnerTargeting);
     }
 
     public void start() {
-        this.summonableMonster.setTarget(((MobEntity) this.summonableMonster.getOwner()).getTarget());
+        this.summonableMonster.setTarget(((Mob) this.summonableMonster.getOwner()).getTarget());
         super.start();
     }
 }

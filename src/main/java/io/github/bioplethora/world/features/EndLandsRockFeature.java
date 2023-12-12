@@ -1,20 +1,15 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-
-import java.util.Random;
-import java.util.logging.Logger;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class EndLandsRockFeature extends Feature<NoFeatureConfig> {
 

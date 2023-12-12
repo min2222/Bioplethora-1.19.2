@@ -1,20 +1,18 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.world.featureconfigs.ExpandedLakeFeatureConfig;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.SectionPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.LightType;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.structure.Structure;
-
-import java.util.Random;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();

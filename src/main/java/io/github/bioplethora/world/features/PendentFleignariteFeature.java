@@ -1,14 +1,15 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
 import io.github.bioplethora.world.featureconfigs.PendentBlocksFeatureConfig;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-
-import java.util.Random;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class PendentFleignariteFeature extends PendentBlocksFeature {
 

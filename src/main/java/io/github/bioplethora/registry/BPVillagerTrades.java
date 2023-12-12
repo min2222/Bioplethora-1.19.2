@@ -2,11 +2,11 @@ package io.github.bioplethora.registry;
 
 import io.github.bioplethora.api.villager.TradeConstructorUtils;
 import io.github.bioplethora.api.villager.VillagerUtils;
-import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.village.VillagerTradesEvent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BPVillagerTrades {
 

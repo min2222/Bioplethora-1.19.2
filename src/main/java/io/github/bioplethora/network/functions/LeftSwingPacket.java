@@ -1,12 +1,12 @@
 package io.github.bioplethora.network.functions;
 
-import io.github.bioplethora.event.ServerWorldEvents;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.Hand;
-import net.minecraftforge.fml.network.NetworkEvent;
-
 import java.util.function.Supplier;
+
+import io.github.bioplethora.event.ServerWorldEvents;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.NetworkEvent;
 
 public class LeftSwingPacket {
 
@@ -15,16 +15,16 @@ public class LeftSwingPacket {
 
     public static void leftClickTrigger(LeftSwingPacket message, Supplier<NetworkEvent.Context> context) {
         context.get().setPacketHandled(true);
-        PlayerEntity player = context.get().getSender();
+        Player player = context.get().getSender();
         if(player != null) {
-            ServerWorldEvents.hitHandler(player, player.getItemInHand(Hand.MAIN_HAND));
+            ServerWorldEvents.hitHandler(player, player.getItemInHand(InteractionHand.MAIN_HAND));
         }
     }
 
-    public static void encode(LeftSwingPacket message, PacketBuffer buffer) {
+    public static void encode(LeftSwingPacket message, FriendlyByteBuf buffer) {
     }
 
-    public static LeftSwingPacket decode(PacketBuffer buffer) {
+    public static LeftSwingPacket decode(FriendlyByteBuf buffer) {
         return new LeftSwingPacket();
     }
 }

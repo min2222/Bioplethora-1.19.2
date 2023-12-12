@@ -5,18 +5,18 @@ import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import io.github.bioplethora.entity.others.BPEffectEntity;
 import io.github.bioplethora.enums.BPEffectTypes;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class AlphemKingPursuitGoal extends Goal {
 
@@ -47,7 +47,7 @@ public class AlphemKingPursuitGoal extends Goal {
         if (targetPos != null) {
             this.king.setNoGravity(false);
             float moveVector = (float) Math.toRadians(this.king.vecOfTarget + 90 + this.king.getRandom().nextFloat() * 150 - 75);
-            Vector3d getVector = this.king.getDeltaMovement().add(1.5F * Math.cos(moveVector), 0, 1.5F * Math.sin(moveVector));
+            Vec3 getVector = this.king.getDeltaMovement().add(1.5F * Math.cos(moveVector), 0, 1.5F * Math.sin(moveVector));
             this.king.setDeltaMovement(getVector.x(), 1.0, getVector.z());
             pursTime = 0;
             hasRaised = false;
@@ -97,7 +97,7 @@ public class AlphemKingPursuitGoal extends Goal {
     public void smashDown() {
         int areaint = 5;
         int wsHeight = AlphemKingEntity.getGroundPos(king.level, (int) king.getX(), (int) king.getZ()).getY();
-        AxisAlignedBB aabb = new AxisAlignedBB(king.getX() - areaint, (king.getY() - areaint) - (king.getY() - wsHeight), king.getZ() - areaint, king.getX() + areaint, king.getY(), king.getZ() + areaint);
+        AABB aabb = new AABB(king.getX() - areaint, (king.getY() - areaint) - (king.getY() - wsHeight), king.getZ() - areaint, king.getX() + areaint, king.getY(), king.getZ() + areaint);
         for (LivingEntity areaEnt : king.level.getEntitiesOfClass(LivingEntity.class, aabb)) {
             if (areaEnt != this.king) {
                 areaEnt.moveTo(areaEnt.getX(), targetPos.getY(), areaEnt.getZ());
@@ -112,17 +112,17 @@ public class AlphemKingPursuitGoal extends Goal {
             if (areaEnt != this.king) {
                 areaEnt.hurt(DamageSource.explosion(this.king), 7.0F);
                 areaEnt.knockback(2F, this.king.getX() - areaEnt.getX(), this.king.getZ() - areaEnt.getZ());
-                areaEnt.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 100, 2));
+                areaEnt.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
             }
         }
 
         this.king.playSound(SoundEvents.WITHER_BREAK_BLOCK, 1.0F, 1.0F);
         BlockUtils.knockUpRandomNearbyBlocks(king.level, 0.3D, targetPos.below(), 3, 1, 3, false, true);
 
-        if (king.level instanceof ServerWorld) {
-            ((ServerWorld) king.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, targetPos.getX(), targetPos.getY(), targetPos.getZ(),
+        if (king.level instanceof ServerLevel) {
+            ((ServerLevel) king.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, targetPos.getX(), targetPos.getY(), targetPos.getZ(),
                     25, 0.45, 0.45, 0.45, 0.001);
-            ((ServerWorld) king.level).sendParticles(ParticleTypes.POOF, targetPos.getX(), targetPos.getY(), targetPos.getZ(),
+            ((ServerLevel) king.level).sendParticles(ParticleTypes.POOF, targetPos.getX(), targetPos.getY(), targetPos.getZ(),
                     25, 0.45, 0.45, 0.45, 0.001);
         }
 
@@ -141,9 +141,9 @@ public class AlphemKingPursuitGoal extends Goal {
     }
 
     public void teleportWithEffect(double xLoc, double yLoc, double zLoc) {
-        this.king.level.playSound(null, xLoc, yLoc, zLoc, SoundEvents.EVOKER_FANGS_ATTACK, SoundCategory.HOSTILE, (float) 1, (float) 1);
-        if (this.king.level instanceof ServerWorld) {
-            ((ServerWorld) this.king.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, xLoc, yLoc, zLoc, 55, 2, 2, 2, 0.0001);
+        this.king.level.playSound(null, xLoc, yLoc, zLoc, SoundEvents.EVOKER_FANGS_ATTACK, SoundSource.HOSTILE, (float) 1, (float) 1);
+        if (this.king.level instanceof ServerLevel) {
+            ((ServerLevel) this.king.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, xLoc, yLoc, zLoc, 55, 2, 2, 2, 0.0001);
         }
         this.king.moveTo(xLoc, yLoc, zLoc);
     }

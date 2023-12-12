@@ -1,12 +1,12 @@
 package io.github.bioplethora.enchantments.gaidius;
 
 import io.github.bioplethora.enchantments.BPEnchantmentHelper;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class RackingEdgeEnchantment extends Enchantment {
 
-    public RackingEdgeEnchantment(Enchantment.Rarity rarity, EquipmentSlotType... slotTypes) {
+    public RackingEdgeEnchantment(Enchantment.Rarity rarity, EquipmentSlot... slotTypes) {
         super(rarity, BPEnchantmentHelper.GAIDIUS, slotTypes);
     }
 

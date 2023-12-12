@@ -77,19 +77,19 @@ public class EndBiomeMixinAssistant {
             float j = z / 2;
             float k = x % 2;
             float l = z % 2;
-            float f = 100.0F - MathHelper.sqrt(x * x + z * z) * 8.0F;
-            f = MathHelper.clamp(f, -100.0F, 80.0F);
+            float f = 100.0F - Mth.sqrt(x * x + z * z) * 8.0F;
+            f = Mth.clamp(f, -100.0F, 80.0F);
 
             for(int i1 = -12; i1 <= 12; ++i1) {
                 for(int j1 = -12; j1 <= 12; ++j1) {
                     long k1 = (long)(i + i1);
                     long l1 = (long)(j + j1);
                     if (k1 * k1 + l1 * l1 > 4096L && noiseGenerator.getValue((double)k1, (double)l1) < (double)-0.9F) {
-                        float f1 = (MathHelper.abs((float)k1) * 3439.0F + MathHelper.abs((float)l1) * 147.0F) % 13.0F + 9.0F;
+                        float f1 = (Mth.abs((float)k1) * 3439.0F + Mth.abs((float)l1) * 147.0F) % 13.0F + 9.0F;
                         float f2 = k - i1 * 2;
                         float f3 = l - j1 * 2;
-                        float f4 = 100.0F - MathHelper.sqrt(f2 * f2 + f3 * f3) * f1;
-                        f4 = MathHelper.clamp(f4, -100.0F, 80.0F);
+                        float f4 = 100.0F - Mth.sqrt(f2 * f2 + f3 * f3) * f1;
+                        f4 = Mth.clamp(f4, -100.0F, 80.0F);
                         f = Math.max(f, f4);
                     }
                 }

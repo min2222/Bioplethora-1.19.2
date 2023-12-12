@@ -1,10 +1,30 @@
 package io.github.bioplethora.registry;
 
 import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.entity.creatures.*;
+import io.github.bioplethora.entity.creatures.AlphemEntity;
+import io.github.bioplethora.entity.creatures.AlphemKingEntity;
+import io.github.bioplethora.entity.creatures.AltyrusEntity;
+import io.github.bioplethora.entity.creatures.CavernFleignarEntity;
+import io.github.bioplethora.entity.creatures.CrephoxlEntity;
+import io.github.bioplethora.entity.creatures.CuttlefishEntity;
+import io.github.bioplethora.entity.creatures.DwarfMossadileEntity;
+import io.github.bioplethora.entity.creatures.EurydnEntity;
+import io.github.bioplethora.entity.creatures.FrostbiteGolemEntity;
+import io.github.bioplethora.entity.creatures.GaugalemEntity;
+import io.github.bioplethora.entity.creatures.GrylynenEntity;
+import io.github.bioplethora.entity.creatures.MyliothanEntity;
+import io.github.bioplethora.entity.creatures.MyuthineEntity;
+import io.github.bioplethora.entity.creatures.NandbriEntity;
+import io.github.bioplethora.entity.creatures.OnofishEntity;
+import io.github.bioplethora.entity.creatures.PeaguinEntity;
+import io.github.bioplethora.entity.creatures.ShachathEntity;
+import io.github.bioplethora.entity.creatures.TelemreyeEntity;
+import io.github.bioplethora.entity.creatures.TerraithEntity;
+import io.github.bioplethora.entity.creatures.TrapjawEntity;
+import io.github.bioplethora.entity.creatures.VoidjawEntity;
 import io.github.bioplethora.entity.others.PrimordialRingEntity;
 import io.github.bioplethora.enums.BPGrylynenTier;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
+import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,7 +38,7 @@ public class BPEntityAttributes {
         //Ecoharmless
         event.put(BPEntities.CUTTLEFISH.get(), CuttlefishEntity.setCustomAttributes().build());
         event.put(BPEntities.ONOFISH.get(), OnofishEntity.setCustomAttributes().build());
-        event.put(BPEntities.TRIGGERFISH.get(), AbstractFishEntity.createAttributes().build());
+        event.put(BPEntities.TRIGGERFISH.get(), AbstractFish.createAttributes().build());
 
         event.put(BPEntities.SOUL_EURYDN.get(), EurydnEntity.setCustomAttributes().build());
         event.put(BPEntities.FIERY_EURYDN.get(), EurydnEntity.setCustomAttributes().build());

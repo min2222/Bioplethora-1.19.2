@@ -5,38 +5,38 @@ import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.entity.projectile.CryeanumGaidiusEntity;
 import io.github.bioplethora.entity.projectile.GaidiusBaseEntity;
 import io.github.bioplethora.registry.BPEnchantments;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.UseAction;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 
 public class GaidiusBaseItem extends SwordItem implements IReachWeapon {
 
     public ItemProps gaidiusProps;
 
-    public GaidiusBaseItem(IItemTier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, ItemProps gaidiusProps, Properties pProperties) {
+    public GaidiusBaseItem(Tier pTier, int pAttackDamageModifier, float pAttackSpeedModifier, ItemProps gaidiusProps, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         this.gaidiusProps = gaidiusProps;
     }
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack itemstack = entity.getItemInHand(handIn);
         entity.startUsingItem(handIn);
-        return ActionResult.consume(itemstack);
+        return InteractionResultHolder.consume(itemstack);
     }
 
-    public UseAction getUseAnimation(ItemStack p_77661_1_) {
-        return UseAction.SPEAR;
+    public UseAnim getUseAnimation(ItemStack p_77661_1_) {
+        return UseAnim.SPEAR;
     }
 
     public int getUseDuration(ItemStack p_77626_1_) {
@@ -44,7 +44,7 @@ public class GaidiusBaseItem extends SwordItem implements IReachWeapon {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, World world, LivingEntity entity, int value) {
+    public void releaseUsing(ItemStack stack, Level world, LivingEntity entity, int value) {
         super.releaseUsing(stack, world, entity, value);
 
         int i = this.getUseDuration(stack) - value;
@@ -58,11 +58,11 @@ public class GaidiusBaseItem extends SwordItem implements IReachWeapon {
 
             entity.playSound(SoundEvents.TRIDENT_THROW, 1.2F, 0.5F);
 
-            if (entity instanceof PlayerEntity) {
-                PlayerEntity playerentity = (PlayerEntity) entity;
+            if (entity instanceof Player) {
+                Player playerentity = (Player) entity;
 
                 playerentity.awardStat(Stats.ITEM_USED.get(this));
-                if (!playerentity.abilities.instabuild) {
+                if (!playerentity.getAbilities().instabuild) {
                     stack.hurtAndBreak(
                             50 - (EnchantmentHelper.getItemEnchantmentLevel(BPEnchantments.SOFTSHOOTING.get(), stack) * 8),
                             entity, (entity1) -> entity1.broadcastBreakEvent(EntityUtils.getSlotTypeFromItem(stack, entity))
@@ -72,7 +72,7 @@ public class GaidiusBaseItem extends SwordItem implements IReachWeapon {
         }
     }
 
-    public void shootAt(ItemStack stack, World world, LivingEntity entity, int i, float yRotAddition) {
+    public void shootAt(ItemStack stack, Level world, LivingEntity entity, int i, float yRotAddition) {
         float gaidiusCritVelocityMultiplier = i >= 30 ? 2F : 1F;
         GaidiusBaseEntity gaidius = gaidiusProps.projectile.test(world, entity);
 
@@ -98,7 +98,7 @@ public class GaidiusBaseItem extends SwordItem implements IReachWeapon {
     }
 
     public interface IGaidiusPredicate {
-        GaidiusBaseEntity test(World world, LivingEntity entity);
+        GaidiusBaseEntity test(Level world, LivingEntity entity);
     }
 
     public static class ItemProps {

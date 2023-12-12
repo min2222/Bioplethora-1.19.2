@@ -1,37 +1,38 @@
 package io.github.bioplethora.gui.container;
 
 
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftResultInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IWorldPosCallable;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractReinforcingContainer extends Container {
+import io.github.bioplethora.registry.BPBlocks;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-    protected final CraftResultInventory resultSlots = new CraftResultInventory();
-    protected final IInventory inputSlots = new Inventory(3) {
+public abstract class AbstractReinforcingContainer extends AbstractContainerMenu {
+
+    protected final ResultContainer resultSlots = new ResultContainer();
+    protected final Container inputSlots = new SimpleContainer(3) {
         public void setChanged() {
             super.setChanged();
             AbstractReinforcingContainer.this.slotsChanged(this);
         }
     };
-    protected final IWorldPosCallable access;
-    protected final PlayerEntity player;
+    protected final ContainerLevelAccess access;
+    protected final Player player;
 
-    protected abstract boolean mayPickup(PlayerEntity pPlayer, boolean pHasStack);
+    protected abstract boolean mayPickup(Player pPlayer, boolean pHasStack);
 
-    protected abstract ItemStack onTake(PlayerEntity pPlayer, ItemStack pInputItem);
+    protected abstract ItemStack onTake(Player pPlayer, ItemStack pInputItem);
 
-    public AbstractReinforcingContainer(@Nullable ContainerType<?> pType, int pContainerId, PlayerInventory pPlayerInventory, IWorldPosCallable pAccess) {
+    public AbstractReinforcingContainer(@Nullable MenuType<?> pType, int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(pType, pContainerId);
         this.access = pAccess;
         this.player = pPlayerInventory.player;
@@ -46,12 +47,12 @@ public abstract class AbstractReinforcingContainer extends Container {
                 return false;
             }
 
-            public boolean mayPickup(PlayerEntity pPlayer) {
+            public boolean mayPickup(Player pPlayer) {
                 return AbstractReinforcingContainer.this.mayPickup(pPlayer, this.hasItem());
             }
 
-            public ItemStack onTake(PlayerEntity pPlayer, ItemStack pStack) {
-                return AbstractReinforcingContainer.this.onTake(pPlayer, pStack);
+            public void onTake(Player pPlayer, ItemStack pStack) {
+                AbstractReinforcingContainer.this.onTake(pPlayer, pStack);
             }
         });
 
@@ -68,7 +69,7 @@ public abstract class AbstractReinforcingContainer extends Container {
 
     public abstract void createResult();
 
-    public void slotsChanged(IInventory pInventory) {
+    public void slotsChanged(Container pInventory) {
         super.slotsChanged(pInventory);
         if (pInventory == this.inputSlots) {
             this.createResult();
@@ -76,12 +77,12 @@ public abstract class AbstractReinforcingContainer extends Container {
 
     }
 
-    public void removed(PlayerEntity pPlayer) {
+    public void removed(Player pPlayer) {
         super.removed(pPlayer);
-        this.access.execute((world, pos) -> this.clearContainer(pPlayer, world, this.inputSlots));
+        this.access.execute((world, pos) -> this.clearContainer(pPlayer, this.inputSlots));
     }
 
-    public boolean stillValid(PlayerEntity pPlayer) {
+    public boolean stillValid(Player pPlayer) {
         return stillValid(access, player, BPBlocks.REINFORCING_TABLE.get());
     }
 
@@ -90,7 +91,7 @@ public abstract class AbstractReinforcingContainer extends Container {
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot sourceSlot = slots.get(index);
 

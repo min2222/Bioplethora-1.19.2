@@ -1,11 +1,11 @@
 package io.github.bioplethora.potion;
 
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
-public class SpiritStrengtheningEffect extends Effect {
+public class SpiritStrengtheningEffect extends MobEffect {
 
-    public SpiritStrengtheningEffect(EffectType effectType, int potionParticleColor) {
+    public SpiritStrengtheningEffect(MobEffectCategory effectType, int potionParticleColor) {
         super(effectType, potionParticleColor);
     }
 }

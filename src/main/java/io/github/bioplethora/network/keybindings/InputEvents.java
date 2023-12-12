@@ -1,7 +1,6 @@
 package io.github.bioplethora.network.keybindings;
 
 import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.network.BPNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -22,14 +21,14 @@ public class InputEvents {
     }
 
     @SubscribeEvent
-    public static void onKeyPressed(InputEvent.KeyInputEvent event) {
+    public static void onKeyPressed(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
         onInput(mc, event.getKey(), event.getAction());
     }
 
     @SubscribeEvent
-    public static void onMouseClicked(InputEvent.MouseInputEvent event) {
+    public static void onMouseClicked(InputEvent.MouseButton event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
         onInput(mc, event.getButton(), event.getAction());

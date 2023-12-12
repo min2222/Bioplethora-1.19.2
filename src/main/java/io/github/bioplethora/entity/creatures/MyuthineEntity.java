@@ -1,5 +1,7 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.api.world.EffectUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.BPMonsterEntity;
@@ -9,43 +11,43 @@ import io.github.bioplethora.entity.ai.gecko.GeckoMoveToTargetGoal;
 import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
 import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPParticles;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.monster.HoglinEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.piglin.PiglinEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.hoglin.Hoglin;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public MyuthineEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public MyuthineEntity(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
         this.xpReward = 22;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 7 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 10.5)
                 .add(Attributes.ATTACK_DAMAGE, 8 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -66,10 +68,10 @@ public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBio
         super.registerGoals();
         this.goalSelector.addGoal(1, new GeckoMoveToTargetGoal<>(this, 1.2, 8));
         this.goalSelector.addGoal(2, new MyuthineMeleeGoal<>(this, 20, 0.6, 0.7));
-        this.goalSelector.addGoal(4, new SwimGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PiglinEntity.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, HoglinEntity.class, true));
+        this.goalSelector.addGoal(4, new FloatGoal(this));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Piglin.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Hoglin.class, true));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
     }
 
@@ -84,8 +86,8 @@ public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBio
         this.playSound(hurtEffectSound, 1.0F, 1.35F);
         EffectUtils.addCircleParticleForm(level, pEntity, BPParticles.RED_ENIVILE_LEAF.get(), 38, 0.3, 0.01);
 
-        if (pEntity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) pEntity;
+        if (pEntity instanceof Player) {
+            Player player = (Player) pEntity;
             if (random.nextInt(3) == 1) player.disableShield(true);
         }
 
@@ -117,7 +119,7 @@ public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBio
     }
 
     @Override
-    protected float getVoicePitch() {
+	public float getVoicePitch() {
         return 0.4F;
     }
 
@@ -128,18 +130,18 @@ public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBio
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if(this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.attack", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.attack", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 0;
             return PlayState.CONTINUE;
         }
 
         if(event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.walk", EDefaultLoopTypes.LOOP));
             event.getController().transitionLengthTicks = 5;
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.idle", EDefaultLoopTypes.LOOP));
         event.getController().transitionLengthTicks = 4;
         return PlayState.CONTINUE;
     }
@@ -154,16 +156,16 @@ public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBio
         return true;
     }
 
-    public static class MyuthineMeleeGoal<E extends MobEntity> extends GeckoMeleeGoal<E> {
+    public static class MyuthineMeleeGoal<E extends Mob> extends GeckoMeleeGoal<E> {
 
         public MyuthineMeleeGoal(E entity, double animationLength, double attackBegin, double attackEnd) {
             super(entity, animationLength, attackBegin, attackEnd);
         }
 
-        public static boolean checkIfValid(GeckoMeleeGoal goal, MobEntity attacker, LivingEntity target) {
+        public static boolean checkIfValid(GeckoMeleeGoal goal, Mob attacker, LivingEntity target) {
             if (target == null) return false;
             if (target.isAlive() && !target.isSpectator()) {
-                if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+                if (target instanceof Player && ((Player) target).isCreative()) {
                     ((IGeckoBaseEntity) attacker).setAttacking(false);
                     return false;
                 }

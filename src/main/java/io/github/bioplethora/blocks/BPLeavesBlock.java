@@ -2,13 +2,13 @@ package io.github.bioplethora.blocks;
 
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPParticles;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class BPLeavesBlock extends LeavesBlock {
 
@@ -16,7 +16,7 @@ public class BPLeavesBlock extends LeavesBlock {
         super(properties);
     }
 
-    public IParticleData getLeafParticle() {
+    public ParticleOptions getLeafParticle() {
         if (this == BPBlocks.CAERULWOOD_LEAVES.get()) {
             return BPParticles.CAERULWOOD_LEAF.get();
 
@@ -27,12 +27,12 @@ public class BPLeavesBlock extends LeavesBlock {
             return BPParticles.RED_ENIVILE_LEAF.get();
 
         } else {
-            throw new IllegalStateException("Invalid leaf block, make sure to add " + this.getRegistryName().getPath() + " on the getLeafParticle() method.");
+            throw new IllegalStateException("Invalid leaf block, make sure to add " + ForgeRegistries.BLOCKS.getKey(this).getPath() + " on the getLeafParticle() method.");
         }
     }
 
     @Override
-    public void animateTick(BlockState pState, World pLevel, BlockPos pPos, Random pRandom) {
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         super.animateTick(pState, pLevel, pPos, pRandom);
 
         if (pRandom.nextInt(15) == 1) {

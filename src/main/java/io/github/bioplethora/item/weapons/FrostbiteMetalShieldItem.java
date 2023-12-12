@@ -1,31 +1,33 @@
 package io.github.bioplethora.item.weapons;
 
-import io.github.bioplethora.entity.others.FrostbiteMetalShieldWaveEntity;
-import io.github.bioplethora.api.BPItemSettings;
-import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.item.UseAction;
-import net.minecraft.particles.ItemParticleData;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import io.github.bioplethora.api.BPItemSettings;
+import io.github.bioplethora.entity.others.FrostbiteMetalShieldWaveEntity;
+import io.github.bioplethora.registry.BPEntities;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public class FrostbiteMetalShieldItem extends ShieldItem {
 
@@ -39,8 +41,8 @@ public class FrostbiteMetalShieldItem extends ShieldItem {
     }
 
     @Override
-    public boolean isShield(ItemStack stack, LivingEntity entity) {
-        return true;
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+    	return toolAction == ToolActions.SHIELD_BLOCK;
     }
 
     @Override
@@ -49,22 +51,22 @@ public class FrostbiteMetalShieldItem extends ShieldItem {
     }
 
     @Override
-    public UseAction getUseAnimation(ItemStack itemStack) {
-        return UseAction.BLOCK;
+    public UseAnim getUseAnimation(ItemStack itemStack) {
+        return UseAnim.BLOCK;
     }
 
-    public void executeSkill(ItemStack stack, LivingEntity player, World world) {
+    public void executeSkill(ItemStack stack, LivingEntity player, Level world) {
 
         double x = player.getX(), y = player.getY(), z = player.getZ();
         BlockPos pos = new BlockPos(x, y + 1, z);
 
-        if (!((PlayerEntity) player).getCooldowns().isOnCooldown(stack.getItem())) {
+        if (!((Player) player).getCooldowns().isOnCooldown(stack.getItem())) {
 
             if (!this.getIsCharged()) {
                 if (!world.isClientSide) {
-                    ((ServerWorld) world).sendParticles(new ItemParticleData(ParticleTypes.ITEM, stack), x, y + 1.3, z, 25, 1, 1, 1, 0.1);
+                    ((ServerLevel) world).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), x, y + 1.3, z, 25, 1, 1, 1, 0.1);
                 }
-                world.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundCategory.PLAYERS, 1, 1);
+                world.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 1, 1);
                 this.addCorePoints(1);
             }
 
@@ -74,7 +76,7 @@ public class FrostbiteMetalShieldItem extends ShieldItem {
             }
 
             if (this.getIsCharged()) {
-                world.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundCategory.PLAYERS, 1, 1);
+                world.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1, 1);
 
                 FrostbiteMetalShieldWaveEntity shieldWave = BPEntities.BELLOPHITE_SHIELD_WAVE.get().create(player.level);
                 shieldWave.setOwner(player);
@@ -99,24 +101,24 @@ public class FrostbiteMetalShieldItem extends ShieldItem {
 
     public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
         super.onUsingTick(stack, player, count);
-        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 5, 2));
-        player.addEffect(new EffectInstance(Effects.REGENERATION, 5, 1));
+        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 5, 2));
+        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 5, 1));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.frostbite_metal_shield.recovery_bulwark.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.frostbite_metal_shield.recovery_bulwark.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.frostbite_metal_shield.recovery_bulwark.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.frostbite_metal_shield.recovery_bulwark.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.frostbite_metal_shield.core_impulse.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.frostbite_metal_shield.core_impulse.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.frostbite_metal_shield.core_impulse.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.frostbite_metal_shield.core_impulse.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 

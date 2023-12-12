@@ -1,5 +1,7 @@
 package io.github.bioplethora.integration;
 
+import java.util.function.Function;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.IMobCappedEntity;
 import io.github.bioplethora.entity.creatures.DwarfMossadileEntity;
@@ -7,12 +9,7 @@ import io.github.bioplethora.entity.creatures.GrylynenEntity;
 import io.github.bioplethora.entity.creatures.ShachathEntity;
 import io.github.bioplethora.entity.others.PrimordialRingEntity;
 import mcjty.theoneprobe.api.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.InterModComms;
-
-import java.util.function.Function;
 
 public class BPCompatTOP {
 
@@ -32,7 +29,7 @@ public class BPCompatTOP {
                     return Bioplethora.MOD_ID + ":default";
                 }
                 @Override
-                public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, PlayerEntity playerEntity, World world, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
+                public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, Player playerEntity, Level world, Entity entity, IProbeHitEntityData iProbeHitEntityData) {
 
                     String var = "Variant: ";
                     String ownerString = "Owner: ";

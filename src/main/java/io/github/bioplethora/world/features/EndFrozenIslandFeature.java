@@ -1,16 +1,13 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-
 import java.util.Random;
+
+import com.mojang.serialization.Codec;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class EndFrozenIslandFeature extends Feature<NoFeatureConfig> {
 
@@ -41,7 +38,7 @@ public class EndFrozenIslandFeature extends Feature<NoFeatureConfig> {
         for (int sx = -radius; sx <= radius; sx++) {
             for (int sz = -radius; sz <= radius; sz++) {
                 if (sx * sx + sz * sz <= radius * radius) {
-                    BlockPos.Mutable newPos = pos.offset(sx, 0, sz).mutable();
+                    BlockPos.MutableBlockPos newPos = pos.offset(sx, 0, sz).mutable();
                     if (world.isEmptyBlock(newPos)) {
                         setBlock(world, newPos, block.defaultBlockState());
                     }

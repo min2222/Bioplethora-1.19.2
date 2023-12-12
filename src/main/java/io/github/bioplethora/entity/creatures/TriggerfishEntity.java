@@ -1,45 +1,43 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
-import net.minecraft.entity.passive.fish.PufferfishEntity;
-import net.minecraft.entity.passive.fish.SalmonEntity;
-import net.minecraft.entity.passive.fish.TropicalFishEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
+public class TriggerfishEntity extends AbstractSchoolingFish implements IAnimatable {
+    private static final EntityDataAccessor<Boolean> IS_END = SynchedEntityData.defineId(TriggerfishEntity.class, EntityDataSerializers.BOOLEAN);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-public class TriggerfishEntity extends AbstractGroupFishEntity implements IAnimatable {
-    private static final DataParameter<Boolean> IS_END = EntityDataManager.defineId(TriggerfishEntity.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
-
-    public TriggerfishEntity(EntityType<? extends AbstractGroupFishEntity> type, World world) {
+    public TriggerfishEntity(EntityType<? extends AbstractSchoolingFish> type, Level world) {
         super(type, world);
     }
 
     @Override
-    protected ItemStack getBucketItemStack() {
+	public ItemStack getBucketItemStack() {
         return new ItemStack(BPItems.TRIGGERFISH_BUCKET.get());
     }
 
@@ -66,23 +64,23 @@ public class TriggerfishEntity extends AbstractGroupFishEntity implements IAnima
     }
 
     @Override
-    protected float getVoicePitch() {
+	public float getVoicePitch() {
         return 0.75F;
     }
 
-    protected void saveToBucketTag(ItemStack pBucketStack) {
+    public void saveToBucketTag(ItemStack pBucketStack) {
         super.saveToBucketTag(pBucketStack);
-        CompoundNBT compoundnbt = pBucketStack.getOrCreateTag();
+        CompoundTag compoundnbt = pBucketStack.getOrCreateTag();
         compoundnbt.putInt("BucketVariantTag", this.getIsEnd() ? 1 : 0);
     }
 
     @Nullable
-    public ILivingEntityData finalizeSpawn(IServerWorld pLevel, DifficultyInstance pDifficulty, SpawnReason pReason, @Nullable ILivingEntityData pSpawnData, @Nullable CompoundNBT pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         pSpawnData = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         if (pDataTag != null && pDataTag.contains("BucketVariantTag", 3)) {
             this.setIsEnd(pDataTag.getInt("BucketVariantTag") == 1);
         } else {
-            if (this.level.dimension().equals(World.END)) {
+            if (this.level.dimension().equals(Level.END)) {
                 this.setIsEnd(true);
             }
         }
@@ -95,7 +93,7 @@ public class TriggerfishEntity extends AbstractGroupFishEntity implements IAnima
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.triggerfish.swim", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.triggerfish.swim", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -109,12 +107,12 @@ public class TriggerfishEntity extends AbstractGroupFishEntity implements IAnima
         this.entityData.define(IS_END, false);
     }
 
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("isEnd", this.getIsEnd());
     }
 
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setIsEnd(pCompound.getBoolean("isEnd"));
     }

@@ -1,11 +1,12 @@
 package io.github.bioplethora.world.featureconfigs;
 
+import java.util.List;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.world.gen.feature.IFeatureConfig;
 
-import java.util.List;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class FleignariteSplotchConfig implements IFeatureConfig {
     public static final Codec<FleignariteSplotchConfig> CODEC = RecordCodecBuilder.create((p_236638_0_) -> {

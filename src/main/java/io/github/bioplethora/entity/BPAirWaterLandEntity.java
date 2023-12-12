@@ -1,25 +1,25 @@
 package io.github.bioplethora.entity;
 
+import java.util.EnumSet;
+
 import io.github.bioplethora.entity.ai.controller.WaterMoveController;
 import io.github.bioplethora.entity.ai.goals.BPCustomSwimmingGoal;
 import io.github.bioplethora.entity.ai.goals.BPWaterChargingCoal;
 import io.github.bioplethora.entity.ai.navigator.WaterAndLandPathNavigator;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-
-import java.util.EnumSet;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public abstract class BPAirWaterLandEntity extends WaterAndLandAnimalEntity {
     
-    public BPAirWaterLandEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+    public BPAirWaterLandEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -34,7 +34,7 @@ public abstract class BPAirWaterLandEntity extends WaterAndLandAnimalEntity {
     public void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new BPAirWaterLandEntity.MoveHelperController(this);
-            this.navigation = new GroundPathNavigator(this, level);
+            this.navigation = new GroundPathNavigation(this, level);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new WaterMoveController(this, 1.2F);
@@ -71,7 +71,7 @@ public abstract class BPAirWaterLandEntity extends WaterAndLandAnimalEntity {
 
         public void start() {
             LivingEntity livingentity = BPAirWaterLandEntity.this.getTarget();
-            Vector3d vector3d = livingentity.getEyePosition(1.0F);
+            Vec3 vector3d = livingentity.getEyePosition(1.0F);
             BPAirWaterLandEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
         }
 
@@ -84,36 +84,36 @@ public abstract class BPAirWaterLandEntity extends WaterAndLandAnimalEntity {
             if (!BPAirWaterLandEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 double d0 = BPAirWaterLandEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                	Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     BPAirWaterLandEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }
         }
     }
 
-    public class MoveHelperController extends MovementController {
+    public class MoveHelperController extends MoveControl {
         public MoveHelperController(BPAirWaterLandEntity floatingMob) {
             super(floatingMob);
         }
 
         public void tick() {
-            if (this.operation == MovementController.Action.MOVE_TO) {
-                Vector3d vector3d = new Vector3d(this.wantedX - BPAirWaterLandEntity.this.getX(), this.wantedY - BPAirWaterLandEntity.this.getY(), this.wantedZ - BPAirWaterLandEntity.this.getZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 vector3d = new Vec3(this.wantedX - BPAirWaterLandEntity.this.getX(), this.wantedY - BPAirWaterLandEntity.this.getY(), this.wantedZ - BPAirWaterLandEntity.this.getZ());
                 double d0 = vector3d.length();
                 if (d0 < BPAirWaterLandEntity.this.getBoundingBox().getSize()) {
-                    this.operation = MovementController.Action.WAIT;
+                    this.operation = MoveControl.Operation.WAIT;
                     BPAirWaterLandEntity.this.setDeltaMovement(BPAirWaterLandEntity.this.getDeltaMovement().scale(0.5D));
                 } else {
                     BPAirWaterLandEntity.this.setDeltaMovement(BPAirWaterLandEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                     if (BPAirWaterLandEntity.this.getTarget() == null) {
-                        Vector3d vector3d1 = BPAirWaterLandEntity.this.getDeltaMovement();
-                        BPAirWaterLandEntity.this.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
-                        BPAirWaterLandEntity.this.yBodyRot = BPAirWaterLandEntity.this.yRot;
+                    	Vec3 vector3d1 = BPAirWaterLandEntity.this.getDeltaMovement();
+                        BPAirWaterLandEntity.this.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
+                        BPAirWaterLandEntity.this.yBodyRot = BPAirWaterLandEntity.this.getYRot();
                     } else {
                         double d2 = BPAirWaterLandEntity.this.getTarget().getX() - BPAirWaterLandEntity.this.getX();
                         double d1 = BPAirWaterLandEntity.this.getTarget().getZ() - BPAirWaterLandEntity.this.getZ();
-                        BPAirWaterLandEntity.this.yRot = -((float) MathHelper.atan2(d2, d1)) * (180F / (float)Math.PI);
-                        BPAirWaterLandEntity.this.yBodyRot = BPAirWaterLandEntity.this.yRot;
+                        BPAirWaterLandEntity.this.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float)Math.PI);
+                        BPAirWaterLandEntity.this.yBodyRot = BPAirWaterLandEntity.this.getYRot();
                     }
                 }
             }

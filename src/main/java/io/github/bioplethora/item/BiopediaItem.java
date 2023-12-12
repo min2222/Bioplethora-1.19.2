@@ -1,20 +1,19 @@
 package io.github.bioplethora.item;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.ModList;
-import vazkii.patchouli.api.PatchouliAPI;
-
 import javax.annotation.Nonnull;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class BiopediaItem extends Item {
 
@@ -24,26 +23,26 @@ public class BiopediaItem extends Item {
 
     @Nonnull
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player playerIn, InteractionHand handIn) {
 
         ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (ModList.get().isLoaded("patchouli")) {
             if (!world.isClientSide()) {
 
-                if (playerIn instanceof ServerPlayerEntity) {
-                    PatchouliAPI.get().openBookGUI((ServerPlayerEntity) playerIn, Registry.ITEM.getKey(this));
+                if (playerIn instanceof ServerPlayer) {
+                    PatchouliAPI.get().openBookGUI((ServerPlayer) playerIn, ForgeRegistries.ITEMS.getKey(this));
                 }
             }
-            return new ActionResult<>(ActionResultType.SUCCESS, stack);
+            return InteractionResultHolder.success(stack);
         } else {
-            playerIn.displayClientMessage(new TranslationTextComponent("message.bioplethora.biopedia.patchouli_notif")
-                            .withStyle(TextFormatting.WHITE)
-                            .withStyle(TextFormatting.BOLD)
-                            .withStyle(TextFormatting.ITALIC),
+            playerIn.displayClientMessage(Component.translatable("message.bioplethora.biopedia.patchouli_notif")
+                            .withStyle(ChatFormatting.WHITE)
+                            .withStyle(ChatFormatting.BOLD)
+                            .withStyle(ChatFormatting.ITALIC),
                     true
             );
-            return new ActionResult<>(ActionResultType.PASS, stack);
+            return InteractionResultHolder.pass(stack);
         }
     }
 }

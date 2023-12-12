@@ -3,17 +3,16 @@ package io.github.bioplethora.entity.ai.goals;
 import io.github.bioplethora.entity.creatures.CavernFleignarEntity;
 import io.github.bioplethora.registry.BPEffects;
 import io.github.bioplethora.registry.BPTags;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.TargetGoal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 
 public class CavernFleignarTargetGoal extends TargetGoal {
 
     private final CavernFleignarEntity fleignar;
-    private static final EntityPredicate CONDITION = (new EntityPredicate()).range(16.0D).allowSameTeam();
+    private static final TargetingConditions CONDITION = TargetingConditions.forNonCombat().range(16.0D);
 
     public CavernFleignarTargetGoal(CavernFleignarEntity fleignar, boolean mustSee) {
         super(fleignar, mustSee, false);
@@ -43,11 +42,11 @@ public class CavernFleignarTargetGoal extends TargetGoal {
         LivingEntity target = this.fleignar.getTarget();
 
         if (target == null) {
-            AxisAlignedBB searchRadius = this.fleignar.getBoundingBox().inflate(12.0D, 4.0D, 12.0D);
+            AABB searchRadius = this.fleignar.getBoundingBox().inflate(12.0D, 4.0D, 12.0D);
             LivingEntity targetCandidate = fleignar.level.getNearestEntity(LivingEntity.class, CONDITION, fleignar, fleignar.getX(), fleignar.getY(), fleignar.getZ(), searchRadius);
 
             if (targetCandidate != null) {
-                boolean getTag = EntityTypeTags.getAllTags().getTagOrEmpty(BPTags.Entities.FLEIGNAR_TARGETS.getName()).contains(targetCandidate.getType());
+                boolean getTag = targetCandidate.getType().is(BPTags.Entities.FLEIGNAR_TARGETS);
                 if (validCheck(targetCandidate) && getTag) {
                     if (!targetCandidate.hasEffect(BPEffects.SPIRIT_MANIPULATION.get())) {
                         fleignar.setTarget(targetCandidate);
@@ -59,7 +58,7 @@ public class CavernFleignarTargetGoal extends TargetGoal {
 
     public boolean validCheck(LivingEntity target) {
         if (target.isAlive() && !target.isSpectator()) {
-            return !(target instanceof PlayerEntity && ((PlayerEntity) target).isCreative());
+            return !(target instanceof Player && ((Player) target).isCreative());
         } else {
             return false;
         }

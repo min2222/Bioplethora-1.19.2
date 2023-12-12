@@ -1,17 +1,14 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-
 import java.util.Random;
+
+import com.mojang.serialization.Codec;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.phys.Vec3;
 
 public class EndIcicleFeature extends Feature<NoFeatureConfig> {
 
@@ -39,21 +36,21 @@ public class EndIcicleFeature extends Feature<NoFeatureConfig> {
 
         int radius = radiusMin + world.getRandom().nextInt(radiusRand);
 
-        Vector3d to = new Vector3d(pos.getX() + topX, pos.getY() + tip, pos.getZ() + topZ);
-        Vector3d opto = new Vector3d(pos.getX() - topX, pos.getY() - tip, pos.getZ() - topZ);
+        Vec3 to = new Vec3(pos.getX() + topX, pos.getY() + tip, pos.getZ() + topZ);
+        Vec3 opto = new Vec3(pos.getX() - topX, pos.getY() - tip, pos.getZ() - topZ);
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 double fromCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
                 if (fromCenter <= radius) {
-                    Vector3d from = new Vector3d(pos.getX() + x, pos.getY(), pos.getZ() + z);
+                    Vec3 from = new Vec3(pos.getX() + x, pos.getY(), pos.getZ() + z);
 
                     if (world.getBlockState(new BlockPos(from).above()).isAir()) {
                         continue;
                     }
 
-                    Vector3d per = to.subtract(from).normalize();
-                    Vector3d current = from.add(0, 0, 0);
+                    Vec3 per = to.subtract(from).normalize();
+                    Vec3 current = from.add(0, 0, 0);
                     double distance = from.distanceTo(to);
 
                     for (double i = 0; i < distance; i++) {
@@ -62,8 +59,8 @@ public class EndIcicleFeature extends Feature<NoFeatureConfig> {
                         current = current.add(per);
                     }
 
-                    Vector3d opper = opto.subtract(from).normalize();
-                    Vector3d opcurrent = from.add(0, 0, 0);
+                    Vec3 opper = opto.subtract(from).normalize();
+                    Vec3 opcurrent = from.add(0, 0, 0);
                     double opdistance = from.distanceTo(opto);
 
                     for (double i = 0; i < opdistance; i++) {

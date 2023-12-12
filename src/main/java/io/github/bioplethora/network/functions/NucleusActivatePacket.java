@@ -1,18 +1,9 @@
 package io.github.bioplethora.network.functions;
 
-import io.github.bioplethora.blocks.tile_entities.AlphanumNucleusBlock;
-import io.github.bioplethora.event.ServerWorldEvents;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.network.NetworkEvent;
-
 import java.util.function.Supplier;
+
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.network.NetworkEvent;
 
 /**
  * Off-Hand combat integration
@@ -29,17 +20,17 @@ public class NucleusActivatePacket {
 
     public static void setState(NucleusActivatePacket message, Supplier<NetworkEvent.Context> context) {
         context.get().setPacketHandled(true);
-        ((ITickableTileEntity) Minecraft.getInstance().level.getBlockEntity(new BlockPos(message.x, message.y, message.z))).tick();
-
+        //TODO 
+        //((AlphanumNucleusTileEntity) Minecraft.getInstance().level.getBlockEntity(new BlockPos(message.x, message.y, message.z))).tick();
     }
 
-    public static void encode(NucleusActivatePacket message, PacketBuffer buffer) {
+    public static void encode(NucleusActivatePacket message, FriendlyByteBuf buffer) {
         buffer.writeInt(message.x);
         buffer.writeInt(message.y);
         buffer.writeInt(message.z);
     }
 
-    public static NucleusActivatePacket decode(PacketBuffer buffer) {
+    public static NucleusActivatePacket decode(FriendlyByteBuf buffer) {
         return new NucleusActivatePacket(buffer.readInt(), buffer.readInt(), buffer.readInt());
     }
 }

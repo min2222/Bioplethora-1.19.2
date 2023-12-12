@@ -4,13 +4,12 @@ import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import io.github.bioplethora.entity.others.BPEffectEntity;
 import io.github.bioplethora.entity.projectile.CryoblazeEntity;
 import io.github.bioplethora.enums.BPEffectTypes;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class AlphemKingRangedAttackGoal extends Goal {
 
@@ -36,8 +35,8 @@ public class AlphemKingRangedAttackGoal extends Goal {
     public void tick() {
         int chargeCap = 300;
         LivingEntity target = this.king.getTarget();
-        if (target.distanceToSqr(this.king) < 4096.0D && king.canSee(target)) {
-            World world = this.king.level;
+        if (target.distanceToSqr(this.king) < 4096.0D && king.hasLineOfSight(target)) {
+            Level world = this.king.level;
 
             this.king.getLookControl().setLookAt(king.getTarget(), 10.0F, 10.0F);
 
@@ -68,9 +67,9 @@ public class AlphemKingRangedAttackGoal extends Goal {
         }
     }
 
-    public void shootBlaze(World world, LivingEntity target) {
+    public void shootBlaze(Level world, LivingEntity target) {
 
-        Vector3d vector3d = this.king.getViewVector(1.0F);
+        Vec3 vector3d = this.king.getViewVector(1.0F);
         double d1 = target.getX() - this.king.getX();
         double d2 = target.getY(0.5D) - this.king.getY(0.5D);
         double d3 = target.getZ() - this.king.getZ();
@@ -78,8 +77,8 @@ public class AlphemKingRangedAttackGoal extends Goal {
             this.king.level.playSound(null, this.king.getX(), this.king.getY(), this.king.getZ(), SoundEvents.SHULKER_SHOOT, this.king.getSoundSource(), 1.0F, 1.0F + 1 * 0.2F);
         }
 
-        double angX = -MathHelper.sin(king.yBodyRot * ((float)Math.PI / 180F)) * 2;
-        double angZ = MathHelper.cos(king.yBodyRot * ((float)Math.PI / 180F)) * 2;
+        double angX = -Mth.sin(king.yBodyRot * ((float)Math.PI / 180F)) * 2;
+        double angZ = Mth.cos(king.yBodyRot * ((float)Math.PI / 180F)) * 2;
         BPEffectEntity slash = BPEffectEntity.getEffectInstance(king, BPEffectTypes.ALPHEM_KING_BREATH);
         slash.moveTo(king.getX() + angX, king.getY() - 0.25, king.getZ() + angZ);
         world.addFreshEntity(slash);

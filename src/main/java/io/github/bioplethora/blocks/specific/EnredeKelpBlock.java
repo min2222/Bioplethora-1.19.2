@@ -1,22 +1,16 @@
 package io.github.bioplethora.blocks.specific;
 
-import com.google.common.collect.ImmutableList;
-import io.github.bioplethora.enums.BioPlantShape;
-import io.github.bioplethora.enums.BioPlantType;
 import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.KelpPlantBlock;
 
-public class EnredeKelpBlock extends KelpBlock {
+public class EnredeKelpBlock extends KelpPlantBlock {
 
     public EnredeKelpBlock(Properties properties) {
         super(properties);
     }
 
-    protected AbstractTopPlantBlock getHeadBlock() {
-        return (AbstractTopPlantBlock) BPBlocks.ENREDE_KELP.get();
+    protected GrowingPlantHeadBlock getHeadBlock() {
+        return (GrowingPlantHeadBlock) BPBlocks.ENREDE_KELP.get();
     }
 }

@@ -1,38 +1,38 @@
 package io.github.bioplethora.item.armor;
 
-import io.github.bioplethora.api.IHurtSkillArmor;
-import io.github.bioplethora.api.BPItemSettings;
-import io.github.bioplethora.registry.BPDamageSources;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import io.github.bioplethora.api.BPItemSettings;
+import io.github.bioplethora.api.IHurtSkillArmor;
+import io.github.bioplethora.registry.BPDamageSources;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 public class FleignariteArmorItem extends ArmorItem implements IHurtSkillArmor {
 
-    public FleignariteArmorItem(IArmorMaterial material, EquipmentSlotType type, Item.Properties properties) {
+    public FleignariteArmorItem(ArmorMaterial material, EquipmentSlot type, Item.Properties properties) {
         super(material, type, properties);
     }
 
     @Override
     public void hurtTrigger(LivingEntity user, LivingEntity attacker, ItemStack stack) {
         attacker.playSound(SoundEvents.SLIME_BLOCK_BREAK, 1.0F, 1.0F);
-        attacker.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, attacker.getRandom().nextBoolean() ? 40 : 60, 1, false, false, false));
-        attacker.addEffect(new EffectInstance(Effects.CONFUSION, attacker.getRandom().nextBoolean() ? 60 : 40, 0, false, false, false));
+        attacker.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, attacker.getRandom().nextBoolean() ? 40 : 60, 1, false, false, false));
+        attacker.addEffect(new MobEffectInstance(MobEffects.CONFUSION, attacker.getRandom().nextBoolean() ? 60 : 40, 0, false, false, false));
 
         attacker.hurt(BPDamageSources.armorPiercingFleignarite(attacker, attacker), (float) 2);
     }
@@ -43,7 +43,7 @@ public class FleignariteArmorItem extends ArmorItem implements IHurtSkillArmor {
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, World pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
         if (pStack.getDamageValue() < pStack.getMaxDamage()) {
             pStack.getOrCreateTag().putInt("regen_time", pStack.getOrCreateTag().getInt("regen_time") + 1);
 
@@ -58,14 +58,14 @@ public class FleignariteArmorItem extends ArmorItem implements IHurtSkillArmor {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable World pLevel, List<ITextComponent> pTooltip, ITooltipFlag pFlag) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
         BPItemSettings.sacredLevelText(pTooltip);
 
-        pTooltip.add(new TranslationTextComponent("item.bioplethora.fleignarite_armor.sticky_piece.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        pTooltip.add(Component.translatable("item.bioplethora.fleignarite_armor.sticky_piece.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            pTooltip.add(new TranslationTextComponent("item.bioplethora.fleignarite_armor.sticky_piece.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            pTooltip.add(Component.translatable("item.bioplethora.fleignarite_armor.sticky_piece.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 }

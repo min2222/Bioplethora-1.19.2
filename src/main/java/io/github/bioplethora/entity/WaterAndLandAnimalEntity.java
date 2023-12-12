@@ -1,33 +1,33 @@
 package io.github.bioplethora.entity;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.entity.ai.controller.WaterMoveController;
 import io.github.bioplethora.entity.ai.goals.BPCustomSwimmingGoal;
 import io.github.bioplethora.entity.ai.goals.BPWaterChargingCoal;
 import io.github.bioplethora.entity.ai.navigator.WaterAndLandPathNavigator;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
 
 public abstract class WaterAndLandAnimalEntity extends BPAnimalEntity {
 
     public boolean isLandNavigator;
     public BlockPos boundOrigin;
 
-    public WaterAndLandAnimalEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+    public WaterAndLandAnimalEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
-        this.setPathfindingMalus(PathNodeType.WATER, 0.0F);
-        this.setPathfindingMalus(PathNodeType.WATER_BORDER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(false);
     }
 
@@ -40,8 +40,8 @@ public abstract class WaterAndLandAnimalEntity extends BPAnimalEntity {
 
     public void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.moveControl = new MovementController(this);
-            this.navigation = new GroundPathNavigator(this, level);
+            this.moveControl = new MoveControl(this);
+            this.navigation = new GroundPathNavigation(this, level);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new WaterMoveController(this, 1.2F);
@@ -69,14 +69,14 @@ public abstract class WaterAndLandAnimalEntity extends BPAnimalEntity {
         return this.boundOrigin;
     }
 
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("BoundX")) {
             this.boundOrigin = new BlockPos(pCompound.getInt("BoundX"), pCompound.getInt("BoundY"), pCompound.getInt("BoundZ"));
         }
     }
 
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         if (this.boundOrigin != null) {
             pCompound.putInt("BoundX", this.boundOrigin.getX());
@@ -87,7 +87,7 @@ public abstract class WaterAndLandAnimalEntity extends BPAnimalEntity {
 
     @Nullable
     @Override
-    public abstract AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_);
+    public abstract AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_);
 
     @Override
     public abstract void registerControllers(AnimationData data);

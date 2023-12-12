@@ -1,26 +1,26 @@
 package io.github.bioplethora.data;
 
+import java.util.stream.Collectors;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.blocks.SmallMushroomBlock;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.advancements.criterion.StatePropertiesPredicate;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoublePlantBlock;
-import net.minecraft.data.loot.BlockLootTables;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.conditions.BlockStateProperty;
-import net.minecraft.loot.functions.SetCount;
-import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.stream.Collectors;
-
-public class BPBlockLootTables extends BlockLootTables {
+public class BPBlockLootTables extends BlockLoot {
 
     @Override
     protected void addTables() {
@@ -151,7 +151,7 @@ public class BPBlockLootTables extends BlockLootTables {
         dropSelf(BPBlocks.ENIVILE_BUTTON.get());
         dropSelf(BPBlocks.ENIVILE_SIGN.get());
         dropSelf(BPBlocks.ENIVILE_WALL_SIGN.get());
-        add(BPBlocks.ENIVILE_DOOR.get(), BlockLootTables::createDoorTable);
+        add(BPBlocks.ENIVILE_DOOR.get(), BlockLoot::createDoorTable);
         dropSelf(BPBlocks.ENIVILE_TRAPDOOR.get());
         
         // Caerulwood woodset
@@ -171,7 +171,7 @@ public class BPBlockLootTables extends BlockLootTables {
         dropSelf(BPBlocks.CAERULWOOD_BUTTON.get());
         dropSelf(BPBlocks.CAERULWOOD_SIGN.get());
         dropSelf(BPBlocks.CAERULWOOD_WALL_SIGN.get());
-        add(BPBlocks.CAERULWOOD_DOOR.get(), BlockLootTables::createDoorTable);
+        add(BPBlocks.CAERULWOOD_DOOR.get(), BlockLoot::createDoorTable);
         dropSelf(BPBlocks.CAERULWOOD_TRAPDOOR.get());
         
         // Alphanum Stone Set
@@ -216,23 +216,23 @@ public class BPBlockLootTables extends BlockLootTables {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ForgeRegistries.BLOCKS.getValues().stream().filter(b -> b.getRegistryName().getNamespace().equals(Bioplethora.MOD_ID)).collect(Collectors.toList());
+        return ForgeRegistries.BLOCKS.getValues().stream().filter(b -> ForgeRegistries.BLOCKS.getKey(b).getNamespace().equals(Bioplethora.MOD_ID)).collect(Collectors.toList());
     }
 
     public void dropMinishroom(Block shroom) {
         this.add(shroom, (p_218478_0_) ->
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .setRolls(ConstantRange.exactly(1))
-                                .add(applyExplosionDecay(shroom, ItemLootEntry.lootTableItem(p_218478_0_)
-                                        .apply(SetCount.setCount(ConstantRange.exactly(1))
-                                                .when(BlockStateProperty.hasBlockStateProperties(p_218478_0_).setProperties(StatePropertiesPredicate.Builder.properties()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add(applyExplosionDecay(shroom, LootItem.lootTableItem(p_218478_0_)
+                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))
+                                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(p_218478_0_).setProperties(StatePropertiesPredicate.Builder.properties()
                                                         .hasProperty(SmallMushroomBlock.MINISHROOMS, 1))))
-                                        .apply(SetCount.setCount(ConstantRange.exactly(2))
-                                                .when(BlockStateProperty.hasBlockStateProperties(p_218478_0_).setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
+                                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(p_218478_0_).setProperties(StatePropertiesPredicate.Builder.properties()
                                                         .hasProperty(SmallMushroomBlock.MINISHROOMS, 2))))
-                                        .apply(SetCount.setCount(ConstantRange.exactly(3))
-                                                .when(BlockStateProperty.hasBlockStateProperties(p_218478_0_).setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(3))
+                                                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(p_218478_0_).setProperties(StatePropertiesPredicate.Builder.properties()
                                                         .hasProperty(SmallMushroomBlock.MINISHROOMS, 3))))
                                 ))
                         )

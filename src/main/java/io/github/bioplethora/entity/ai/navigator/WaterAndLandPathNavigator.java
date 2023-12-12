@@ -1,23 +1,23 @@
 package io.github.bioplethora.entity.ai.navigator;
 
-import net.minecraft.entity.MobEntity;
-import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.SwimmerPathNavigator;
-import net.minecraft.pathfinding.WalkAndSwimNodeProcessor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
-public class WaterAndLandPathNavigator extends SwimmerPathNavigator {
+public class WaterAndLandPathNavigator extends WaterBoundPathNavigation {
 
-    public WaterAndLandPathNavigator(MobEntity entitylivingIn, World worldIn) {
+    public WaterAndLandPathNavigator(Mob entitylivingIn, Level worldIn) {
         super(entitylivingIn, worldIn);
     }
 
     protected PathFinder createPathFinder(int p_179679_1_) {
-        this.nodeEvaluator = new WalkAndSwimNodeProcessor();
+        this.nodeEvaluator = new WalkNodeEvaluator();
         return new PathFinder(this.nodeEvaluator, p_179679_1_);
     }
 
@@ -25,13 +25,13 @@ public class WaterAndLandPathNavigator extends SwimmerPathNavigator {
         return true;
     }
 
-    protected Vector3d getTempMobPos() {
-        return new Vector3d(this.mob.getX(), this.mob.getY(0.5D), this.mob.getZ());
+    protected Vec3 getTempMobPos() {
+        return new Vec3(this.mob.getX(), this.mob.getY(0.5D), this.mob.getZ());
     }
 
-    protected boolean canMoveDirectly(Vector3d posVec31, Vector3d posVec32, int sizeX, int sizeY, int sizeZ) {
-        Vector3d vector3d = new Vector3d(posVec32.x, posVec32.y + (double)this.mob.getBbHeight() * 0.5D, posVec32.z);
-        return this.level.clip(new RayTraceContext(posVec31, vector3d, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this.mob)).getType() == RayTraceResult.Type.MISS;
+    protected boolean canMoveDirectly(Vec3 posVec31, Vec3 posVec32, int sizeX, int sizeY, int sizeZ) {
+        Vec3 vector3d = new Vec3(posVec32.x, posVec32.y + (double)this.mob.getBbHeight() * 0.5D, posVec32.z);
+        return this.level.clip(new ClipContext(posVec31, vector3d, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this.mob)).getType() == HitResult.Type.MISS;
     }
 
     public boolean isStableDestination(BlockPos pos) {

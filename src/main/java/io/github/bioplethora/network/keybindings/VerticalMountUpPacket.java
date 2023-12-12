@@ -1,14 +1,13 @@
 package io.github.bioplethora.network.keybindings;
 
-import io.github.bioplethora.entity.IVerticalMount;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkEvent;
-
 import java.util.function.Supplier;
+
+import io.github.bioplethora.entity.IVerticalMount;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.network.NetworkEvent;
 
 // Unused
 public class VerticalMountUpPacket {
@@ -22,19 +21,19 @@ public class VerticalMountUpPacket {
         this.key = key;
     }
 
-    public static void encode(VerticalMountUpPacket message, PacketBuffer buffer) {
+    public static void encode(VerticalMountUpPacket message, FriendlyByteBuf buffer) {
         buffer.writeInt(message.key);
     }
 
-    public static VerticalMountUpPacket decode(PacketBuffer buffer) {
+    public static VerticalMountUpPacket decode(FriendlyByteBuf buffer) {
         return new VerticalMountUpPacket(buffer.readInt());
     }
 
     public static void verticalUp(VerticalMountUpPacket message, Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            ServerPlayerEntity player = context.getSender();
-            World world = player.getCommandSenderWorld();
+            ServerPlayer player = context.getSender();
+            Level world = player.getLevel();
             Entity riddenEntity = player.getVehicle();
 
             if (riddenEntity instanceof IVerticalMount) {

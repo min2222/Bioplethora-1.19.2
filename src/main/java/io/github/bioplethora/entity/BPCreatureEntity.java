@@ -1,13 +1,13 @@
 package io.github.bioplethora.entity;
 
 import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -15,17 +15,17 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public abstract class BPCreatureEntity extends CreatureEntity implements IAnimatable, IGeckoBaseEntity {
+public abstract class BPCreatureEntity extends PathfinderMob implements IAnimatable, IGeckoBaseEntity {
 
-    protected static final DataParameter<Boolean> MOVING = EntityDataManager.defineId(BPCreatureEntity.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> ATTACKING = EntityDataManager.defineId(BPCreatureEntity.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(BPCreatureEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(BPCreatureEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override
     public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
         return super.hurt(p_70097_1_, p_70097_2_);
     }
 
-    public BPCreatureEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
+    public BPCreatureEntity(EntityType<? extends PathfinderMob> type, Level worldIn) {
         super(type, worldIn);
     }
 

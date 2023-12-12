@@ -3,7 +3,7 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.IAdvancedGeoModel;
 import io.github.bioplethora.entity.creatures.VoidjawEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
@@ -11,7 +11,7 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class VoidjawEntityModel extends AnimatedGeoModel<VoidjawEntity> implements IAdvancedGeoModel<VoidjawEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(VoidjawEntity entity) {
+    public ResourceLocation getModelResource(VoidjawEntity entity) {
         if (!entity.isSaddled()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "geo/voidjaw.geo.json");
         } else {
@@ -20,7 +20,7 @@ public class VoidjawEntityModel extends AnimatedGeoModel<VoidjawEntity> implemen
     }
 
     @Override
-    public ResourceLocation getTextureLocation(VoidjawEntity entity) {
+    public ResourceLocation getTextureResource(VoidjawEntity entity) {
         if (entity.isCardinalVariant()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/cardinal_voidjaw.png");
         } else {
@@ -29,7 +29,7 @@ public class VoidjawEntityModel extends AnimatedGeoModel<VoidjawEntity> implemen
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(VoidjawEntity entity) {
+    public ResourceLocation getAnimationResource(VoidjawEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/voidjaw.animation.json");
     }
 

@@ -1,14 +1,10 @@
 package io.github.bioplethora.registry;
 
 import io.github.bioplethora.Bioplethora;
-import net.minecraft.block.WoodType;
-import net.minecraft.client.renderer.Atlases;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(modid = Bioplethora.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -25,7 +21,8 @@ public class BPWoodTypes {
         });
     }
 
-    @OnlyIn(Dist.CLIENT)
+    //TODO doesn't necessary (i think)
+    /*@OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerWoodTypeClient(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
@@ -33,5 +30,5 @@ public class BPWoodTypes {
             Atlases.addWoodType(CAERULWOOD);
             Atlases.addWoodType(PETRAWOOD);
         });
-    }
+    }*/
 }

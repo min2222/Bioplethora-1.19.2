@@ -1,46 +1,58 @@
 package io.github.bioplethora.item.weapons;
 
+import static net.minecraft.world.item.CrossbowItem.clearChargedProjectiles;
+import static net.minecraft.world.item.CrossbowItem.getChargedProjectiles;
+import static net.minecraft.world.item.CrossbowItem.getShotPitches;
+import static net.minecraft.world.item.CrossbowItem.shootProjectile;
+import static net.minecraft.world.item.CrossbowItem.tryLoadProjectiles;
+
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+
 import io.github.bioplethora.api.BPItemSettings;
 import io.github.bioplethora.api.mixin.IAbstractArrowMixin;
 import io.github.bioplethora.registry.BPEffects;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.IVanishable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ICrossbowUser;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.FireworkRocketEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.*;
-import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.CrossbowAttackMob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.FireworkRocketEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Vanishable;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
-
-public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
+public class ArbitraryBallistaItem extends CrossbowItem implements Vanishable {
 
     public static int drawTime = 3;
     private boolean startSoundPlayed = false;
@@ -51,7 +63,7 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand hand) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
         ItemStack itemstack = entity.getItemInHand(hand);
         if (isCharged(itemstack)) {
             performShooting(world, entity, hand, itemstack, getShootingPower(itemstack), 1.0F);
@@ -65,7 +77,7 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
 
             entity.hurt(DamageSource.explosion((LivingEntity) null), 1);
 
-            return ActionResult.consume(itemstack);
+            return InteractionResultHolder.consume(itemstack);
         } else if (!entity.getProjectile(itemstack).isEmpty()) {
             if (!isCharged(itemstack)) {
                 this.startSoundPlayed = false;
@@ -73,57 +85,57 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
                 entity.startUsingItem(hand);
             }
 
-            return ActionResult.consume(itemstack);
+            return InteractionResultHolder.consume(itemstack);
         } else {
-            return ActionResult.fail(itemstack);
+            return InteractionResultHolder.fail(itemstack);
         }
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, World pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pItemSlot, pIsSelected);
 
         if (pEntity instanceof LivingEntity) {
             if (((LivingEntity) pEntity).getMainHandItem() == pStack || ((LivingEntity) pEntity).getOffhandItem() == pStack) {
                 if (!((LivingEntity) pEntity).hasEffect(BPEffects.SPIRIT_FISSION.get())) {
-                    ((LivingEntity) pEntity).addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 5));
-                    ((LivingEntity) pEntity).addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 5));
-                    ((LivingEntity) pEntity).addEffect(new EffectInstance(Effects.WEAKNESS, 5));
+                    ((LivingEntity) pEntity).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5));
+                    ((LivingEntity) pEntity).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 5));
+                    ((LivingEntity) pEntity).addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 5));
                 }
             }
         }
     }
 
-    private static void shootProjectile(World level, LivingEntity entity, Hand hand, ItemStack stack, ItemStack itemStack, float p_220016_5_, boolean b, float p_220016_7_, float p_220016_8_, float v) {
+    private static void shootProjectile(Level level, LivingEntity entity, Hand hand, ItemStack stack, ItemStack itemStack, float p_220016_5_, boolean b, float p_220016_7_, float p_220016_8_, float v) {
 
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
 
         if (!level.isClientSide) {
             boolean flag = itemStack.getItem() == Items.FIREWORK_ROCKET;
-            ProjectileEntity projectileentity;
+            Projectile projectileentity;
             if (flag) {
                 projectileentity = new FireworkRocketEntity(level, itemStack, entity, entity.getX(), entity.getEyeY() - (double)0.15F, entity.getZ(), true);
             } else {
                 projectileentity = getArrow(level, entity, stack, itemStack);
                 if (b || v != 0.0F) {
-                    ((AbstractArrowEntity)projectileentity).pickup = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+                    ((AbstractArrow)projectileentity).pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
             }
 
             if ((!(level.isClientSide()))) {
-                ((ServerWorld) level).sendParticles(ParticleTypes.CLOUD, x, y + 1.2, z, 25, 0.75, 0.75, 0.75, 0.01);
-                ((ServerWorld) level).sendParticles(ParticleTypes.EXPLOSION, x, y + 1.2, z, 25, 0.75, 0.75, 0.75, 0);
+                ((ServerLevel) level).sendParticles(ParticleTypes.CLOUD, x, y + 1.2, z, 25, 0.75, 0.75, 0.75, 0.01);
+                ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION, x, y + 1.2, z, 25, 0.75, 0.75, 0.75, 0);
             }
 
-            level.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE, SoundCategory.PLAYERS, 1, 1);
+            level.playSound(null, x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1, 1);
 
-            if (entity instanceof ICrossbowUser) {
-                ICrossbowUser icrossbowuser = (ICrossbowUser)entity;
+            if (entity instanceof CrossbowAttackMob) {
+            	CrossbowAttackMob icrossbowuser = (CrossbowAttackMob)entity;
                 icrossbowuser.shootCrossbowProjectile(icrossbowuser.getTarget(), stack, projectileentity, v);
             } else {
-                Vector3d vector3d1 = entity.getUpVector(1.0F);
+                Vec3 vector3d1 = entity.getUpVector(1.0F);
                 Quaternion quaternion = new Quaternion(new Vector3f(vector3d1), v, true);
-                Vector3d vector3d = entity.getViewVector(1.0F);
+                Vec3 vector3d = entity.getViewVector(1.0F);
                 Vector3f vector3f = new Vector3f(vector3d);
                 vector3f.transform(quaternion);
                 projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), p_220016_7_, p_220016_8_);
@@ -131,14 +143,14 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
 
             stack.hurtAndBreak(flag ? 3 : 1, entity, (living) -> living.broadcastBreakEvent(hand));
             level.addFreshEntity(projectileentity);
-            level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, p_220016_5_);
+            level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, p_220016_5_);
         }
     }
 
-    private static AbstractArrowEntity getArrow(World world, LivingEntity entity, ItemStack stack, ItemStack stack1) {
+    private static AbstractArrow getArrow(Level world, LivingEntity entity, ItemStack stack, ItemStack stack1) {
         ArrowItem arrowitem = (ArrowItem)(stack1.getItem() instanceof ArrowItem ? stack1.getItem() : Items.ARROW);
-        AbstractArrowEntity abstractarrowentity = arrowitem.createArrow(world, stack1, entity);
-        if (entity instanceof PlayerEntity) {
+        AbstractArrow abstractarrowentity = arrowitem.createArrow(world, stack1, entity);
+        if (entity instanceof Player) {
             abstractarrowentity.setCritArrow(true);
         }
 
@@ -158,13 +170,13 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
         return abstractarrowentity;
     }
 
-    public static void performShooting(World world, LivingEntity entity, Hand hand, ItemStack stack, float projectile, float shootProjectile) {
+    public static void performShooting(Level world, LivingEntity entity, InteractionHand hand, ItemStack stack, float projectile, float shootProjectile) {
         List<ItemStack> list = getChargedProjectiles(stack);
         float[] afloat = getShotPitches(entity.getRandom());
 
         for(int i = 0; i < list.size(); ++i) {
             ItemStack itemstack = list.get(i);
-            boolean flag = entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.instabuild;
+            boolean flag = entity instanceof Player && ((Player) entity).getAbilities().instabuild;
             if (!itemstack.isEmpty()) {
                 shootProjectile(world, entity, hand, stack, itemstack, afloat[i] / 2F, flag, projectile, shootProjectile, 0.0F);
             } else if (i == 1) {
@@ -178,12 +190,12 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
     }
 
     @Override
-    public void releaseUsing(ItemStack pStack, World pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
+    public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
         int i = this.getUseDuration(pStack) - pTimeLeft;
         float f = getPowerForTime(i, pStack);
         if (f >= 1.0F && !isCharged(pStack) && tryLoadProjectiles(pEntityLiving, pStack)) {
             setCharged(pStack, true);
-            SoundCategory soundcategory = pEntityLiving instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
+            SoundSource soundcategory = pEntityLiving instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
             pLevel.playSound(null, pEntityLiving.getX(), pEntityLiving.getY(), pEntityLiving.getZ(), SoundEvents.CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
         }
     }
@@ -204,12 +216,12 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
 
     private static float getRandomShotPitch(boolean p_220032_0_) {
         float f = p_220032_0_ ? 0.63F : 0.43F;
-        return 1.0F / (random.nextFloat() * 0.5F + 1.8F) + f;
+        return 1.0F / (new Random().nextFloat() * 0.5F + 1.8F) + f;
     }
 
-    private static void onCrossbowShot(World p_220015_0_, LivingEntity p_220015_1_, ItemStack p_220015_2_) {
-        if (p_220015_1_ instanceof ServerPlayerEntity) {
-            ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)p_220015_1_;
+    private static void onCrossbowShot(Level p_220015_0_, LivingEntity p_220015_1_, ItemStack p_220015_2_) {
+        if (p_220015_1_ instanceof ServerPlayer) {
+            ServerPlayer serverplayerentity = (ServerPlayer)p_220015_1_;
             if (!p_220015_0_.isClientSide) {
                 CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayerentity, p_220015_2_);
             }
@@ -221,7 +233,7 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
     }
 
     @Override
-    public void onUseTick(World world, LivingEntity entity, ItemStack stack, int num) {
+    public void onUseTick(Level world, LivingEntity entity, ItemStack stack, int num) {
         if (!world.isClientSide) {
             int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
             SoundEvent soundevent = this.getStartSound(i);
@@ -234,12 +246,12 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
 
             if (f >= 0.2F && !this.startSoundPlayed) {
                 this.startSoundPlayed = true;
-                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundevent, SoundCategory.PLAYERS, 0.5F, 0.5F);
+                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundevent, SoundSource.PLAYERS, 0.5F, 0.5F);
             }
 
             if (f >= 0.5F && soundevent1 != null && !this.midLoadSoundPlayed) {
                 this.midLoadSoundPlayed = true;
-                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundevent1, SoundCategory.PLAYERS, 0.5F, 0.5F);
+                world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), soundevent1, SoundSource.PLAYERS, 0.5F, 0.5F);
             }
         }
     }
@@ -268,13 +280,13 @@ public class ArbitraryBallistaItem extends CrossbowItem implements IVanishable {
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, world, tooltip, flag);
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.arbitrary_ballista.heavy_duty_ballista.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.arbitrary_ballista.heavy_duty_ballista.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.arbitrary_ballista.heavy_duty_ballista.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.arbitrary_ballista.heavy_duty_ballista.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 

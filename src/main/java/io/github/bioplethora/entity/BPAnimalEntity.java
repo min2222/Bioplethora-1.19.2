@@ -1,13 +1,13 @@
 package io.github.bioplethora.entity;
 
 import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -15,17 +15,17 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public abstract class BPAnimalEntity extends TameableEntity implements IAnimatable, IGeckoBaseEntity {
+public abstract class BPAnimalEntity extends TamableAnimal implements IAnimatable, IGeckoBaseEntity {
 
-    protected static final DataParameter<Boolean> MOVING = EntityDataManager.defineId(BPAnimalEntity.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> ATTACKING = EntityDataManager.defineId(BPAnimalEntity.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(BPAnimalEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(BPAnimalEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override
     public boolean hurt(DamageSource p_70097_1_, float p_70097_2_) {
         return super.hurt(p_70097_1_, p_70097_2_);
     }
 
-    public BPAnimalEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+    public BPAnimalEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
     }
 

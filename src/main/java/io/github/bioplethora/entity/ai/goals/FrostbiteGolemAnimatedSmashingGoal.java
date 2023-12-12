@@ -1,7 +1,7 @@
 package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.creatures.FrostbiteGolemEntity;
-import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class FrostbiteGolemAnimatedSmashingGoal extends Goal {
 
@@ -27,7 +27,7 @@ public class FrostbiteGolemAnimatedSmashingGoal extends Goal {
     /*public void tick() {
         LivingEntity target = this.shachath.getTarget();
 
-        if (target.distanceToSqr(this.shachath) < 4096.0D && this.shachath.canSee(target)) {
+        if (target.distanceToSqr(this.shachath) < 4096.0D && this.shachath.hasLineOfSight(target)) {
 
             this.shachath.getLookControl().setLookAt(target, 30.0F, 30.0F);
 

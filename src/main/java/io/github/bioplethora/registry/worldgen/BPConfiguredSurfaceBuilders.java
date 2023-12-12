@@ -4,13 +4,13 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.world.surfacebuilderconfigs.CarpetedSurfaceBuilderConfig;
 import io.github.bioplethora.world.surfacebuilderconfigs.NoisySurfaceBuilderConfig;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.registry.LevelGenRegistries;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.level.block.Blocks;
 
 public class BPConfiguredSurfaceBuilders {
 
@@ -45,6 +45,6 @@ public class BPConfiguredSurfaceBuilders {
             )));
 
     private static <SC extends ISurfaceBuilderConfig>ConfiguredSurfaceBuilder<SC> register(String name, ConfiguredSurfaceBuilder<SC> csb) {
-        return WorldGenRegistries.register(WorldGenRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(Bioplethora.MOD_ID, name), csb);
+        return LevelGenRegistries.register(LevelGenRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(Bioplethora.MOD_ID, name), csb);
     }
 }

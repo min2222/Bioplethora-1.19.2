@@ -1,14 +1,13 @@
 package io.github.bioplethora.registry;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-
 import javax.annotation.Nullable;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class BPDamageSources {
 
@@ -45,13 +44,13 @@ public class BPDamageSources {
             return this.entity;
         }
 
-        public ITextComponent getLocalizedDeathMessage(LivingEntity livingEntity) {
+        public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
             LivingEntity killCredit = (LivingEntity) indirectOwner;
             String s = "death.attack." + this.msgId;
             int variant = livingEntity.getRandom().nextInt(2);
             String s1 = s + "." + variant;
             String s2 = s + ".indirect_" + variant;
-            return killCredit != null ? new TranslationTextComponent(s2, livingEntity.getDisplayName(), killCredit.getDisplayName()) : new TranslationTextComponent(s1, livingEntity.getDisplayName());
+            return killCredit != null ? Component.translatable(s2, livingEntity.getDisplayName(), killCredit.getDisplayName()) : Component.translatable(s1, livingEntity.getDisplayName());
         }
     }
 }

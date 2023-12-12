@@ -1,30 +1,32 @@
 package io.github.bioplethora.entity.others;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.network.NetworkHooks;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatable {
 
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     private LivingEntity owner;
     public int lifespan;
 
-    public FrostbiteMetalShieldWaveEntity(EntityType<?> entityType, World world) {
+    public FrostbiteMetalShieldWaveEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
         this.lifespan = 0;
     }
@@ -43,7 +45,7 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_shield_wave.default", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_shield_wave.default", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -57,9 +59,9 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
 
         if (this.getOwner() != null) {
             double x = this.getOwner().getX(), y = this.getOwner().getY(), z = this.getOwner().getZ();
-            AxisAlignedBB area = new AxisAlignedBB(x - (10 / 2d), y, z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d));
+            AABB area = new AABB(x - (10 / 2d), y, z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d));
             BlockPos pos = new BlockPos(x, y + 1, z);
-            World world = this.level;
+            Level world = this.level;
 
             ++lifespan;
             this.moveTo(pos, 0.0F, 0.0F);
@@ -71,7 +73,7 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
         }
 
         if (this.lifespan == 40) {
-            this.remove();
+            this.discard();
         }
     }
 
@@ -81,12 +83,12 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT compoundNBT) {
+    protected void readAdditionalSaveData(CompoundTag compoundNBT) {
         this.setLifespan(compoundNBT.getInt("lifespan"));
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT compoundNBT) {
+    protected void addAdditionalSaveData(CompoundTag compoundNBT) {
         compoundNBT.putInt("lifespan", this.lifespan);
     }
 
@@ -95,7 +97,7 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

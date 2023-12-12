@@ -4,21 +4,21 @@ import io.github.bioplethora.entity.others.AltyrusSummoningEntity;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class FrostbiteMetalCoreBlock extends Block {
 
@@ -28,12 +28,12 @@ public class FrostbiteMetalCoreBlock extends Block {
     }
 
     @Override
-    public int getLightBlock(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
         return 15;
     }
 
     @Override
-    public ActionResultType use(BlockState blockstate, World world, BlockPos pos, PlayerEntity entity, Hand hand, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
 
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
         //center blocks
@@ -96,8 +96,8 @@ public class FrostbiteMetalCoreBlock extends Block {
                 }
 
                 if (!world.isClientSide()) {
-                    world.playSound(null, new BlockPos(x, y, z), SoundEvents.END_PORTAL_FRAME_FILL, SoundCategory.NEUTRAL, (float) 1, (float) 1);
-                    world.playSound(null, new BlockPos(x, y, z), SoundEvents.ELDER_GUARDIAN_CURSE, SoundCategory.NEUTRAL, (float) 1, (float) 1);
+                    world.playSound(null, new BlockPos(x, y, z), SoundEvents.END_PORTAL_FRAME_FILL, SoundSource.NEUTRAL, (float) 1, (float) 1);
+                    world.playSound(null, new BlockPos(x, y, z), SoundEvents.ELDER_GUARDIAN_CURSE, SoundSource.NEUTRAL, (float) 1, (float) 1);
                     //main center
                     bDesBl(world, new BlockPos(x, y, z));
                     bDesBl(world, c1);bDesBl(world, c2);
@@ -112,10 +112,10 @@ public class FrostbiteMetalCoreBlock extends Block {
                     bDesBl(world, b1);bDesBl(world, b2);bDesBl(world, b3);bDesBl(world, b4);
 
                     long time = world.getLevelData().getDayTime();
-                    ((ServerWorld) world).setWeatherParameters(0, (int) time, true, true);
+                    ((ServerLevel) world).setWeatherParameters(0, (int) time, true, true);
 
-                    ((ServerWorld) world).sendParticles(ParticleTypes.POOF, x, y, z, 40, 0.4, 0.4, 0.4, 0.1);
-                    ServerWorld serverworld = (ServerWorld) world;
+                    ((ServerLevel) world).sendParticles(ParticleTypes.POOF, x, y, z, 40, 0.4, 0.4, 0.4, 0.1);
+                    ServerLevel serverworld = (ServerLevel) world;
                     BlockPos blockpos = (new BlockPos(x, y, z));
                     AltyrusSummoningEntity altyrusSummoningEntity = BPEntities.ALTYRUS_SUMMONING.get().create(world);
                     altyrusSummoningEntity.moveTo(blockpos, 0.0F, 0.0F);
@@ -123,27 +123,27 @@ public class FrostbiteMetalCoreBlock extends Block {
                     serverworld.addFreshEntity(altyrusSummoningEntity);
 
                     if (!entity.level.isClientSide()) {
-                        entity.displayClientMessage(new StringTextComponent("Summon successful!"), (false));
+                        entity.displayClientMessage(Component.literal("Summon successful!"), (false));
                     }
                 }
 
             } else if (!entity.level.isClientSide()) {
-                entity.displayClientMessage(new StringTextComponent("Invalid structure, use the Biopedia to find the correct structure."), (false));
+                entity.displayClientMessage(Component.literal("Invalid structure, use the Biopedia to find the correct structure."), (false));
             }
         } else {
             if (!entity.level.isClientSide()) {
-                entity.displayClientMessage(new StringTextComponent("Invalid item for the altar, requires: FrostbiteMetal."), (false));
+                entity.displayClientMessage(Component.literal("Invalid item for the altar, requires: FrostbiteMetal."), (false));
             }
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
     
-    public void bDesBl(World world, BlockPos pos) {
+    public void bDesBl(Level world, BlockPos pos) {
         world.destroyBlock(pos, false);
     }
     
-    public Block getBlockAt(World world, BlockPos pos) {
+    public Block getBlockAt(Level world, BlockPos pos) {
         return world.getBlockState(pos).getBlock();
     }
 }

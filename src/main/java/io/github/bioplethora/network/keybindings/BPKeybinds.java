@@ -1,12 +1,12 @@
 package io.github.bioplethora.network.keybindings;
 
+import javax.swing.text.JTextComponent.KeyBinding;
+
 import io.github.bioplethora.Bioplethora;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 public class BPKeybinds {
@@ -23,7 +23,7 @@ public class BPKeybinds {
         */
     }
 
-    private static KeyBinding create(String name,  int key) {
-        return new KeyBinding("key." + Bioplethora.MOD_ID + "." + name, key, "key.category." + Bioplethora.MOD_ID);
+    private static KeyMapping create(String name,  int key) {
+        return new KeyMapping("key." + Bioplethora.MOD_ID + "." + name, key, "key.category." + Bioplethora.MOD_ID);
     }
 }

@@ -1,8 +1,8 @@
 package io.github.bioplethora.enums;
 
 import io.github.bioplethora.entity.IGrylynenTier;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 
 public enum BPGrylynenTier implements IGrylynenTier {
 

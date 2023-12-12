@@ -1,6 +1,6 @@
 package io.github.bioplethora.api.extras;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class IntegrationUtils {
 

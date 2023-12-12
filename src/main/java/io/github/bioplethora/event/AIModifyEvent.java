@@ -2,11 +2,11 @@ package io.github.bioplethora.event;
 
 import io.github.bioplethora.entity.ai.goals.BPAvoidEntityGoal;
 import io.github.bioplethora.entity.creatures.EurydnEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.monster.ZombifiedPiglinEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.ZombifiedPiglin;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -14,15 +14,15 @@ import net.minecraftforge.fml.common.Mod;
 public class AIModifyEvent {
 
     @SubscribeEvent
-    public static void onEntitySpawn(EntityJoinWorldEvent event) {
-        World world = event.getWorld();
+    public static void onEntitySpawn(EntityJoinLevelEvent event) {
+        Level world = event.getLevel();
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof MobEntity)) return;
+        if (!(entity instanceof Mob)) return;
 
-        MobEntity mob = ((MobEntity) event.getEntity());
+        Mob mob = ((Mob) event.getEntity());
 
-        if (mob instanceof ZombifiedPiglinEntity) {
+        if (mob instanceof ZombifiedPiglin) {
             mob.goalSelector.addGoal(2, new BPAvoidEntityGoal<>(mob, EurydnEntity.class, 6.0F, 1.0D, 1.2D));
         }
     }

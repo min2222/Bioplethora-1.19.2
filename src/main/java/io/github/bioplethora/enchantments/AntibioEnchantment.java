@@ -6,21 +6,21 @@ import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPDamageSources;
 import io.github.bioplethora.registry.BPEnchantments;
 import io.github.bioplethora.registry.BPParticles;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class AntibioEnchantment extends Enchantment {
 
     public final BPEntityClasses classTarget;
 
-    public AntibioEnchantment(Enchantment.Rarity rarity, BPEntityClasses classTarget, EquipmentSlotType... slotTypes) {
+    public AntibioEnchantment(Enchantment.Rarity rarity, BPEntityClasses classTarget, EquipmentSlot... slotTypes) {
         super(rarity, BPEnchantmentHelper.BP_WEAPON_AND_AXE, slotTypes);
         this.classTarget = classTarget;
     }
@@ -74,8 +74,8 @@ public class AntibioEnchantment extends Enchantment {
         if (pTarget instanceof IBioClassification) {
             if (((IBioClassification) pTarget).getBioplethoraClass() == classTarget) {
 
-                if (pTarget.level instanceof ServerWorld) {
-                    ((ServerWorld) pTarget.level).sendParticles(BPParticles.ANTIBIO_SPELL.get(),
+                if (pTarget.level instanceof ServerLevel) {
+                    ((ServerLevel) pTarget.level).sendParticles(BPParticles.ANTIBIO_SPELL.get(),
                             pTarget.getX(), pTarget.getY() + 1.0, pTarget.getZ(),
                             10, 0.4, 1, 0.4, 0.05);
                 }

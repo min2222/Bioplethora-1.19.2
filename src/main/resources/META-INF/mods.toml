@@ -1,6 +1,6 @@
 modLoader="javafml"
 
-loaderVersion="[36,)"
+loaderVersion="[43,)"
 license="MIT"
 
 [[mods]]
@@ -17,14 +17,14 @@ A minecraft mod that adds plenty of new content which mainly focuses on new crea
 [[dependencies.bioplethora]]
 	modId="forge"
 	mandatory=true
-	versionRange="[36,)"
+	versionRange="[43,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.16.5,1.17)"
+	versionRange="[1.19.2,1.20)"
 	ordering="NONE"
 	side="BOTH"
 
@@ -32,14 +32,14 @@ A minecraft mod that adds plenty of new content which mainly focuses on new crea
 [[dependencies.bioplethora]]
 	modId="geckolib3"
 	mandatory=true
-	versionRange="[3.0,)"
+	versionRange="[3.1.40,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="fabric-biome-api"
 	mandatory=true
-	versionRange="[1.0,)"
+	versionRange="[2.0.4,)"
 	ordering="AFTER"
 	side="BOTH"
 
@@ -48,70 +48,63 @@ A minecraft mod that adds plenty of new content which mainly focuses on new crea
 [[dependencies.bioplethora]]
 	modId="patchouli"
 	mandatory=false
-	versionRange="[1.16-42,)"
+	versionRange="[1.19.2-77,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="jei"
 	mandatory=false
-	versionRange="[7.7.1.152,]"
+	versionRange="[11.6.0.1018,]"
 	ordering="AFTER"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="jeresources"
 	mandatory=false
-	versionRange="[0.12,]"
+	versionRange="[1.2.3.243,]"
 	ordering="AFTER"
 	side="BOTH"
 	
 [[dependencies.bioplethora]]
 	modId="jeed"
 	mandatory=false
-	versionRange="[1.16.5-1.6,]"
+	versionRange="[1.19.2-2.1.4,]"
 	ordering="AFTER"
 	side="BOTH"
 	
 [[dependencies.bioplethora]]
 	modId="theoneprobe"
 	mandatory=false
-	versionRange="[1.16-3.1.7,]"
+	versionRange="[1.19-6.2.2,]"
 	ordering="AFTER"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="jade"
 	mandatory=false
-	versionRange="[2.8.3,]"
+	versionRange="[8.9.2,]"
 	ordering="AFTER"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="curios"
 	mandatory=false
-	versionRange="[1.16.5-4.1.0.0,]"
+	versionRange="[1.19.2-5.1.4.3,]"
 	ordering="AFTER"
 	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="datafixerslayer"
-	mandatory=false
-	versionRange="[1.0-3,]"
-	ordering="AFTER"
-	side="BOTH"
-
+	
 [[dependencies.bioplethora]]
 	modId="damageindicator"
 	mandatory=false
-	versionRange="[1.16.5-2.0.1,]"
+	versionRange="[1.19.2-1.0.0,]"
 	ordering="AFTER"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="criticallib"
 	mandatory=false
-	versionRange="[1.16.5-1.0.0,]"
+	versionRange="[1.19.2-1.0.0,]"
 	ordering="AFTER"
 	side="BOTH"
 
@@ -119,27 +112,27 @@ A minecraft mod that adds plenty of new content which mainly focuses on new crea
 [[dependencies.bioplethora]]
 	modId="appleskin"
 	mandatory=false
-	versionRange="[mc1.16.5-2.4.0,]"
+	versionRange="[mc1.19-2.4.2,]"
 	ordering="AFTER"
 	side="CLIENT"
 
 [[dependencies.bioplethora]]
 	modId="configured"
 	mandatory=false
-	versionRange="[1.5.3,]"
+	versionRange="[2.1.1,]"
 	ordering="AFTER"
 	side="CLIENT"
 
 [[dependencies.bioplethora]]
 	modId="catalogue"
 	mandatory=false
-	versionRange="[1.6.1,]"
+	versionRange="[1.7.0,]"
 	ordering="AFTER"
 	side="CLIENT"
 
 [[dependencies.bioplethora]]
 	modId="gamemenumodoption"
 	mandatory=false
-	versionRange="[1.8.2,]"
+	versionRange="[1.18.1,]"
 	ordering="AFTER"
 	side="CLIENT"

@@ -1,51 +1,54 @@
 package io.github.bioplethora.entity.projectile;
 
+import static io.github.bioplethora.api.extras.MathUtils.angleBetween;
+import static io.github.bioplethora.api.extras.MathUtils.clampAbs;
+import static io.github.bioplethora.api.extras.MathUtils.transform;
+import static io.github.bioplethora.api.extras.MathUtils.wrap180Radian;
+
+import java.awt.Color;
+import java.util.Comparator;
+import java.util.List;
+
 import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.particles.WindPoofParticleData;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.item.Item;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-
-import java.awt.*;
-import java.util.Comparator;
-import java.util.List;
-
-import static io.github.bioplethora.api.extras.MathUtils.*;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class EchoGaidiusEntity extends GaidiusBaseEntity {
 
-    public static final DataParameter<Integer> TARGET_ID = EntityDataManager.defineId(GaidiusBaseEntity.class, DataSerializers.INT);
+    public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(GaidiusBaseEntity.class, EntityDataSerializers.INT);
     public static final int NULL_TARGET_INT = -1;
     public int relocateCD = 0;
 
-    public EchoGaidiusEntity(EntityType<? extends EchoGaidiusEntity> type, World world) {
+    public EchoGaidiusEntity(EntityType<? extends EchoGaidiusEntity> type, Level world) {
         super(type, world);
     }
 
-    public EchoGaidiusEntity(World world, LivingEntity entity) {
+    public EchoGaidiusEntity(Level world, LivingEntity entity) {
         super(BPEntities.ECHO_GAIDIUS.get(), entity, world);
     }
 
-    public EchoGaidiusEntity(World world, double v, double v1, double v2) {
+    public EchoGaidiusEntity(Level world, double v, double v1, double v2) {
         super(BPEntities.ECHO_GAIDIUS.get(), world, v, v1, v2);
     }
 
     @Override
-    public int getProjectileDamage(EntityRayTraceResult result) {
+    public int getProjectileDamage(EntityHitResult result) {
         return isCrit() ? 7 : 4;
     }
 
@@ -84,23 +87,23 @@ public class EchoGaidiusEntity extends GaidiusBaseEntity {
             double deltaX = getDeltaMovement().x(), deltaY = getDeltaMovement().y(), deltaZ = getDeltaMovement().z();
             Entity target = getTarget();
 
-            Vector3d arrowLoc = new Vector3d(getX(), getY(), getZ());
-            Vector3d targetLoc = new Vector3d(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ());
-            Vector3d lookVec = targetLoc.subtract(arrowLoc);
-            Vector3d arrowMotion = new Vector3d(deltaX, deltaY, deltaZ);
+            Vec3 arrowLoc = new Vec3(getX(), getY(), getZ());
+            Vec3 targetLoc = new Vec3(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ());
+            Vec3 lookVec = targetLoc.subtract(arrowLoc);
+            Vec3 arrowMotion = new Vec3(deltaX, deltaY, deltaZ);
 
             double radian = wrap180Radian(angleBetween(arrowMotion, lookVec));
             radian = clampAbs(radian, Math.PI / 2);
 
-            Vector3d crossProduct = arrowMotion.cross(lookVec).normalize();
-            Vector3d adjustedLookVec = transform(crossProduct, radian, arrowMotion);
+            Vec3 crossProduct = arrowMotion.cross(lookVec).normalize();
+            Vec3 adjustedLookVec = transform(crossProduct, radian, arrowMotion);
             shoot(adjustedLookVec.x, adjustedLookVec.y, adjustedLookVec.z, 1.0F, 0);
         }
     }
 
     public void locateAnotherTarget() {
         double targetRadius = BPConfig.COMMON.hellMode.get() ? 13.0D : 10.0D;
-        List<MobEntity> candidates = level.getEntitiesOfClass(MobEntity.class, this.getBoundingBox().inflate(targetRadius, targetRadius, targetRadius));
+        List<Mob> candidates = level.getEntitiesOfClass(Mob.class, this.getBoundingBox().inflate(targetRadius, targetRadius, targetRadius));
 
         if (!candidates.isEmpty()) {
             if (isValidTarget(candidates.get(0))) {
@@ -118,8 +121,8 @@ public class EchoGaidiusEntity extends GaidiusBaseEntity {
         entityData.define(TARGET_ID, NULL_TARGET_INT);
     }
 
-    private MobEntity getTarget() {
-        return (MobEntity) level.getEntity(entityData.get(TARGET_ID));
+    private Mob getTarget() {
+        return (Mob) level.getEntity(entityData.get(TARGET_ID));
     }
 
     private boolean hasTarget() {
@@ -130,12 +133,12 @@ public class EchoGaidiusEntity extends GaidiusBaseEntity {
         return EntityUtils.IsNotPet(this.getOwner()).test(entity);
     }
 
-    public void onHitEntity(EntityRayTraceResult entityRayTraceResult) {
-        super.onHitEntity(entityRayTraceResult);
+    public void onHitEntity(EntityHitResult entityHitResult) {
+        super.onHitEntity(entityHitResult);
 
-        if (entityRayTraceResult.getEntity() instanceof LivingEntity) {
-            LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
-            entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, 60, 3));
+        if (entityHitResult.getEntity() instanceof LivingEntity) {
+            LivingEntity entity = (LivingEntity) entityHitResult.getEntity();
+            entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 3));
             if (random.nextInt(10) == 1) {
                 entity.invulnerableTime = 0;
             }
@@ -143,13 +146,13 @@ public class EchoGaidiusEntity extends GaidiusBaseEntity {
         this.projectileHit();
     }
 
-    protected void onHitBlock(BlockRayTraceResult result) {
+    protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
 
         this.projectileHit();
     }
 
     public void projectileHit() {
-        this.remove();
+        this.discard();
     }
 }

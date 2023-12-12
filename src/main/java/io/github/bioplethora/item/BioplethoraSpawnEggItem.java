@@ -1,30 +1,30 @@
 package io.github.bioplethora.item;
 
-import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.block.DispenserBlock;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import io.github.bioplethora.enums.BPEntityClasses;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.Direction;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BioplethoraSpawnEggItem extends SpawnEggItem {
 
@@ -44,11 +44,11 @@ public class BioplethoraSpawnEggItem extends SpawnEggItem {
         DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior() {
 
             @Override
-            public ItemStack execute(IBlockSource source, ItemStack stack) {
+            public ItemStack execute(BlockSource source, ItemStack stack) {
                 Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
                 EntityType<?> entitytype = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
                 entitytype.spawn(source.getLevel(), stack, null, source.getPos().relative(direction),
-                        SpawnReason.DISPENSER, direction != Direction.UP, false);
+                		MobSpawnType.DISPENSER, direction != Direction.UP, false);
                 stack.shrink(1);
                 return stack;
             }
@@ -61,15 +61,15 @@ public class BioplethoraSpawnEggItem extends SpawnEggItem {
     }
 
     @Override
-    public EntityType<?> getType(@Nullable final CompoundNBT p_208076_1_) {
+    public EntityType<?> getType(@Nullable final CompoundTag p_208076_1_) {
         return entityTypeSupplier.get();
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
-        tooltip.add(new TranslationTextComponent("item.bioplethora." + bpEntityClass() + "_spawn_egg.desc").withStyle(bpClassColor()));
+        tooltip.add(Component.translatable("item.bioplethora." + bpEntityClass() + "_spawn_egg.desc").withStyle(bpClassColor()));
     }
 
     public String bpEntityClass() {
@@ -88,19 +88,19 @@ public class BioplethoraSpawnEggItem extends SpawnEggItem {
         }
     }
 
-    public TextFormatting bpClassColor() {
+    public ChatFormatting bpClassColor() {
         if (getEntityClass(BPEntityClasses.ECOHARMLESS)) {
-            return TextFormatting.GREEN;
+            return ChatFormatting.GREEN;
         } else if (getEntityClass(BPEntityClasses.PLETHONEUTRAL)) {
-            return TextFormatting.YELLOW;
+            return ChatFormatting.YELLOW;
         } else if (getEntityClass(BPEntityClasses.DANGERUM)) {
-            return TextFormatting.RED;
+            return ChatFormatting.RED;
         } else if (getEntityClass(BPEntityClasses.HELLSENT)) {
-            return TextFormatting.LIGHT_PURPLE;
+            return ChatFormatting.LIGHT_PURPLE;
         } else if (getEntityClass(BPEntityClasses.ELDERIA)) {
-            return TextFormatting.AQUA;
+            return ChatFormatting.AQUA;
         } else {
-            return TextFormatting.WHITE;
+            return ChatFormatting.WHITE;
         }
     }
 

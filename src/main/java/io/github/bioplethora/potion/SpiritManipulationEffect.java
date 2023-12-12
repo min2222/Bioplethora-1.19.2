@@ -1,15 +1,15 @@
 package io.github.bioplethora.potion;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectType;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 
-public class SpiritManipulationEffect extends Effect {
+public class SpiritManipulationEffect extends MobEffect {
 
     int armorRegenTimer;
 
-    public SpiritManipulationEffect(EffectType effectType, int potionParticleColor) {
+    public SpiritManipulationEffect(MobEffectCategory effectType, int potionParticleColor) {
         super(effectType, potionParticleColor);
         armorRegenTimer = 0;
     }
@@ -18,8 +18,8 @@ public class SpiritManipulationEffect extends Effect {
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         ++armorRegenTimer;
         if (armorRegenTimer == 60) {
-            for (EquipmentSlotType type : EquipmentSlotType.values()) {
-                if (type != EquipmentSlotType.MAINHAND && type != EquipmentSlotType.OFFHAND) {
+            for (EquipmentSlot type : EquipmentSlot.values()) {
+                if (type != EquipmentSlot.MAINHAND && type != EquipmentSlot.OFFHAND) {
                     pLivingEntity.getItemBySlot(type).setDamageValue(pLivingEntity.getItemBySlot(type).getDamageValue() + 2);
                 }
             }

@@ -2,8 +2,9 @@ package io.github.bioplethora.world.surfacebuilderconfigs;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
+
 import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class CarpetedSurfaceBuilderConfig implements ISurfaceBuilderConfig {
 

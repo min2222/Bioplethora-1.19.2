@@ -3,12 +3,12 @@ package io.github.bioplethora.entity.ai.goals;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.creatures.ShachathEntity;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 
 public class ShachathCloningGoal extends Goal {
 
@@ -32,7 +32,7 @@ public class ShachathCloningGoal extends Goal {
     public void tick() {
         LivingEntity target = this.shachath.getTarget();
         
-        if (target.distanceToSqr(this.shachath) < 4096.0D && this.shachath.canSee(target)) {
+        if (target.distanceToSqr(this.shachath) < 4096.0D && this.shachath.hasLineOfSight(target)) {
 
             this.shachath.getLookControl().setLookAt(target, 30.0F, 30.0F);
             BlockPos blockpos = this.shachath.blockPosition();
@@ -40,8 +40,8 @@ public class ShachathCloningGoal extends Goal {
             ++this.shachath.cloneChargeTime;
             if (this.shachath.cloneChargeTime == 300) {
 
-                if (this.shachath.level instanceof ServerWorld) {
-                    ((ServerWorld) this.shachath.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.shachath.getX(), this.shachath.getY(), this.shachath.getZ(), 75, 0.3, 0.2, 0.2, 0.1);
+                if (this.shachath.level instanceof ServerLevel) {
+                    ((ServerLevel) this.shachath.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.shachath.getX(), this.shachath.getY(), this.shachath.getZ(), 75, 0.3, 0.2, 0.2, 0.1);
                 }
 
                 ShachathEntity clone1 = new ShachathEntity(BPEntities.SHACHATH.get(), this.shachath.level);

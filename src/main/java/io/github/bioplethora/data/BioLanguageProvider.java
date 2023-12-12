@@ -1,25 +1,31 @@
 package io.github.bioplethora.data;
 
-import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.enchantments.AntibioEnchantment;
-import io.github.bioplethora.registry.*;
-import io.github.bioplethora.registry.worldgen.BPBiomes;
-import net.minecraft.block.AbstractSignBlock;
-import net.minecraft.block.Block;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.potion.Effect;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fml.RegistryObject;
-import org.apache.commons.lang3.text.WordUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
+
+import org.apache.commons.lang3.text.WordUtils;
+
+import io.github.bioplethora.Bioplethora;
+import io.github.bioplethora.enchantments.AntibioEnchantment;
+import io.github.bioplethora.registry.BPBlocks;
+import io.github.bioplethora.registry.BPEffects;
+import io.github.bioplethora.registry.BPEnchantments;
+import io.github.bioplethora.registry.BPEntities;
+import io.github.bioplethora.registry.BPItems;
+import io.github.bioplethora.registry.worldgen.BPBiomes;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SignBlock;
+import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BioLanguageProvider extends LanguageProvider {
 
@@ -157,7 +163,7 @@ public class BioLanguageProvider extends LanguageProvider {
 
     public String mobSubtitlesFormat(Supplier<? extends EntityType<?>> entitySupplier, String action) {
         EntityType<?> entity = entitySupplier.get();
-        return subtitlesFormat(entity.getRegistryName().getPath(), action);
+        return subtitlesFormat(entity.getDescriptionId(), action);
     }
 
     public String subtitlesFormat(String subtitle1, String subtitle2) {
@@ -259,7 +265,7 @@ public class BioLanguageProvider extends LanguageProvider {
         manualBlockTranslations();
 
         for (RegistryObject<Block> block : blocks) {
-            if (!manualBlockList.contains(block) && !(block.get() instanceof AbstractSignBlock)) {
+            if (!manualBlockList.contains(block) && !(block.get() instanceof SignBlock)) {
                 addBlock(block, capitalizedSpacedRegistryObject(block));
             }
         }
@@ -275,8 +281,8 @@ public class BioLanguageProvider extends LanguageProvider {
         }
     }
 
-    public void addEffects(Collection<RegistryObject<Effect>> effects) {
-        for (RegistryObject<Effect> effect : effects) {
+    public void addEffects(Collection<RegistryObject<MobEffect>> effects) {
+        for (RegistryObject<MobEffect> effect : effects) {
             addEffect(effect, capitalizedSpacedRegistryObject(effect));
         }
     }
@@ -308,6 +314,6 @@ public class BioLanguageProvider extends LanguageProvider {
     }
 
     public void add(Biome key, String name) {
-        add("biome." + Bioplethora.MOD_ID + "." + key.getRegistryName().getPath(), name);
+        add("biome." + Bioplethora.MOD_ID + "." + ForgeRegistries.BIOMES.getKey(key).getPath(), name);
     }
 }

@@ -1,20 +1,18 @@
 package io.github.bioplethora.world.features;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.world.featureconfigs.NBTFeatureConfig;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-
-import java.util.Random;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class NBTFeature extends Feature<NBTFeatureConfig> {
 
@@ -23,7 +21,7 @@ public class NBTFeature extends Feature<NBTFeatureConfig> {
     }
 
     public boolean place(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NBTFeatureConfig config) {
-        BlockPos.Mutable mutablePos = new BlockPos.Mutable().set(pos);
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
 
         int rad = 2;
         for (int x = -rad; x <= rad; x++) {
@@ -46,11 +44,11 @@ public class NBTFeature extends Feature<NBTFeatureConfig> {
         }
 
         BlockPos halfOfNBT = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
-        BlockPos.Mutable placementLocation = mutablePos.set(pos).move(-halfOfNBT.getX(), config.getYOffset(), -halfOfNBT.getZ());
+        BlockPos.MutableBlockPos placementLocation = mutablePos.set(pos).move(-halfOfNBT.getX(), config.getYOffset(), -halfOfNBT.getZ());
 
         Rotation rotation = Rotation.getRandom(random);
         PlacementSettings placementsettings = new PlacementSettings().setRotation(rotation).setRotationPivot(halfOfNBT).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_AND_AIR).setIgnoreEntities(true);
-        template.placeInWorldChunk(world, placementLocation, placementsettings, random);
+        template.placeInLevelChunk(world, placementLocation, placementsettings, random);
 
         return true;
     }

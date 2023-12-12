@@ -1,13 +1,13 @@
 package io.github.bioplethora.entity;
 
 import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -17,10 +17,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public abstract class BPMonsterEntity extends MonsterEntity implements IAnimatable, IGeckoBaseEntity {
+public abstract class BPMonsterEntity extends Monster implements IAnimatable, IGeckoBaseEntity {
 
-    protected static final DataParameter<Boolean> MOVING = EntityDataManager.defineId(BPMonsterEntity.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Boolean> ATTACKING = EntityDataManager.defineId(BPMonsterEntity.class, DataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(BPMonsterEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(BPMonsterEntity.class, EntityDataSerializers.BOOLEAN);
 
     public int prevHurtTime;
     public boolean hurtRandomizer;
@@ -28,7 +28,7 @@ public abstract class BPMonsterEntity extends MonsterEntity implements IAnimatab
     @OnlyIn(Dist.CLIENT)
     public float ageInTicks;
 
-    public BPMonsterEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public BPMonsterEntity(EntityType<? extends Monster> type, Level worldIn) {
         super(type, worldIn);
     }
 

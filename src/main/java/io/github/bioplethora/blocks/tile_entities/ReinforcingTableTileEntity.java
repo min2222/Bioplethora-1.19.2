@@ -1,52 +1,52 @@
 package io.github.bioplethora.blocks.tile_entities;
 
-import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
-import io.github.bioplethora.registry.BPTileEntities;
-import net.minecraft.block.BlockState;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ReinforcingTableTileEntity extends TileEntity implements ITickableTileEntity {
+import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
+import io.github.bioplethora.registry.BPTileEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+
+public class ReinforcingTableTileEntity extends BlockEntity {
 
     private final ItemStackHandler itemHandler = createHandler();
     private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    public ReinforcingTableTileEntity(TileEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public ReinforcingTableTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+        super(tileEntityTypeIn, pos, state);
     }
 
-    public ReinforcingTableTileEntity() {
-        this(BPTileEntities.REINFORCING_TABLE.get());
+    public ReinforcingTableTileEntity(BlockPos pos, BlockState state) {
+        this(BPTileEntities.REINFORCING_TABLE.get(), pos, state);
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT nbt) {
+    public void load(CompoundTag nbt) {
         itemHandler.deserializeNBT(nbt.getCompound("inv"));
-        super.load(state, nbt);
+        super.load(nbt);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public void saveAdditional(CompoundTag compound) {
         compound.put("inv", itemHandler.serializeNBT());
-        return super.save(compound);
+        super.saveAdditional(compound);
     }
 
     private ItemStack getResult(@Nullable ReinforcingRecipe recipe) {
         if (recipe != null) {
-            return recipe.assemble((IInventory) this);
+            return recipe.assemble((Container) this);
         }
         return ItemStack.EMPTY;
     }
@@ -83,15 +83,10 @@ public class ReinforcingTableTileEntity extends TileEntity implements ITickableT
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return handler.cast();
         }
 
         return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void tick() {
-
     }
 }

@@ -1,22 +1,23 @@
 package io.github.bioplethora.world;
 
-import io.github.bioplethora.api.world.WorldgenUtils;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
+import io.github.bioplethora.api.world.LevelgenUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import javax.annotation.Nullable;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 /**
  * Used for spawning Bioplethora's mobs in vanilla biomes, spawning in Bioplethora's biomes will be handled inside the biome class itself.
@@ -226,19 +227,19 @@ public class EntitySpawnManager {
                     if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN))
                         OCEAN_ENTITIES.accept(spawnInfoBuilder);
                 case NETHER:
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.BASALT_DELTAS)) {
+                    if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.BASALT_DELTAS)) {
                         BASALT_DELTAS_ENTITIES.accept(spawnInfoBuilder);
                     }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.NETHER_WASTES)) {
+                    if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.NETHER_WASTES)) {
                         NETHER_WASTES_ENTITIES.accept(spawnInfoBuilder);
                     }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.WARPED_FOREST)) {
+                    if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.WARPED_FOREST)) {
                         WARPED_FOREST_ENTITIES.accept(spawnInfoBuilder);
                     }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.CRIMSON_FOREST)) {
+                    if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.CRIMSON_FOREST)) {
                         CRIMSON_FOREST_ENTITIES.accept(spawnInfoBuilder);
                     }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.SOUL_SAND_VALLEY)) {
+                    if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.SOUL_SAND_VALLEY)) {
                         SOUL_SAND_VALLEY_ENTITIES.accept(spawnInfoBuilder);
                     }
                 case THEEND:

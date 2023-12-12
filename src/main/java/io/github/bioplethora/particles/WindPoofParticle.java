@@ -1,33 +1,40 @@
 package io.github.bioplethora.particles;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.AtlasTexture;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import java.awt.Color;
+
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
 * @Credit MaxBogomol
 */
 @OnlyIn(Dist.CLIENT)
-public class WindPoofParticle extends SpriteTexturedParticle {
+public class WindPoofParticle extends TextureSheetParticle {
 
-    private final IAnimatedSprite sprites;
+    private final SpriteSet sprites;
     private float maxScale;
     private float maxAlpha;
     private float loseScale = 0.01F;
 
-    private WindPoofParticle(ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Color tint, double diameter, IAnimatedSprite sprites) {
+    private WindPoofParticle(ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, Color tint, double diameter, SpriteSet sprites) {
         super(world, x, y, z, velocityX, velocityY, velocityZ);
         this.sprites = sprites;
 
@@ -82,7 +89,7 @@ public class WindPoofParticle extends SpriteTexturedParticle {
         }
     }
 
-    public IParticleRenderType getRenderType() {
+    public ParticleRenderType getRenderType() {
         return NORMAL_RENDER;
     }
 
@@ -90,29 +97,29 @@ public class WindPoofParticle extends SpriteTexturedParticle {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
-        RenderSystem.disableLighting();
-
-        manager.bind(AtlasTexture.LOCATION_PARTICLES);
-        manager.getTexture(AtlasTexture.LOCATION_PARTICLES).setBlurMipmap(true, false);
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE);
+        //RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
+        //RenderSystem.disableLighting();
+        
+        manager.bindForSetup(InventoryMenu.BLOCK_ATLAS);
+        manager.getTexture(InventoryMenu.BLOCK_ATLAS).setBlurMipmap(true, false);
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
     }
 
     public static final void endRenderCommon() {
-        Minecraft.getInstance().textureManager.getTexture(AtlasTexture.LOCATION_PARTICLES).restoreLastBlurMipmap();
-        RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
+        Minecraft.getInstance().textureManager.getTexture(InventoryMenu.BLOCK_ATLAS).restoreLastBlurMipmap();
+        //RenderSystem.alphaFunc(GL11.GL_GREATER, 0.1F);
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
     }
 
-    public static final IParticleRenderType NORMAL_RENDER = new IParticleRenderType() {
+    public static final ParticleRenderType NORMAL_RENDER = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder pBuilder, TextureManager pTextureManager) {
             beginRenderCommon(pBuilder, pTextureManager);
         }
 
         @Override
-        public void end(Tessellator pTesselator) {
+        public void end(Tesselator pTesselator) {
             pTesselator.end();
             endRenderCommon();
         }
@@ -123,7 +130,7 @@ public class WindPoofParticle extends SpriteTexturedParticle {
         }
     };
 
-    public static final IParticleRenderType DIW_RENDER = new IParticleRenderType() {
+    public static final ParticleRenderType DIW_RENDER = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder pBuilder, TextureManager pTextureManager) {
             beginRenderCommon(pBuilder, pTextureManager);
@@ -131,7 +138,7 @@ public class WindPoofParticle extends SpriteTexturedParticle {
         }
 
         @Override
-        public void end(Tessellator pTesselator) {
+        public void end(Tesselator pTesselator) {
             pTesselator.end();
             RenderSystem.enableDepthTest();
             endRenderCommon();
@@ -144,14 +151,14 @@ public class WindPoofParticle extends SpriteTexturedParticle {
     };
 
     @OnlyIn(Dist.CLIENT)
-    public static class Factory implements IParticleFactory<WindPoofParticleData> {
-        private final IAnimatedSprite sprites;
+    public static class Factory implements ParticleProvider<WindPoofParticleData> {
+        private final SpriteSet sprites;
 
-        public Factory(IAnimatedSprite p_i50563_1_) {
+        public Factory(SpriteSet p_i50563_1_) {
             this.sprites = p_i50563_1_;
         }
 
-        public Particle createParticle(WindPoofParticleData flameParticleData, ClientWorld world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity) {
+        public Particle createParticle(WindPoofParticleData flameParticleData, ClientLevel world, double xPos, double yPos, double zPos, double xVelocity, double yVelocity, double zVelocity) {
             WindPoofParticle windPoof = new WindPoofParticle(world, xPos, yPos, zPos, xVelocity, yVelocity, zVelocity,
                     flameParticleData.getTint(), flameParticleData.getDiameter(),
                     sprites);

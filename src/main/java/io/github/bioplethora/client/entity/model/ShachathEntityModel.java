@@ -2,7 +2,7 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.ShachathEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -11,12 +11,12 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class ShachathEntityModel extends AnimatedGeoModel<ShachathEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(ShachathEntity entity) {
+    public ResourceLocation getModelResource(ShachathEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/shachath.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ShachathEntity entity) {
+    public ResourceLocation getTextureResource(ShachathEntity entity) {
         if (entity.isClone()) {
             return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/shachath_clone.png");
         } else {
@@ -25,7 +25,7 @@ public class ShachathEntityModel extends AnimatedGeoModel<ShachathEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ShachathEntity entity) {
+    public ResourceLocation getAnimationResource(ShachathEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/shachath.animation.json");
     }
 

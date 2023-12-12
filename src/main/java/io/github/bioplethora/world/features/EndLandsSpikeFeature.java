@@ -1,19 +1,14 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
+
+import com.mojang.serialization.Codec;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.phys.Vec3;
 
 public class EndLandsSpikeFeature extends Feature<NoFeatureConfig> {
 
@@ -44,20 +39,20 @@ public class EndLandsSpikeFeature extends Feature<NoFeatureConfig> {
         int topZ = world.getRandom().nextInt(tip) - tip / 2;
 
         int radius = radiusMin + world.getRandom().nextInt(radiusRand);
-        Vector3d to = new Vector3d(pos.getX() + topX, pos.getY() - tip, pos.getZ() + topZ);
+        Vec3 to = new Vec3(pos.getX() + topX, pos.getY() - tip, pos.getZ() + topZ);
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 double fromCenter = Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2));
                 if(fromCenter <= radius) {
-                    Vector3d from = new Vector3d(pos.getX() + x, pos.getY(), pos.getZ() + z);
+                    Vec3 from = new Vec3(pos.getX() + x, pos.getY(), pos.getZ() + z);
 
                     if(world.getBlockState(new BlockPos(from).below()).isAir()) {
                         continue;
                     }
 
-                    Vector3d per = to.subtract(from).normalize();
-                    Vector3d current = from.add(0, 0, 0);
+                    Vec3 per = to.subtract(from).normalize();
+                    Vec3 current = from.add(0, 0, 0);
                     double distance = from.distanceTo(to);
 
                     for (double i = 0; i < distance; i++) {

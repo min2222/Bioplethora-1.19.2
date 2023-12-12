@@ -1,18 +1,15 @@
 package io.github.bioplethora.network;
 
 import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.blocks.tile_entities.AlphanumNucleusBlock;
 import io.github.bioplethora.network.functions.BPSpawnParticlePacket;
 import io.github.bioplethora.network.functions.LeftSwingPacket;
 import io.github.bioplethora.network.functions.NucleusActivatePacket;
 import io.github.bioplethora.network.functions.RightSwingPacket;
-import io.github.bioplethora.network.keybindings.VerticalMountDownPacket;
-import io.github.bioplethora.network.keybindings.VerticalMountUpPacket;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class BPNetwork {
 
@@ -31,7 +28,7 @@ public class BPNetwork {
         CHANNEL.registerMessage(packetIndex++, BPSpawnParticlePacket.class, BPSpawnParticlePacket::encode, BPSpawnParticlePacket::decode, BPSpawnParticlePacket::spawnParticles);
     }
 
-    public static <MSG> void sendPacketToPlayer(ServerPlayerEntity player, MSG packet) {
+    public static <MSG> void sendPacketToPlayer(ServerPlayer player, MSG packet) {
         if (player.connection != null) {
             CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
         }

@@ -1,5 +1,11 @@
 package io.github.bioplethora.entity.creatures;
 
+import java.util.EnumSet;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.api.world.EffectUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.BPAnimalEntity;
@@ -8,31 +14,45 @@ import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
 import io.github.bioplethora.entity.ai.goals.WaterFollowOwnerGoal;
 import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -40,24 +60,19 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Random;
-import java.util.UUID;
-
 public class VoidjawEntity extends TrapjawEntity {
 
-    private static final DataParameter<Boolean> IS_SAVING = EntityDataManager.defineId(VoidjawEntity.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_SAVING = SynchedEntityData.defineId(VoidjawEntity.class, EntityDataSerializers.BOOLEAN);
     public boolean inWall;
     public int particleTime;
 
-    public VoidjawEntity(EntityType<? extends BPAnimalEntity> type, World worldIn) {
+    public VoidjawEntity(EntityType<? extends BPAnimalEntity> type, Level worldIn) {
         super(type, worldIn);
         this.moveControl = new VoidjawEntity.MoveHelperController(this);
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 6 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 17 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -72,7 +87,7 @@ public class VoidjawEntity extends TrapjawEntity {
         return BPEntityClasses.HELLSENT;
     }
 
-    public static boolean checkVoidjawSpawnRules(EntityType<VoidjawEntity> voidjaw, IWorld pLevel, SpawnReason pSpawnType, BlockPos pPos, Random pRandom) {
+    public static boolean checkVoidjawSpawnRules(EntityType<VoidjawEntity> voidjaw, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
         return pPos.getY() > 30;
     }
 
@@ -92,7 +107,7 @@ public class VoidjawEntity extends TrapjawEntity {
     protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
     }
 
-    public static boolean checkMobSpawnRules(EntityType<? extends MobEntity> pType, IWorld pLevel, SpawnReason pSpawnType, BlockPos pPos, Random pRandom) {
+    public static boolean checkMobSpawnRules(EntityType<? extends Mob> pType, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, Random pRandom) {
         return true;
     }
 
@@ -105,13 +120,13 @@ public class VoidjawEntity extends TrapjawEntity {
         this.goalSelector.addGoal(5, new WaterFollowOwnerGoal(this, 1.2D, 10.0F, 2.0F, true));
         this.goalSelector.addGoal(5, new VoidjawEntity.FollowOwnerGoal());
         this.goalSelector.addGoal(6, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new RandomWalkingGoal(this, 1.2, 8));
-        this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(11, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.2, 8));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(2, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(1, new NonTamedTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
+        this.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
     }
 
     @Override
@@ -153,13 +168,13 @@ public class VoidjawEntity extends TrapjawEntity {
         this.entityData.set(IS_SAVING, saving);
     }
 
-    private boolean checkWalls(AxisAlignedBB pArea) {
-        int i = MathHelper.floor(pArea.minX);
-        int j = MathHelper.floor(pArea.minY);
-        int k = MathHelper.floor(pArea.minZ);
-        int l = MathHelper.floor(pArea.maxX);
-        int i1 = MathHelper.floor(pArea.maxY);
-        int j1 = MathHelper.floor(pArea.maxZ);
+    private boolean checkWalls(AABB pArea) {
+        int i = Mth.floor(pArea.minX);
+        int j = Mth.floor(pArea.minY);
+        int k = Mth.floor(pArea.minZ);
+        int l = Mth.floor(pArea.maxX);
+        int i1 = Mth.floor(pArea.maxY);
+        int j1 = Mth.floor(pArea.maxZ);
         boolean flag = false;
         boolean flag1 = false;
 
@@ -168,10 +183,9 @@ public class VoidjawEntity extends TrapjawEntity {
                 for(int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    Block block = blockstate.getBlock();
-                    if (!blockstate.isAir(this.level, blockpos) && blockstate.getMaterial() != Material.FIRE) {
-                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && !BlockTags.DRAGON_IMMUNE.contains(block) &&
-                                (BlockTags.LEAVES.contains(block) || BlockTags.CORAL_PLANTS.contains(block))) {
+                    if (!blockstate.isAir() && blockstate.getMaterial() != Material.FIRE) {
+                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(BlockTags.DRAGON_IMMUNE) &&
+                                (blockstate.is(BlockTags.LEAVES) || blockstate.is(BlockTags.CORAL_PLANTS))) {
                             flag1 = this.level.removeBlock(blockpos, false) || flag1;
                         } else {
                             flag = true;
@@ -193,14 +207,14 @@ public class VoidjawEntity extends TrapjawEntity {
     public void switchNavigator(boolean onLand) {
     }
 
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("BoundX")) {
             this.boundOrigin = new BlockPos(pCompound.getInt("BoundX"), pCompound.getInt("BoundY"), pCompound.getInt("BoundZ"));
         }
     }
 
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         if (this.boundOrigin != null) {
             pCompound.putInt("BoundX", this.boundOrigin.getX());
@@ -219,8 +233,8 @@ public class VoidjawEntity extends TrapjawEntity {
     }
 
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity entity) {
-        VoidjawEntity voidjaw = BPEntities.VOIDJAW.get().create(serverWorld);
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob entity) {
+        VoidjawEntity voidjaw = BPEntities.VOIDJAW.get().create(serverLevel);
         UUID uuid = this.getOwnerUUID();
         if (uuid != null) {
             voidjaw.setOwnerUUID(uuid);
@@ -250,16 +264,16 @@ public class VoidjawEntity extends TrapjawEntity {
         }
     }
 
-    public static class VoidjawMeleeGoal<E extends MobEntity> extends GeckoMeleeGoal<E> {
+    public static class VoidjawMeleeGoal<E extends Mob> extends GeckoMeleeGoal<E> {
 
         public VoidjawMeleeGoal(E entity, double animationLength, double attackBegin, double attackEnd) {
             super(entity, animationLength, attackBegin, attackEnd);
         }
 
-        public boolean checkIfValid2(GeckoMeleeGoal goal, MobEntity attacker, LivingEntity target) {
+        public boolean checkIfValid2(GeckoMeleeGoal goal, Mob attacker, LivingEntity target) {
             if (target == null) return false;
             if (target.isAlive() && !target.isSpectator()) {
-                if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+                if (target instanceof Player && ((Player) target).isCreative()) {
                     ((IGeckoBaseEntity) attacker).setAttacking(false);
                     return false;
                 }
@@ -291,7 +305,7 @@ public class VoidjawEntity extends TrapjawEntity {
 
     }
 
-    public class MoveHelperController extends MovementController {
+    public class MoveHelperController extends MoveControl {
         public MoveHelperController(VoidjawEntity floatingMob) {
             super(floatingMob);
         }
@@ -305,21 +319,21 @@ public class VoidjawEntity extends TrapjawEntity {
                 VoidjawEntity.this.setDeltaMovement(VoidjawEntity.this.getDeltaMovement().add(0, 0.25, 0));
                 VoidjawEntity.this.setInSittingPose(false);
             }
-            if (this.operation == MovementController.Action.MOVE_TO && !voidjaw.isVehicle() && !voidjaw.isInSittingPose()) {
-                Vector3d vector3d = new Vector3d(this.wantedX - voidjaw.getX(), this.wantedY - voidjaw.getY(), this.wantedZ - voidjaw.getZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO && !voidjaw.isVehicle() && !voidjaw.isInSittingPose()) {
+                Vec3 vector3d = new Vec3(this.wantedX - voidjaw.getX(), this.wantedY - voidjaw.getY(), this.wantedZ - voidjaw.getZ());
                 double d0 = vector3d.length();
                 if (d0 < voidjaw.getBoundingBox().getSize()) {
-                    this.operation = MovementController.Action.WAIT;
+                    this.operation = MoveControl.Operation.WAIT;
                     voidjaw.setDeltaMovement(voidjaw.getDeltaMovement().scale(0.5D));
                 } else {
                     voidjaw.setDeltaMovement(voidjaw.getDeltaMovement().add(vector3d.scale((this.speedModifier * 0.05D / d0) * (voidjaw.isInWater() ? 2.2 : 1))));
                     if (voidjaw.getTarget() == null) {
-                        Vector3d vector3d1 = voidjaw.getDeltaMovement();
-                        voidjaw.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
+                        Vec3 vector3d1 = voidjaw.getDeltaMovement();
+                        voidjaw.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float) Math.PI);
                     } else {
                         double d2 = voidjaw.getTarget().getX() - voidjaw.getX();
                         double d1 = voidjaw.getTarget().getZ() - voidjaw.getZ();
-                        voidjaw.yRot = -((float) MathHelper.atan2(d2, d1)) * (180F / (float) Math.PI);
+                        voidjaw.yRot = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
                     }
                     voidjaw.yBodyRot = voidjaw.yRot;
                 }
@@ -328,7 +342,7 @@ public class VoidjawEntity extends TrapjawEntity {
     }
 
     @Override
-    public void move(MoverType pType, Vector3d pPos) {
+    public void move(MoverType pType, Vec3 pPos) {
         super.move(pType, pPos);
         if (this.isSaving() || !this.level.isEmptyBlock(this.blockPosition())) {
             this.checkInsideBlocks();
@@ -365,7 +379,7 @@ public class VoidjawEntity extends TrapjawEntity {
 
         public void start() {
             LivingEntity livingentity = VoidjawEntity.this.getTarget();
-            Vector3d vector3d = livingentity.getEyePosition(1.0F);
+            Vec3 vector3d = livingentity.getEyePosition(1.0F);
             VoidjawEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
         }
 
@@ -378,7 +392,7 @@ public class VoidjawEntity extends TrapjawEntity {
             if (!VoidjawEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 double d0 = VoidjawEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                    Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     VoidjawEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }
@@ -416,7 +430,7 @@ public class VoidjawEntity extends TrapjawEntity {
         public void tick() {
             int rand = VoidjawEntity.this.getRandom().nextBoolean() ? -5 : 5;
             int rand2 = VoidjawEntity.this.getRandom().nextBoolean() ? 5 : -5;
-            Vector3d vector3d = VoidjawEntity.this.getOwner().getEyePosition(1.0F);
+            Vec3 vector3d = VoidjawEntity.this.getOwner().getEyePosition(1.0F);
             VoidjawEntity.this.getLookControl().setLookAt(VoidjawEntity.this.getOwner(), 10.0F, (float)VoidjawEntity.this.getMaxHeadXRot());
 
             if (VoidjawEntity.this.getOwner().fallDistance > 5.0F && VoidjawEntity.this.isSaddled() && !VoidjawEntity.this.isVehicle() && !VoidjawEntity.this.getOwner().isPassenger()) {
@@ -472,7 +486,7 @@ public class VoidjawEntity extends TrapjawEntity {
             } else if (!this.canTeleportTo(new BlockPos(pX, pY, pZ))) {
                 return false;
             } else {
-                Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                Vec3 vector3d = livingentity.getEyePosition(1.0F);
                 VoidjawEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 return true;
             }

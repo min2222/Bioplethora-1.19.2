@@ -2,18 +2,12 @@ package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.ai.gecko.GeckoDodgeableMeleeGoal;
-import io.github.bioplethora.entity.ai.gecko.GeckoGoal;
 import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
 import io.github.bioplethora.entity.creatures.ShachathEntity;
-import io.github.bioplethora.entity.creatures.ShachathEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-
-import java.util.EnumSet;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class ShachathAttackWaveGoal<E extends ShachathEntity> extends GeckoDodgeableMeleeGoal<E> {
 
@@ -38,7 +32,7 @@ public class ShachathAttackWaveGoal<E extends ShachathEntity> extends GeckoDodge
     public static boolean checkIfValid(ShachathAttackWaveGoal<ShachathEntity> goal, ShachathEntity attacker, LivingEntity target) {
         if (target == null) return false;
         if (target.isAlive() && !target.isSpectator()) {
-            if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+            if (target instanceof Player && ((Player) target).isCreative()) {
                goal.setWhat(attacker, false);
                 return false;
             }
@@ -87,7 +81,7 @@ public class ShachathAttackWaveGoal<E extends ShachathEntity> extends GeckoDodge
         this.animationProgress = 0;
         this.isInAttackState = false;
         LivingEntity target = this.entity.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
         }
         setWhat(entity, false);
@@ -104,7 +98,7 @@ public class ShachathAttackWaveGoal<E extends ShachathEntity> extends GeckoDodge
         if (target != null) {
             if (this.attackPredicate.apply(this.animationProgress, this.animationLength) && !this.hasHit) {
                 this.entity.lookAt(target, 30.0F, 30.0F);
-                this.entity.swing(Hand.MAIN_HAND);
+                this.entity.swing(InteractionHand.MAIN_HAND);
                 if (canReachTarget()) {
                     this.entity.doHurtTarget(target);
                 }

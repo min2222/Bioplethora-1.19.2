@@ -2,7 +2,7 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.NandbriEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -11,17 +11,17 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class NandbriEntityModel extends AnimatedGeoModel<NandbriEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(NandbriEntity entity) {
+    public ResourceLocation getModelResource(NandbriEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/nandbri.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(NandbriEntity entity) {
+    public ResourceLocation getTextureResource(NandbriEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/nandbri.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(NandbriEntity entity) {
+    public ResourceLocation getAnimationResource(NandbriEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/nandbri.animation.json");
     }
 

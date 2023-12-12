@@ -1,6 +1,6 @@
 package io.github.bioplethora.entity;
 
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 
 public interface IGrylynenTier {
 

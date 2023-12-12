@@ -1,18 +1,18 @@
 package io.github.bioplethora.entity.ai.gecko;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-
 import java.util.EnumSet;
 import java.util.function.BiFunction;
+
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public class GeckoMeleeGoal<E extends MobEntity> extends GeckoGoal<E> {
+public class GeckoMeleeGoal<E extends Mob> extends GeckoGoal<E> {
     public double animationLength;
     public BiFunction<Double, Double, Boolean> attackPredicate;
     public boolean hasHit;
@@ -24,10 +24,10 @@ public class GeckoMeleeGoal<E extends MobEntity> extends GeckoGoal<E> {
         this.setFlags(EnumSet.of(Flag.LOOK));
     }
 
-    public static boolean checkIfValid(GeckoMeleeGoal goal, MobEntity attacker, LivingEntity target) {
+    public static boolean checkIfValid(GeckoMeleeGoal goal, Mob attacker, LivingEntity target) {
         if (target == null) return false;
         if (target.isAlive() && !target.isSpectator()) {
-            if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+            if (target instanceof Player && ((Player) target).isCreative()) {
                 goal.setWhat((IGeckoBaseEntity) attacker, false);
                 return false;
             }
@@ -62,7 +62,7 @@ public class GeckoMeleeGoal<E extends MobEntity> extends GeckoGoal<E> {
     @Override
     public void stop() {
         LivingEntity target = this.entity.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
         }
         setWhat((IGeckoBaseEntity) this.entity, false);
@@ -78,7 +78,7 @@ public class GeckoMeleeGoal<E extends MobEntity> extends GeckoGoal<E> {
         if (target != null) {
             if (this.attackPredicate.apply(this.animationProgress, this.animationLength) && !this.hasHit) {
                 this.entity.lookAt(target, 30.0F, 30.0F);
-                this.entity.swing(Hand.MAIN_HAND);
+                this.entity.swing(InteractionHand.MAIN_HAND);
                 this.entity.doHurtTarget(target);
                 this.hasHit = true;
             }

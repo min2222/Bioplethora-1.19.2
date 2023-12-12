@@ -1,5 +1,9 @@
 package io.github.bioplethora.entity.creatures;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.api.advancements.AdvancementUtils;
 import io.github.bioplethora.api.world.BlockUtils;
 import io.github.bioplethora.config.BPConfig;
@@ -12,51 +16,65 @@ import io.github.bioplethora.entity.ai.goals.AltyrusSummonGolemGoal;
 import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPAttributes;
 import io.github.bioplethora.registry.BPSoundEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.controller.MovementController;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.IFlyingAnimal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.*;
-import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent.BossBarColor;
+import net.minecraft.world.BossEvent.BossBarOverlay;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.FlyingAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
+public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification, IMobCappedEntity {
 
-public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyingAnimal, IBioClassification, IMobCappedEntity {
-
-    private static final DataParameter<Boolean> DATA_IS_CHARGING = EntityDataManager.defineId(AltyrusEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DATA_IS_SUMMONING = EntityDataManager.defineId(AltyrusEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> DATA_IS_DODGING = EntityDataManager.defineId(AltyrusEntity.class, DataSerializers.BOOLEAN);
-    private final ServerBossInfo bossInfo = (ServerBossInfo) (new ServerBossInfo(this.getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS).setDarkenScreen(true).setPlayBossMusic(true));
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(AltyrusEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_IS_SUMMONING = SynchedEntityData.defineId(AltyrusEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_IS_DODGING = SynchedEntityData.defineId(AltyrusEntity.class, EntityDataSerializers.BOOLEAN);
+    private final ServerBossEvent bossInfo = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossBarColor.PURPLE, BossBarOverlay.PROGRESS).setDarkenScreen(true).setPlayBossMusic(true));
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public BlockPos boundOrigin;
     public int dodgeTimer;
 
-    public AltyrusEntity(EntityType<? extends BPMonsterEntity> type, World world) {
+    public AltyrusEntity(EntityType<? extends BPMonsterEntity> type, Level world) {
         super(type, world);
         this.noCulling = true;
         this.moveControl = new AltyrusEntity.MoveHelperController(this);
@@ -68,8 +86,8 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
         return BPEntityClasses.ELDERIA;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 15 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 10)
                 .add(Attributes.ATTACK_DAMAGE, 35 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -90,11 +108,11 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
         this.goalSelector.addGoal(4, new AltyrusEntity.MoveRandomGoal());
         this.goalSelector.addGoal(4, new AltyrusRangedAttackGoal(this));
         this.goalSelector.addGoal(5, new AltyrusSummonGolemGoal(this));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 24.0F));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, AlphemEntity.class, 24.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(8, new SwimGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 24.0F));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, AlphemEntity.class, 24.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(8, new FloatGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AlphemEntity.class, false));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AlphemKingEntity.class, false));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
@@ -113,31 +131,31 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
     private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event) {
 
         if (this.isDeadOrDying() || this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.death", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.death", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.isSummoning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.summoning", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.summoning", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.attacking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.attacking", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.charging", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.charging", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (this.isDodging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.dodging", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.dodging", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -145,16 +163,16 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
         boolean flag = super.doHurtTarget(entity);
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
 
-        this.level.explode(null, (int) x, (int) y, (int) z, (float) 3, Explosion.Mode.BREAK);
-        if (this.level instanceof ServerWorld) {
-            ((ServerWorld) this.level).sendParticles(ParticleTypes.POOF, x, y, z, 40, 0.75, 0.75, 0.75, 0.1);
+        this.level.explode(null, (int) x, (int) y, (int) z, (float) 3, Explosion.BlockInteraction.BREAK);
+        if (this.level instanceof ServerLevel) {
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.POOF, x, y, z, 40, 0.75, 0.75, 0.75, 0.1);
         }
         BlockUtils.knockUpRandomNearbyBlocks(this.level, 0.5D, entity.blockPosition().below(), 5, 2, 5, false, true);
         return flag;
     }
 
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        if (worldIn instanceof ServerWorld && BPConfig.COMMON.hellMode.get()) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        if (worldIn instanceof ServerLevel && BPConfig.COMMON.hellMode.get()) {
             this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(42 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get());
             this.getAttribute(Attributes.ARMOR).setBaseValue(24.5 * BPConfig.COMMON.mobArmorMultiplier.get());
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(520 * BPConfig.COMMON.mobHealthMultiplier.get());
@@ -168,9 +186,9 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
     public void aiStep() {
         super.aiStep();
 
-        World world = this.level;
+        Level world = this.level;
 
-        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+        this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 
         if (this.isDodging()) {
             ++dodgeTimer;
@@ -180,20 +198,20 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
             }
         }
 
-        if (world instanceof ServerWorld) {
-            ServerWorld serverWorld = ((ServerWorld) world);
+        if (world instanceof ServerLevel) {
+            ServerLevel serverLevel = ((ServerLevel) world);
 
-            serverWorld.sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 10, 1.2, 1.2, 1.2, 0.01);
+            serverLevel.sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY(), this.getZ(), 10, 1.2, 1.2, 1.2, 0.01);
 
-            //this.summonParticleBarrier(serverWorld);
+            //this.summonParticleBarrier(serverLevel);
         }
     }
 
-    public void summonParticleBarrier(ServerWorld serverWorld) {
+    public void summonParticleBarrier(ServerLevel serverLevel) {
 
         int loop = 0; int particleAmount = 10; int xRad = 10; int zRad = 10;
 
-        serverWorld.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
                 (this.getX() + 0.5) + Math.cos(((Math.PI * 2) / particleAmount) * loop) * xRad,
                 this.getY(),
                 (this.getZ() + 0.5) + Math.sin(((Math.PI * 2) / particleAmount) * loop) * zRad,
@@ -201,12 +219,12 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
         ++loop;
     }
 
-    /*public void summonParticleBarrier(ServerWorld serverWorld) {
+    /*public void summonParticleBarrier(ServerLevel serverLevel) {
 
         int loop = 0; int particleAmount = 10; int xRad = 3; int zRad = 3;
 
         while (loop < particleAmount) {
-            serverWorld.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+            serverLevel.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,
                     this.getX() + 0.5 + Math.cos(((Math.PI * 2) / particleAmount) * loop) * xRad,
                     this.getY(),
                     this.getZ() + 0.5 + Math.sin(((Math.PI * 2) / particleAmount) * loop) * zRad,
@@ -229,13 +247,13 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
     }
 
     @Override
-    public void startSeenByPlayer(ServerPlayerEntity player) {
+    public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
         this.bossInfo.addPlayer(player);
     }
 
     @Override
-    public void stopSeenByPlayer(ServerPlayerEntity player) {
+    public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         this.bossInfo.removePlayer(player);
     }
@@ -316,14 +334,14 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
         return false;
     }
 
-    public void readAdditionalSaveData(CompoundNBT pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         if (pCompound.contains("BoundX")) {
             this.boundOrigin = new BlockPos(pCompound.getInt("BoundX"), pCompound.getInt("BoundY"), pCompound.getInt("BoundZ"));
         }
     }
 
-    public void addAdditionalSaveData(CompoundNBT pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         if (this.boundOrigin != null) {
             pCompound.putInt("BoundX", this.boundOrigin.getX());
@@ -370,7 +388,7 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
         
         public void start() {
             LivingEntity livingentity = AltyrusEntity.this.getTarget();
-            Vector3d vector3d = livingentity.getEyePosition(1.0F);
+            Vec3 vector3d = livingentity.getEyePosition(1.0F);
             AltyrusEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
             AltyrusEntity.this.playSound(BPSoundEvents.ALTYRUS_CHARGE.get(), 1.0F, 1.0F);
         }
@@ -384,7 +402,7 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
             if (!AltyrusEntity.this.getBoundingBox().intersects(livingentity.getBoundingBox())) {
                 double d0 = AltyrusEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                    Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     AltyrusEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }
@@ -394,35 +412,35 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
             } else {
                 double d0 = AltyrusEntity.this.distanceToSqr(livingentity);
                 if (d0 < 9.0D) {
-                    Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                    Vec3 vector3d = livingentity.getEyePosition(1.0F);
                     AltyrusEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
                 }
             }*/
         }
     }
 
-    class MoveHelperController extends MovementController {
+    class MoveHelperController extends MoveControl {
         public MoveHelperController(AltyrusEntity altyrus) {
             super(altyrus);
         }
 
         public void tick() {
-            if (this.operation == MovementController.Action.MOVE_TO) {
-                Vector3d vector3d = new Vector3d(this.wantedX - AltyrusEntity.this.getX(), this.wantedY - AltyrusEntity.this.getY(), this.wantedZ - AltyrusEntity.this.getZ());
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                Vec3 vector3d = new Vec3(this.wantedX - AltyrusEntity.this.getX(), this.wantedY - AltyrusEntity.this.getY(), this.wantedZ - AltyrusEntity.this.getZ());
                 double d0 = vector3d.length();
                 if (d0 < AltyrusEntity.this.getBoundingBox().getSize()) {
-                    this.operation = MovementController.Action.WAIT;
+                    this.operation = MoveControl.Operation.WAIT;
                     AltyrusEntity.this.setDeltaMovement(AltyrusEntity.this.getDeltaMovement().scale(0.5D));
                 } else {
                     AltyrusEntity.this.setDeltaMovement(AltyrusEntity.this.getDeltaMovement().add(vector3d.scale(this.speedModifier * 0.05D / d0)));
                     if (AltyrusEntity.this.getTarget() == null) {
-                        Vector3d vector3d1 = AltyrusEntity.this.getDeltaMovement();
-                        AltyrusEntity.this.yRot = -((float) MathHelper.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
+                        Vec3 vector3d1 = AltyrusEntity.this.getDeltaMovement();
+                        AltyrusEntity.this.yRot = -((float) Mth.atan2(vector3d1.x, vector3d1.z)) * (180F / (float)Math.PI);
                         AltyrusEntity.this.yBodyRot = AltyrusEntity.this.yRot;
                     } else {
                         double d2 = AltyrusEntity.this.getTarget().getX() - AltyrusEntity.this.getX();
                         double d1 = AltyrusEntity.this.getTarget().getZ() - AltyrusEntity.this.getZ();
-                        AltyrusEntity.this.yRot = -((float)MathHelper.atan2(d2, d1)) * (180F / (float)Math.PI);
+                        AltyrusEntity.this.yRot = -((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI);
                         AltyrusEntity.this.yBodyRot = AltyrusEntity.this.yRot;
                     }
                 }
@@ -462,4 +480,9 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, IFlyi
             }
         }
     }
+
+	@Override
+	public boolean isFlying() {
+		return false;
+	}
 }

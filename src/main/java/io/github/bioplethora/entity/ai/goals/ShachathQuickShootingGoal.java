@@ -2,12 +2,12 @@ package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.creatures.ShachathEntity;
 import io.github.bioplethora.entity.projectile.VermilionBladeProjectileEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class ShachathQuickShootingGoal extends Goal {
 
@@ -33,7 +33,7 @@ public class ShachathQuickShootingGoal extends Goal {
     public void tick() {
         LivingEntity target = this.shachath.getTarget();
         
-        if (target.distanceToSqr(this.shachath) < 4096.0D && this.shachath.canSee(target)) {
+        if (target.distanceToSqr(this.shachath) < 4096.0D && this.shachath.hasLineOfSight(target)) {
 
             this.shachath.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
@@ -65,9 +65,9 @@ public class ShachathQuickShootingGoal extends Goal {
     
     public void shootVermilionBlade() {
         LivingEntity target = this.shachath.getTarget();
-        World world = this.shachath.level;
+        Level world = this.shachath.level;
         
-        Vector3d vector3d = this.shachath.getViewVector(1.0F);
+        Vec3 vector3d = this.shachath.getViewVector(1.0F);
         double d1 = target.getX() - this.shachath.getX();
         double d2 = target.getY(0.5D) - this.shachath.getY(0.5D);
         double d3 = target.getZ() - this.shachath.getZ();

@@ -1,11 +1,10 @@
 package io.github.bioplethora.api;
 
-import io.github.bioplethora.event.ServerWorldEvents;
 import io.github.bioplethora.network.functions.LeftSwingPacket;
 import io.github.bioplethora.network.functions.RightSwingPacket;
 
 /**
- * This reach is handled by packets, check: {@link LeftSwingPacket}, {@link RightSwingPacket}, {@link ServerWorldEvents}
+ * This reach is handled by packets, check: {@link LeftSwingPacket}, {@link RightSwingPacket}, {@link ServerLevelEvents}
  */
 public interface IReachWeapon {
 

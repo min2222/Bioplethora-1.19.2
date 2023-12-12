@@ -1,11 +1,9 @@
 package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.BPMonsterEntity;
-import io.github.bioplethora.entity.ai.gecko.IGeckoBaseEntity;
 import io.github.bioplethora.entity.creatures.AlphemKingEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 
 public class AlphemKingSmashingGoal extends AlphemKingMeeleeGoal {
 
@@ -53,7 +51,7 @@ public class AlphemKingSmashingGoal extends AlphemKingMeeleeGoal {
         this.animationProgress = 0;
         this.isInAttackState = false;
         LivingEntity target = this.entity.getTarget();
-        if (!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
         }
         king.setSmashing(false);

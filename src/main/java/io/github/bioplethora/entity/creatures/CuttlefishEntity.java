@@ -1,38 +1,41 @@
 package io.github.bioplethora.entity.creatures;
 
+import com.ibm.icu.impl.duration.impl.DataRecord.EDecimalHandling;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.Random;
+public class CuttlefishEntity extends Squid implements IAnimatable, IBioClassification {
 
-public class CuttlefishEntity extends SquidEntity implements IAnimatable, IBioClassification {
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    private final AnimationFactory factory = new AnimationFactory(this);
-
-    public CuttlefishEntity(EntityType<? extends SquidEntity> type, World world) {
+    public CuttlefishEntity(EntityType<? extends Squid> type, Level world) {
         super(type, world);
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 4 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 5 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -56,11 +59,11 @@ public class CuttlefishEntity extends SquidEntity implements IAnimatable, IBioCl
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
 
         if(this.isDeadOrDying() || this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cuttlefish.death", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cuttlefish.death", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cuttlefish.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cuttlefish.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -69,7 +72,7 @@ public class CuttlefishEntity extends SquidEntity implements IAnimatable, IBioCl
         data.addAnimationController(new AnimationController<>(this, "cuttlefish_controller", 0, this::predicate));
     }
 
-    public static boolean checkCuttlefishSpawnRules(EntityType<CuttlefishEntity> cuttlefishEntityEntityType, IWorld pLevel, SpawnReason pSpawnType, BlockPos pPos, Random pRandom) {
+    public static boolean checkCuttlefishSpawnRules(EntityType<CuttlefishEntity> cuttlefishEntityEntityType, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
         if (pPos.getY() < pLevel.getSeaLevel()) {
             return pLevel.getFluidState(pPos).is(FluidTags.WATER);
         } else {

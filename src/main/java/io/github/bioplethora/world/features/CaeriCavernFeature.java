@@ -1,19 +1,14 @@
 package io.github.bioplethora.world.features;
 
-import com.mojang.serialization.Codec;
-import io.github.bioplethora.api.world.BlockUtils;
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.Blocks;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.OctavesNoiseGenerator;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-
 import java.util.Random;
+
+import com.mojang.serialization.Codec;
+
+import io.github.bioplethora.registry.BPBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 
 public class CaeriCavernFeature extends Feature<NoFeatureConfig> {
 
@@ -31,7 +26,7 @@ public class CaeriCavernFeature extends Feature<NoFeatureConfig> {
             for (int sx = -(radius + 2); sx <= (radius + 2); sx++) {
                 for (int sz = -(radius + 2); sz <= (radius + 2); sz++) {
                     if (sx * sx + sy * sy + sz * sz <= (radius + 2) * (radius + 2)) {
-                        BlockPos.Mutable tPos = pos.offset(sx, sy, sz).mutable();
+                        BlockPos.MutableBlockPos tPos = pos.offset(sx, sy, sz).mutable();
                         if (world.getBlockState(tPos).is(Blocks.END_STONE)) {
                             this.setBlock(world, tPos, BPBlocks.TENEDEBRIS.get().defaultBlockState());
                         }
@@ -43,7 +38,7 @@ public class CaeriCavernFeature extends Feature<NoFeatureConfig> {
             for (int sx = -radius; sx <= radius; sx++) {
                 for (int sz = -radius; sz <= radius; sz++) {
                     if (sx * sx + sy * sy + sz * sz <= radius * radius) {
-                        BlockPos.Mutable tPos = pos.offset(sx, sy, sz).mutable();
+                        BlockPos.MutableBlockPos tPos = pos.offset(sx, sy, sz).mutable();
                         if (!world.isEmptyBlock(tPos) && !world.isWaterAt(tPos)) {
                             if (replaceWithStone(world, tPos, isOpenAir)) {
                                 this.setBlock(world, tPos, BPBlocks.TENEDEBRIS.get().defaultBlockState());

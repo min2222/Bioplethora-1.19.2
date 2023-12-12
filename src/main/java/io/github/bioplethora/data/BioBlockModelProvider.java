@@ -1,12 +1,13 @@
 package io.github.bioplethora.data;
 
+import javax.annotation.Nonnull;
+
 import io.github.bioplethora.Bioplethora;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
-import javax.annotation.Nonnull;
 
 public class BioBlockModelProvider extends BlockModelProvider {
 
@@ -242,7 +243,7 @@ public class BioBlockModelProvider extends BlockModelProvider {
         this.slab(woodType + "_slab", bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"));
         this.slabTop(woodType + "_slab_top", bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"));
 
-        this.pressurePlateUp(woodType + "_pressure_plate", bioResLoc(woodType + "_planks"));
+        this.pressurePlate(woodType + "_pressure_plate", bioResLoc(woodType + "_planks"));
         this.pressurePlateDown(woodType + "_pressure_plate_down", bioResLoc(woodType + "_planks"));
 
         this.stairs(woodType + "_stairs", bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"), bioResLoc(woodType + "_planks"));
@@ -287,27 +288,27 @@ public class BioBlockModelProvider extends BlockModelProvider {
         crop(name + "_upper", top);
     }
 
-    public void pressurePlateUp(String name, ResourceLocation all) {
-        singleTexture(name, mcResLoc("pressure_plate_up"), all);
+    public BlockModelBuilder pressurePlate(String name, ResourceLocation all) {
+        return singleTexture(name, mcResLoc("pressure_plate_up"), all);
     }
 
-    public void pressurePlateDown(String name, ResourceLocation all) {
-        singleTexture(name, mcResLoc("pressure_plate_down"), all);
+    public BlockModelBuilder pressurePlateDown(String name, ResourceLocation all) {
+    	return singleTexture(name, mcResLoc("pressure_plate_down"), all);
     }
 
-    public void button(String name, ResourceLocation all) {
-        singleTexture(name, mcResLoc("button"), all);
+    public BlockModelBuilder button(String name, ResourceLocation all) {
+        return singleTexture(name, mcResLoc("button"), all);
     }
 
-    public void buttonPressed(String name, ResourceLocation all) {
-        singleTexture(name + "_pressed", mcResLoc("button_pressed"), all);
+    public BlockModelBuilder buttonPressed(String name, ResourceLocation all) {
+    	return singleTexture(name + "_pressed", mcResLoc("button_pressed"), all);
     }
 
-    public void buttonInventory(String name, ResourceLocation all) {
-        singleTexture(name + "_inventory", mcResLoc("button_inventory"), all);
+    public BlockModelBuilder buttonInventory(String name, ResourceLocation all) {
+    	return singleTexture(name + "_inventory", mcResLoc("button_inventory"), all);
     }
 
-    public void sign(String name, ResourceLocation particle) {
-        getBuilder(name).texture("particle", particle);
+    public BlockModelBuilder sign(String name, ResourceLocation particle) {
+    	return getBuilder(name).texture("particle", particle);
     }
 }

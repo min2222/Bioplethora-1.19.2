@@ -8,25 +8,25 @@ import io.github.bioplethora.entity.others.GrylynenCoreBombEntity;
 import io.github.bioplethora.registry.BPEffects;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPTags;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.level.BlockEvent;
 
 public class GrylynenSpawnHelper {
 
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
 
-        IWorld IWorld = event.getWorld();
-        if ((IWorld instanceof World) && !(event.getPlayer().hasEffect(BPEffects.SPIRIT_FISSION.get()))) {
+        LevelAccessor ILevel = event.getLevel();
+        if ((ILevel instanceof Level) && !(event.getPlayer().hasEffect(BPEffects.SPIRIT_FISSION.get()))) {
 
-            World world = (World) event.getWorld();
+            Level world = (Level) event.getLevel();
             double x = event.getPos().getX(), y = event.getPos().getY(), z = event.getPos().getZ();
             BlockPos pos = new BlockPos(x, y, z);
 
@@ -83,11 +83,11 @@ public class GrylynenSpawnHelper {
         }
     }
 
-    public static boolean getTaggedBlock(ITag<Block> tag, World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().is(tag);
+    public static boolean getTaggedBlock(TagKey<Block> tag, Level world, BlockPos pos) {
+        return world.getBlockState(pos).is(tag);
     }
 
-    public static void summonGrylynenCore(PlayerEntity summoner, GrylynenEntity grylynen, World world, BlockPos centerPos) {
+    public static void summonGrylynenCore(Player summoner, GrylynenEntity grylynen, Level world, BlockPos centerPos) {
 
         if (BPHooks.onGrylynenSpawn(summoner)) return;
 
@@ -97,7 +97,7 @@ public class GrylynenSpawnHelper {
             AdvancementUtils.grantBioAdvancement(summoner, "grylynen_summon");
 
             if (!world.isClientSide()) {
-                ServerWorld serverworld = (ServerWorld) world;
+                ServerLevel serverworld = (ServerLevel) world;
                 core.moveTo(centerPos, 0.0F, 0.0F);
                 core.setTier(grylynen.getGrylynenTier());
                 serverworld.addFreshEntity(core);
@@ -105,18 +105,18 @@ public class GrylynenSpawnHelper {
         }
     }
 
-    public static void breakSurroundingBlocks(World world, BlockPos centerPos) {
+    public static void breakSurroundingBlocks(Level world, BlockPos centerPos) {
 
         grylynenDestroyBlocks(world, centerPos, 1, 1, 1, true);
     }
 
-    public static void destroyBlockAt(BlockPos pos, World world) {
+    public static void destroyBlockAt(BlockPos pos, Level world) {
         if (!getTaggedBlock(BPTags.Blocks.GRYLYNEN_UNBREAKABLE, world, pos)) {
             world.destroyBlock(pos, true);
         }
     }
 
-    public static void grylynenDestroyBlocks(World world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop) {
+    public static void grylynenDestroyBlocks(Level world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop) {
 
         for (int radY = point.getY() - radiusX; radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {

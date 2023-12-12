@@ -1,14 +1,14 @@
 package io.github.bioplethora.item.functionals;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class ActivatableItem extends Item {
 
@@ -21,7 +21,7 @@ public class ActivatableItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, World pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pItemSlot, pIsSelected);
 
         if (this.getActivated(pStack)) {
@@ -32,22 +32,22 @@ public class ActivatableItem extends Item {
     /**
      * Ticks in inventory if this ActivatableItem is activated.
      */
-    public void activatedTick(ItemStack pStack, World pLevel, Entity pEntity) {
+    public void activatedTick(ItemStack pStack, Level pLevel, Entity pEntity) {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World pLevel, PlayerEntity pPlayer, Hand pHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack stack = pPlayer.getItemInHand(pHand);
 
         if (pPlayer.isCrouching()) {
             activate(pLevel, pPlayer, stack);
-            return ActionResult.success(stack);
+            return InteractionResultHolder.success(stack);
         } else {
-            return ActionResult.fail(stack);
+            return InteractionResultHolder.fail(stack);
         }
     }
 
-    public void activate(World pLevel, PlayerEntity pPlayer, ItemStack stack) {
+    public void activate(Level pLevel, Player pPlayer, ItemStack stack) {
 
         if (!pPlayer.getCooldowns().isOnCooldown(stack.getItem())) {
             if (!getActivated(stack)) {

@@ -1,10 +1,11 @@
 package io.github.bioplethora.mixin;
 
-import io.github.bioplethora.api.mixin.IAbstractArrowMixin;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(AbstractArrowEntity.class)
+import io.github.bioplethora.api.mixin.IAbstractArrowMixin;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+
+@Mixin(AbstractArrow.class)
 public class AbstractArrowEntityMixin implements IAbstractArrowMixin {
 
     boolean shouldExplode;

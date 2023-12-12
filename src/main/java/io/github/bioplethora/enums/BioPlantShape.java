@@ -1,8 +1,8 @@
 package io.github.bioplethora.enums;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public enum BioPlantShape {
     SIMPLE_PLANT(
@@ -12,7 +12,7 @@ public enum BioPlantShape {
             Block.box(1.0D, 0.0D, 1.0D, 15.0D, 8.0D, 15.0D)
     ),
     BIG_MUSHROOM(
-            VoxelShapes.or(
+            Shapes.or(
                     Block.box(3.0D, 0.0D, 3.0D, 13.0D, 6.0D, 13.0D),
                     Block.box(1.0D, 6.0D, 1.0D, 15.0D, 15.0D, 15.0D)
             )

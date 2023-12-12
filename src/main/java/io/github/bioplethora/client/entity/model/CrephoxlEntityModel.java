@@ -2,7 +2,7 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.CrephoxlEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -11,17 +11,17 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class CrephoxlEntityModel extends AnimatedGeoModel<CrephoxlEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(CrephoxlEntity entity) {
+    public ResourceLocation getModelResource(CrephoxlEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/crephoxl.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CrephoxlEntity entity) {
+    public ResourceLocation getTextureResource(CrephoxlEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/crephoxl.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(CrephoxlEntity entity) {
+    public ResourceLocation getAnimationResource(CrephoxlEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/crephoxl.animation.json");
     }
 

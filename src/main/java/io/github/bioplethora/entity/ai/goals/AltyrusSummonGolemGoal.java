@@ -3,12 +3,12 @@ package io.github.bioplethora.entity.ai.goals;
 import io.github.bioplethora.entity.creatures.AltyrusEntity;
 import io.github.bioplethora.entity.creatures.FrostbiteGolemEntity;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
 
 public class AltyrusSummonGolemGoal extends Goal {
 
@@ -33,10 +33,10 @@ public class AltyrusSummonGolemGoal extends Goal {
 
     public void tick() {
         LivingEntity target = this.altyrus.getTarget();
-        ServerWorld serverworld = (ServerWorld) this.altyrus.level;
-        World world = this.altyrus.level;
+        ServerLevel serverworld = (ServerLevel) this.altyrus.level;
+        Level world = this.altyrus.level;
 
-        if (target != null && target.distanceToSqr(this.altyrus) < 4096.0D /*&& this.altyrus.canSee(target)*/) {
+        if (target != null && target.distanceToSqr(this.altyrus) < 4096.0D /*&& this.altyrus.hasLineOfSight(target)*/) {
             ++this.summonTime;
 
             if (this.summonTime == 400) {
@@ -45,7 +45,7 @@ public class AltyrusSummonGolemGoal extends Goal {
                 FrostbiteGolemEntity frostbite_golemEntity = BPEntities.FROSTBITE_GOLEM.get().create(world);
                 frostbite_golemEntity.moveTo(blockpos, 0.0F, 0.0F);
                 frostbite_golemEntity.setOwner(this.altyrus);
-                frostbite_golemEntity.finalizeSpawn(serverworld, world.getCurrentDifficultyAt(blockpos), SpawnReason.MOB_SUMMONED, null, null);
+                frostbite_golemEntity.finalizeSpawn(serverworld, world.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
 
                 frostbite_golemEntity.setHasLimitedLife(true);
                 frostbite_golemEntity.setExplodeOnExpiry(true);
@@ -56,7 +56,7 @@ public class AltyrusSummonGolemGoal extends Goal {
                 FrostbiteGolemEntity frostbite_golemEntity2 = BPEntities.FROSTBITE_GOLEM.get().create(world);
                 frostbite_golemEntity2.moveTo(blockpos, 0.0F, 0.0F);
                 frostbite_golemEntity2.setOwner(this.altyrus);
-                frostbite_golemEntity2.finalizeSpawn(serverworld, world.getCurrentDifficultyAt(blockpos), SpawnReason.MOB_SUMMONED, null, null);
+                frostbite_golemEntity2.finalizeSpawn(serverworld, world.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
 
                 frostbite_golemEntity2.setHasLimitedLife(true);
                 frostbite_golemEntity2.setExplodeOnExpiry(true);

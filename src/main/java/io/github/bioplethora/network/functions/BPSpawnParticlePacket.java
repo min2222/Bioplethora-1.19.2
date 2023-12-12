@@ -1,17 +1,18 @@
 package io.github.bioplethora.network.functions;
 
+import java.util.function.Supplier;
+
 import io.github.bioplethora.Bioplethora;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleType;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 
 public class BPSpawnParticlePacket {
 
@@ -26,9 +27,9 @@ public class BPSpawnParticlePacket {
     public float zSpeed;
     public int count;
     public boolean overrideLimiter;
-    public IParticleData particle;
+    public ParticleOptions particle;
 
-    public <T extends IParticleData> BPSpawnParticlePacket(T pParticle, boolean pOverrideLimiter, double pX, double pY, double pZ, float pXDist, float pYDist, float pZDist, float xSpeed, float ySpeed, float zSpeed, int pCount) {
+    public <T extends ParticleOptions> BPSpawnParticlePacket(T pParticle, boolean pOverrideLimiter, double pX, double pY, double pZ, float pXDist, float pYDist, float pZDist, float xSpeed, float ySpeed, float zSpeed, int pCount) {
         this.particle = pParticle;
         this.overrideLimiter = pOverrideLimiter;
         this.x = pX;
@@ -79,10 +80,10 @@ public class BPSpawnParticlePacket {
         }
     }
 
-    public static BPSpawnParticlePacket decode(PacketBuffer buffer) {
-        ParticleType<?> particletype = Registry.PARTICLE_TYPE.byId(buffer.readInt());
+    public static BPSpawnParticlePacket decode(FriendlyByteBuf buffer) {
+        ParticleType<?> particletype = ((ForgeRegistry<ParticleType<?>>)ForgeRegistries.PARTICLE_TYPES).getValue(buffer.readInt());
         if (particletype == null) {
-            particletype = ParticleTypes.BARRIER;
+            particletype = ParticleTypes.BLOCK_MARKER;
         }
         return new BPSpawnParticlePacket(
                 readParticle(buffer, particletype), buffer.readBoolean(), 
@@ -93,12 +94,12 @@ public class BPSpawnParticlePacket {
         );
     }
 
-    public static <T extends IParticleData> T readParticle(PacketBuffer pBuffer, ParticleType<T> pParticleType) {
+    public static <T extends ParticleOptions> T readParticle(FriendlyByteBuf pBuffer, ParticleType<T> pParticleType) {
         return pParticleType.getDeserializer().fromNetwork(pParticleType, pBuffer);
     }
     
-    public static void encode(BPSpawnParticlePacket message, PacketBuffer pBuffer) {
-        pBuffer.writeInt(Registry.PARTICLE_TYPE.getId(message.particle.getType()));
+    public static void encode(BPSpawnParticlePacket message, FriendlyByteBuf pBuffer) {
+        pBuffer.writeInt(((ForgeRegistry<ParticleType<?>>)ForgeRegistries.PARTICLE_TYPES).getID(message.particle.getType()));
         pBuffer.writeBoolean(message.overrideLimiter);
         pBuffer.writeDouble(message.x);
         pBuffer.writeDouble(message.y);
@@ -169,7 +170,7 @@ public class BPSpawnParticlePacket {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public IParticleData getParticle() {
+    public ParticleOptions getParticle() {
         return this.particle;
     }
 }

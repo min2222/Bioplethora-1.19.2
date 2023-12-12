@@ -1,33 +1,34 @@
 package io.github.bioplethora.loot.conditions;
 
+import java.util.Set;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPLootConditions;
-import net.minecraft.loot.ILootSerializer;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.LootParameter;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-import java.util.Set;
-
-public class InHellmode implements ILootCondition {
+public class InHellmode implements LootItemCondition {
     public static final InHellmode INSTANCE = new InHellmode();
-    public static final LootParameter<Boolean> HELLMODE_PARAM = new LootParameter<>(new ResourceLocation(Bioplethora.MOD_ID, "hellmode"));
+    public static final LootContextParam<Boolean> HELLMODE_PARAM = new LootContextParam<>(new ResourceLocation(Bioplethora.MOD_ID, "hellmode"));
 
     public InHellmode() {
     }
 
-    public LootConditionType getType() {
+    public LootItemConditionType getType() {
         return BPLootConditions.IN_HELLMODE;
     }
 
-    public Set<LootParameter<?>> getReferencedContextParams() {
+    public Set<LootContextParam<?>> getReferencedContextParams() {
         return ImmutableSet.of(HELLMODE_PARAM);
     }
 
@@ -36,11 +37,11 @@ public class InHellmode implements ILootCondition {
         return BPConfig.IN_HELLMODE;
     }
 
-    public static ILootCondition.IBuilder inHellMode() {
+    public static LootItemCondition.Builder inHellMode() {
         return () -> INSTANCE;
     }
 
-    public static class Serializer implements ILootSerializer<InHellmode> {
+    public static class HellSerializer implements Serializer<InHellmode> {
 
         public void serialize(JsonObject pJson, InHellmode pValue, JsonSerializationContext pSerializationContext) {
         }

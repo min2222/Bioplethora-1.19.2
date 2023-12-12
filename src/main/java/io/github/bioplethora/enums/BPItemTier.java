@@ -1,12 +1,12 @@
 package io.github.bioplethora.enums;
 
-import io.github.bioplethora.registry.BPItems;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.crafting.Ingredient;
-
 import java.util.function.Supplier;
 
-public enum BPItemTier implements IItemTier {
+import io.github.bioplethora.registry.BPItems;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
+
+public enum BPItemTier implements Tier {
 
     FLEIGNARITE(2, 350, 7.0F, 3.0F, 12,
             () -> Ingredient.of(BPItems.FLEIGNARITE_SCALES.get())),

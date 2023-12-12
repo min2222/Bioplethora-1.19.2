@@ -1,17 +1,16 @@
 package io.github.bioplethora.world.surfacebuilders;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
-import io.github.bioplethora.registry.BPBlocks;
-import io.github.bioplethora.registry.BPTags;
+
 import io.github.bioplethora.world.surfacebuilderconfigs.NoisySurfaceBuilderConfig;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-
-import java.util.Random;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class NoisySurfaceBuilder extends SurfaceBuilder<NoisySurfaceBuilderConfig> {
 
@@ -29,7 +28,7 @@ public class NoisySurfaceBuilder extends SurfaceBuilder<NoisySurfaceBuilderConfi
         BlockState state1 = uncommonTopMaterial;
         BlockState state2 = underMaterial;
 
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         int i = -1;
         int j = (int)(noise / 3.0D + 3.0D + random.nextDouble() * 0.25D);
         int k = x & 15;

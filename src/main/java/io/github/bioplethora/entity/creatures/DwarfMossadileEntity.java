@@ -1,53 +1,70 @@
 package io.github.bioplethora.entity.creatures;
 
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
 import io.github.bioplethora.entity.ai.gecko.GeckoMoveToTargetGoal;
 import io.github.bioplethora.enums.BPEntityClasses;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.*;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
 
-    private static final DataParameter<Boolean> DATA_IS_NETHER_VARIANT = EntityDataManager.defineId(DwarfMossadileEntity.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Boolean> DATA_IS_NETHER_VARIANT = SynchedEntityData.defineId(DwarfMossadileEntity.class, EntityDataSerializers.BOOLEAN);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
-    public DwarfMossadileEntity(EntityType<? extends MonsterEntity> type, World world) {
+    public DwarfMossadileEntity(EntityType<? extends Monster> type, Level world) {
         super(type, world);
         this.xpReward = 10;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 2 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 5 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -66,13 +83,13 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 24.0F));
-        this.goalSelector.addGoal(4, new RandomWalkingGoal(this, 1F));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 24.0F));
+        this.goalSelector.addGoal(4, new RandomStrollGoal(this, 1F));
         this.goalSelector.addGoal(1, new GeckoMoveToTargetGoal<>(this, 1, 8));
         this.goalSelector.addGoal(1, new GeckoMeleeGoal<>(this, 40, 0.5, 0.6));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new SwimGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new FloatGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, NandbriEntity.class, true));
         this.targetSelector.addGoal(1, (new HurtByTargetGoal(this, DwarfMossadileEntity.class)).setAlertOthers());
     }
@@ -89,31 +106,31 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.attacking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.attacking", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.walking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.walking", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getAmbientSound() {
+    public SoundEvent getAmbientSound() {
         return SoundEvents.SHULKER_AMBIENT;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getHurtSound(DamageSource damageSource) {
+    public SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.SHULKER_HURT;
     }
 
     @Override
-    public net.minecraft.util.SoundEvent getDeathSound() {
+    public SoundEvent getDeathSound() {
         return SoundEvents.SHULKER_DEATH;
     }
 
@@ -125,16 +142,16 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
     public boolean doHurtTarget(Entity entity) {
         boolean flag = super.doHurtTarget(entity);
 
-        World world = entity.level;
+        Level world = entity.level;
         BlockPos blockPos = new BlockPos((int) getTarget().getX(), (int) getTarget().getY(), (int) getTarget().getZ());
 
         if (flag && entity instanceof LivingEntity) {
             if (this.isNetherVariant()) {
                 entity.setSecondsOnFire(5);
-                ((ServerWorld) this.level).sendParticles(ParticleTypes.FLAME, getTarget().getX(), getTarget().getY(), getTarget().getZ(), 20, 0.4, 0.4, 0.4, 0.1);
-                this.level.playSound(null, blockPos, SoundEvents.BLAZE_SHOOT, SoundCategory.HOSTILE, (float) 1, (float) 1);
+                ((ServerLevel) this.level).sendParticles(ParticleTypes.FLAME, getTarget().getX(), getTarget().getY(), getTarget().getZ(), 20, 0.4, 0.4, 0.4, 0.1);
+                this.level.playSound(null, blockPos, SoundEvents.BLAZE_SHOOT, SoundSource.HOSTILE, (float) 1, (float) 1);
             } else {
-                ((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, 40, 1));
+                ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.POISON, 40, 1));
             }
         }
         return flag;
@@ -145,13 +162,13 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
     }
 
     @Override
-    public boolean checkSpawnRules(IWorld p_213380_1_, SpawnReason p_213380_2_) {
+    public boolean checkSpawnRules(LevelAccessor p_213380_1_, MobSpawnType p_213380_2_) {
         return super.checkSpawnRules(p_213380_1_, p_213380_2_) && !p_213380_1_.getBlockState(this.blockPosition().below()).isAir();
     }
 
-    public ILivingEntityData finalizeSpawn(IServerWorld world, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
 
-        if ((this.level.dimension().equals(World.NETHER) || (this.level.dimension().equals(World.NETHER)))) {
+        if ((this.level.dimension().equals(Level.NETHER) || (this.level.dimension().equals(Level.NETHER)))) {
             this.setNetherVariant(true);
         }
 
@@ -168,7 +185,7 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
         return super.finalizeSpawn(world, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    public boolean checkSpawnObstruction(IWorldReader pLevel) {
+    public boolean checkSpawnObstruction(LevelReader pLevel) {
         return pLevel.isUnobstructed(this) && !pLevel.containsAnyLiquid(this.getBoundingBox()) && Math.random() < 0.25;
     }
 
@@ -186,13 +203,13 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.putBoolean("isNetherVariant", this.isNetherVariant());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         super.readAdditionalSaveData(compoundNBT);
         this.setNetherVariant(compoundNBT.getBoolean("isNetherVariant"));
     }

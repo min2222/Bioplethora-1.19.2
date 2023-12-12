@@ -1,36 +1,29 @@
 package io.github.bioplethora.event.helper;
 
 import io.github.bioplethora.entity.creatures.ShachathEntity;
-import io.github.bioplethora.entity.others.BPEffectEntity;
-import io.github.bioplethora.enums.BPEffectTypes;
 import io.github.bioplethora.registry.BPEntities;
-import io.github.bioplethora.registry.BPParticles;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 public class ShachathCurseHelper {
     private final static String SHACHATH_CURSE = "bioplethora.shachath_curse";
 
     public static void onLivingDeath(LivingDeathEvent event) {
-        if (event.getEntity() instanceof VillagerEntity) {
-            if (event.getSource().getEntity() instanceof PlayerEntity) {
-                PlayerEntity source = (PlayerEntity) event.getSource().getEntity();
+        if (event.getEntity() instanceof Villager) {
+            if (event.getSource().getEntity() instanceof Player) {
+                Player source = (Player) event.getSource().getEntity();
                 int curseLevel = nbt(source).getInt(SHACHATH_CURSE);
 
-                if (EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(source)) {
+                if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(source)) {
 
                     nbt(source).putInt(SHACHATH_CURSE, curseLevel + 1);
 
@@ -59,7 +52,7 @@ public class ShachathCurseHelper {
         }
     }
 
-    public static void summonShachath(PlayerEntity player) {
+    public static void summonShachath(Player player) {
         ShachathEntity effect = BPEntities.SHACHATH.get().create(player.level);
         BlockPos summonPos = new BlockPos(player.blockPosition()).offset(-5 + player.getRandom().nextInt(10), 0, -5 + player.getRandom().nextInt(10));
         effect.moveTo(summonPos.getX(), summonPos.getY(), summonPos.getZ());
@@ -67,17 +60,17 @@ public class ShachathCurseHelper {
         player.level.addFreshEntity(effect);
 
         effect.descendEffect();
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLAZE_SHOOT, 0.9F));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BLAZE_SHOOT, 0.9F));
     }
 
-    private static IFormattableTextComponent shachathMessage(int level) {
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.9F));
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENDERMAN_TELEPORT, 1.5F));
-        return new TranslationTextComponent("message.bioplethora.shachath_curse_" + level).withStyle(TextFormatting.DARK_RED);
+    private static Component shachathMessage(int level) {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.EXPERIENCE_ORB_PICKUP, 0.9F));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.ENDERMAN_TELEPORT, 1.5F));
+        return Component.translatable("message.bioplethora.shachath_curse_" + level).withStyle(ChatFormatting.DARK_RED);
     }
 
-    private static CompoundNBT nbt(PlayerEntity player) {
-        CompoundNBT playerData = player.getPersistentData();
-        return playerData.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+    private static CompoundTag nbt(Player player) {
+        CompoundTag playerData = player.getPersistentData();
+        return playerData.getCompound(Player.PERSISTED_NBT_TAG);
     }
 }

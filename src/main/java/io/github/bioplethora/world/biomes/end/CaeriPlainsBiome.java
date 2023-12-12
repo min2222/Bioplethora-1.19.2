@@ -1,14 +1,14 @@
 package io.github.bioplethora.world.biomes.end;
 
+import java.util.function.Supplier;
+
 import io.github.bioplethora.api.BPBiomeSettings;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureFeatures;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
-
-import java.util.function.Supplier;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
 
 public class CaeriPlainsBiome {
 

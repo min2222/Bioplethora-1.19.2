@@ -1,12 +1,14 @@
 package io.github.bioplethora.item.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.item.UseAction;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 public abstract class GrylynenShieldBaseItem extends ShieldItem {
@@ -23,17 +25,17 @@ public abstract class GrylynenShieldBaseItem extends ShieldItem {
     public abstract int getArmorBonus();
 
     /**
-     * This skill will trigger when the shield gets damaged. This custom void is executed through ForgeHooks in {@link io.github.bioplethora.event.ServerWorldEvents#onLivingAttack(LivingAttackEvent)}
+     * This skill will trigger when the shield gets damaged. This custom void is executed through ForgeHooks in {@link io.github.bioplethora.event.ServerLevelEvents#onLivingAttack(LivingAttackEvent)}
      */
-    public abstract void blockingSkill(ItemStack stack, LivingEntity user, Entity attacker, World world);
+    public abstract void blockingSkill(ItemStack stack, LivingEntity user, Entity attacker, Level world);
 
     public GrylynenShieldBaseItem(Properties properties) {
         super(properties);
     }
 
     @Override
-    public boolean isShield(ItemStack stack, LivingEntity entity) {
-        return true;
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+    	return toolAction == ToolActions.SHIELD_BLOCK;
     }
 
     @Override
@@ -42,16 +44,16 @@ public abstract class GrylynenShieldBaseItem extends ShieldItem {
     }
 
     @Override
-    public UseAction getUseAnimation(ItemStack itemStack) {
-        return UseAction.BLOCK;
+    public UseAnim getUseAnimation(ItemStack itemStack) {
+        return UseAnim.BLOCK;
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, World pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pItemSlot, pIsSelected);
 
-        if (pEntity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) pEntity;
+        if (pEntity instanceof Player) {
+            Player player = (Player) pEntity;
 
             if (!player.getCooldowns().isOnCooldown(pStack.getItem())) {
                 canBeCooldown = false;

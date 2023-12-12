@@ -1,5 +1,9 @@
 package io.github.bioplethora.integration.jei;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
 import io.github.bioplethora.registry.BPBlocks;
@@ -11,12 +15,8 @@ import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingRecipe> {
 

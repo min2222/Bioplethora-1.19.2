@@ -1,11 +1,13 @@
 package io.github.bioplethora.registry.worldgen;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.Blocks;
+
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
 
 public class BPTreeConfiguredFeatures {
 

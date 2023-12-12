@@ -2,7 +2,7 @@ package io.github.bioplethora.client.entity.model.projectile;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.projectile.AlphanumObliteratorSpearEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
@@ -11,17 +11,17 @@ import software.bernie.geckolib3.model.provider.data.EntityModelData;
 public class AlphanumObliteratorSpearModel extends AnimatedGeoModel<AlphanumObliteratorSpearEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(AlphanumObliteratorSpearEntity object) {
+    public ResourceLocation getModelResource(AlphanumObliteratorSpearEntity object) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/projectiles/alphanum_obliterator_spear.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AlphanumObliteratorSpearEntity object) {
+    public ResourceLocation getTextureResource(AlphanumObliteratorSpearEntity object) {
         return new ResourceLocation(Bioplethora.MOD_ID, "textures/projectiles/alphanum_obliterator_spear.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(AlphanumObliteratorSpearEntity animatable) {
+    public ResourceLocation getAnimationResource(AlphanumObliteratorSpearEntity animatable) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/projectiles/alphanum_obliterator_spear.animation.json");
     }
 

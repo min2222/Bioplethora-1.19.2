@@ -1,21 +1,23 @@
 package io.github.bioplethora.world.biomes.nether;
 
+import java.util.function.Supplier;
+
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
 import net.minecraft.client.audio.BackgroundMusicTracks;
 import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.biome.*;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.ConfiguredCarvers;
-import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.structure.StructureFeatures;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
-
-import java.util.function.Supplier;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
 
 public class CryeanumPlains {
     public static final Biome.Attributes ATTRIBUTE = new Biome.Attributes(-0.35F, 0.0F, 0.0F, 0.0F, 0.0F);
@@ -94,7 +96,7 @@ public class CryeanumPlains {
 
     private static int calculateSkyColor(float pTemperature) {
         float lvt_1_1_ = pTemperature / 3.0F;
-        lvt_1_1_ = MathHelper.clamp(lvt_1_1_, -1.0F, 1.0F);
-        return MathHelper.hsvToRgb(0.62222224F - lvt_1_1_ * 0.05F, 0.5F + lvt_1_1_ * 0.1F, 1.0F);
+        lvt_1_1_ = Mth.clamp(lvt_1_1_, -1.0F, 1.0F);
+        return Mth.hsvToRgb(0.62222224F - lvt_1_1_ * 0.05F, 0.5F + lvt_1_1_ * 0.1F, 1.0F);
     }
 }

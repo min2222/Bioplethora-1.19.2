@@ -1,30 +1,29 @@
 package io.github.bioplethora.world.worldcarvers;
 
-import com.google.common.collect.ImmutableSet;
-import com.mojang.serialization.Codec;
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.carver.CaveWorldCarver;
-import net.minecraft.world.gen.feature.ProbabilityConfig;
-import org.apache.commons.lang3.mutable.MutableBoolean;
-
 import java.util.BitSet;
 import java.util.Random;
 import java.util.function.Function;
 
-public class EndSpringWorldCarver extends CaveWorldCarver {
+import org.apache.commons.lang3.mutable.MutableBoolean;
+
+import com.google.common.collect.ImmutableSet;
+import com.mojang.serialization.Codec;
+
+import io.github.bioplethora.registry.BPBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
+import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
+
+public class EndSpringLevelCarver extends CaveWorldCarver {
     private static final Direction[] DIRECTIONS = Direction.values();
 
-    public EndSpringWorldCarver(Codec<ProbabilityConfig> p_i231921_1_) {
-        super(p_i231921_1_, 256);
+    public EndSpringLevelCarver(Codec<CaveCarverConfiguration> p_i231921_1_) {
+        super(p_i231921_1_);
         this.replaceableBlocks = ImmutableSet.of(Blocks.WATER);
     }
 
@@ -45,7 +44,7 @@ public class EndSpringWorldCarver extends CaveWorldCarver {
         return (pRandom.nextFloat() * 4.0F + pRandom.nextFloat()) * 4.0F;
     }
 
-    protected boolean carveBlock(IChunk level, Function<BlockPos, Biome> pred, BitSet bitset, Random rand, BlockPos.Mutable pos, BlockPos.Mutable pos2, BlockPos.Mutable pos3, int p_230358_8_, int p_230358_9_, int p_230358_10_, int p_230358_11_, int p_230358_12_, int p_230358_13_, int p_230358_14_, int p_230358_15_, MutableBoolean p_230358_16_) {
+    protected boolean carveBlock(IChunk level, Function<BlockPos, Biome> pred, BitSet bitset, Random rand, BlockPos.MutableBlockPos pos, BlockPos.MutableBlockPos pos2, BlockPos.MutableBlockPos pos3, int p_230358_8_, int p_230358_9_, int p_230358_10_, int p_230358_11_, int p_230358_12_, int p_230358_13_, int p_230358_14_, int p_230358_15_, MutableBoolean p_230358_16_) {
         int i = p_230358_13_ | p_230358_15_ << 4 | p_230358_14_ << 8;
         if (bitset.get(i)) {
             return false;

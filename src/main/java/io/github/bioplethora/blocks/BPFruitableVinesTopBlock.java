@@ -1,36 +1,35 @@
 package io.github.bioplethora.blocks;
 
 import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PlantBlockHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.NetherVines;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BPFruitableVinesTopBlock extends BPVinesTopBlock {
-    public BPFruitableVinesTopBlock(AbstractBlock.Properties properties) {
+    public BPFruitableVinesTopBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 
     protected boolean canGrowInto(BlockState pState) {
-        return PlantBlockHelper.isValidGrowthState(pState);
+        return NetherVines.isValidGrowthState(pState);
     }
 
-    protected int getBlocksToGrowWhenBonemealed(Random pRandom) {
-        return PlantBlockHelper.getBlocksToGrowWhenBonemealed(pRandom);
+    protected int getBlocksToGrowWhenBonemealed(RandomSource pRandom) {
+        return NetherVines.getBlocksToGrowWhenBonemealed(pRandom);
     }
 
     public abstract Block getFruitedBodyBlock();
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader reader, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
         BlockPos blockpos = pos.relative(this.growthDirection.getOpposite());
         BlockState blockstate = reader.getBlockState(blockpos);
         Block block = blockstate.getBlock();
-        if (!this.canAttachToBlock(block)) {
+        if (!this.canAttachTo(blockstate)) {
             return false;
         } else {
             return block == this.getHeadBlock() || block == this.getFruitedBodyBlock() || block == this.getBodyBlock() || blockstate.isFaceSturdy(reader, blockpos, this.growthDirection);
@@ -39,7 +38,7 @@ public abstract class BPFruitableVinesTopBlock extends BPVinesTopBlock {
 
     public static class BasaltSpeleothermTopBlock extends BPFruitableVinesTopBlock {
 
-        public BasaltSpeleothermTopBlock(AbstractBlock.Properties properties) {
+        public BasaltSpeleothermTopBlock(BlockBehaviour.Properties properties) {
             super(properties);
         }
 
@@ -56,7 +55,7 @@ public abstract class BPFruitableVinesTopBlock extends BPVinesTopBlock {
 
     public static class ThontusThistleTopBlock extends BPFruitableVinesTopBlock {
 
-        public ThontusThistleTopBlock(AbstractBlock.Properties properties) {
+        public ThontusThistleTopBlock(BlockBehaviour.Properties properties) {
             super(properties);
         }
 
@@ -73,7 +72,7 @@ public abstract class BPFruitableVinesTopBlock extends BPVinesTopBlock {
 
     public static class TurquoisePendentTopBlock extends BPFruitableVinesTopBlock {
 
-        public TurquoisePendentTopBlock(AbstractBlock.Properties properties) {
+        public TurquoisePendentTopBlock(BlockBehaviour.Properties properties) {
             super(properties);
         }
 
@@ -90,7 +89,7 @@ public abstract class BPFruitableVinesTopBlock extends BPVinesTopBlock {
 
     public static class CeriseIvyTopBlock extends BPFruitableVinesTopBlock {
 
-        public CeriseIvyTopBlock(AbstractBlock.Properties properties) {
+        public CeriseIvyTopBlock(BlockBehaviour.Properties properties) {
             super(properties);
         }
 
@@ -107,7 +106,7 @@ public abstract class BPFruitableVinesTopBlock extends BPVinesTopBlock {
 
     public static class SoulEternTopBlock extends BPFruitableVinesTopBlock {
 
-        public SoulEternTopBlock(AbstractBlock.Properties properties) {
+        public SoulEternTopBlock(BlockBehaviour.Properties properties) {
             super(properties);
         }
 

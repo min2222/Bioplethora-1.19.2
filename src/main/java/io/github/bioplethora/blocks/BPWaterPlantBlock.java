@@ -1,44 +1,44 @@
 package io.github.bioplethora.blocks;
 
-import io.github.bioplethora.enums.BioPlantShape;
-import io.github.bioplethora.enums.BioPlantType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ILiquidContainer;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-
 import javax.annotation.Nullable;
 
-public class BPWaterPlantBlock extends BPPlantBlock implements ILiquidContainer {
+import io.github.bioplethora.enums.BioPlantShape;
+import io.github.bioplethora.enums.BioPlantType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+
+public class BPWaterPlantBlock extends BPPlantBlock implements LiquidBlockContainer {
 
     public BPWaterPlantBlock(BioPlantType type, BioPlantShape shape, Properties properties) {
         super(type, shape, properties);
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState pState, IBlockReader pLevel, BlockPos pPos) {
+    protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         return pState.isFaceSturdy(pLevel, pPos, Direction.UP) && getWhitelist().contains(pState.getBlock());
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext pContext) {
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
         return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(pContext) : null;
     }
 
     @Override
-    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, IWorld pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         BlockState blockstate = super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
         if (!blockstate.isAir()) {
-            pLevel.getLiquidTicks().scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
         return blockstate;
     }
@@ -49,12 +49,12 @@ public class BPWaterPlantBlock extends BPPlantBlock implements ILiquidContainer 
     }
 
     @Override
-    public boolean canPlaceLiquid(IBlockReader pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
+    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
         return false;
     }
 
     @Override
-    public boolean placeLiquid(IWorld pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
+    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
         return false;
     }
 }

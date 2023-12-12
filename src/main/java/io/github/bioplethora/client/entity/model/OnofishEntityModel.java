@@ -2,18 +2,18 @@ package io.github.bioplethora.client.entity.model;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.OnofishEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class OnofishEntityModel extends AnimatedGeoModel<OnofishEntity> {
 
     @Override
-    public ResourceLocation getModelLocation(OnofishEntity entity) {
+    public ResourceLocation getModelResource(OnofishEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "geo/onofish.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(OnofishEntity entity) {
+    public ResourceLocation getTextureResource(OnofishEntity entity) {
         switch (entity.getVariant()) {
             default: return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/onofish/onofish_purple.png");
             case 2: return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/onofish/onofish_blue.png");
@@ -23,7 +23,7 @@ public class OnofishEntityModel extends AnimatedGeoModel<OnofishEntity> {
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(OnofishEntity entity) {
+    public ResourceLocation getAnimationResource(OnofishEntity entity) {
         return new ResourceLocation(Bioplethora.MOD_ID, "animations/onofish.animation.json");
     }
 }

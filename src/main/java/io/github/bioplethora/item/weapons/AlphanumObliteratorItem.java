@@ -1,49 +1,50 @@
 package io.github.bioplethora.item.weapons;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import io.github.bioplethora.api.BPItemSettings;
 import io.github.bioplethora.api.IReachWeapon;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.projectile.AlphanumObliteratorSpearEntity;
 import io.github.bioplethora.registry.BPEnchantments;
 import io.github.bioplethora.registry.BPItems;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.IVanishable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.Vanishable;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
-public class AlphanumObliteratorItem extends Item implements IVanishable, IReachWeapon {
+public class AlphanumObliteratorItem extends Item implements Vanishable, IReachWeapon {
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
     public AlphanumObliteratorItem(Properties properties) {
@@ -54,40 +55,40 @@ public class AlphanumObliteratorItem extends Item implements IVanishable, IReach
         this.defaultModifiers = builder.build();
     }
 
-    public UseAction getUseAnimation(ItemStack pStack) {
-        return UseAction.BOW;
+    public UseAnim getUseAnimation(ItemStack pStack) {
+        return UseAnim.BOW;
     }
 
     public int getUseDuration(ItemStack pStack) {
         return 72000;
     }
 
-    public void initiateShoot(ItemStack pStack, World pLevel, LivingEntity pEntityLiving) {
+    public void initiateShoot(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
 
         double x = pEntityLiving.getX(), y = pEntityLiving.getY(), z = pEntityLiving.getZ();
         if (!pLevel.isClientSide()) {
-            ((ServerWorld) pLevel).sendParticles(ParticleTypes.FIREWORK, x, y + 1.2, z, 50, 0.75, 0.75, 0.75, 0.01);
+            ((ServerLevel) pLevel).sendParticles(ParticleTypes.FIREWORK, x, y + 1.2, z, 50, 0.75, 0.75, 0.75, 0.01);
         }
 
         if (pEntityLiving.getMainHandItem() == pStack) {
             pStack.hurtAndBreak(1, pEntityLiving, (entity) -> {
-                entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         } else if (pEntityLiving.getOffhandItem() == pStack) {
             pStack.hurtAndBreak(1, pEntityLiving, (entity) -> {
-                entity.broadcastBreakEvent(EquipmentSlotType.OFFHAND);
+                entity.broadcastBreakEvent(EquipmentSlot.OFFHAND);
             });
         }
-        pLevel.playSound(null, x, y, z, SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundCategory.PLAYERS, 1, 1);
+        pLevel.playSound(null, x, y, z, SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundSource.PLAYERS, 1, 1);
         this.shootProjectile(pStack, pLevel, pEntityLiving);
     }
 
-    public void shootProjectile(ItemStack pStack, World pLevel, LivingEntity pEntityLiving) {
-        float xTarget = -MathHelper.sin(pEntityLiving.yHeadRot * ((float) Math.PI / 180F)) * MathHelper.cos(pEntityLiving.xRot * ((float) Math.PI / 180F));
-        float yTarget = -MathHelper.sin(pEntityLiving.xRot * ((float) Math.PI / 180F));
-        float zTarget = MathHelper.cos(pEntityLiving.yHeadRot * ((float) Math.PI / 180F)) * MathHelper.cos(pEntityLiving.xRot * ((float) Math.PI / 180F));
+    public void shootProjectile(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
+        float xTarget = -Mth.sin(pEntityLiving.yHeadRot * ((float) Math.PI / 180F)) * Mth.cos(pEntityLiving.xRot * ((float) Math.PI / 180F));
+        float yTarget = -Mth.sin(pEntityLiving.xRot * ((float) Math.PI / 180F));
+        float zTarget = Mth.cos(pEntityLiving.yHeadRot * ((float) Math.PI / 180F)) * Mth.cos(pEntityLiving.xRot * ((float) Math.PI / 180F));
         float damageAdditions = (float) EnchantmentHelper.getItemEnchantmentLevel(BPEnchantments.DEVASTATING_BLAST.get(), pStack) * 1.5F;
-        Vector3d vector3d = pEntityLiving.getViewVector(1.0F);
+        Vec3 vector3d = pEntityLiving.getViewVector(1.0F);
 
         AlphanumObliteratorSpearEntity projectile = new AlphanumObliteratorSpearEntity(pLevel, pEntityLiving, xTarget, yTarget, zTarget);
         projectile.setPos(pEntityLiving.getX(), pEntityLiving.getY() + 1.5, pEntityLiving.getZ());
@@ -112,9 +113,9 @@ public class AlphanumObliteratorItem extends Item implements IVanishable, IReach
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack stack, Level world, Entity entity, int pItemSlot, boolean pIsSelected) {
         super.inventoryTick(stack, world, entity, pItemSlot, pIsSelected);
-        CompoundNBT getTag = stack.getOrCreateTag();
+        CompoundTag getTag = stack.getOrCreateTag();
 
         int reloadTime = getTag.getInt("reloadTime");
         int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
@@ -130,10 +131,10 @@ public class AlphanumObliteratorItem extends Item implements IVanishable, IReach
 
                     entity.playSound(SoundEvents.CROSSBOW_LOADING_END, 1.0F,  1.0F);
                     if (((LivingEntity) entity).getMainHandItem() == stack) {
-                        ((LivingEntity) entity).swing(Hand.MAIN_HAND);
+                        ((LivingEntity) entity).swing(InteractionHand.MAIN_HAND);
                     }
                     if (((LivingEntity) entity).getOffhandItem() == stack) {
-                        ((LivingEntity) entity).swing(Hand.OFF_HAND);
+                        ((LivingEntity) entity).swing(InteractionHand.OFF_HAND);
                     }
                 }
             }
@@ -147,7 +148,7 @@ public class AlphanumObliteratorItem extends Item implements IVanishable, IReach
 
                 if (offHandComboTimer >= 5) {
                     this.initiateShoot(stack, world, (LivingEntity) entity);
-                    ((LivingEntity) entity).swing(Hand.OFF_HAND);
+                    ((LivingEntity) entity).swing(InteractionHand.OFF_HAND);
                     setCharged(stack, false);
                     getTag.putBoolean("shouldOffCombo", false);
                     getTag.putInt("offComboTimer", 0);
@@ -156,11 +157,11 @@ public class AlphanumObliteratorItem extends Item implements IVanishable, IReach
         }
     }
 
-    public void releaseUsing(ItemStack pStack, World pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
-        if (pEntityLiving instanceof PlayerEntity) {
+    public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
+        if (pEntityLiving instanceof Player) {
 
-            PlayerEntity player = (PlayerEntity) pEntityLiving;
-            CompoundNBT getOffTag = pEntityLiving.getOffhandItem().getOrCreateTag();
+            Player player = (Player) pEntityLiving;
+            CompoundTag getOffTag = pEntityLiving.getOffhandItem().getOrCreateTag();
             int i = this.getUseDuration(pStack) - pTimeLeft;
 
             if (i >= 10 && isCharged(pStack)) {
@@ -183,69 +184,69 @@ public class AlphanumObliteratorItem extends Item implements IVanishable, IReach
     }
 
     public static boolean isCharged(ItemStack obStack) {
-        CompoundNBT compoundnbt = obStack.getTag();
+        CompoundTag compoundnbt = obStack.getTag();
         return compoundnbt != null && compoundnbt.getBoolean("Charged");
     }
 
     public static void setCharged(ItemStack obStack, boolean pIsCharged) {
-        CompoundNBT compoundnbt = obStack.getOrCreateTag();
+        CompoundTag compoundnbt = obStack.getOrCreateTag();
         compoundnbt.putBoolean("Charged", pIsCharged);
     }
 
-    public ActionResult<ItemStack> use(World pLevel, PlayerEntity pPlayer, Hand pHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
 
         if (!isCharged(pPlayer.getItemInHand(pHand))) {
-            return ActionResult.fail(itemstack);
+            return InteractionResultHolder.fail(itemstack);
 
         } else {
             pPlayer.startUsingItem(pHand);
-            return ActionResult.consume(itemstack);
+            return InteractionResultHolder.consume(itemstack);
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         BPItemSettings.sacredLevelText(tooltip);
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.alphanum_obliterator.skullbreaker.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.alphanum_obliterator.skullbreaker.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.alphanum_obliterator.skullbreaker.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.alphanum_obliterator.skullbreaker.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
 
-        tooltip.add(new TranslationTextComponent("item.bioplethora.alphanum_obliterator.blasting_spears.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
+        tooltip.add(Component.translatable("item.bioplethora.alphanum_obliterator.blasting_spears.skill").withStyle(BPItemSettings.SKILL_NAME_COLOR));
         if (Screen.hasShiftDown() || Screen.hasControlDown()) {
-            tooltip.add(new TranslationTextComponent("item.bioplethora.alphanum_obliterator.blasting_spears.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
+            tooltip.add(Component.translatable("item.bioplethora.alphanum_obliterator.blasting_spears.desc").withStyle(BPItemSettings.SKILL_DESC_COLOR));
         }
     }
 
     public boolean hurtEnemy(ItemStack pStack, LivingEntity pTarget, LivingEntity pAttacker) {
         pStack.hurtAndBreak(1, pAttacker, (entity) -> {
-            entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+            entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
-        pTarget.knockback(2, MathHelper.sin(pAttacker.yRot * ((float) Math.PI / 180F)), -MathHelper.cos(pAttacker.yRot * ((float) Math.PI / 180F)));
+        pTarget.knockback(2, Mth.sin(pAttacker.yRot * ((float) Math.PI / 180F)), -Mth.cos(pAttacker.yRot * ((float) Math.PI / 180F)));
         pTarget.playSound(SoundEvents.ANVIL_PLACE, 1.0F, 0.75F);
         if (!pTarget.level.isClientSide()) {
-            ((ServerWorld) pTarget.level).sendParticles(ParticleTypes.FIREWORK, pTarget.getX(), pTarget.getY(), pTarget.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
-            ((ServerWorld) pTarget.level).sendParticles(ParticleTypes.CRIT, pTarget.getX(), pTarget.getY(), pTarget.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
+            ((ServerLevel) pTarget.level).sendParticles(ParticleTypes.FIREWORK, pTarget.getX(), pTarget.getY(), pTarget.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
+            ((ServerLevel) pTarget.level).sendParticles(ParticleTypes.CRIT, pTarget.getX(), pTarget.getY(), pTarget.getZ(), 75, 0.75, 0.75, 0.75, 0.01);
         }
         return true;
     }
 
-    public boolean mineBlock(ItemStack pStack, World pLevel, BlockState pState, BlockPos pPos, LivingEntity pEntityLiving) {
+    public boolean mineBlock(ItemStack pStack, Level pLevel, BlockState pState, BlockPos pPos, LivingEntity pEntityLiving) {
         if ((double)pState.getDestroySpeed(pLevel, pPos) != 0.0D) {
             pStack.hurtAndBreak(2, pEntityLiving, (entity) -> {
-                entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                entity.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
         return true;
     }
 
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType pEquipmentSlot) {
-        return pEquipmentSlot == EquipmentSlotType.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(pEquipmentSlot);
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot pEquipmentSlot, ItemStack stack) {
+        return pEquipmentSlot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(pEquipmentSlot, stack);
     }
 
     public int getEnchantmentValue() {

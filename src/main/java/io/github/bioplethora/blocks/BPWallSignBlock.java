@@ -1,13 +1,13 @@
 package io.github.bioplethora.blocks;
 
-import io.github.bioplethora.blocks.tile_entities.BPSignTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallSignBlock;
-import net.minecraft.block.WoodType;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockReader;
-
 import javax.annotation.Nullable;
+
+import io.github.bioplethora.blocks.tile_entities.BPSignTileEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class BPWallSignBlock extends WallSignBlock {
 
@@ -15,14 +15,9 @@ public class BPWallSignBlock extends WallSignBlock {
         super(properties, woodType);
     }
 
-    @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
-    }
-
     @Nullable
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new BPSignTileEntity();
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BPSignTileEntity(pos, state);
     }
 }

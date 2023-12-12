@@ -1,26 +1,30 @@
 package io.github.bioplethora.item.armor;
 
+import java.util.function.Consumer;
+
 import io.github.bioplethora.Bioplethora;
+import io.github.bioplethora.api.IHurtSkillArmor;
 import io.github.bioplethora.api.world.EffectUtils;
 import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.client.armor.model.ReinforcedFleignariteArmorModel;
-import io.github.bioplethora.api.IHurtSkillArmor;
 import io.github.bioplethora.registry.BPDamageSources;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSkillArmor {
 
-    public ReinforcedFleignariteArmorItem(IArmorMaterial material, EquipmentSlotType type, Properties properties) {
+    public ReinforcedFleignariteArmorItem(ArmorMaterial material, EquipmentSlot type, Properties properties) {
         super(material, type, properties);
     }
 
@@ -32,9 +36,9 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
         EffectUtils.addCircleParticleForm(target.level, target, ParticleTypes.CRIT, 75, 0.75, 0.01);
 
         boolean random = target.getRandom().nextBoolean();
-        EffectUtils.addEffectNoIcon(target, Effects.MOVEMENT_SLOWDOWN, random ? 70 : 90, 2);
-        EffectUtils.addEffectNoIcon(target, Effects.DIG_SLOWDOWN, random ? 60 : 80, 0);
-        EffectUtils.addEffectNoIcon(target, Effects.CONFUSION, random ? 80 : 60, 1);
+        EffectUtils.addEffectNoIcon(target, MobEffects.MOVEMENT_SLOWDOWN, random ? 70 : 90, 2);
+        EffectUtils.addEffectNoIcon(target, MobEffects.DIG_SLOWDOWN, random ? 60 : 80, 0);
+        EffectUtils.addEffectNoIcon(target, MobEffects.CONFUSION, random ? 80 : 60, 1);
 
         EntityUtils.knockbackAwayFromUser(0.5F, user, target);
         target.hurt(BPDamageSources.armorPiercingFleignarite(target, target), (float) 2);
@@ -42,7 +46,7 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, World pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
         if (pStack.getDamageValue() < pStack.getMaxDamage()) {
             pStack.getOrCreateTag().putInt("regen_time", pStack.getOrCreateTag().getInt("regen_time") + 1);
 
@@ -60,21 +64,27 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
     public int getHurtAbilityCooldown() {
         return 80;
     }
-
+    
     @Override
-    public <A extends BipedModel<?>> A getArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlotType slot, A defaultModel) {
-        return slot == EquipmentSlotType.LEGS ? defaultModel : matchingModel(entity, slot, defaultModel);
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+    	consumer.accept(new IClientItemExtensions() {
+
+    	    @Override
+    	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> defaultModel) {
+    	        return slot == EquipmentSlot.LEGS ? defaultModel : matchingModel(entity, slot, defaultModel);
+    	    }
+    	});
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         String defaultTexture = Bioplethora.MOD_ID + ":textures/models/armor/reinforced_fleignarite_layer_1.png";
         String legTexture = Bioplethora.MOD_ID + ":textures/models/armor/reinforced_fleignarite_layer_2.png";
 
-        return slot == EquipmentSlotType.LEGS ? legTexture : defaultTexture;
+        return slot == EquipmentSlot.LEGS ? legTexture : defaultTexture;
     }
 
-    public static <A extends BipedModel<?>> A matchingModel(LivingEntity entity, EquipmentSlotType slot, A defaultModel) {
+    public static <A extends HumanoidModel<?>> A matchingModel(LivingEntity entity, EquipmentSlot slot, A defaultModel) {
         boolean crouching = entity.isCrouching();
         boolean riding = defaultModel.riding;
         boolean young = entity.isBaby();
@@ -104,6 +114,8 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
                 boots.riding = riding;
                 boots.young = young;
                 return (A) boots;
+		default:
+			break;
         }
         return defaultModel;
     }

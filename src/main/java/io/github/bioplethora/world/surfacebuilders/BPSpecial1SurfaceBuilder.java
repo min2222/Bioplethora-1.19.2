@@ -1,17 +1,15 @@
 package io.github.bioplethora.world.surfacebuilders;
 
+import java.util.Random;
+
 import com.mojang.serialization.Codec;
-import io.github.bioplethora.registry.BPBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.biome.Biome;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.surfacebuilders.DefaultSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-
-import java.util.Random;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class BPSpecial1SurfaceBuilder extends DefaultSurfaceBuilder {
 
@@ -23,7 +21,7 @@ public class BPSpecial1SurfaceBuilder extends DefaultSurfaceBuilder {
     protected void apply(Random p_206967_1_, IChunk p_206967_2_, Biome p_206967_3_, int p_206967_4_, int p_206967_5_, int p_206967_6_, double p_206967_7_, BlockState p_206967_9_, BlockState p_206967_10_, BlockState p_206967_11_, BlockState p_206967_12_, BlockState p_206967_13_, int p_206967_14_) {
         BlockState blockstate = p_206967_11_;
         BlockState blockstate1 = p_206967_12_;
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
         int i = -1;
         int j = (int)(p_206967_7_ / 3.0D + 3.0D + p_206967_1_.nextDouble() * 0.25D);
         int k = p_206967_4_ & 15;
@@ -67,7 +65,7 @@ public class BPSpecial1SurfaceBuilder extends DefaultSurfaceBuilder {
         }
     }
 
-    public void clearBelow(IChunk p_206967_2_, BlockPos.Mutable  blockpos$mutable, BlockState solid, BlockState liquid) {
+    public void clearBelow(IChunk p_206967_2_, BlockPos.MutableBlockPos  blockpos$mutable, BlockState solid, BlockState liquid) {
         for (int yf = -1; yf > -20; yf--) {
             BlockPos blockpos = blockpos$mutable.offset(0, yf, 0);
                 if (replaceWithWater(p_206967_2_, blockpos)) {

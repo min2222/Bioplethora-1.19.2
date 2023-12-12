@@ -6,15 +6,15 @@ import io.github.bioplethora.entity.creatures.AlphemEntity;
 import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 
 public class AlphemKingRoarGoal extends Goal {
 
@@ -50,7 +50,7 @@ public class AlphemKingRoarGoal extends Goal {
 
             ++this.roarTime;
 
-            World world = this.king.level;
+            Level world = this.king.level;
             BlockPos pos = new BlockPos((int) this.king.getX(), (int) this.king.getY(), (int) this.king.getZ());
 
             if (this.roarTime == 320) {
@@ -72,8 +72,8 @@ public class AlphemKingRoarGoal extends Goal {
 
                 ++particleRel;
                 if (particleRel >= 10) {
-                    if (world instanceof ServerWorld) {
-                        ((ServerWorld) world).sendParticles(BPParticles.KINGS_ROAR.get(), this.king.getX(), this.king.getY() + 0.5D, this.king.getZ(), 1, 0, 0, 0, 0);
+                    if (world instanceof ServerLevel) {
+                        ((ServerLevel) world).sendParticles(BPParticles.KINGS_ROAR.get(), this.king.getX(), this.king.getY() + 0.5D, this.king.getZ(), 1, 0, 0, 0, 0);
                     }
                     particleRel = 0;
                 }
@@ -129,10 +129,10 @@ public class AlphemKingRoarGoal extends Goal {
         this.king.setRoaring(this.roarTime > 300);
     }
 
-    public void explodeOnBlockPos(BlockPos pos, World world) {
-        world.explode(null, DamageSource.indirectMagic(this.king, this.king), null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.Mode.NONE);
+    public void explodeOnBlockPos(BlockPos pos, Level world) {
+        world.explode(null, DamageSource.indirectMagic(this.king, this.king), null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
 
-        if (world instanceof ServerWorld) {
+        if (world instanceof ServerLevel) {
 
             double d0 = this.king.getRandom().nextGaussian() * 0.02D;
             double d1 = this.king.getRandom().nextGaussian() * 0.02D;
@@ -143,12 +143,12 @@ public class AlphemKingRoarGoal extends Goal {
         }
     }
 
-    public void summonAlphem(AlphemEntity alphem, BlockPos pos, World world) {
-        if (world instanceof ServerWorld) {
-            ServerWorld serverworld = (ServerWorld) world;
+    public void summonAlphem(AlphemEntity alphem, BlockPos pos, Level world) {
+        if (world instanceof ServerLevel) {
+            ServerLevel serverworld = (ServerLevel) world;
             alphem.moveTo(pos, 0.0F, 0.0F);
             alphem.setOwner(this.king);
-            alphem.finalizeSpawn(serverworld, world.getCurrentDifficultyAt(pos), SpawnReason.MOB_SUMMONED, null, null);
+            alphem.finalizeSpawn(serverworld, world.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);
             alphem.setHasLimitedLife(false);
             alphem.setExplodeOnExpiry(false);
             serverworld.addFreshEntity(alphem);

@@ -11,23 +11,57 @@ import io.github.bioplethora.enums.BPItemTier;
 import io.github.bioplethora.item.BiopediaItem;
 import io.github.bioplethora.item.BioplethoraSpawnEggItem;
 import io.github.bioplethora.item.ExperimentalItem;
-import io.github.bioplethora.item.armor.*;
+import io.github.bioplethora.item.armor.AquChestplateItem;
+import io.github.bioplethora.item.armor.FleignariteArmorItem;
+import io.github.bioplethora.item.armor.NandbricArmorItem;
+import io.github.bioplethora.item.armor.PeaguinScaleArmorItem;
+import io.github.bioplethora.item.armor.ReinforcedFleignariteArmorItem;
 import io.github.bioplethora.item.extras.AlphanumGemItem;
 import io.github.bioplethora.item.extras.WindyEssenceItem;
 import io.github.bioplethora.item.functionals.SpiritFissionCharmItem;
 import io.github.bioplethora.item.functionals.SpiritManipulationCharmItem;
 import io.github.bioplethora.item.functionals.SpiritStrengtheningCharmItem;
 import io.github.bioplethora.item.functionals.SwervingTotemItem;
-import io.github.bioplethora.item.weapons.*;
-import io.github.bioplethora.item.weapons.fleignarite_set.*;
-import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.*;
-import net.minecraft.block.Blocks;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
-import net.minecraftforge.fml.RegistryObject;
+import io.github.bioplethora.item.weapons.AbyssalBladeItem;
+import io.github.bioplethora.item.weapons.AlphanumObliteratorItem;
+import io.github.bioplethora.item.weapons.ArbitraryBallistaItem;
+import io.github.bioplethora.item.weapons.CrephoxlHammerItem;
+import io.github.bioplethora.item.weapons.FrostbiteMetalArrowItem;
+import io.github.bioplethora.item.weapons.FrostbiteMetalShieldItem;
+import io.github.bioplethora.item.weapons.GaidiusBaseItem;
+import io.github.bioplethora.item.weapons.GrylynenShieldGreenItem;
+import io.github.bioplethora.item.weapons.GrylynenShieldRedItem;
+import io.github.bioplethora.item.weapons.GrylynenShieldYellowItem;
+import io.github.bioplethora.item.weapons.InfernalQuarterstaffItem;
+import io.github.bioplethora.item.weapons.MagmaBombItem;
+import io.github.bioplethora.item.weapons.NandbricShortswordItem;
+import io.github.bioplethora.item.weapons.PhantomChimeItem;
+import io.github.bioplethora.item.weapons.PrimordialStaffItem;
+import io.github.bioplethora.item.weapons.StellarScytheItem;
+import io.github.bioplethora.item.weapons.VermilionBladeItem;
+import io.github.bioplethora.item.weapons.WindArrowItem;
+import io.github.bioplethora.item.weapons.fleignarite_set.FleignariteAxeItem;
+import io.github.bioplethora.item.weapons.fleignarite_set.FleignariteHoeItem;
+import io.github.bioplethora.item.weapons.fleignarite_set.FleignaritePickaxeItem;
+import io.github.bioplethora.item.weapons.fleignarite_set.FleignariteShovelItem;
+import io.github.bioplethora.item.weapons.fleignarite_set.FleignariteSwordItem;
+import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedFleignariteAxeItem;
+import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedFleignariteHoeItem;
+import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedFleignaritePickaxeItem;
+import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedFleignariteShovelItem;
+import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedFleignariteSwordItem;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.HoneyBottleItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.Tiers;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class BPItems {
 
@@ -69,21 +103,21 @@ public class BPItems {
     public static final RegistryObject<Item> VOIDJAW_SCALES = ITEMS.register("voidjaw_scales", () -> new Item(new Item.Properties().stacksTo(64).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
     // Bioplethora Fish Buckets
-    public static final RegistryObject<Item> TRIGGERFISH_BUCKET = ITEMS.register("triggerfish_bucket", () -> new FishBucketItem(BPEntities.TRIGGERFISH, () -> Fluids.WATER, new Item.Properties().stacksTo(64).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> TRIGGERFISH_BUCKET = ITEMS.register("triggerfish_bucket", () -> new MobBucketItem(() -> BPEntities.TRIGGERFISH.get(), () -> Fluids.WATER, () -> SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().stacksTo(64).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
     // Vanilla mobs custom Weapons
     public static final RegistryObject<Item> PHANTOM_CHIME = ITEMS.register("phantom_chime", () -> new PhantomChimeItem(new Item.Properties().stacksTo(1).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> MAGMA_BOMB = ITEMS.register("magma_bomb", () -> new MagmaBombItem(new Item.Properties().stacksTo(64).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
     // Bioplethora mobs Weapons
-    public static final RegistryObject<Item> CREPHOXL_HAMMER = ITEMS.register("crephoxl_hammer", () -> new CrephoxlHammerItem(ItemTier.NETHERITE, hellConfig ? 12 - BPItems.netheriteDMG : 10 - BPItems.netheriteDMG, -3.30f, new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).durability(4508).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> CREPHOXL_HAMMER = ITEMS.register("crephoxl_hammer", () -> new CrephoxlHammerItem(Tiers.NETHERITE, hellConfig ? 12 - BPItems.netheriteDMG : 10 - BPItems.netheriteDMG, -3.30f, new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).durability(4508).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> BELLOPHITE_SHIELD = ITEMS.register("frostbite_metal_shield", () -> new FrostbiteMetalShieldItem(new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).durability(5000).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> BELLOPHITE_ARROW = ITEMS.register("frostbite_metal_arrow", () -> new FrostbiteMetalArrowItem(new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> NANDBRIC_SHORTSWORD = ITEMS.register("nandbric_shortsword", () -> new NandbricShortswordItem(ItemTier.DIAMOND, 1, -2F, new Item.Properties().rarity(BPRarityTypes.SACRED).durability(964).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> STELLAR_SCYTHE = ITEMS.register("stellar_scythe", () -> new StellarScytheItem(ItemTier.NETHERITE, hellConfig ? 11 - BPItems.netheriteDMG : 9 - BPItems.netheriteDMG, -2.5f, new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).durability(4508).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> NANDBRIC_SHORTSWORD = ITEMS.register("nandbric_shortsword", () -> new NandbricShortswordItem(Tiers.DIAMOND, 1, -2F, new Item.Properties().rarity(BPRarityTypes.SACRED).durability(964).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> STELLAR_SCYTHE = ITEMS.register("stellar_scythe", () -> new StellarScytheItem(Tiers.NETHERITE, hellConfig ? 11 - BPItems.netheriteDMG : 9 - BPItems.netheriteDMG, -2.5f, new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).durability(4508).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> ARBITRARY_BALLISTA = ITEMS.register("arbitrary_ballista", () -> new ArbitraryBallistaItem(new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).durability(640).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> VERMILION_BLADE = ITEMS.register("vermilion_blade", () -> new VermilionBladeItem(BPItemTier.VERMILION,  hellConfig ? 15 - BPItems.netheriteDMG : 11 - BPItems.netheriteDMG, -2.5f, new Item.Properties().fireResistant().rarity(BPRarityTypes.BOSS_WEAPON).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> ABYSSAL_BLADE = ITEMS.register("abyssal_blade", () -> new AbyssalBladeItem(ItemTier.NETHERITE, hellConfig ? 13 - BPItems.netheriteDMG : 10 - BPItems.netheriteDMG, -2.7f, new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> ABYSSAL_BLADE = ITEMS.register("abyssal_blade", () -> new AbyssalBladeItem(Tiers.NETHERITE, hellConfig ? 13 - BPItems.netheriteDMG : 10 - BPItems.netheriteDMG, -2.7f, new Item.Properties().fireResistant().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> PRIMORDIAL_STAFF = ITEMS.register("primordial_staff", () -> new PrimordialStaffItem(new Item.Properties().fireResistant().rarity(BPRarityTypes.BOSS_WEAPON).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> TOTEM_OF_SWERVING = ITEMS.register("totem_of_swerving", () -> new SwervingTotemItem(new Item.Properties().fireResistant().stacksTo(1).rarity(BPRarityTypes.BOSS_WEAPON).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> WIND_ARROW = ITEMS.register("wind_arrow", () -> new WindArrowItem(new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
@@ -94,17 +128,17 @@ public class BPItems {
     public static final RegistryObject<Item> YELLOW_CRYSTAL_SHIELD = ITEMS.register("yellow_crystal_shield", () -> new GrylynenShieldYellowItem(new Item.Properties().durability(1125).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> RED_CRYSTAL_SHIELD = ITEMS.register("red_crystal_shield", () -> new GrylynenShieldRedItem(new Item.Properties().durability(18575).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> ALPHANUM_OBLITERATOR = ITEMS.register("alphanum_obliterator", () -> new AlphanumObliteratorItem(new Item.Properties().durability(11500).rarity(BPRarityTypes.BOSS_WEAPON).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> INFERNAL_QUARTERSTAFF = ITEMS.register("infernal_quarterstaff", () -> new InfernalQuarterstaffItem(ItemTier.NETHERITE, hellConfig ? 12 - BPItems.netheriteDMG : 8 - BPItems.netheriteDMG, -2.5f, new Item.Properties().durability(5200).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> INFERNAL_QUARTERSTAFF = ITEMS.register("infernal_quarterstaff", () -> new InfernalQuarterstaffItem(Tiers.NETHERITE, hellConfig ? 12 - BPItems.netheriteDMG : 8 - BPItems.netheriteDMG, -2.5f, new Item.Properties().durability(5200).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
-    public static final RegistryObject<Item> CRYEANUM_GAIDIUS = ITEMS.register("cryeanum_gaidius", () -> new GaidiusBaseItem(ItemTier.NETHERITE, hellConfig ? 8 - BPItems.netheriteDMG : 7 - BPItems.netheriteDMG, -3.0f,
+    public static final RegistryObject<Item> CRYEANUM_GAIDIUS = ITEMS.register("cryeanum_gaidius", () -> new GaidiusBaseItem(Tiers.NETHERITE, hellConfig ? 8 - BPItems.netheriteDMG : 7 - BPItems.netheriteDMG, -3.0f,
             new GaidiusBaseItem.ItemProps().projectile(CryeanumGaidiusEntity::new).inaccuracy(1.5F).velocity(1.5F),
             new Item.Properties().durability(2240).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)
     ));
-    public static final RegistryObject<Item> NETHERITE_OBSIDIAN_GAIDIUS = ITEMS.register("netherite_obsidian_gaidius", () -> new GaidiusBaseItem(ItemTier.NETHERITE, hellConfig ? 14 - BPItems.netheriteDMG : 12 - BPItems.netheriteDMG, -2.8f,
+    public static final RegistryObject<Item> NETHERITE_OBSIDIAN_GAIDIUS = ITEMS.register("netherite_obsidian_gaidius", () -> new GaidiusBaseItem(Tiers.NETHERITE, hellConfig ? 14 - BPItems.netheriteDMG : 12 - BPItems.netheriteDMG, -2.8f,
             new GaidiusBaseItem.ItemProps().projectile(NetheriteObsidianGaidiusEntity::new).inaccuracy(2.0F).velocity(1.2F),
             new Item.Properties().durability(4255).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)
     ));
-    public static final RegistryObject<Item> ECHO_GAIDIUS = ITEMS.register("echo_gaidius", () -> new GaidiusBaseItem(ItemTier.NETHERITE, 7 - BPItems.netheriteDMG, -2.6f,
+    public static final RegistryObject<Item> ECHO_GAIDIUS = ITEMS.register("echo_gaidius", () -> new GaidiusBaseItem(Tiers.NETHERITE, 7 - BPItems.netheriteDMG, -2.6f,
             new GaidiusBaseItem.ItemProps().projectile(EchoGaidiusEntity::new).inaccuracy(0.5F).velocity(2.5F),
             new Item.Properties().durability(1985).rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)
     ));
@@ -123,24 +157,24 @@ public class BPItems {
     public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_HOE = ITEMS.register("reinforced_fleignarite_hoe", () -> new ReinforcedFleignariteHoeItem(BPItemTier.REINFORCED_FLEIGNARITE, 1 - BPItems.netheriteDMG, 0.0F, new Item.Properties().rarity(BPRarityTypes.SACRED).fireResistant().tab(BPItemGroup.BioplethoraItemItemGroup)));
 
     // Armor Items
-    public static final RegistryObject<Item> PEAGUIN_SCALE_HELMET = ITEMS.register("peaguin_scale_helmet", () -> new PeaguinScaleArmorItem(BPArmorMaterials.PEAGUIN_SCALES, EquipmentSlotType.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> PEAGUIN_SCALE_HELMET = ITEMS.register("peaguin_scale_helmet", () -> new PeaguinScaleArmorItem(BPArmorMaterials.PEAGUIN_SCALES, EquipmentSlot.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
-    public static final RegistryObject<Item> FLEIGNARITE_HELMET = ITEMS.register("fleignarite_helmet", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlotType.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> FLEIGNARITE_CHESTPLATE = ITEMS.register("fleignarite_chestplate", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlotType.CHEST, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> FLEIGNARITE_LEGGINGS = ITEMS.register("fleignarite_leggings", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlotType.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> FLEIGNARITE_BOOTS = ITEMS.register("fleignarite_boots", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlotType.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> FLEIGNARITE_HELMET = ITEMS.register("fleignarite_helmet", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlot.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> FLEIGNARITE_CHESTPLATE = ITEMS.register("fleignarite_chestplate", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlot.CHEST, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> FLEIGNARITE_LEGGINGS = ITEMS.register("fleignarite_leggings", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlot.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> FLEIGNARITE_BOOTS = ITEMS.register("fleignarite_boots", () -> new FleignariteArmorItem(BPArmorMaterials.FLEIGNARITE, EquipmentSlot.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
-    public static final RegistryObject<Item> NANDBRIC_HELMET = ITEMS.register("nandbric_helmet", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlotType.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> NANDBRIC_CHESTPLATE = ITEMS.register("nandbric_chestplate", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlotType.CHEST, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> NANDBRIC_LEGGINGS = ITEMS.register("nandbric_leggings", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlotType.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> NANDBRIC_BOOTS = ITEMS.register("nandbric_boots", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlotType.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> NANDBRIC_HELMET = ITEMS.register("nandbric_helmet", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlot.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> NANDBRIC_CHESTPLATE = ITEMS.register("nandbric_chestplate", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlot.CHEST, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> NANDBRIC_LEGGINGS = ITEMS.register("nandbric_leggings", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlot.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> NANDBRIC_BOOTS = ITEMS.register("nandbric_boots", () -> new NandbricArmorItem(BPArmorMaterials.NANDBRIC, EquipmentSlot.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
-    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_HELMET = ITEMS.register("reinforced_fleignarite_helmet", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlotType.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_CHESTPLATE = ITEMS.register("reinforced_fleignarite_chestplate", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlotType.CHEST, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_LEGGINGS = ITEMS.register("reinforced_fleignarite_leggings", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlotType.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
-    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_BOOTS = ITEMS.register("reinforced_fleignarite_boots", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlotType.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_HELMET = ITEMS.register("reinforced_fleignarite_helmet", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlot.HEAD, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_CHESTPLATE = ITEMS.register("reinforced_fleignarite_chestplate", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlot.CHEST, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_LEGGINGS = ITEMS.register("reinforced_fleignarite_leggings", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlot.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
+    public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_BOOTS = ITEMS.register("reinforced_fleignarite_boots", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlot.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
-    public static final RegistryObject<Item> AQU_CHESTPLATE = ITEMS.register("aqu_chestplate", () -> new AquChestplateItem(BPArmorMaterials.AQU, EquipmentSlotType.CHEST, new Item.Properties().rarity(BPRarityTypes.BOSS_WEAPON).fireResistant()));
+    public static final RegistryObject<Item> AQU_CHESTPLATE = ITEMS.register("aqu_chestplate", () -> new AquChestplateItem(BPArmorMaterials.AQU, EquipmentSlot.CHEST, new Item.Properties().rarity(BPRarityTypes.BOSS_WEAPON).fireResistant()));
 
     // Food Items
     public static final RegistryObject<Item> FIERY_SAP_BOTTLE = ITEMS.register("fiery_sap_bottle", () -> new HoneyBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(BPFoods.FIERY_SAP_BOTTLE).tab(BPItemGroup.BioplethoraItemItemGroup)));

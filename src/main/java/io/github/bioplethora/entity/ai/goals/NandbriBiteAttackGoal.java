@@ -3,9 +3,9 @@ package io.github.bioplethora.entity.ai.goals;
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
 import io.github.bioplethora.entity.creatures.NandbriEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class NandbriBiteAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
     public NandbriEntity nandbri = entity;
@@ -16,7 +16,7 @@ public class NandbriBiteAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
     public static boolean checkIfValid(NandbriBiteAttackGoal goal, NandbriEntity attacker, LivingEntity target) {
         if(target == null) return false;
         if(target.isAlive() && !target.isSpectator()){
-            if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+            if (target instanceof Player && ((Player) target).isCreative()) {
                 attacker.setAttacking(false);
                 return false;
             }
@@ -69,7 +69,7 @@ public class NandbriBiteAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
     @Override
     public void stop() {
         LivingEntity target = this.nandbri.getTarget();
-        if(!EntityPredicates.NO_CREATIVE_OR_SPECTATOR.test(target)) {
+        if(!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.nandbri.setTarget(null);
         }
         this.nandbri.setAttacking(false);

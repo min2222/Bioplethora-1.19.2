@@ -1,20 +1,21 @@
 package io.github.bioplethora.item.weapons.reinforced_fleignarite_set;
 
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 public class ReinforcedFleignariteShovelItem extends ShovelItem {
 
-    public ReinforcedFleignariteShovelItem(IItemTier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
+    public ReinforcedFleignariteShovelItem(Tier pTier, float pAttackDamageModifier, float pAttackSpeedModifier, Properties pProperties) {
         super(pTier, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
     }
 
@@ -26,14 +27,14 @@ public class ReinforcedFleignariteShovelItem extends ShovelItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, World pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pItemSlot, boolean pIsSelected) {
 
         ReinforcedFleignariteAbilities.regenerateItem(pStack, pEntity);
         super.inventoryTick(pStack, pLevel, pEntity, pItemSlot, pIsSelected);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable World pLevel, List<ITextComponent> pTooltip, ITooltipFlag pFlag) {
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
         ReinforcedFleignariteAbilities.abilityTooltip(pTooltip);

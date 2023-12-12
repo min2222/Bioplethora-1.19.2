@@ -1,65 +1,97 @@
 package io.github.bioplethora.entity.creatures;
 
+import java.util.UUID;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
+
 import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.entity.*;
+import io.github.bioplethora.entity.BPAnimalEntity;
+import io.github.bioplethora.entity.IBioClassification;
+import io.github.bioplethora.entity.ISaddleable;
+import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
 import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
 import io.github.bioplethora.entity.ai.gecko.GeckoMoveToTargetGoal;
 import io.github.bioplethora.entity.ai.goals.WaterFollowOwnerGoal;
 import io.github.bioplethora.enums.BPEntityClasses;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SaddleItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.ItemSteerable;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SaddleItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
-import java.util.UUID;
-import java.util.function.Predicate;
+public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatable, IBioClassification, ItemSteerable, ISaddleable {
 
-public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatable, IBioClassification, IRideable, ISaddleable {
-
-    private static final DataParameter<Boolean> CARDINAL = EntityDataManager.defineId(TrapjawEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> HAS_SADDLE = EntityDataManager.defineId(TrapjawEntity.class, DataSerializers.BOOLEAN);
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private static final EntityDataAccessor<Boolean> CARDINAL = SynchedEntityData.defineId(TrapjawEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> HAS_SADDLE = SynchedEntityData.defineId(TrapjawEntity.class, EntityDataSerializers.BOOLEAN);
+    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final Predicate<LivingEntity> PREY_SELECTOR = (entity) ->
-            entity instanceof PlayerEntity ||  entity instanceof AlphemKingEntity || (entity instanceof AnimalEntity && !(entity instanceof TrapjawEntity));
+            entity instanceof Player ||  entity instanceof AlphemKingEntity || (entity instanceof Animal && !(entity instanceof TrapjawEntity));
 
-    public TrapjawEntity(EntityType<? extends BPAnimalEntity> type, World worldIn) {
+    public TrapjawEntity(EntityType<? extends BPAnimalEntity> type, Level worldIn) {
         super(type, worldIn);
         this.setTame(false);
         this.noCulling = true;
@@ -70,8 +102,8 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         return BPEntityClasses.DANGERUM;
     }
 
-    public static AttributeModifierMap.MutableAttribute setCustomAttributes() {
-        return MobEntity.createLivingAttributes()
+    public static AttributeSupplier.Builder setCustomAttributes() {
+        return Mob.createLivingAttributes()
                 .add(Attributes.ARMOR, 4 * BPConfig.COMMON.mobArmorMultiplier.get())
                 .add(Attributes.ATTACK_SPEED, 1.5)
                 .add(Attributes.ATTACK_DAMAGE, 8 * BPConfig.COMMON.mobMeeleeDamageMultiplier.get())
@@ -84,7 +116,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(2, new SitGoal(this));
+        this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(4, new GeckoMoveToTargetGoal<TrapjawEntity>(this, 1.6, 8) {
             @Override
             public boolean canUse() {
@@ -108,14 +140,13 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         this.goalSelector.addGoal(5, new WaterFollowOwnerGoal(this, 1.2D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.2D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(6, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new RandomWalkingGoal(this, 1.2, 8));
-
-        this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(11, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.2, 8));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(11, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(2, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(1, new NonTamedTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
+        this.targetSelector.addGoal(1, new NonTameRandomTargetGoal<>(this, LivingEntity.class, false, PREY_SELECTOR));
     }
 
     // TODO: 11/03/2022 Pull the target to the mob 
@@ -129,7 +160,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
     }
 
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld pLevel, DifficultyInstance pDifficulty, SpawnReason pReason, @Nullable ILivingEntityData pSpawnData, @Nullable CompoundNBT pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
 
         if (Math.random() <= 0.05) {
             this.setCardinalVariant(true);
@@ -161,8 +192,8 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
 
     @Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld serverWorld, AgeableEntity entity) {
-        TrapjawEntity trapjaw = BPEntities.TRAPJAW.get().create(serverWorld);
+    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob entity) {
+        TrapjawEntity trapjaw = BPEntities.TRAPJAW.get().create(serverLevel);
         UUID uuid = this.getOwnerUUID();
         if (uuid != null) {
             trapjaw.setOwnerUUID(uuid);
@@ -172,7 +203,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         return trapjaw;
     }
 
-    protected float getStandingEyeHeight(Pose pose, EntitySize entitySize) {
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions entitySize) {
         return this.isBaby() ? entitySize.height * 0.8F : 1.0F;
     }
 
@@ -190,45 +221,45 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         return 2;
     }
 
-    public ActionResultType mobInteract(PlayerEntity entity, Hand resultType) {
+    public InteractionResult mobInteract(Player entity, InteractionHand resultType) {
         ItemStack itemstack = entity.getItemInHand(resultType);
         Item item = itemstack.getItem();
         if (this.level.isClientSide) {
             boolean flag = this.isOwnedBy(entity) || this.isTame() || this.isFood(itemstack) && !this.isTame();
-            return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
+            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else {
             if (entity.isCrouching()) {
                 if (this.isTame()) {
                     if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                        if (!entity.abilities.instabuild) {
+                        if (!entity.getAbilities().instabuild) {
                             itemstack.shrink(1);
                         }
 
                         this.heal((float) item.getFoodProperties().getNutrition());
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
 
                     } else if (item instanceof SaddleItem && !this.isBaby()) {
                         if (!this.isSaddled()) {
                             this.setSaddled(true);
                             itemstack.shrink(1);
-                            return ActionResultType.SUCCESS;
+                            return InteractionResult.SUCCESS;
                         }
-                        return ActionResultType.PASS;
+                        return InteractionResult.PASS;
                     }
 
-                    ActionResultType actionresulttype = super.mobInteract(entity, resultType);
+                    InteractionResult actionresulttype = super.mobInteract(entity, resultType);
                     if ((!actionresulttype.consumesAction() || this.isBaby()) && this.isOwnedBy(entity)) {
                         this.setOrderedToSit(!this.isOrderedToSit());
                         this.jumping = false;
                         this.navigation.stop();
                         this.setTarget(null);
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     }
 
                     return actionresulttype;
 
                 } else if (this.isFood(itemstack)) {
-                    if (!entity.abilities.instabuild) {
+                    if (!entity.getAbilities().instabuild) {
                         itemstack.shrink(1);
                     }
 
@@ -242,7 +273,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
                         this.level.broadcastEntityEvent(this, (byte) 6);
                     }
 
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
 
             } else if (!entity.isCrouching()) {
@@ -254,13 +285,13 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         }
     }
 
-    public void addAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.putBoolean("isCardinal", this.isCardinalVariant());
         compoundNBT.putBoolean("isSaddled", this.isSaddled());
     }
 
-    public void readAdditionalSaveData(CompoundNBT compoundNBT) {
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         super.readAdditionalSaveData(compoundNBT);
         this.setCardinalVariant(compoundNBT.getBoolean("isCardinal"));
         this.setSaddled(compoundNBT.getBoolean("isSaddled"));
@@ -295,7 +326,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         } else {
             Entity entity = damageSource.getEntity();
             this.setOrderedToSit(false);
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 pAmount = (pAmount + 1.0F) / 2.0F;
             }
 
@@ -303,7 +334,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         }
     }
 
-    public boolean canMate(AnimalEntity entity) {
+    public boolean canMate(Animal entity) {
         if (entity == this) {
             return false;
         } else if (!this.isTame()) {
@@ -323,16 +354,16 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
     }
 
     public boolean wantsToAttack(LivingEntity pTarget, LivingEntity pOwner) {
-        if (!(pTarget instanceof CreeperEntity) && !(pTarget instanceof GhastEntity)) {
+        if (!(pTarget instanceof Creeper) && !(pTarget instanceof Ghast)) {
             if (pTarget instanceof TrapjawEntity) {
                 TrapjawEntity trapjaw = (TrapjawEntity) pTarget;
                 return !trapjaw.isTame() || trapjaw.getOwner() != pOwner;
-            } else if (pTarget instanceof PlayerEntity && pOwner instanceof PlayerEntity && !((PlayerEntity) pOwner).canHarmPlayer((PlayerEntity) pTarget)) {
+            } else if (pTarget instanceof Player && pOwner instanceof Player && !((Player) pOwner).canHarmPlayer((Player) pTarget)) {
                 return false;
-            } else if (pTarget instanceof AbstractHorseEntity && ((AbstractHorseEntity) pTarget).isTamed()) {
+            } else if (pTarget instanceof AbstractHorse && ((AbstractHorse) pTarget).isTamed()) {
                 return false;
             } else {
-                return !(pTarget instanceof TameableEntity) || !((TameableEntity) pTarget).isTame();
+                return !(pTarget instanceof TamableAnimal) || !((TamableAnimal) pTarget).isTame();
             }
         } else {
             return false;
@@ -366,7 +397,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
     }
 
     @Override
-    protected float getVoicePitch() {
+	public float getVoicePitch() {
         return 0.5F;
     }
 
@@ -374,12 +405,12 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         return true;
     }
 
-    public CreatureAttribute getMobType() {
-        return CreatureAttribute.WATER;
+    public MobType getMobType() {
+        return MobType.WATER;
     }
 
     /*
-    public boolean checkSpawnObstruction(IWorldReader worldReader) {
+    public boolean checkSpawnObstruction(LevelReader worldReader) {
         return worldReader.isUnobstructed(this);
     }
      */
@@ -393,7 +424,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         return super.getPassengersRidingOffset() * (1.75 + (this.getOwner().getLookAngle().y / 100));
     }
 
-    protected int getExperienceReward(PlayerEntity playerEntity) {
+    protected int getExperienceReward(Player playerEntity) {
         return 2 + this.level.random.nextInt(3);
     }
 
@@ -410,13 +441,13 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         }
     }
 
-    public boolean canBeLeashed(PlayerEntity entity) {
+    public boolean canBeLeashed(Player entity) {
         return this.isTame() && super.canBeLeashed(entity);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Vector3d getLeashOffset() {
-        return new Vector3d(0.0D, 0.6D * this.getEyeHeight(), this.getBbWidth() * 0.4F);
+    public Vec3 getLeashOffset() {
+        return new Vec3(0.0D, 0.6D * this.getEyeHeight(), this.getBbWidth() * 0.4F);
     }
 
     @Override
@@ -431,26 +462,26 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.attack", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.attack", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.sit", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.sit", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.swim", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.swim", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if ((event.isMoving() && this.getTarget() != null) || (!this.isInWater() && this.isVehicle() && event.isMoving())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.run", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.run", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
         if (event.isMoving() && this.getTarget() == null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.walk", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.walk", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.idle", true));
+        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.trapjaw.idle", EDefaultLoopTypes.LOOP));
         return PlayState.CONTINUE;
     }
 
@@ -474,11 +505,11 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
     }
 
     @Nullable
-    private Vector3d getDismountLocationInDirection(Vector3d vector3d1, LivingEntity entity) {
+    private Vec3 getDismountLocationInDirection(Vec3 vector3d1, LivingEntity entity) {
         double d0 = this.getX() + vector3d1.x;
         double d1 = this.getBoundingBox().minY;
         double d2 = this.getZ() + vector3d1.z;
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
 
         for(Pose pose : entity.getDismountPoses()) {
             mutable.set(d0, d1, d2);
@@ -490,10 +521,10 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
                     break;
                 }
 
-                if (TransportationHelper.isBlockFloorValid(d4)) {
-                    AxisAlignedBB axisalignedbb = entity.getLocalBoundsForPose(pose);
-                    Vector3d vector3d = new Vector3d(d0, (double)mutable.getY() + d4, d2);
-                    if (TransportationHelper.canDismountTo(this.level, entity, axisalignedbb.move(vector3d))) {
+                if (DismountHelper.isBlockFloorValid(d4)) {
+                    AABB axisalignedbb = entity.getLocalBoundsForPose(pose);
+                    Vec3 vector3d = new Vec3(d0, (double)mutable.getY() + d4, d2);
+                    if (DismountHelper.canDismountTo(this.level, entity, axisalignedbb.move(vector3d))) {
                         entity.setPose(pose);
                         return vector3d;
                     }
@@ -509,20 +540,20 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
         return null;
     }
 
-    public Vector3d getDismountLocationForPassenger(LivingEntity pLivingEntity) {
-        Vector3d vector3d = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HandSide.RIGHT ? 90.0F : -90.0F));
-        Vector3d vector3d1 = this.getDismountLocationInDirection(vector3d, pLivingEntity);
+    public Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
+        Vec3 vector3d = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HumanoidArm.RIGHT ? 90.0F : -90.0F));
+        Vec3 vector3d1 = this.getDismountLocationInDirection(vector3d, pLivingEntity);
         if (vector3d1 != null) {
             return vector3d1;
         } else {
-            Vector3d vector3d2 = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HandSide.LEFT ? 90.0F : -90.0F));
-            Vector3d vector3d3 = this.getDismountLocationInDirection(vector3d2, pLivingEntity);
+            Vec3 vector3d2 = getCollisionHorizontalEscapeVector(this.getBbWidth(), pLivingEntity.getBbWidth(), this.yRot + (pLivingEntity.getMainArm() == HumanoidArm.LEFT ? 90.0F : -90.0F));
+            Vec3 vector3d3 = this.getDismountLocationInDirection(vector3d2, pLivingEntity);
             return vector3d3 != null ? vector3d3 : this.position();
         }
     }
 
     @Override
-    public void travel(Vector3d dir) {
+    public void travel(Vec3 dir) {
         Entity entity = this.getControllingPassenger();
         if (this.isVehicle()) {
             assert entity != null;
@@ -540,17 +571,17 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
                 float strafe = ((LivingEntity) entity).xxa;
 
                 double d3 = this.getOwner().getLookAngle().y;
-                Vector3d vector3d1 = this.getDeltaMovement();
+                Vec3 vector3d1 = this.getDeltaMovement();
                 double d4 = d3 < -0.2D ? 0.085D : 0.06D;
                 if (shouldVerticalMove()) {
                     this.setDeltaMovement(vector3d1.add(0.0D, (d3 - vector3d1.y) * d4, 0.0D));
                 }
-                super.travel(new Vector3d(strafe, 0, forward));
+                super.travel(new Vec3(strafe, 0, forward));
             }
             this.animationSpeedOld = this.animationSpeed;
             double d1 = this.getX() - this.xo;
             double d0 = this.getZ() - this.zo;
-            float f1 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+            float f1 = Mth.sqrt((float) (d1 * d1 + d0 * d0)) * 4.0F;
             if (f1 > 1.0F)
                 f1 = 1.0F;
             this.animationSpeed += (f1 - this.animationSpeed) * 0.4F;
@@ -573,7 +604,7 @@ public class TrapjawEntity extends WaterAndLandAnimalEntity implements IAnimatab
     }
 
     @Override
-    public void travelWithInput(Vector3d pTravelVec) {
+    public void travelWithInput(Vec3 pTravelVec) {
     }
 
     @Override

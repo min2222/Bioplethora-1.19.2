@@ -1,11 +1,11 @@
 package io.github.bioplethora.entity.ai.goals;
 
-import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.vector.Vector3d;
-
 import java.util.EnumSet;
+
+import io.github.bioplethora.entity.WaterAndLandAnimalEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 public class BPWaterChargingCoal extends Goal {
 
@@ -41,7 +41,7 @@ public class BPWaterChargingCoal extends Goal {
 
     public void start() {
         LivingEntity livingentity = entity.getTarget();
-        Vector3d vector3d = livingentity.getEyePosition(1.0F);
+        Vec3 vector3d = livingentity.getEyePosition(1.0F);
         entity.getMoveControl().setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
     }
 
@@ -54,7 +54,7 @@ public class BPWaterChargingCoal extends Goal {
         if (!entity.getBoundingBox().intersects(livingentity.getBoundingBox())) {
             double d0 = entity.distanceToSqr(livingentity);
             if (d0 < 9.0D) {
-                Vector3d vector3d = livingentity.getEyePosition(1.0F);
+                Vec3 vector3d = livingentity.getEyePosition(1.0F);
                 entity.getMoveControl().setWantedPosition(vector3d.x, vector3d.y, vector3d.z, 1.0D);
             }
         }

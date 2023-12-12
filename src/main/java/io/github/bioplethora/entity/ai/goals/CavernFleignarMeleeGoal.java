@@ -2,8 +2,8 @@ package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class CavernFleignarMeleeGoal extends GeckoMeleeGoal {
 
@@ -14,7 +14,7 @@ public class CavernFleignarMeleeGoal extends GeckoMeleeGoal {
     public static boolean checkIfValid(CavernFleignarMeleeGoal goal, BPMonsterEntity attacker, LivingEntity target) {
         if (target == null) return false;
         if (target.isAlive() && !target.isSpectator()) {
-            if (target instanceof PlayerEntity && ((PlayerEntity) target).isCreative()) {
+            if (target instanceof Player && ((Player) target).isCreative()) {
                 attacker.setAttacking(false);
                 return false;
             }

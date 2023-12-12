@@ -1,23 +1,28 @@
 package io.github.bioplethora.gui.recipe;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
+
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPRecipes;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
-
-public class ReinforcingRecipe implements IRecipe<IInventory> {
+public class ReinforcingRecipe implements Recipe<Container> {
 
     protected final ResourceLocation recipeId;
     protected final Ingredient topIngredient, midIngredient, botIngredient;
@@ -33,16 +38,16 @@ public class ReinforcingRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public boolean matches(IInventory inv, World world) {
+    public boolean matches(Container inv, Level world) {
         return this.topIngredient.test(inv.getItem(0))
                 && this.midIngredient.test(inv.getItem(1))
                 && this.botIngredient.test(inv.getItem(2));
     }
 
     @Override
-    public ItemStack assemble(IInventory pInv) {
+    public ItemStack assemble(Container pInv) {
         ItemStack itemstack = this.resultItem.copy();
-        CompoundNBT compoundnbt = pInv.getItem(2).getTag();
+        CompoundTag compoundnbt = pInv.getItem(2).getTag();
         if (compoundnbt != null) {
             itemstack.setTag(compoundnbt.copy());
         }
@@ -87,16 +92,16 @@ public class ReinforcingRecipe implements IRecipe<IInventory> {
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return BPRecipes.REINFORCING_SERIALIZER.get();
     }
 
-    public IRecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return BPRecipes.REINFORCING;
     }
 
 
-    public static class ReinforcingRecipeType implements IRecipeType<ReinforcingRecipe> {
+    public static class ReinforcingRecipeType implements RecipeType<ReinforcingRecipe> {
 
         @Override
         public String toString () {
@@ -104,23 +109,23 @@ public class ReinforcingRecipe implements IRecipe<IInventory> {
         }
     }
 
-    public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ReinforcingRecipe> {
+    public static class Serializer implements RecipeSerializer<ReinforcingRecipe> {
 
-        @Override
+    	@Override
         public ReinforcingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 
-            Ingredient core = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "core"));
-            Ingredient material = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "material"));
-            Ingredient weapon = Ingredient.fromJson(JSONUtils.getAsJsonObject(json, "weapon"));
+            Ingredient core = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "core"));
+            Ingredient material = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "material"));
+            Ingredient weapon = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "weapon"));
 
-            ItemStack result = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+            Item result = ShapedRecipe.itemFromJson(GsonHelper.getAsJsonObject(json, "result"));
 
-            return new ReinforcingRecipe(recipeId, core, material, weapon, result);
+            return new ReinforcingRecipe(recipeId, core, material, weapon, new ItemStack(result));
         }
 
         @Nullable
         @Override
-        public ReinforcingRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
+        public ReinforcingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             Ingredient core = Ingredient.fromNetwork(buffer);
             Ingredient material = Ingredient.fromNetwork(buffer);
             Ingredient weapon = Ingredient.fromNetwork(buffer);
@@ -131,7 +136,7 @@ public class ReinforcingRecipe implements IRecipe<IInventory> {
         }
 
         @Override
-        public void toNetwork(PacketBuffer buffer, ReinforcingRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buffer, ReinforcingRecipe recipe) {
             buffer.writeInt(recipe.getIngredients().size());
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buffer);

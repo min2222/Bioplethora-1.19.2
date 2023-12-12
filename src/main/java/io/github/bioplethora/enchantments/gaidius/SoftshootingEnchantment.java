@@ -1,12 +1,12 @@
 package io.github.bioplethora.enchantments.gaidius;
 
 import io.github.bioplethora.enchantments.BPEnchantmentHelper;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class SoftshootingEnchantment extends Enchantment {
 
-    public SoftshootingEnchantment(Rarity rarity, EquipmentSlotType... slotTypes) {
+    public SoftshootingEnchantment(Rarity rarity, EquipmentSlot... slotTypes) {
         super(rarity, BPEnchantmentHelper.GAIDIUS, slotTypes);
     }
 

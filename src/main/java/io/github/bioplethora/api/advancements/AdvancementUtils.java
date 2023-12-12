@@ -2,20 +2,20 @@ package io.github.bioplethora.api.advancements;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 
 public class AdvancementUtils {
 
     public static void grantBioAdvancement(Entity target, String advancement) {
-        if (target instanceof ServerPlayerEntity) {
-            Advancement adv = ((ServerPlayerEntity) target).server.getAdvancements().getAdvancement(new ResourceLocation(advancement));
+        if (target instanceof ServerPlayer) {
+            Advancement adv = ((ServerPlayer) target).server.getAdvancements().getAdvancement(new ResourceLocation(advancement));
             assert adv != null;
-            AdvancementProgress advProg = ((ServerPlayerEntity) target).getAdvancements().getOrStartProgress(adv);
+            AdvancementProgress advProg = ((ServerPlayer) target).getAdvancements().getOrStartProgress(adv);
             if (!advProg.isDone()) {
                 for (String s : advProg.getRemainingCriteria()) {
-                    ((ServerPlayerEntity) target).getAdvancements().award(adv, s);
+                    ((ServerPlayer) target).getAdvancements().award(adv, s);
                 }
             }
         }

@@ -1,24 +1,24 @@
 package io.github.bioplethora.entity.ai.goals;
 
-import io.github.bioplethora.entity.SummonableMonsterEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.FlyingPathNavigator;
-import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
-
 import java.util.EnumSet;
+
+import io.github.bioplethora.entity.SummonableMonsterEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 public class PrimordialRingFollowOwnerGoal extends Goal {
     private final SummonableMonsterEntity tamable;
     private LivingEntity owner;
-    private final IWorldReader level;
+    private final LevelReader level;
     private final double speedModifier;
-    private final PathNavigator navigation;
+    private final PathNavigation navigation;
     private int timeToRecalcPath;
     private final float stopDistance;
     private final float startDistance;
@@ -34,7 +34,7 @@ public class PrimordialRingFollowOwnerGoal extends Goal {
         this.stopDistance = stopDist;
         this.canFly = canFly;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        if (!(host.getNavigation() instanceof GroundPathNavigator) && !(host.getNavigation() instanceof FlyingPathNavigator)) {
+        if (!(host.getNavigation() instanceof GroundPathNavigation) && !(host.getNavigation() instanceof FlyingPathNavigation)) {
             throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
         }
     }
@@ -63,14 +63,14 @@ public class PrimordialRingFollowOwnerGoal extends Goal {
 
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.tamable.getPathfindingMalus(PathNodeType.WATER);
-        this.tamable.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.tamable.getPathfindingMalus(BlockPathTypes.WATER);
+        this.tamable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public void stop() {
         this.owner = null;
         this.navigation.stop();
-        this.tamable.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+        this.tamable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
     }
 
     public void tick() {
@@ -128,8 +128,8 @@ public class PrimordialRingFollowOwnerGoal extends Goal {
                 return this.level.noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
             }
         }*/
-        BlockState blockState = this.tamable.getCommandSenderWorld().getBlockState(blockPos.below());
-        return blockState.isValidSpawn(this.tamable.getCommandSenderWorld(), blockPos.below(), this.tamable.getType()) && this.tamable.getCommandSenderWorld().isEmptyBlock(blockPos) && this.tamable.getCommandSenderWorld().isEmptyBlock(blockPos.above());
+        BlockState blockState = this.tamable.getLevel().getBlockState(blockPos.below());
+        return blockState.isValidSpawn(this.tamable.getLevel(), blockPos.below(), this.tamable.getType()) && this.tamable.getLevel().isEmptyBlock(blockPos) && this.tamable.getLevel().isEmptyBlock(blockPos.above());
     }
 
     private int randomIntInclusive(int p_226327_1_, int p_226327_2_) {

@@ -2,11 +2,11 @@ package io.github.bioplethora.entity.ai.goals;
 
 import io.github.bioplethora.entity.others.PrimordialRingEntity;
 import io.github.bioplethora.entity.projectile.FrostbiteMetalClusterEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class PrimordialRingRangedAttackGoal extends Goal {
 
@@ -31,8 +31,8 @@ public class PrimordialRingRangedAttackGoal extends Goal {
 
     public void tick() {
         LivingEntity livingentity = this.ring.getTarget();
-        if (livingentity.distanceToSqr(this.ring) < 4096.0D && this.ring.canSee(livingentity)) {
-            World world = this.ring.level;
+        if (livingentity.distanceToSqr(this.ring) < 4096.0D && this.ring.hasLineOfSight(livingentity)) {
+            Level world = this.ring.level;
 
             this.ring.getLookControl().setLookAt(ring.getTarget(), 30.0F, 30.0F);
 
@@ -42,7 +42,7 @@ public class PrimordialRingRangedAttackGoal extends Goal {
             }
             if (this.chargeTime == 100) {
 
-                Vector3d vector3d = this.ring.getViewVector(1.0F);
+                Vec3 vector3d = this.ring.getViewVector(1.0F);
                 double d1 = livingentity.getX() - this.ring.getX();
                 double d2 = livingentity.getY(0.5D) - this.ring.getY(0.5D);
                 double d3 = livingentity.getZ() - this.ring.getZ();
