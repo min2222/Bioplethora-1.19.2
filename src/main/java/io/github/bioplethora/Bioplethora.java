@@ -32,6 +32,8 @@ import io.github.bioplethora.registry.BPTileEntities;
 import io.github.bioplethora.registry.BPVillagerTrades;
 import io.github.bioplethora.registry.BPWoodTypes;
 import io.github.bioplethora.registry.worldgen.BPBiomes;
+import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
+import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
 import io.github.bioplethora.registry.worldgen.BPFeatures;
 import io.github.bioplethora.registry.worldgen.BPStructures;
 import io.github.bioplethora.registry.worldgen.BPWorldCarvers;
@@ -74,6 +76,7 @@ public class Bioplethora {
         BPBlocks.BLOCK_ITEMS.register(bus);
         BPWorldCarvers.WORLD_CARVERS.register(bus);
         BPFeatures.FEATURES.register(bus);
+        BPConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
         BPSoundEvents.SOUNDS.register(bus);
         BPParticles.PARTICLES.register(bus);
         BPEffects.EFFECTS.register(bus);
@@ -81,6 +84,7 @@ public class Bioplethora {
         BPStructures.STRUCTURES.register(bus);
         BPStructures.STRUCTURES_SET.register(bus);
         BPAttributes.ATTRIBUTES.register(bus);
+        BPConfiguredWorldCarvers.CONFIGURED_CARVER.register(bus);
         //BPBlockPlacers.BLOCK_PLACERS.register(bus);
         //BPSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         BPTileEntities.TILE_ENTITIES.register(bus);

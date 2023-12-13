@@ -12,6 +12,8 @@ public class BPTags {
     public static final class Blocks {
         public static final TagKey<Block> GROUND_END_BLOCKS = bioLoc("ground_end_blocks");
         public static final TagKey<Block> CAERULWOOD_LOGS = bioLoc("caerulwood_logs");
+        public static final TagKey<Block> END_SPRINGS_REPLACEABLE = bioLoc("end_springs_replaceable");
+        public static final TagKey<Block> CAERI_REPLACEABLE = bioLoc("caeri_replaceable");
 
         public static final TagKey<Block> GRYLYNEN_UNBREAKABLE = forgeLoc("grylynen_unbreakable");
         public static final TagKey<Block> CHORUS_GROWABLE = forgeLoc("chorus_growable");

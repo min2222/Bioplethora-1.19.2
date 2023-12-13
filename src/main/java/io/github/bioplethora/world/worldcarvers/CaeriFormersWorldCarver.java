@@ -26,6 +26,7 @@ public class CaeriFormersWorldCarver extends CaveWorldCarver {
 
     public CaeriFormersWorldCarver(Codec<CaveCarverConfiguration> p_i231921_1_) {
         super(p_i231921_1_);
+        //Handled in tag definition
         //this.replaceableBlocks = ImmutableSet.of(Blocks.END_STONE, BPBlocks.ENDURION.get(), BPBlocks.CRYOSOIL.get(), BPBlocks.IRION.get());
     }
 

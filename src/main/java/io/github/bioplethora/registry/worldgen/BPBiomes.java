@@ -45,6 +45,8 @@ public class BPBiomes {
     
     public static Holder<Biome> bootstrap(ResourceKey<Biome> key, Biome biome) {
     	return BuiltinRegistries.register(BuiltinRegistries.BIOME, key, biome);
+    	//Forge tag needed for biomes
+    	//Biomes.IS_MAGICAL
     }
 
 	public static void generateBiomes() {
@@ -65,6 +67,7 @@ public class BPBiomes {
         }
     }
 
+	//TODO changed to tag
     /*public static final class Type {
         public static final BiomeDictionary.Type CRYEANUM = BiomeDictionary.Type.getType("CRYEANUM");
         public static final BiomeDictionary.Type CAERI = BiomeDictionary.Type.getType("CAERI");

@@ -1,5 +1,11 @@
 {
   "replace": false,
   "values": [
+  "bioplethora:reinforcing_table",
+  "bioplethora:frostbite_metal_block",
+  "bioplethora:cryea",
+  "bioplethora:endurion",
+  "bioplethora:tenedebris",
+  "bioplethora:alphanum"
   ]
 }
