@@ -1,7 +1,5 @@
 package io.github.bioplethora.mixin;
 
-import java.util.Random;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import io.github.bioplethora.registry.BPTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.ChorusFlowerBlock;
@@ -27,7 +26,7 @@ public abstract class ChorusFlowerBlockMixin {
     @Shadow protected abstract void placeGrownFlower(Level pLevel, BlockPos pPos, int pAge);
 
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom, CallbackInfo ci) {
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom, CallbackInfo ci) {
         BlockState blockstate = pLevel.getBlockState(pPos.below());
         if (blockstate.is(BPTags.Blocks.CHORUS_GROWABLE)) {
             BlockPos abovePos = pPos.above();

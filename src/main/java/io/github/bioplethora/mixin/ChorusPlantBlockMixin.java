@@ -26,7 +26,7 @@ public abstract class ChorusPlantBlockMixin extends PipeBlock {
         super(p_i48355_1_, pProperties);
     }
 
-    @Inject(method = "getStateForPlacement(Lnet/minecraft/item/BlockItemUseContext;)Lnet/minecraft/block/BlockState;", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getStateForPlacement(Lnet/minecraft/world/item/context/BlockPlaceContext;)Lnet/minecraft/world/level/block/state/BlockState;", at = @At("RETURN"), cancellable = true)
     public void getStateForPlacement(BlockPlaceContext ctx, CallbackInfoReturnable<BlockState> info) {
         BlockPos pos = ctx.getClickedPos();
         Level world = ctx.getLevel();
@@ -37,7 +37,7 @@ public abstract class ChorusPlantBlockMixin extends PipeBlock {
         }
     }
 
-    @Inject(method = "getStateForPlacement(Lnet/minecraft/world/IBlockReader;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getStateForPlacement(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", at = @At("RETURN"), cancellable = true)
     private void getStateForPlacementX(BlockGetter world, BlockPos pos, CallbackInfoReturnable<BlockState> info) {
         BlockState plant = info.getReturnValue();
         if (plant.is(Blocks.CHORUS_PLANT) && world.getBlockState(pos.below()).is(BPTags.Blocks.CHORUS_GROWABLE)) {

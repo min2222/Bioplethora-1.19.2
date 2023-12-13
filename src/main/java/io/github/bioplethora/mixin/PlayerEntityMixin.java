@@ -48,7 +48,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     //           MIXIN SECTION
     //===========================================
 
-    @Inject(at = @At("TAIL"), method = ("Lnet/minecraft/entity/player/Player;defineSynchedData()V"))
+    @Inject(at = @At("TAIL"), method = ("Lnet/minecraft/world/entity/player/Player;defineSynchedData()V"))
     protected void defineSynchedData(CallbackInfo cbi) {
         this.entityData.define(ALPHANUM_CURSE, false);
         this.entityData.define(SCREEN_SHAKING, 0);
