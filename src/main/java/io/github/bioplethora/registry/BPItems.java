@@ -1,7 +1,6 @@
 package io.github.bioplethora.registry;
 
 import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.projectile.CryeanumGaidiusEntity;
 import io.github.bioplethora.entity.projectile.EchoGaidiusEntity;
 import io.github.bioplethora.entity.projectile.NetheriteObsidianGaidiusEntity;
@@ -68,7 +67,8 @@ public class BPItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Bioplethora.MOD_ID);
 
     //Variables
-    public static boolean hellConfig = BPConfig.COMMON.hellMode.get();
+    //FIXME crash on start
+    public static boolean hellConfig = false; //BPConfig.COMMON.hellMode.get();
 
     //Main Items
     public static final RegistryObject<Item> BIOPEDIA = ITEMS.register("biopedia", () -> new BiopediaItem(new Item.Properties().fireResistant().rarity(Rarity.RARE).stacksTo(1).tab(BPItemGroup.BioplethoraItemItemGroup)));

@@ -71,7 +71,6 @@ public class Bioplethora {
         BPItems.ITEMS.register(bus);
         BPBlocks.BLOCKS.register(bus);
         BPBlocks.BLOCK_ITEMS.register(bus);
-        BPBiomes.BIOMES.register(bus);
         BPWorldCarvers.WORLD_CARVERS.register(bus);
         BPFeatures.FEATURES.register(bus);
         BPSoundEvents.SOUNDS.register(bus);

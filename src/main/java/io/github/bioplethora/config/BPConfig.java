@@ -21,5 +21,6 @@ public class BPConfig {
         WORLDGEN = worldgenSpecPair.getLeft();
     }
 
-    public static final boolean IN_HELLMODE = BPConfig.COMMON.hellMode.get();
+    //FIXME crash on start
+    public static final boolean IN_HELLMODE = false; //BPConfig.COMMON.hellMode.get();;
 }

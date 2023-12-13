@@ -1,7 +1,5 @@
 package io.github.bioplethora.entity.creatures;
 
-import com.ibm.icu.impl.duration.impl.DataRecord.EDecimalHandling;
-
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.IBioClassification;
 import io.github.bioplethora.enums.BPEntityClasses;

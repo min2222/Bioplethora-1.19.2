@@ -1,7 +1,5 @@
 package io.github.bioplethora.registry.worldgen;
 
-import java.util.function.Supplier;
-
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.world.biomes.end.CaeriForestBiome;
@@ -80,11 +78,6 @@ public class BPBiomes {
     //==============================================
     //                OTHERS
     //==============================================
-    private static void register(String name, Supplier<Biome> biome) {
-        ResourceLocation id = new ResourceLocation(Bioplethora.MOD_ID, name);
-        ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, id);
-        BIOMES.register(name, biome);
-    }
 
     public static ResourceKey<Biome> getKey(Biome biome) {
         ResourceLocation keyRL = ForgeRegistries.BIOMES.getKey(biome);
