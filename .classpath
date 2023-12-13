@@ -92,7 +92,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/com/github/Reforged-Mods/FabricBiomeApiReforged/2.0.3_mapped_parchment_2022.11.27-1.19.2/FabricBiomeApiReforged-2.0.3_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/com/github/Reforged-Mods/FabricBiomeApiReforged/2.0.3_mapped_parchment_2022.11.27-1.19.2/FabricBiomeApiReforged-2.0.3_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/net/yeoxuhang/biomeapireforged/biomeapireforged-1.19.2/1.0.0_mapped_parchment_2022.11.27-1.19.2/biomeapireforged-1.19.2-1.0.0_mapped_parchment_2022.11.27-1.19.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>

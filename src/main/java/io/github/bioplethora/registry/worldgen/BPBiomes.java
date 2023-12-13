@@ -10,8 +10,6 @@ import io.github.bioplethora.world.biomes.end.WinterfestBiome;
 import io.github.bioplethora.world.biomes.end.configurable.LavenderLakesBiome;
 import io.github.bioplethora.world.biomes.nether.CryeanumPlains;
 import io.github.bioplethora.world.biomes.overworld.RockyWoodlandBiome;
-import net.fabricmc.fabric.api.biome.v1.NetherBiomes;
-import net.fabricmc.fabric.api.biome.v1.TheEndBiomes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
@@ -21,6 +19,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.yeoxuhang.biomeapireforged.fabric.api.biome.NetherBiomes;
+import net.yeoxuhang.biomeapireforged.fabric.api.biome.TheEndBiomes;
 
 public class BPBiomes {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Bioplethora.MOD_ID);
@@ -49,7 +49,6 @@ public class BPBiomes {
     	return BuiltinRegistries.register(BuiltinRegistries.BIOME, key, biome);
     }
 
-    @SuppressWarnings("deprecation")
 	public static void generateBiomes() {
         //OverworldBiomes.addContinentalBiome(BPBiomes.ROCKY_WOODLANDS, ClimateSettings.COOL, 1);
 

@@ -66,18 +66,18 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
+//TODO required tag definition
 public class BPBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Bioplethora.MOD_ID);
     public static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Bioplethora.MOD_ID);
 
     public static final RegistryObject<ReinforcingTableBlock> REINFORCING_TABLE = registerBlock("reinforcing_table", () -> new ReinforcingTableBlock(BlockBehaviour.Properties.of(Material.METAL)
-            .strength(20.0F, 35).sound(SoundType.NETHERITE_BLOCK).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().noOcclusion()), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(20.0F, 35).sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops().noOcclusion()), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> NANDBRI_SCALE_BLOCK = registerBlock("nandbri_scale_block", () -> new Block(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_LIGHT_GRAY)
-            .strength(0.8F, 0.8F).harvestTool(ToolType.AXE).harvestLevel(3).sound(SoundType.BONE_BLOCK)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(0.8F, 0.8F).sound(SoundType.BONE_BLOCK)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> BELLOPHITE_BLOCK = registerFireResBlock("frostbite_metal_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops()
-            .strength(50.0F, 1200.0F).harvestTool(ToolType.PICKAXE).harvestLevel(3).sound(SoundType.NETHERITE_BLOCK)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> BELLOPHITE_CORE_BLOCK = registerFireResBlock("frostbite_metal_core_block", () -> new FrostbiteMetalCoreBlock(BlockBehaviour.Properties.of(Material.GLASS)
             .strength(0.3F).sound(SoundType.GLASS).noOcclusion().hasPostProcess((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
@@ -89,14 +89,14 @@ public class BPBlocks {
             .strength(0.5F).sound(SoundType.NETHER_GOLD_ORE).lightLevel((block) -> 12).hasPostProcess((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> MIRESTONE = registerBlock("mirestone", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-            .strength(1.2F, 4.8F).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL)), null);
+            .strength(1.2F, 4.8F).sound(SoundType.GRAVEL)), null);
 
     // Fleignarite Blocks
     public static final RegistryObject<Block> FLEIGNARITE_REMAINS = registerBlock("fleignarite_remains", () -> new FleignariteRemainsBlock(BlockBehaviour.Properties.of(Material.PLANT)
-            .strength(0.3F).friction(0.8F).harvestTool(ToolType.SHOVEL).sound(SoundType.SLIME_BLOCK).noOcclusion()
+            .strength(0.3F).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion()
             .lightLevel((block) -> 5)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> FLEIGNARITE_SPLOTCH = registerBlock("fleignarite_splotch", () -> new FleignariteSplotchBlock(BlockBehaviour.Properties.of(Material.PLANT)
-            .strength(0.3F).friction(0.8F).harvestTool(ToolType.SHOVEL).sound(SoundType.SLIME_BLOCK).noOcclusion()
+            .strength(0.3F).friction(0.8F).sound(SoundType.SLIME_BLOCK).noOcclusion()
             .lightLevel((block) -> 5)), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> FLEIGNARITE_VINES = registerBlock("fleignarite_vines", () -> new FleignariteVinesTopBlock(BlockBehaviour.Properties.of(Material.PLANT)
@@ -108,9 +108,9 @@ public class BPBlocks {
 
     // Nether Blocks
     public static final RegistryObject<Block> CRYEA = registerBlock("cryea", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_PINK)
-            .strength(1.85F).harvestTool(ToolType.PICKAXE).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.85F).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> CRYEA_CARPET = registerBlock("cryea_carpet", () -> new BPFlatBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT, MaterialColor.COLOR_PINK)
-            .strength(1.85F).harvestTool(ToolType.SHOVEL).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.85F).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
     // Nether Plants
     public static final RegistryObject<Block> KYRIA = registerBlock("kyria", () -> new BPPlantBlock(BioPlantType.CRYEANUM, BioPlantShape.SIMPLE_PLANT,
             BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).instabreak().noCollission()), BPItemGroup.BioplethoraItemItemGroup);
@@ -290,33 +290,33 @@ public class BPBlocks {
 
     // End Blocks
     public static final RegistryObject<Block> ENDURION = registerBlock("endurion", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_MAGENTA)
-            .strength(1.6F).harvestTool(ToolType.PICKAXE).sound(SoundType.GILDED_BLACKSTONE)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.6F).sound(SoundType.GILDED_BLACKSTONE)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> TENEDEBRIS = registerBlock("tenedebris", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_BLACK)
-            .strength(1.8F).harvestTool(ToolType.PICKAXE).sound(SoundType.GILDED_BLACKSTONE)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.8F).sound(SoundType.GILDED_BLACKSTONE)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> IRION = registerBlock("irion", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_LIGHT_BLUE)
-            .strength(1.8F).harvestTool(ToolType.SHOVEL).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.8F).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> CRYOSOIL = registerBlock("cryosoil", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_BROWN)
-            .strength(1.8F).harvestTool(ToolType.SHOVEL).sound(SoundType.GRAVEL)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.8F).sound(SoundType.GRAVEL)), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> CYRA = registerBlock("cyra", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_BLUE)
-            .strength(1.0F).harvestTool(ToolType.SHOVEL).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.0F).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> CHORUS_MYCHRODEGIA = registerBlock("chorus_mychrodegia", () -> new Block(BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_PINK)
-            .strength(1.0F).lightLevel((block) -> 5).harvestTool(ToolType.HOE).sound(SoundType.NETHER_SPROUTS).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.0F).lightLevel((block) -> 5).sound(SoundType.NETHER_SPROUTS).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> BYRSS_FRUIT_BLOCK = registerBlock("byrss_fruit_block", () -> new Block(BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_LIGHT_BLUE)
-            .strength(1.8F).harvestTool(ToolType.AXE).sound(SoundType.WOOD).noOcclusion().lightLevel((block) -> 10).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.8F).sound(SoundType.WOOD).noOcclusion().lightLevel((block) -> 10).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> BYRSS_LANTERN_PLANT = registerBlock("byrss_lantern_plant", () -> new BPLanternPlantBlock(BYRSS_FRUIT_BLOCK.get(), BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_LIGHT_BLUE).strength(1.0F).harvestTool(ToolType.HOE).sound(SoundType.NETHER_SPROUTS).noOcclusion().lightLevel((block) -> 5).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_LIGHT_BLUE).strength(1.0F).sound(SoundType.NETHER_SPROUTS).noOcclusion().lightLevel((block) -> 5).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> CHORUS_CITRUS_BLOCK = registerBlock("chorus_citrus_block", () -> new Block(BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_PURPLE)
-            .strength(1.8F).harvestTool(ToolType.AXE).sound(SoundType.WOOD).noOcclusion().lightLevel((block) -> 10).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(1.8F).sound(SoundType.WOOD).noOcclusion().lightLevel((block) -> 10).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> CHORUS_LANTERN_PLANT = registerBlock("chorus_lantern_plant", () -> new BPLanternPlantBlock(CHORUS_CITRUS_BLOCK.get(), BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_PURPLE).strength(1.0F).harvestTool(ToolType.HOE).sound(SoundType.NETHER_SPROUTS).noOcclusion().lightLevel((block) -> 5).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.GRASS, MaterialColor.COLOR_PURPLE).strength(1.0F).sound(SoundType.NETHER_SPROUTS).noOcclusion().lightLevel((block) -> 5).emissiveRendering((n, e, d) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
     // Alphanum Set
     public static final RegistryObject<Block> ALPHANUM = registerBlock("alphanum", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
-            .strength(50.0F, 1200.0F).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().sound(SoundType.NETHER_GOLD_ORE)), BPItemGroup.BioplethoraItemItemGroup);
+            .strength(50.0F, 1200.0F).requiresCorrectToolForDrops().sound(SoundType.NETHER_GOLD_ORE)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> ALPHANUM_BRICKS = registerBlock("alphanum_bricks", () ->
             new Block(BlockBehaviour.Properties.copy(BPBlocks.ALPHANUM.get())), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> POLISHED_ALPHANUM = registerBlock("polished_alphanum", () ->

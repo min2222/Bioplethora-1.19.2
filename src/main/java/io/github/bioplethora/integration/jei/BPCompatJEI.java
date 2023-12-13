@@ -1,6 +1,6 @@
 package io.github.bioplethora.integration.jei;
 
-import io.github.bioplethora.Bioplethora;
+/*import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.gui.container.ReinforcingTableContainer;
 import io.github.bioplethora.gui.screen.ReinforcingTableScreen;
 import io.github.bioplethora.registry.BPBlocks;
@@ -60,4 +60,4 @@ public class BPCompatJEI implements IModPlugin {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(new ReinforcingTableCategory(guiHelper));
     }
-}
+}*/

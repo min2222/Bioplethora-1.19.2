@@ -1,7 +1,5 @@
 package io.github.bioplethora.blocks;
 
-import java.util.Optional;
-
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPItems;
 import net.minecraft.core.BlockPos;
@@ -17,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -71,7 +68,8 @@ public abstract class BPFruitableVinesBlock extends BPVinesBlock {
         super.performBonemeal(world, random, pos, state);
     }
 
-    @Override
+    //TODO
+    /*@Override
     public Optional<BlockPos> getHeadPos(BlockGetter p_235501_1_, BlockPos p_235501_2_, Block p_235501_3_) {
         BlockPos blockpos = p_235501_2_;
 
@@ -82,7 +80,7 @@ public abstract class BPFruitableVinesBlock extends BPVinesBlock {
         } while(block == p_235501_3_ || block == getFruitedBodyBlock());
 
         return block == this.getHeadBlock() ? Optional.of(blockpos) : Optional.empty();
-    }
+    }*/
 
     public static class BasaltSpeleothermBlock extends BPFruitableVinesBlock {
 

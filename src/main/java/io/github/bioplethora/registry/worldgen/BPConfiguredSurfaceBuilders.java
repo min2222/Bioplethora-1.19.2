@@ -1,6 +1,6 @@
 package io.github.bioplethora.registry.worldgen;
-
-import io.github.bioplethora.Bioplethora;
+//TODO
+/*import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.world.surfacebuilderconfigs.CarpetedSurfaceBuilderConfig;
 import io.github.bioplethora.world.surfacebuilderconfigs.NoisySurfaceBuilderConfig;
@@ -47,4 +47,4 @@ public class BPConfiguredSurfaceBuilders {
     private static <SC extends ISurfaceBuilderConfig>ConfiguredSurfaceBuilder<SC> register(String name, ConfiguredSurfaceBuilder<SC> csb) {
         return LevelGenRegistries.register(LevelGenRegistries.CONFIGURED_SURFACE_BUILDER, new ResourceLocation(Bioplethora.MOD_ID, name), csb);
     }
-}
+}*/

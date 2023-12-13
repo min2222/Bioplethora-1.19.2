@@ -1,6 +1,6 @@
 package io.github.bioplethora.registry.worldgen;
-
-import net.minecraft.core.Registry;
+//TODO
+/*import net.minecraft.core.Registry;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
@@ -14,4 +14,4 @@ public class BPConfiguredWorldCarvers {
     private static <CC extends CarverConfiguration> ConfiguredWorldCarver<CC> register(String pId, ConfiguredWorldCarver<CC> pConfiguredCarver) {
         return Registry.register(BuiltinRegistries.CONFIGURED_CARVER, pId, pConfiguredCarver);
     }
-}
+}*/

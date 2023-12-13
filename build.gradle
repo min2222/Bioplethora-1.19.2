@@ -101,6 +101,9 @@ mixin {
 }
 
 repositories {
+    flatDir {
+         dir 'libs'
+    }
     maven {
 	name = "Jaackson Maven"
         url = "https://maven.jaackson.me"
@@ -149,7 +152,8 @@ dependencies {
 
 	// Dependencies
 	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
-	implementation fg.deobf("com.github.Reforged-Mods:FabricBiomeApiReforged:${fbApi_version}")
+	//implementation fg.deobf("com.github.Reforged-Mods:FabricBiomeApiReforged:${fbApi_version}")
+	implementation fg.deobf("net.yeoxuhang.biomeapireforged:biomeapireforged-1.19.2:1.0.0")
 	
 	// Extras
 	

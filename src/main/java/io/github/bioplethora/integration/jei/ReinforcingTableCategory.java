@@ -1,24 +1,7 @@
 package io.github.bioplethora.integration.jei;
 
-import java.util.List;
-
-import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
-import io.github.bioplethora.registry.BPBlocks;
-import io.github.bioplethora.registry.BPRecipes;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
-import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-
-public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingRecipe> {
+//TODO
+/*public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingRecipe> {
 
     public static final ResourceLocation CATEGORY_ID = new ResourceLocation(BPRecipes.REINFORCING.toString());
     private IDrawable categoryIcon;
@@ -71,4 +54,4 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
 	public RecipeType<ReinforcingRecipe> getRecipeType() {
 		return null;
 	}
-}
+}*/

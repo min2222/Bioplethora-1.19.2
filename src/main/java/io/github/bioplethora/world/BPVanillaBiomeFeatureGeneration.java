@@ -1,38 +1,18 @@
 package io.github.bioplethora.world;
 
-import java.rmi.registry.Registry;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.function.Supplier;
 
-import com.google.common.collect.ImmutableList;
-
-import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.api.world.WorldgenUtils;
-import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.GenerationStep.Carving;
-import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-
-@Mod.EventBusSubscriber(modid = Bioplethora.MOD_ID)
+//TODO
 public class BPVanillaBiomeFeatureGeneration {
 
-    @SubscribeEvent
+	/*public static final ForgeBiomeModifiers.AddFeaturesBiomeModifier OVERWORLD = 
+    		new AddFeaturesBiomeModifier(BuiltinRegistries.BIOME.getTag(BiomeTags.IS_OVERWORLD).get(), 
+    				BuiltinRegistries.PLACED_FEATURE.getOrCreateTag(BPConfiguredFeatures.FLEIGNARITE_VINES), Decoration.VEGETAL_DECORATION);
+    
+    
     public static void generateFeatures(final BiomeLoadingEvent event) {
         RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, event.getName());
         Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(key);
@@ -142,7 +122,7 @@ public class BPVanillaBiomeFeatureGeneration {
 
     public static ImmutableList<BlockState> stoneBlockstates() {
         return ImmutableList.of(Blocks.STONE.defaultBlockState(), Blocks.ANDESITE.defaultBlockState(), Blocks.DIORITE.defaultBlockState(), Blocks.GRANITE.defaultBlockState());
-    }
+    }*/
 
     public static Random seedFleignarChunk(int pChunkX, int pChunkZ, long pSeed, long l) {
         return new Random(pSeed + ((long) pChunkX * pChunkX * 4987142) + (pChunkX * 5947611L) + (long) pChunkZ * pChunkZ * 4392871L + (pChunkZ * 389711L) ^ l);
