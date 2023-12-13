@@ -1,7 +1,5 @@
 package io.github.bioplethora.integration.jei;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.github.bioplethora.Bioplethora;
@@ -9,12 +7,14 @@ import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPRecipes;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -25,24 +25,14 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
     private IDrawable categoryBackground;
 
     public ReinforcingTableCategory(IGuiHelper helper) {
-        categoryIcon = helper.createDrawableIngredient(new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
+        categoryIcon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
         categoryBackground = helper.drawableBuilder(new ResourceLocation(Bioplethora.MOD_ID, "textures/gui/container/jei/reinforcing_table.png"),
                 0, 0, 170, 80).setTextureSize(170, 80).build();
     }
 
     @Override
-    public ResourceLocation getUid() {
-        return CATEGORY_ID;
-    }
-
-    @Override
-    public Class<? extends ReinforcingRecipe> getRecipeClass() {
-        return ReinforcingRecipe.class;
-    }
-
-    @Override
-    public String getTitle() {
-        return "Reinforce";
+    public Component getTitle() {
+        return Component.literal("Reinforce");
     }
 
     @Override
@@ -56,29 +46,7 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
     }
 
     @Override
-    public void setIngredients(ReinforcingRecipe recipe, IIngredients ingredients) {
-
-        List<List<ItemStack>> collectionArray = new ArrayList<>();
-
-        List<ItemStack> recipe0 = new ArrayList<>();
-        Collections.addAll(recipe0, recipe.addIngredient(0));
-        collectionArray.add(recipe0);
-
-        List<ItemStack> recipe1 = new ArrayList<>();
-        Collections.addAll(recipe1, recipe.addIngredient(1));
-        collectionArray.add(recipe1);
-
-        List<ItemStack> recipe2 = new ArrayList<>();
-        Collections.addAll(recipe2, recipe.addIngredient(2));
-        collectionArray.add(recipe2);
-
-        ingredients.setInputLists(VanillaTypes.ITEM, collectionArray);
-
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResult());
-    }
-
-    @Override
-    public void setRecipe(IRecipeLayout recipeLayout, ReinforcingRecipe recipe, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayoutBuilder recipeLayout, ReinforcingRecipe recipe, IFocusGroup ingredients) {
 
         IGuiItemStackGroup recipeStacks = recipeLayout.getItemStacks();
 
@@ -89,7 +57,7 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
         recipeStacks.init(3, false, 126, 33);
         recipeStacks.set(3, recipe.getResult());
 
-        List<List<ItemStack>> inputs = ingredients.getInputs(VanillaTypes.ITEM);
+        List<List<ItemStack>> inputs = recipeLayout.getInputs(VanillaTypes.ITEM_STACK);
         List<ItemStack> input;
         for (int i = 0; i <= 2; i++) {
             input = inputs.get(i);
@@ -98,4 +66,9 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
             }
         }
     }
+
+	@Override
+	public RecipeType<ReinforcingRecipe> getRecipeType() {
+		return null;
+	}
 }

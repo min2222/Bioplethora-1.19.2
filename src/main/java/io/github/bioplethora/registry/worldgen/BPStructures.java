@@ -1,50 +1,46 @@
 package io.github.bioplethora.registry.worldgen;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.world.structures.AlphanumMausoleumStructure;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import io.github.bioplethora.world.structures.AlphanumMausoleumStructureType;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.Structure.StructureSettings;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BPStructures {
 
-    public static final DeferredRegister<Feature<?>> STRUCTURES = DeferredRegister.create(ForgeRegistries.FEATURES, Bioplethora.MOD_ID);
+	public static final ResourceLocation ALPHANUM_MAUSOLEUM_LOCATION = new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum");
+	
+    public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Bioplethora.MOD_ID);
+    public static final DeferredRegister<StructureSet> STRUCTURES_SET = DeferredRegister.create(Registry.STRUCTURE_SET_REGISTRY, Bioplethora.MOD_ID);
+    
+	public static final Holder<Structure> ALPHANUM_MAUSOLEUM = register(ResourceKey.create(Registry.STRUCTURE_REGISTRY, ALPHANUM_MAUSOLEUM_LOCATION), new AlphanumMausoleumStructure(new StructureSettings(BuiltinRegistries.BIOME.getOrCreateTag(BiomeTags.IS_OVERWORLD), Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE)));
+	public static final Holder<StructureSet> ALPHANUM_MAUSOLEUM_SETS = register(ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, ALPHANUM_MAUSOLEUM_LOCATION), new StructureSet(ALPHANUM_MAUSOLEUM, new RandomSpreadStructurePlacement(230, 30, RandomSpreadType.LINEAR, 1234567890)));
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> ALPHANUM_MAUSOLEUM = STRUCTURES.register("alphanum_mausoleum", () -> (new AlphanumMausoleumStructure(NoneFeatureConfiguration.CODEC)));
-
-    public static void setupStructures() {
-        setupMapSpacingAndLand(ALPHANUM_MAUSOLEUM.get(), new StructureSeparationSettings(230,30, 1234567890), true);
-    }
-
-    public static <F extends Structure<?>> void setupMapSpacingAndLand(F structure, StructureSeparationSettings structureSeparationSettings, boolean transformSurroundingLand) {
-        Structure.STRUCTURES_REGISTRY.put(structure.getRegistryName().toString(), structure);
-
-        if (transformSurroundingLand) {
-            Structure.NOISE_AFFECTING_FEATURES = ImmutableList.<Structure<?>>builder().addAll(Structure.NOISE_AFFECTING_FEATURES).add(structure).build();
-        }
-
-        DimensionStructuresSettings.DEFAULTS = ImmutableMap.<Structure<?>, StructureSeparationSettings>builder().putAll(DimensionStructuresSettings.DEFAULTS).put(structure, structureSeparationSettings).build();
-
-        LevelGenRegistries.NOISE_GENERATOR_SETTINGS.entrySet().forEach(settings -> {
-            Map<Structure<?>, StructureSeparationSettings> structureMap = settings.getValue().structureSettings().structureConfig();
-
-            if (structureMap instanceof ImmutableMap) {
-                Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(structureMap);
-                tempMap.put(structure, structureSeparationSettings);
-                settings.getValue().structureSettings().structureConfig();
-
-            } else {
-                structureMap.put(structure, structureSeparationSettings);
-            }
-        });
-    }
+    public static final RegistryObject<StructureType<?>> ALPHANUM_MAUSOLEUM_TYPE = STRUCTURES.register("alphanum_mausoleum", () -> new AlphanumMausoleumStructureType().TYPE);
+	
+    private static Holder<Structure> register(ResourceKey<Structure> p_236534_, Structure p_236535_)
+	{
+		return BuiltinRegistries.register(BuiltinRegistries.STRUCTURES, p_236534_, p_236535_);
+	}
+	
+    static Holder<StructureSet> register(ResourceKey<StructureSet> p_211129_, StructureSet p_211130_) 
+	{
+		return BuiltinRegistries.register(BuiltinRegistries.STRUCTURE_SETS, p_211129_, p_211130_);
+	}
 }

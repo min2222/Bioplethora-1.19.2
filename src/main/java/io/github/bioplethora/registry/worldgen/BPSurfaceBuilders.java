@@ -1,23 +1,11 @@
 package io.github.bioplethora.registry.worldgen;
 
-import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.world.surfacebuilderconfigs.CarpetedSurfaceBuilderConfig;
-import io.github.bioplethora.world.surfacebuilderconfigs.NoisySurfaceBuilderConfig;
-import io.github.bioplethora.world.surfacebuilders.BPSpecial1SurfaceBuilder;
-import io.github.bioplethora.world.surfacebuilders.CarpetedSurfaceBuilder;
-import io.github.bioplethora.world.surfacebuilders.NoisySurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-
 public class BPSurfaceBuilders {
 
-    public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = DeferredRegister.create(ForgeRegistries.SURFACE_BUILDERS, Bioplethora.MOD_ID);
+    /*public static final DeferredRegister<SurfaceBuilder<?>> SURFACE_BUILDERS = DeferredRegister.create(ForgeRegistries.SURFACE_BUILDERS, Bioplethora.MOD_ID);
 
     public static final RegistryObject<SurfaceBuilder<NoisySurfaceBuilderConfig>> NOISY = SURFACE_BUILDERS.register("noisy", () -> new NoisySurfaceBuilder(NoisySurfaceBuilderConfig.CODEC));
     public static final RegistryObject<SurfaceBuilder<CarpetedSurfaceBuilderConfig>> CARPETED = SURFACE_BUILDERS.register("carpeted", () -> new CarpetedSurfaceBuilder(CarpetedSurfaceBuilderConfig.CODEC));
 
-    public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> SPECIAL_1 = SURFACE_BUILDERS.register("special_1", () -> new BPSpecial1SurfaceBuilder(SurfaceBuilderConfig.CODEC));
+    public static final RegistryObject<SurfaceBuilder<SurfaceBuilderConfig>> SPECIAL_1 = SURFACE_BUILDERS.register("special_1", () -> new BPSpecial1SurfaceBuilder(SurfaceBuilderConfig.CODEC));*/
 }

@@ -9,13 +9,11 @@ import java.util.function.Supplier;
 import com.google.common.collect.ImmutableList;
 
 import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.api.world.LevelgenUtils;
 import io.github.bioplethora.api.world.WorldgenUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
@@ -23,6 +21,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.GenerationStep.Carving;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -37,13 +37,13 @@ public class BPVanillaBiomeFeatureGeneration {
         RegistryKey<Biome> key = RegistryKey.create(Registry.BIOME_REGISTRY, event.getName());
         Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(key);
 
-        List<Supplier<ConfiguredCarver<?>>> liqCarver = event.getGeneration().getCarvers(GenerationStage.Carving.LIQUID);
+        List<Supplier<ConfiguredCarver<?>>> liqCarver = event.getGeneration().getCarvers(Carving.LIQUID);
 
-        List<Supplier<ConfiguredFeature<?, ?>>> localDeco = event.getGeneration().getFeatures(GenerationStage.Decoration.LOCAL_MODIFICATIONS);
-        List<Supplier<ConfiguredFeature<?, ?>>> topLayerDeco = event.getGeneration().getFeatures(GenerationStage.Decoration.TOP_LAYER_MODIFICATION);
-        List<Supplier<ConfiguredFeature<?, ?>>> undergroundDeco = event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_DECORATION);
-        List<Supplier<ConfiguredFeature<?, ?>>> vegDeco = event.getGeneration().getFeatures(GenerationStage.Decoration.VEGETAL_DECORATION);
-
+        List<Supplier<ConfiguredFeature<?, ?>>> localDeco = event.getGeneration().getFeatures(Decoration.LOCAL_MODIFICATIONS);
+        List<Supplier<ConfiguredFeature<?, ?>>> topLayerDeco = event.getGeneration().getFeatures(Decoration.TOP_LAYER_MODIFICATION);
+        List<Supplier<ConfiguredFeature<?, ?>>> undergroundDeco = event.getGeneration().getFeatures(Decoration.UNDERGROUND_DECORATION);
+        List<Supplier<ConfiguredFeature<?, ?>>> vegDeco = event.getGeneration().getFeatures(Decoration.VEGETAL_DECORATION);
+        
         if (types.contains(BiomeDictionary.Type.OVERWORLD)) {
             undergroundDeco.add(() -> BPConfiguredFeatures.FLEIGNARITE_REMAINS);
             undergroundDeco.add(() -> BPConfiguredFeatures.FLEIGNARITE_VINES);
@@ -52,27 +52,27 @@ public class BPVanillaBiomeFeatureGeneration {
         }
 
         if (types.contains(BiomeDictionary.Type.NETHER)) {
-            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.BASALT_DELTAS)) {
+            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.BASALT_DELTAS)) {
                 vegDeco.add(() -> BPConfiguredFeatures.BASALT_SPELEOTHERM);
 
                 vegDeco.add(() -> BPConfiguredFeatures.LAVA_SPIRE);
             }
-            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.NETHER_WASTES)) {
+            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.NETHER_WASTES)) {
                 vegDeco.add(() -> BPConfiguredFeatures.THONTUS_THISTLE);
 
                 vegDeco.add(() -> BPConfiguredFeatures.LAVA_SPIRE);
             }
-            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.WARPED_FOREST)) {
+            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.WARPED_FOREST)) {
                 vegDeco.add(() -> BPConfiguredFeatures.WARPED_DANCER);
 
                 vegDeco.add(() -> BPConfiguredFeatures.TURQUOISE_PENDENT);
             }
-            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.CRIMSON_FOREST)) {
+            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.CRIMSON_FOREST)) {
                 vegDeco.add(() -> BPConfiguredFeatures.CERISE_IVY);
 
                 vegDeco.add(() -> BPConfiguredFeatures.LAVA_SPIRE);
             }
-            if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.SOUL_SAND_VALLEY)) {
+            if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.SOUL_SAND_VALLEY)) {
                 vegDeco.add(() -> BPConfiguredFeatures.SOUL_MINISHROOM);
                 vegDeco.add(() -> BPConfiguredFeatures.SOUL_BIGSHROOM);
 
@@ -89,7 +89,7 @@ public class BPVanillaBiomeFeatureGeneration {
             if (BPConfig.WORLDGEN.cyraLakesEnd.get()) undergroundDeco.add(() -> BPConfiguredFeatures.CYRA_LAKE);
 
             if (!BPConfig.WORLDGEN.createNewSpongeBiome.get()) {
-                if (LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.END_HIGHLANDS)) {
+                if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_HIGHLANDS)) {
 
                     //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) liqCarver.add(() -> BPConfiguredLevelCarvers.END_SPRINGS_CARVER);
                     //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) undergroundDeco.add(() -> BPConfiguredFeatures.END_LAND_ROCK);
@@ -111,7 +111,7 @@ public class BPVanillaBiomeFeatureGeneration {
                     //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) localDeco.add(() -> BPConfiguredFeatures.END_LANDS_CAVERN);
                 }
 
-                if (LevelgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_MIDLANDS) || LevelgenUtils.getBiomeFromEvent(event, LevelgenUtils.END_BARRENS)) {
+                if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_MIDLANDS) || WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.END_BARRENS)) {
 
                     //if (BPConfig.WORLDGEN.endSpongeMidlands.get()) liqCarver.add(() -> BPConfiguredLevelCarvers.END_SPRINGS_CARVER);
 

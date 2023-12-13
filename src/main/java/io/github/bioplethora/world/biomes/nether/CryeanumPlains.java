@@ -1,39 +1,46 @@
 package io.github.bioplethora.world.biomes.nether;
 
-import java.util.function.Supplier;
-
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
-import net.minecraft.client.audio.BackgroundMusicTracks;
-import net.minecraft.entity.EntityClassification;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.Carvers;
+import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
+import net.minecraft.data.worldgen.placement.NetherPlacements;
+import net.minecraft.data.worldgen.placement.OrePlacements;
+import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.biome.*;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.carver.ConfiguredCarvers;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.gen.feature.structure.StructureFeatures;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
+import net.minecraft.world.level.biome.AmbientAdditionsSettings;
+import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.AmbientParticleSettings;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
-import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.Climate.TargetPoint;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep.Carving;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 
 public class CryeanumPlains {
-    public static final Biome.Attributes ATTRIBUTE = new Biome.Attributes(-0.35F, 0.0F, 0.0F, 0.0F, 0.0F);
+    public static final TargetPoint ATTRIBUTE = Climate.target(-0.35F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 
-    public static Biome make(final Supplier<ConfiguredSurfaceBuilder<?>> surfaceBuilder) {
+    public static Biome make() {
         double d0 = 0.7D;
         double d1 = 0.15D;
-        MobSpawnInfo.Builder spawnInfoBuilder = new MobSpawnInfo.Builder();
+        MobSpawnSettings.Builder spawnInfoBuilder = new MobSpawnSettings.Builder();
 
         if (BPConfig.COMMON.spawnMyuthine.get()) {
-            spawnInfoBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(BPEntities.MYUTHINE.get(), 15, 5, 5));
+            spawnInfoBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(BPEntities.MYUTHINE.get(), 15, 5, 5));
         }
 
-        spawnInfoBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.GHAST, 50, 4, 4));
-        spawnInfoBuilder.addSpawn(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 1, 4, 4));
-        spawnInfoBuilder.addSpawn(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.STRIDER, 60, 1, 2));
+        spawnInfoBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.GHAST, 50, 4, 4));
+        spawnInfoBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 4, 4));
+        spawnInfoBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.STRIDER, 60, 1, 2));
 
         if (BPConfig.COMMON.spawnMyuthine.get()) {
             spawnInfoBuilder.addMobCharge(BPEntities.MYUTHINE.get(), 0.7D, 0.15D);
@@ -43,49 +50,49 @@ public class CryeanumPlains {
         spawnInfoBuilder.addMobCharge(EntityType.ENDERMAN, 0.7D, 0.15D);
         spawnInfoBuilder.addMobCharge(EntityType.STRIDER, 0.7D, 0.15D);
 
-        MobSpawnInfo mobspawninfo = spawnInfoBuilder.build();
+        MobSpawnSettings mobspawninfo = spawnInfoBuilder.build();
         BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder();
 
-        biomegenerationsettings$builder.surfaceBuilder(surfaceBuilder);
+        //biomegenerationsettings$builder.surfaceBuilder(surfaceBuilder);
 
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_BRIDGE);
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_FOSSIL);
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.RUINED_PORTAL_NETHER);
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.BASTION_REMNANT);
 
-        biomegenerationsettings$builder.addCarver(GenerationStage.Carving.AIR, ConfiguredCarvers.NETHER_CAVE);
+        biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
 
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_LAVA);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.BASALT_PILLAR);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.SPRING_OPEN);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.GLOWSTONE_EXTRA);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.GLOWSTONE);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_CRIMSON_ROOTS);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_FIRE);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.PATCH_SOUL_FIRE);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.ORE_MAGMA);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.SPRING_CLOSED);
-        biomegenerationsettings$builder.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, Features.ORE_SOUL_SAND);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, MiscOverworldPlacements.SPRING_LAVA);
+        biomegenerationsettings$builder.addFeature(Decoration.LOCAL_MODIFICATIONS, NetherPlacements.BASALT_PILLAR);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.SPRING_OPEN);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.GLOWSTONE_EXTRA);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.GLOWSTONE);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.PATCH_CRIMSON_ROOTS);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.PATCH_FIRE);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.PATCH_SOUL_FIRE);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, OrePlacements.ORE_MAGMA);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.SPRING_CLOSED);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, OrePlacements.ORE_SOUL_SAND);
 
-        DefaultBiomeFeatures.addNetherDefaultOres(biomegenerationsettings$builder);
-        Biome.Builder builder1 = new Biome.Builder();
-        builder1.precipitation(Biome.RainType.NONE);
-        builder1.biomeCategory(Biome.Category.NETHER);
+        BiomeDefaultFeatures.addNetherDefaultOres(biomegenerationsettings$builder);
+        Biome.BiomeBuilder builder1 = new Biome.BiomeBuilder();
+        builder1.precipitation(Biome.Precipitation.NONE);
+        /*builder1.biomeCategory(Biome.Category.NETHER);
         builder1.depth(0.1F);
-        builder1.scale(0.2F);
+        builder1.scale(0.2F);*/
         builder1.temperature(1.0F);
         builder1.downfall(0.0F);
 
-        builder1.specialEffects((new BiomeAmbience.Builder())
+        builder1.specialEffects((new BiomeSpecialEffects.Builder())
                 .waterColor(4159204)
                 .waterFogColor(329011)
                 .fogColor(1787717)
                 .skyColor(calculateSkyColor(1.0F))
-                .ambientParticle(new ParticleEffectAmbience(BPParticles.PINK_ENIVILE_LEAF.get(), 0.00225F))
+                .ambientParticle(new AmbientParticleSettings(BPParticles.PINK_ENIVILE_LEAF.get(), 0.00225F))
                 .ambientLoopSound(SoundEvents.AMBIENT_WARPED_FOREST_LOOP)
-                .ambientMoodSound(new MoodSoundAmbience(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
-                .ambientAdditionsSound(new SoundAdditionsAmbience(SoundEvents.AMBIENT_CRIMSON_FOREST_ADDITIONS, 0.0111D))
-                .backgroundMusic(BackgroundMusicTracks.createGameMusic(SoundEvents.MUSIC_BIOME_SOUL_SAND_VALLEY))
+                .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
+                .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_CRIMSON_FOREST_ADDITIONS, 0.0111D))
+                .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_SOUL_SAND_VALLEY))
                 .build());
 
         builder1.mobSpawnSettings(mobspawninfo);

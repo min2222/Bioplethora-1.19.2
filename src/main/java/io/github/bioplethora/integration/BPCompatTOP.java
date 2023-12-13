@@ -8,7 +8,15 @@ import io.github.bioplethora.entity.creatures.DwarfMossadileEntity;
 import io.github.bioplethora.entity.creatures.GrylynenEntity;
 import io.github.bioplethora.entity.creatures.ShachathEntity;
 import io.github.bioplethora.entity.others.PrimordialRingEntity;
-import mcjty.theoneprobe.api.*;
+import mcjty.theoneprobe.api.CompoundText;
+import mcjty.theoneprobe.api.IProbeHitEntityData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
+import mcjty.theoneprobe.api.ITheOneProbe;
+import mcjty.theoneprobe.api.ProbeMode;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.InterModComms;
 
 public class BPCompatTOP {

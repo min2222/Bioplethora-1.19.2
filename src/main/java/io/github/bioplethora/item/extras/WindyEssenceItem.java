@@ -1,7 +1,6 @@
 package io.github.bioplethora.item.extras;
 
 import io.github.bioplethora.registry.BPBlocks;
-import io.github.bioplethora.registry.worldgen.BPStructures;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +36,8 @@ public class WindyEssenceItem extends Item {
         } else {
             pPlayer.startUsingItem(pHand);
             if (pLevel instanceof ServerLevel) {
-                BlockPos blockpos = ((ServerLevel)pLevel).getChunkSource().getGenerator().findNearestMapStructure((ServerLevel)pLevel, BPStructures.ALPHANUM_MAUSOLEUM.get(), pPlayer.blockPosition(), 100, false);
+            	//TODO need to change the tag
+                BlockPos blockpos = ((ServerLevel) pLevel).findNearestMapStructure(StructureTags.EYE_OF_ENDER_LOCATED, pPlayer.blockPosition(), 100, false);
                 if (blockpos != null) {
                     EyeOfEnder eyeofenderentity = new EyeOfEnder(pLevel, pPlayer.getX(), pPlayer.getY(0.5D), pPlayer.getZ());
                     eyeofenderentity.setItem(itemstack);

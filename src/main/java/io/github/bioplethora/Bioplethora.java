@@ -32,12 +32,9 @@ import io.github.bioplethora.registry.BPTileEntities;
 import io.github.bioplethora.registry.BPVillagerTrades;
 import io.github.bioplethora.registry.BPWoodTypes;
 import io.github.bioplethora.registry.worldgen.BPBiomes;
-import io.github.bioplethora.registry.worldgen.BPBlockPlacers;
 import io.github.bioplethora.registry.worldgen.BPFeatures;
 import io.github.bioplethora.registry.worldgen.BPStructures;
-import io.github.bioplethora.registry.worldgen.BPSurfaceBuilders;
 import io.github.bioplethora.registry.worldgen.BPWorldCarvers;
-import io.github.bioplethora.world.EntitySpawnManager;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -82,9 +79,10 @@ public class Bioplethora {
         BPEffects.EFFECTS.register(bus);
         BPEnchantments.ENCHANTMENTS.register(bus);
         BPStructures.STRUCTURES.register(bus);
+        BPStructures.STRUCTURES_SET.register(bus);
         BPAttributes.ATTRIBUTES.register(bus);
-        BPBlockPlacers.BLOCK_PLACERS.register(bus);
-        BPSurfaceBuilders.SURFACE_BUILDERS.register(bus);
+        //BPBlockPlacers.BLOCK_PLACERS.register(bus);
+        //BPSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         BPTileEntities.TILE_ENTITIES.register(bus);
         BPContainerTypes.CONTAINERS.register(bus);
 
@@ -95,7 +93,6 @@ public class Bioplethora {
         bus.addListener(this::onInterModEnqueueEvent);
 
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-        forgeBus.addListener(EventPriority.HIGH, EntitySpawnManager::onBiomeLoadingEvent);
         forgeBus.addListener(EventPriority.NORMAL, BPVillagerTrades::onVillagerTrades);
         forgeBus.addListener(EventPriority.NORMAL, BPAttributes::useTrueDefenseAttribute);
         forgeBus.register(this);
@@ -122,7 +119,6 @@ public class Bioplethora {
         BPLootConditions.registerConditions();
 
         BPNetwork.initializeNetwork();
-        BPStructures.setupStructures();
         BPExtras.addExtras();
     }
 

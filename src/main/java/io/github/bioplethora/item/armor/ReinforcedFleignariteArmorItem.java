@@ -8,8 +8,8 @@ import io.github.bioplethora.api.world.EffectUtils;
 import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.client.armor.model.ReinforcedFleignariteArmorModel;
 import io.github.bioplethora.registry.BPDamageSources;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
@@ -42,7 +42,6 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
 
         EntityUtils.knockbackAwayFromUser(0.5F, user, target);
         target.hurt(BPDamageSources.armorPiercingFleignarite(target, target), (float) 2);
-
     }
 
     @Override
@@ -71,7 +70,7 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
 
     	    @Override
     	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack stack, EquipmentSlot slot, HumanoidModel<?> defaultModel) {
-    	        return slot == EquipmentSlot.LEGS ? defaultModel : matchingModel(entity, slot, defaultModel);
+    	        return slot == EquipmentSlot.LEGS ? defaultModel : new ReinforcedFleignariteArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ReinforcedFleignariteArmorModel.LAYER_LOCATION));
     	    }
     	});
     }
@@ -82,41 +81,5 @@ public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSk
         String legTexture = Bioplethora.MOD_ID + ":textures/models/armor/reinforced_fleignarite_layer_2.png";
 
         return slot == EquipmentSlot.LEGS ? legTexture : defaultTexture;
-    }
-
-    public static <A extends HumanoidModel<?>> A matchingModel(LivingEntity entity, EquipmentSlot slot, A defaultModel) {
-        boolean crouching = entity.isCrouching();
-        boolean riding = defaultModel.riding;
-        boolean young = entity.isBaby();
-
-        switch (slot) {
-            case HEAD:
-                BipedModel helmet = new BipedModel(1);
-                helmet.head = new ReinforcedFleignariteArmorModel<>().head;
-                helmet.crouching = crouching;
-                helmet.riding = riding;
-                helmet.young = young;
-                return (A) helmet;
-            case CHEST:
-                BipedModel chestplate = new BipedModel(1);
-                chestplate.body = new ReinforcedFleignariteArmorModel<>().body;
-                chestplate.leftArm = new ReinforcedFleignariteArmorModel<>().left_arm;
-                chestplate.rightArm = new ReinforcedFleignariteArmorModel<>().right_arm;
-                chestplate.crouching = crouching;
-                chestplate.riding = riding;
-                chestplate.young = young;
-                return (A) chestplate;
-            case FEET:
-                BipedModel boots = new BipedModel(1);
-                boots.leftLeg = new ReinforcedFleignariteArmorModel<>().left_shoe;
-                boots.rightLeg = new ReinforcedFleignariteArmorModel<>().right_shoe;
-                boots.crouching = crouching;
-                boots.riding = riding;
-                boots.young = young;
-                return (A) boots;
-		default:
-			break;
-        }
-        return defaultModel;
     }
 }

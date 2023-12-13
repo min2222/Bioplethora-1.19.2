@@ -52,6 +52,26 @@
 	</classpathentry>
 	<classpathentry kind="output" path="bin/default"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-common-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-common-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-common-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-common-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2-api.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2-api.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/Documents/GitHub/Bioplethora-1.19.2/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/Documents/GitHub/Bioplethora-1.19.2/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
@@ -73,6 +93,56 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/com/github/Reforged-Mods/FabricBiomeApiReforged/2.0.3_mapped_parchment_2022.11.27-1.19.2/FabricBiomeApiReforged-2.0.3_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/com/github/Reforged-Mods/FabricBiomeApiReforged/2.0.3_mapped_parchment_2022.11.27-1.19.2/FabricBiomeApiReforged-2.0.3_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/just-enough-resources-jer-240630/4862430_mapped_parchment_2022.11.27-1.19.2/just-enough-resources-jer-240630-4862430_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/just-enough-effect-descriptions-jeed-532286/4599099_mapped_parchment_2022.11.27-1.19.2/just-enough-effect-descriptions-jeed-532286-4599099_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/appleskin-248787/3872808_mapped_parchment_2022.11.27-1.19.2/appleskin-248787-3872808_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/the-one-probe-245211/3965693_mapped_parchment_2022.11.27-1.19.2/the-one-probe-245211-3965693_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/jade-324717/4914105_mapped_parchment_2022.11.27-1.19.2/jade-324717-4914105_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/configured-457570/4462837_mapped_parchment_2022.11.27-1.19.2/configured-457570-4462837_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/catalogue-459701/4171024_mapped_parchment_2022.11.27-1.19.2/catalogue-459701-4171024_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/gamemenumodoption-353051/4657763_mapped_parchment_2022.11.27-1.19.2/gamemenumodoption-353051-4657763_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/damage-indicator-mod-for-forge-557596/3946489_mapped_parchment_2022.11.27-1.19.2/damage-indicator-mod-for-forge-557596-3946489_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/forge-criticalib-560696/3946347_mapped_parchment_2022.11.27-1.19.2/forge-criticalib-560696-3946347_mapped_parchment_2022.11.27-1.19.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -618,6 +688,21 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/ef782abad0d3f1d30644c4023a6bbc6fe371e23a/javax.json-1.0.4-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/3178f73569fd7a1e5ffc464e680f7a8cc784b85a/javax.json-1.0.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>

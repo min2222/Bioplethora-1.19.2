@@ -1,97 +1,83 @@
 package io.github.bioplethora.client.armor.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import io.github.bioplethora.Bioplethora;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
-public class ReinforcedFleignariteArmorModel<T extends LivingEntity> extends BipedModel<T> {
-	public final ModelRenderer head;
-	private final ModelRenderer cube_r1;
-	private final ModelRenderer cube_r2;
-	public final ModelRenderer body;
-	public final ModelRenderer left_shoe;
-	private final ModelRenderer cube_r3;
-	public final ModelRenderer right_shoe;
-	private final ModelRenderer cube_r4;
-	public final ModelRenderer left_arm;
-	public final ModelRenderer right_arm;
+public class ReinforcedFleignariteArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
+	
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Bioplethora.MOD_ID, "reinforced_fleignarite_armor"), "main");
+	public final ModelPart head;
+	public final ModelPart body;
+	public final ModelPart left_shoe;
+	public final ModelPart right_shoe;
+	public final ModelPart left_arm;
+	public final ModelPart right_arm;
 
-	public ReinforcedFleignariteArmorModel() {
-		super(1);
-		texWidth = 64;
-		texHeight = 32;
+	public ReinforcedFleignariteArmorModel(ModelPart root) {
+		super(root);
+		this.head = root.getChild("head");
+		this.body = root.getChild("body");
+		this.left_shoe = root.getChild("left_shoe");
+		this.right_shoe = root.getChild("right_shoe");
+		this.left_arm = root.getChild("left_arm");
+		this.right_arm = root.getChild("right_arm");
+	}
 
-		head = new ModelRenderer(this);
-		head.setPos(0.0F, 0.0F, 0.0F);
-		head.texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.75F, false);
-		head.texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 1.0F, false);
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 1);
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		cube_r1 = new ModelRenderer(this);
-		cube_r1.setPos(0.0F, -1.0F, 0.0F);
-		head.addChild(cube_r1);
-		setRotationAngle(cube_r1, -0.6863F, -0.1396F, -0.1682F);
-		cube_r1.texOffs(56, 18).addBox(-4.5F, -13.0F, -5.0F, 1.0F, 11.0F, 3.0F, 0.0F, true);
+		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.75F))
+		.texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		cube_r2 = new ModelRenderer(this);
-		cube_r2.setPos(0.0F, -1.0F, 0.0F);
-		head.addChild(cube_r2);
-		setRotationAngle(cube_r2, -0.6863F, 0.1396F, 0.1682F);
-		cube_r2.texOffs(56, 18).addBox(3.5F, -13.0F, -5.0F, 1.0F, 11.0F, 3.0F, 0.0F, false);
+		head.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(56, 18).mirror().addBox(-4.5F, -13.0F, -5.0F, 1.0F, 11.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, -0.6863F, -0.1396F, -0.1682F));
 
-		body = new ModelRenderer(this);
-		body.setPos(0.0F, 0.0F, 0.0F);
-		body.texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, 0.75F, false);
+		head.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(56, 18).addBox(3.5F, -13.0F, -5.0F, 1.0F, 11.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 0.0F, -0.6863F, 0.1396F, 0.1682F));
 
-		left_shoe = new ModelRenderer(this);
-		left_shoe.setPos(2.0F, 12.0F, 0.0F);
-		left_shoe.texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.75F, true);
+		partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-		cube_r3 = new ModelRenderer(this);
-		cube_r3.setPos(0.0F, 0.0F, 0.0F);
-		left_shoe.addChild(cube_r3);
-		setRotationAngle(cube_r3, 0.0F, -1.5708F, 0.0F);
-		cube_r3.texOffs(56, 0).addBox(-1.5F, 5.5F, -3.5F, 3.0F, 7.0F, 1.0F, 0.0F, false);
+		PartDefinition left_shoe = partdefinition.addOrReplaceChild("left_shoe", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.75F)).mirror(false), PartPose.offset(2.0F, 12.0F, 0.0F));
 
-		right_shoe = new ModelRenderer(this);
-		right_shoe.setPos(-2.0F, 12.0F, 0.0F);
-		right_shoe.texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.75F, false);
+		left_shoe.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(56, 0).addBox(-1.5F, 5.5F, -3.5F, 3.0F, 7.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
 
-		cube_r4 = new ModelRenderer(this);
-		cube_r4.setPos(4.0F, 0.0F, 0.0F);
-		right_shoe.addChild(cube_r4);
-		setRotationAngle(cube_r4, 0.0F, -1.5708F, 0.0F);
-		cube_r4.texOffs(56, 0).addBox(-1.5F, 5.5F, 6.5F, 3.0F, 7.0F, 1.0F, 0.0F, false);
+		PartDefinition right_shoe = partdefinition.addOrReplaceChild("right_shoe", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(-2.0F, 12.0F, 0.0F));
 
-		left_arm = new ModelRenderer(this);
-		left_arm.setPos(5.0F, 2.0F, 0.0F);
-		left_arm.texOffs(40, 16).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.75F, true);
-		left_arm.texOffs(56, 18).addBox(3.5F, -5.0F, -1.5F, 1.0F, 11.0F, 3.0F, 0.0F, true);
+		right_shoe.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(56, 0).addBox(-1.5F, 5.5F, 6.5F, 3.0F, 7.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(4.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
 
-		right_arm = new ModelRenderer(this);
-		right_arm.setPos(-5.0F, 2.0F, 0.0F);
-		right_arm.texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, 0.75F, false);
-		right_arm.texOffs(56, 18).addBox(-4.5F, -5.0F, -1.5F, 1.0F, 11.0F, 3.0F, 0.0F, true);
+		partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.75F)).mirror(false)
+		.texOffs(56, 18).mirror().addBox(3.5F, -5.0F, -1.5F, 1.0F, 11.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
+
+		partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.75F))
+		.texOffs(56, 18).mirror().addBox(-4.5F, -5.0F, -1.5F, 1.0F, 11.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 64, 32);
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		head.render(matrixStack, buffer, packedLight, packedOverlay);
-		body.render(matrixStack, buffer, packedLight, packedOverlay);
-		left_shoe.render(matrixStack, buffer, packedLight, packedOverlay);
-		right_shoe.render(matrixStack, buffer, packedLight, packedOverlay);
-		left_arm.render(matrixStack, buffer, packedLight, packedOverlay);
-		right_arm.render(matrixStack, buffer, packedLight, packedOverlay);
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
 	}
 
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		left_shoe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		right_shoe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		left_arm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		right_arm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }

@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import software.bernie.shadowed.fasterxml.jackson.annotation.JsonFormat.Features;
@@ -40,7 +39,7 @@ public class BPConfiguredFeatures {
 
     // Nether Mushrooms
     public static final ConfiguredFeature<?, ?> SOUL_MINISHROOM = register("soul_minishroom", makeNoProjectionDecoratedClusterPlants(
-            new RandomPatchFeature(RandomFeatureConfiguration.CODEC), BPBlocks.SOUL_MINISHROOM.get(), new MinishroomBlockPlacer(), 15
+            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_MINISHROOM.get(), new MinishroomBlockPlacer(), 15
     ));
     
     public static final ConfiguredFeature<?, ?> SOUL_BIGSHROOM = register("soul_bigshroom", makeNoProjectionDecoratedClusterPlants(

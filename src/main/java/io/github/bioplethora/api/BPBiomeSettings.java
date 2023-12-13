@@ -1,6 +1,7 @@
 package io.github.bioplethora.api;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.biome.AmbientParticleSettings;
@@ -14,9 +15,9 @@ public class BPBiomeSettings {
     // End
     public static Biome baseEndBiome(BiomeGenerationSettings.Builder pGenerationSettingsBuilder) {
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
-        //DefaultBiomeFeatures.endSpawns(mobspawninfo$builder);
+        BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .precipitation(Biome.Precipitation.NONE)//.biomeCategory(Biome.Category.THEEND).depth(0.1F).scale(0.2F)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
@@ -33,10 +34,10 @@ public class BPBiomeSettings {
     // Caeri
     public static Biome caeriEndBiome(BiomeGenerationSettings.Builder pGenerationSettingsBuilder) {
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
-        //DefaultBiomeFeatures.endSpawns(mobspawninfo$builder);
-
+    	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
+    	
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .precipitation(Biome.Precipitation.NONE)//.biomeCategory(Biome.Category.THEEND).depth(0.2F).scale(0.15F)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
@@ -56,9 +57,9 @@ public class BPBiomeSettings {
     // Winterfest
     public static Biome winterfestBiome(BiomeGenerationSettings.Builder pGenerationSettingsBuilder) {
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
-        //DefaultBiomeFeatures.endSpawns(mobspawninfo$builder);
+    	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .precipitation(Biome.Precipitation.NONE)//.biomeCategory(Biome.Category.THEEND).depth(0.1F).scale(0.2F)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
