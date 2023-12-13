@@ -4,7 +4,6 @@ import io.github.bioplethora.registry.BPParticles;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.EndPlacements;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.gen.feature.structure.StructureFeatures;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.biome.AmbientParticleSettings;
 import net.minecraft.world.level.biome.Biome;
@@ -21,7 +20,7 @@ public class LavenderLakesBiome {
         MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
 
-        biomeGenSettings.addStructureStart(StructureFeatures.END_CITY);
+        //biomeGenSettings.addStructureStart(StructureFeatures.END_CITY);
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, EndPlacements.CHORUS_PLANT);
 

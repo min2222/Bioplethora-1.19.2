@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.gen.feature.structure.StructureFeatures;
 import net.minecraft.world.level.biome.AmbientAdditionsSettings;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.biome.AmbientParticleSettings;
@@ -55,10 +54,11 @@ public class CryeanumPlains {
 
         //biomegenerationsettings$builder.surfaceBuilder(surfaceBuilder);
 
-        biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_BRIDGE);
+        //Handled in tag definition
+        /*biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_BRIDGE);
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_FOSSIL);
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.RUINED_PORTAL_NETHER);
-        biomegenerationsettings$builder.addStructureStart(StructureFeatures.BASTION_REMNANT);
+        biomegenerationsettings$builder.addStructureStart(StructureFeatures.BASTION_REMNANT);*/
 
         biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
 

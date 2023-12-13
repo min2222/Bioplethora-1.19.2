@@ -1,15 +1,11 @@
 package io.github.bioplethora.world.biomes.overworld;
 
-import java.util.function.Supplier;
-
 import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.gen.feature.structure.StructureFeatures;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.level.biome.AmbientAdditionsSettings;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.biome.Biome;
@@ -30,10 +26,11 @@ public class RockyWoodlandBiome {
 
         BiomeGenerationSettings.Builder biomeGenSettings = (new BiomeGenerationSettings.Builder());//.surfaceBuilder(surfaceBuilder);
 
-        biomeGenSettings.addStructureStart(StructureFeatures.VILLAGE_SNOWY);
+        //Handled in tag definition
+        /*biomeGenSettings.addStructureStart(StructureFeatures.VILLAGE_SNOWY);
         biomeGenSettings.addStructureStart(StructureFeatures.MINESHAFT);
         biomeGenSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_SWAMP);
-        biomeGenSettings.addStructureStart(StructureFeatures.BURIED_TREASURE);
+        biomeGenSettings.addStructureStart(StructureFeatures.BURIED_TREASURE);*/
 
         BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
         BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
