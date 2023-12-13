@@ -1,24 +1,37 @@
 package io.github.bioplethora.config;
 
-import org.apache.commons.lang3.tuple.Pair;
+import java.io.File;
+
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BPConfig {
 
-    public static final ForgeConfigSpec COMMON_SPEC;
-    public static final BPCommonConfig COMMON;
-    public static final ForgeConfigSpec WORLDGEN_SPEC;
-    public static final BPWorldgenConfig WORLDGEN;
-
-    static {
-        final Pair<BPCommonConfig, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(BPCommonConfig::new);
-        COMMON_SPEC = commonSpecPair.getRight();
-        COMMON = commonSpecPair.getLeft();
-
-        final Pair<BPWorldgenConfig, ForgeConfigSpec> worldgenSpecPair = new ForgeConfigSpec.Builder().configure(BPWorldgenConfig::new);
-        WORLDGEN_SPEC = worldgenSpecPair.getRight();
-        WORLDGEN = worldgenSpecPair.getLeft();
+    public static ForgeConfigSpec.Builder COMMON_BUILDER;
+    public static ForgeConfigSpec COMMON_SPEC;
+    public static BPCommonConfig COMMON;
+    public static ForgeConfigSpec.Builder WORLDGEN_BUILDER;
+    public static ForgeConfigSpec WORLDGEN_SPEC;
+    public static BPWorldgenConfig WORLDGEN;
+    
+    static 
+    {
+    	COMMON_BUILDER = new ForgeConfigSpec.Builder();
+    	COMMON = new BPCommonConfig(COMMON_BUILDER);
+    	COMMON_SPEC = COMMON_BUILDER.build();
+    	
+    	WORLDGEN_BUILDER = new ForgeConfigSpec.Builder();
+    	WORLDGEN = new BPWorldgenConfig(WORLDGEN_BUILDER);
+    	WORLDGEN_SPEC = WORLDGEN_BUILDER.build();
+    }
+    
+    public static void loadConfig(ForgeConfigSpec config, String path) 
+    {
+        CommentedFileConfig file = CommentedFileConfig.builder(new File(path)).sync().autosave().writingMode(WritingMode.REPLACE).build();
+        file.load();
+        config.setConfig(file);
     }
 
     //FIXME crash on start

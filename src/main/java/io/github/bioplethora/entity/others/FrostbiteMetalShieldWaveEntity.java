@@ -65,7 +65,7 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
 
             ++lifespan;
             this.moveTo(pos, 0.0F, 0.0F);
-            for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, area, null)) {
+            for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, area)) {
                 if (entityIterator instanceof LivingEntity && entityIterator != this.getOwner()) {
                     entityIterator.hurt(DamageSource.indirectMagic(this.getOwner(), this.getOwner()), 1F);
                 }

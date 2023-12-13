@@ -172,7 +172,7 @@ public class WindArrowEntity extends AbstractArrow {
         this.level.playSound(null, pos, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.NEUTRAL, (float) 1, (float) 1);
 
         if (this.level instanceof ServerLevel) {
-            for (LivingEntity eI : this.level.getEntitiesOfClass(LivingEntity.class, area, null)) {
+            for (LivingEntity eI : this.level.getEntitiesOfClass(LivingEntity.class, area)) {
                 if (eI != null && eI != this.getOwner()) {
 
                     if (this.getOwner() != null) {

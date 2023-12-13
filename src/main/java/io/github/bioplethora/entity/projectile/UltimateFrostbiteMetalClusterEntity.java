@@ -131,7 +131,7 @@ public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjecti
 
         if (this.level instanceof ServerLevel) {
             List<Entity> nearEntities = this.level
-                    .getEntitiesOfClass(Entity.class, area, null)
+                    .getEntitiesOfClass(Entity.class, area)
                     .stream().sorted(new Object() {
                         Comparator<Entity> compareDistOf(double dx, double dy, double dz) {
                             return Comparator.comparing((getEnt -> getEnt.distanceToSqr(dx, dy, dz)));

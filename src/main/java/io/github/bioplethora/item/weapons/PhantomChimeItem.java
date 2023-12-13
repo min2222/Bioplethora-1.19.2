@@ -46,7 +46,7 @@ public class PhantomChimeItem extends Item {
         entity.swing(hand);
         world.playSound(entity, pos, SoundEvents.PHANTOM_FLAP, SoundSource.PLAYERS, 1, 1);
 
-        List<Entity> nearEntities = world.getEntitiesOfClass(Entity.class, new AABB(x - (7 / 2d), y - (7 / 2d), z - (7 / 2d), x + (7 / 2d), y + (7 / 2d), z + (7 / 2d)), null);
+        List<Entity> nearEntities = world.getEntitiesOfClass(Entity.class, new AABB(x - (7 / 2d), y - (7 / 2d), z - (7 / 2d), x + (7 / 2d), y + (7 / 2d), z + (7 / 2d)));
         for (Entity entityIterator : nearEntities) {
             if (entityIterator instanceof LivingEntity && entityIterator != entity) {
                 ((LivingEntity) entityIterator).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));

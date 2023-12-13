@@ -117,7 +117,7 @@ public class FrostbiteMetalClusterEntity extends AbstractHurtingProjectile imple
 
         if (this.level instanceof ServerLevel && !(this.getOwner() == null)) {
 
-            for (Entity entityArea : this.level.getEntitiesOfClass(Entity.class, area, null)) {
+            for (Entity entityArea : this.level.getEntitiesOfClass(Entity.class, area)) {
                 if (entityArea instanceof LivingEntity && entityArea != this.getOwner()) {
 
                     if (this.getOwner() != null) {

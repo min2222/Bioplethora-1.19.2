@@ -161,7 +161,7 @@ public class GaugalemEntity extends FloatingMonsterEntity implements IAnimatable
                 double x = entity.getX(), y = entity.getY(), z = entity.getZ();
 
                 if(world instanceof ServerLevel) {
-                    for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (10 / 2d), y, z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)), null)) {
+                    for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (10 / 2d), y, z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)))) {
                         if (entityIterator instanceof LivingEntity && entityIterator != this) {
                             if (entityIterator != entity) {
                                 entityIterator.hurt(DamageSource.mobAttack(this), ((StellarScytheItem) this.getMainHandItem().getItem()).getDamage() * 0.8F);

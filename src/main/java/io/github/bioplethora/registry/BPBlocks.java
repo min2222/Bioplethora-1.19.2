@@ -113,7 +113,7 @@ public class BPBlocks {
             .strength(1.85F).sound(SoundType.NETHER_SPROUTS)), BPItemGroup.BioplethoraItemItemGroup);
     // Nether Plants
     public static final RegistryObject<Block> KYRIA = registerBlock("kyria", () -> new BPPlantBlock(BioPlantType.CRYEANUM, BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).instabreak().noCollission()), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).instabreak().noCollission().dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> KYRIA_BELINE = registerBlock("kyria_beline", () -> new BPDoublePlantBlock(BioPlantType.CRYEANUM, BioPlantShape.SIMPLE_PLANT,
             BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).instabreak().noCollission()), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> KYRIA_IDE_FAN = registerBlock("kyria_ide_fan", () -> new BPIdeFanBlock(BioPlantType.CRYEANUM, BioPlantShape.IDE_FAN,
@@ -123,15 +123,15 @@ public class BPBlocks {
             BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.SOUL_SOIL).noCollission().strength(0.5F).lightLevel((block) -> 5 * block.getValue(SmallMushroomBlock.MINISHROOMS))), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> SOUL_BIGSHROOM = registerBlock("soul_bigshroom", () -> new BPPlantBlock(BioPlantType.SOUL_SAND_VALLEY, BioPlantShape.BIG_MUSHROOM,
-            BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.SOUL_SOIL).noOcclusion().strength(0.5F).lightLevel((block) -> 15).emissiveRendering((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.SOUL_SOIL).noOcclusion().strength(0.5F).lightLevel((block) -> 15).emissiveRendering((bs, br, bp) -> true).dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> LAVA_SPIRE = registerBlock("lava_spire", () -> new LavaSpireBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT)
             .sound(SoundType.NETHER_SPROUTS).strength(0.3F).instabreak().noCollission().lightLevel((block) -> 13)), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> WARPED_DANCER = registerBlock("warped_dancer", () -> new BPPlantBlock(BioPlantType.WARPED_FOREST, BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.NETHER_SPROUTS).strength(0.3F).instabreak().noCollission().lightLevel((block) -> 3)), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.NETHER_SPROUTS).strength(0.3F).instabreak().noCollission().lightLevel((block) -> 3).dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> SOUL_SPROUTS = registerBlock("soul_sprouts", () -> new BPPlantBlock(BioPlantType.SOUL_SAND_VALLEY, BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.SOUL_SOIL).instabreak().noCollission()), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.SOUL_SOIL).instabreak().noCollission().dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> SOUL_TALL_GRASS = registerBlock("soul_tall_grass", () -> new BPDoublePlantBlock(BioPlantType.SOUL_SAND_VALLEY, BioPlantShape.SIMPLE_PLANT,
             BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.SOUL_SOIL).noCollission().instabreak()
                     .lightLevel((block) -> block.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER ? 12 : 3)), BPItemGroup.BioplethoraItemItemGroup);
@@ -240,12 +240,12 @@ public class BPBlocks {
 
     // End Plants
     public static final RegistryObject<Block> IRION_GRASS = registerBlock("irion_grass", () -> new BPPlantBlock(BioPlantType.CAERI, BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.copy(Blocks.TALL_GRASS).noCollission()), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.copy(Blocks.TALL_GRASS).noCollission().dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> IRION_TALL_GRASS = registerBlock("irion_tall_grass", () -> new BPDoublePlantBlock(BioPlantType.CAERI, BioPlantShape.SIMPLE_PLANT,
             BlockBehaviour.Properties.copy(BPBlocks.IRION_GRASS.get()).noCollission()), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> CHORUS_IDON = registerBlock("chorus_idon", () -> new BPPlantBlock(BioPlantType.CHORUS, BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).lightLevel(b -> 7).emissiveRendering((a, b, c) -> true).instabreak().noCollission()), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.REPLACEABLE_FIREPROOF_PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).lightLevel(b -> 7).emissiveRendering((a, b, c) -> true).instabreak().noCollission().dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
     public static final RegistryObject<Block> CHORUS_IDE_FAN = registerBlock("chorus_ide_fan", () -> new BPIdeFanBlock(BioPlantType.CHORUS, BioPlantShape.IDE_FAN,
             BlockBehaviour.Properties.of(Material.PLANT).sound(SoundType.TWISTING_VINES).strength(0.3F).instabreak().lightLevel(b -> b.getValue(BPIdeFanBlock.BUDDED) ? 2 : 4).noCollission()), BPItemGroup.BioplethoraItemItemGroup);
 
@@ -271,7 +271,7 @@ public class BPBlocks {
             BlockBehaviour.Properties.copy(BPBlocks.IRION_GRASS.get()).lightLevel((block) -> block.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER ? 13 : 5).noCollission()), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> FROSTEM = registerBlock("frostem", () -> new FrostemBlock(BioPlantType.END_ISLANDS_ICE, BioPlantShape.SIMPLE_PLANT,
-            BlockBehaviour.Properties.of(Material.ICE, DyeColor.LIGHT_BLUE).strength(0.25F).sound(SoundType.GLASS).noCollission()), BPItemGroup.BioplethoraItemItemGroup);
+            BlockBehaviour.Properties.of(Material.ICE, DyeColor.LIGHT_BLUE).strength(0.25F).sound(SoundType.GLASS).noCollission().dynamicShape()), BPItemGroup.BioplethoraItemItemGroup);
 
     public static final RegistryObject<Block> SPINXELTHORN = registerBlock("spinxelthorn", () -> new BPVinesTopBlock.SpinxelthornTopBlock(
             BlockBehaviour.Properties.of(Material.STONE, DyeColor.WHITE).strength(0.7F).sound(SoundType.STONE).noCollission()), BPItemGroup.BioplethoraItemItemGroup);

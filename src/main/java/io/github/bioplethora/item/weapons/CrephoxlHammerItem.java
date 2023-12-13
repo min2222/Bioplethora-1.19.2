@@ -117,7 +117,7 @@ public class CrephoxlHammerItem extends AxeItem {
                 ((ServerLevel)world).sendParticles(ParticleTypes.CLOUD, x, y + 1.2, z, 50, 3, 0.2, 3, 0);
             }
 
-            for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (7 / 2d), y - (3 / 2d), z - (7 / 2d), x + (4 / 2d), y + (4 / 2d), z + (4 / 2d)), null)) {
+            for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (7 / 2d), y - (3 / 2d), z - (7 / 2d), x + (4 / 2d), y + (4 / 2d), z + (4 / 2d)))) {
                 if (entityIterator instanceof LivingEntity && entityIterator != entity) {
                     entityIterator.hurt(DamageSource.mobAttack(entity), 9.0F);
                     entityIterator.setDeltaMovement((entity.getDeltaMovement().x()), 1, (entity.getDeltaMovement().z()));

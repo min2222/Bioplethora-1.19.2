@@ -48,6 +48,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import software.bernie.geckolib3.GeckoLib;
 
 @Mod(Bioplethora.MOD_ID)
@@ -84,6 +85,8 @@ public class Bioplethora {
         //BPSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         BPTileEntities.TILE_ENTITIES.register(bus);
         BPContainerTypes.CONTAINERS.register(bus);
+        BPConfig.loadConfig(BPConfig.COMMON_SPEC, FMLPaths.CONFIGDIR.get().resolve("bioplethora-common.toml").toString());
+        BPConfig.loadConfig(BPConfig.WORLDGEN_SPEC, FMLPaths.CONFIGDIR.get().resolve("bioplethora-worldgen.toml").toString());
 
         BPRecipes.registerRecipes(bus);
 
