@@ -64,7 +64,7 @@ public class Bioplethora {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
         bus.addListener(BPWoodTypes::registerWoodType);
-
+        
         /* final step of registering elements like Items, Entities, etc. */
 
         BPEntities.ENTITIES.register(bus);

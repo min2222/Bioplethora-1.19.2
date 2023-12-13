@@ -37,9 +37,9 @@ A minecraft mod that adds plenty of new content which mainly focuses on new crea
 	side="BOTH"
 
 [[dependencies.bioplethora]]
-	modId="fabric-biome-api"
+	modId="fabric_biome_api"
 	mandatory=true
-	versionRange="[2.0.4,)"
+	versionRange="[2.0.3,)"
 	ordering="AFTER"
 	side="BOTH"
 
