@@ -68,9 +68,9 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -509,8 +509,9 @@ public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IB
         }
     }
 
-    public static BlockPos getGroundPos(LevelReader pLevel, int pX, int pZ) {
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, pLevel.getMaxBuildHeight(), pZ);
+    public static BlockPos getGroundPos(BlockGetter pLevel, int pX, int pZ) {
+    	
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, pLevel.getHeight(), pZ);
         do {
             blockpos$mutable.move(Direction.DOWN);
         } while(pLevel.getBlockState(blockpos$mutable).isAir() && blockpos$mutable.getY() > 0);
