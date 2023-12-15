@@ -40,7 +40,7 @@ public class ExperimentalItem extends Item implements IReachWeapon {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity entity, LivingEntity source) {
-        for (int i = entity.level.getHeight(); i > entity.getY(); i--) {
+        for (int i = entity.level.getMaxBuildHeight(); i > entity.getY(); i--) {
             for (int c = 0; c < 90; c++) {
                 entity.level.addParticle(ParticleTypes.FLAME, entity.getX(), i, entity.getZ(), Math.sin(c), 0.01, Math.cos(c));
             }

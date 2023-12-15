@@ -511,10 +511,10 @@ public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IB
 
     public static BlockPos getGroundPos(BlockGetter pLevel, int pX, int pZ) {
     	
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, pLevel.getHeight(), pZ);
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos(pX, pLevel.getMaxBuildHeight(), pZ);
         do {
             blockpos$mutable.move(Direction.DOWN);
-        } while(pLevel.getBlockState(blockpos$mutable).isAir() && blockpos$mutable.getY() > 0);
+        } while(pLevel.getBlockState(blockpos$mutable).isAir() && blockpos$mutable.getY() > pLevel.getMinBuildHeight());
 
         BlockPos blockpos = blockpos$mutable.below();
         if (pLevel.getBlockState(blockpos).isPathfindable(pLevel, blockpos, PathComputationType.LAND)) {
