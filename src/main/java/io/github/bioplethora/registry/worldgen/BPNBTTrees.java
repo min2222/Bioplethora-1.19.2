@@ -18,7 +18,7 @@ public class BPNBTTrees {
 
         @Override
         protected ConfiguredFeature<?, ?> getTree(RandomSource random) {
-            return BPTreeConfiguredFeatures.CAERULWOOD_TREE_CONFIG;
+            return BPTreeConfiguredFeatures.CAERULWOOD_TREE_CONFIG.get();
         }
     }
 }
