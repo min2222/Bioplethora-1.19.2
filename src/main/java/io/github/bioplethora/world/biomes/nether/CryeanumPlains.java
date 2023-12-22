@@ -3,6 +3,8 @@ package io.github.bioplethora.world.biomes.nether;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
+import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
+import io.github.bioplethora.registry.worldgen.BPTreePlacedFeatures;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
@@ -61,6 +63,14 @@ public class CryeanumPlains {
         biomegenerationsettings$builder.addStructureStart(StructureFeatures.BASTION_REMNANT);*/
 
         biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
+
+        //need to use BuiltinRegistries.getHolderOrThrow, also resource key
+        /*biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_BELINE);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_IDE_FAN);*/
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.RED_TWI);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.PINK_TWI);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CRYEANUM_FOREST_TREES);
 
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, MiscOverworldPlacements.SPRING_LAVA);
         biomegenerationsettings$builder.addFeature(Decoration.LOCAL_MODIFICATIONS, NetherPlacements.BASALT_PILLAR);

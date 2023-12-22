@@ -24,8 +24,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 @SuppressWarnings("deprecation")
 public class BPTreePlacedFeatures {
 	
-	public static final Holder<PlacedFeature> ENIVILE_TREE = register("enivile_tree", BPTreeConfiguredFeatures.ENIVILE_TREE_CONFIG, ImmutableList.<PlacementModifier>builder().add(CountOnEveryLayerPlacement.of(2), BiomeFilter.biome()).build());
-	public static final Holder<PlacedFeature> CAERULWOOD_TREE = register("caerulwood_tree", BPTreeConfiguredFeatures.CAERULWOOD_TREE_CONFIG, 
+	public static final Holder<PlacedFeature> CRYEANUM_FOREST_TREES = register("enivile_tree", BPTreeConfiguredFeatures.ENIVILE_TREE_CONFIG, ImmutableList.<PlacementModifier>builder().add(CountOnEveryLayerPlacement.of(2), BiomeFilter.biome()).build());
+	public static final Holder<PlacedFeature> CAERI_FOREST_TREES = register("caerulwood_tree", BPTreeConfiguredFeatures.CAERULWOOD_TREE_CONFIG, 
 			ImmutableList.<PlacementModifier>builder().add(InSquarePlacement.spread(), BiomeFilter.biome(), 
 					CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(6), 85).add(ConstantInt.of(7), 15).build()))).build());
 	

@@ -18,11 +18,11 @@ public class BPTreeConfiguredFeatures {
 
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> ENIVILE_TREE_CONFIG = register("enivile_tree", BPFeatures.ENIVILE_TREE.get(), new NoneFeatureConfiguration());
     
-    public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> CRYEANUM_FOREST_TREES = register("cryeanum_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(BPTreePlacedFeatures.ENIVILE_TREE, 0.31333334F)), BPTreePlacedFeatures.ENIVILE_TREE));
+    public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> CRYEANUM_FOREST_TREES = register("cryeanum_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(BPTreePlacedFeatures.CRYEANUM_FOREST_TREES, 0.31333334F)), BPTreePlacedFeatures.CRYEANUM_FOREST_TREES));
     
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> CAERULWOOD_TREE_CONFIG = register("caerulwood_tree", BPFeatures.CAERULWOOD_TREE.get(), new NoneFeatureConfiguration());
     
-    public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> CAERI_FOREST_TREES = register("caeri_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(BPTreePlacedFeatures.CAERULWOOD_TREE, 0.6666667F)), BPTreePlacedFeatures.CAERULWOOD_TREE));
+    public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> CAERI_FOREST_TREES = register("caeri_forest_trees", Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(BPTreePlacedFeatures.CAERI_FOREST_TREES, 0.6666667F)), BPTreePlacedFeatures.CAERI_FOREST_TREES));
     
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String name, F feature, FC featureConfiguration) {
 		return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
