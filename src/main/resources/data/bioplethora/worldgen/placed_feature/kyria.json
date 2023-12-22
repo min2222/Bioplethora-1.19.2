@@ -1,0 +1,20 @@
+{
+  "feature": "bioplethora:kyria",
+  "placement": [
+    {
+      "type": "count",
+      "count": 18
+    },
+    {
+      "type": "count",
+      "count": 55
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

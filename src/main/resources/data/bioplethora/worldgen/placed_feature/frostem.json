@@ -1,0 +1,16 @@
+{
+  "feature": "bioplethora:frostem",
+  "placement": [
+    {
+      "type": "count",
+      "count": 48
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

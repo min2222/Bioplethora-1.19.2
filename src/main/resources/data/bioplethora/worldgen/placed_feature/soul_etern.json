@@ -1,0 +1,24 @@
+{
+  "feature": "bioplethora:soul_etern",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "absolute": 0
+        },
+        "max_inclusive": {
+          "absolute": 131
+        }
+      }
+    },
+    {
+      "type": "count",
+      "count": 125
+    }
+  ]
+}

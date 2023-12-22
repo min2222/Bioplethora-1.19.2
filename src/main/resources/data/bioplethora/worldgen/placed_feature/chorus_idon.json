@@ -1,0 +1,16 @@
+{
+  "feature": "bioplethora:chorus_idon",
+  "placement": [
+    {
+      "type": "count",
+      "count": 32
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "feature": "bioplethora:soul_bigshroom",
+  "placement": [
+    {
+      "type": "count",
+      "count": 12
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

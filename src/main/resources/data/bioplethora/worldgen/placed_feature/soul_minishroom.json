@@ -1,0 +1,16 @@
+{
+  "feature": "bioplethora:soul_minishroom",
+  "placement": [
+    {
+      "type": "count",
+      "count": 15
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

@@ -30,14 +30,13 @@ public class SingularBlockFeature extends Feature<BlockPileConfiguration> {
 
             if (state.getBlock() instanceof BPLanternPlantBlock) {
                 if (pos.getY() >= 55 && world.isEmptyBlock(pos) && world.isEmptyBlock(pos.above()) && world.isEmptyBlock(pos.above().above())) {
-                    ((BPLanternPlantBlock) state.getBlock()).placeAt(world, pos, 3);
+                    BPLanternPlantBlock.placeAt(world, (BPLanternPlantBlock) state.getBlock(), pos, 3);
                     return true;
                 } else {
                     return false;
                 }
             } else {
                 if (world.isEmptyBlock(pos) && world.isEmptyBlock(pos.above())) {
-                	//TODO need some tweak
                     DoublePlantBlock.placeAt(world, state, pos, 3);
                     return true;
                 } else {

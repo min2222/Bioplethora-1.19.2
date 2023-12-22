@@ -1,357 +1,81 @@
 package io.github.bioplethora.registry.worldgen;
 
+import java.util.Locale;
+
 import com.google.common.collect.ImmutableList;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
-import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
-import io.github.bioplethora.world.featureconfigs.ExpandedLakeFeatureConfig;
-import io.github.bioplethora.world.featureconfigs.FleignariteSplotchConfig;
 import io.github.bioplethora.world.featureconfigs.PendentBlocksFeatureConfig;
-import net.minecraft.core.Registry;
-import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.core.Holder;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
-import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
+//TODO CUSTOMIZED FEATURES not implemented yet
 public class BPConfiguredFeatures {
-	
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Bioplethora.MOD_ID);
-
-    //--------------------------------
-    //     TEMPLATED FEATURES
-    //--------------------------------
-
-    // Nether Mushrooms
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_MINISHROOM = register("soul_minishroom", makeNoProjectionDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_MINISHROOM.get(), 15
-    ));
-    
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_BIGSHROOM = register("soul_bigshroom", makeNoProjectionDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_BIGSHROOM.get(), 12
-    ));
-    
-    // Nether Grasses
-    public static final RegistryObject<ConfiguredFeature<?, ?>> KYRIA = register("kyria", makeDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.KYRIA.get(), 55
-    )/*.count(18)*/);
-    
-    public static final RegistryObject<ConfiguredFeature<?, ?>> KYRIA_BELINE = register("kyria_beline", makeNoProjectionClusterPlants(
-            Feature.RANDOM_PATCH, BPBlocks.KYRIA_BELINE.get()
-    //).count(19).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 5, 10))
-    ));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> KYRIA_IDE_FAN = register("kyria_ide_fan", makeNoProjectionClusterPlants(
-            Feature.RANDOM_PATCH, BPBlocks.KYRIA_IDE_FAN.get()
-    //).count(12).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 4, 7))
-    )/*.count(30)*/);
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_SPROUTS = register("soul_sprouts", makeDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_SPROUTS.get(), 26
-    ));
-    
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_TALL_GRASS = register("soul_tall_grass", makeNoProjectionClusterPlants(
-            Feature.RANDOM_PATCH, BPBlocks.SOUL_TALL_GRASS.get()
-    //).count(22).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 5, 10))
-    ));
-    
-    // Other Nether Plants
-    public static final RegistryObject<ConfiguredFeature<?, ?>> LAVA_SPIRE = register("lava_spire", makeDecoratedClusterPlants(
-            BPFeatures.LAVA_EDGE_CLUSTER.get(), BPBlocks.LAVA_SPIRE.get(), 19
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> WARPED_DANCER = register("warped_dancer", makeDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.SOUL_SPROUTS.get(), 15
-    ));
-
-    // Nether Vines
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SPIRIT_DANGLER = register("spirit_dangler", makePendentConfig(
-            Blocks.SOUL_SOIL, BPBlocks.SPIRIT_DANGLER_PLANT.get(), BPBlocks.SPIRIT_DANGLER.get(),
-            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            1, 8, 132, 115
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> RED_TWI = register("red_twi", makePendentConfig(
-            BPBlocks.ENIVILE_LEAVES_RED.get(), BPBlocks.RED_TWI_PLANT.get(), BPBlocks.RED_TWI.get(),
-            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            1, 8, 120, 105
-    ));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> PINK_TWI = register("pink_twi", makePendentConfig(
-            BPBlocks.ENIVILE_LEAVES_PINK.get(), BPBlocks.PINK_TWI_PLANT.get(), BPBlocks.PINK_TWI.get(),
-            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            1, 6, 132, 115
-    ));
-    
-    // Nether Fruitable Vines
-    public static final RegistryObject<ConfiguredFeature<?, ?>> BASALT_SPELEOTHERM = register("basalt_speleotherm", makeFruitablePendentConfig(
-            Blocks.BASALT, BPBlocks.BASALT_SPELEOTHERM_PLANT.get(), BPBlocks.FIERY_BASALT_SPELEOTHERM.get(), BPBlocks.BASALT_SPELEOTHERM.get(),
-            ImmutableList.of(Blocks.BASALT, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            1, 8, 132, 115
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> THONTUS_THISTLE = register("thontus_thistle", makeFruitablePendentConfig(
-            Blocks.NETHERRACK, BPBlocks.THONTUS_THISTLE_PLANT.get(), BPBlocks.BERRIED_THONTUS_THISTLE.get(), BPBlocks.THONTUS_THISTLE.get(),
-            ImmutableList.of(Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            2, 10, 132, 125
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> TURQUOISE_PENDENT = register("turquoise_pendent", makeFruitablePendentConfig(
-            Blocks.WARPED_WART_BLOCK, BPBlocks.TURQUOISE_PENDENT_PLANT.get(), BPBlocks.BLOSSOMING_TURQUOISE_PENDENT.get(), BPBlocks.TURQUOISE_PENDENT.get(),
-            ImmutableList.of(Blocks.WARPED_WART_BLOCK, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            2, 8, 132, 122
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> CERISE_IVY = register("cerise_ivy", makeFruitablePendentConfig(
-            Blocks.NETHER_WART_BLOCK, BPBlocks.CERISE_IVY_PLANT.get(), BPBlocks.SEEDED_CERISE_IVY.get(), BPBlocks.CERISE_IVY.get(),
-            ImmutableList.of(Blocks.NETHER_WART_BLOCK, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            1, 8, 132, 122
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_ETERN = register("soul_etern", makeFruitablePendentConfig(
-            Blocks.SOUL_SOIL, BPBlocks.SOUL_ETERN_PLANT.get(), BPBlocks.FLOURISHED_SOUL_ETERN.get(), BPBlocks.SOUL_ETERN.get(),
-            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
-            2, 10, 132, 125
-    ));
-    
-    // End Plants
-    public static final RegistryObject<ConfiguredFeature<?, ?>> IRION_GRASS = register("irion_grass", makeDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.IRION_GRASS.get(), 32
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> IRION_TALL_GRASS = register("irion_tall_grass", makeNoProjectionClusterPlants(
-            Feature.RANDOM_PATCH, BPBlocks.IRION_TALL_GRASS.get()
-    //).count(13).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 5, 10))
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> CHORUS_IDON = register("chorus_idon", makeDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.CHORUS_IDON.get(), 32
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> CHORUS_IDE_FAN = register("chorus_ide_fan", makeNoProjectionClusterPlants(
-            Feature.RANDOM_PATCH, BPBlocks.CHORUS_IDE_FAN.get()
-    //).count(12).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 4, 7))
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> ARTAIRIUS = register("artairius", makeNoProjectionClusterPlants(
-            Feature.RANDOM_PATCH, BPBlocks.ARTAIRIUS.get()
-    //).count(8).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE).decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 5, 10))
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> FROSTEM = register("frostem", makeDecoratedClusterPlants(
-            new RandomPatchFeature(RandomPatchConfiguration.CODEC), BPBlocks.FROSTEM.get(), 48
-    ));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> SPINXELTHORN = register("spinxelthorn", makePendentConfig(
-            Blocks.END_STONE, BPBlocks.SPINXELTHORN_PLANT.get(), BPBlocks.SPINXELTHORN.get(),
-            ImmutableList.of(Blocks.END_STONE),
-            1, 8, 156, 132
-    ));
-    
-    public static final RegistryObject<ConfiguredFeature<?, ?>> GLACYNTH = register("glacynth", makePendentConfig(
+		
+	public static final Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> GLACYNTH = makePendentConfig("glacynth", 
             Blocks.ICE, BPBlocks.GLACYNTH_PLANT.get(), BPBlocks.GLACYNTH.get(),
             ImmutableList.of(Blocks.ICE, Blocks.BLUE_ICE, Blocks.PACKED_ICE, Blocks.FROSTED_ICE),
-            3, 9, 132, 115
-    ));
+            3, 9);
+	
+	public static final Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> PINK_TWI = makePendentConfig("pink_twi", 
+            BPBlocks.ENIVILE_LEAVES_PINK.get(), BPBlocks.PINK_TWI_PLANT.get(), BPBlocks.PINK_TWI.get(),
+            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            1, 6);
+	
+    public static final Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> RED_TWI = makePendentConfig("red_twi", 
+            BPBlocks.ENIVILE_LEAVES_RED.get(), BPBlocks.RED_TWI_PLANT.get(), BPBlocks.RED_TWI.get(),
+            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            1, 8);
     
-    //--------------------------------------
-    //    CUSTOMIZED FEATURES
-    //--------------------------------------
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> FLEIGNARITE_REMAINS = register("fleignarite_remains", new ConfiguredFeature<>(BPFeatures.FLEIGNARITE_PATCH.get(), 
-    		new FleignariteSplotchConfig(BPBlocks.FLEIGNARITE_REMAINS.get().defaultBlockState(),
-                    BPBlocks.FLEIGNARITE_SPLOTCH.get().defaultBlockState(),
-                    BPVanillaBiomeFeatureGeneration.stoneBlockstates(),
-                    ImmutableList.of(Blocks.CAVE_AIR.defaultBlockState(), Blocks.AIR.defaultBlockState()),
-                    ImmutableList.of(Blocks.CAVE_AIR.defaultBlockState(), Blocks.AIR.defaultBlockState()))/*)
-
-            .decorated(Placement.CARVING_MASK.configured(new CaveEdgeConfig(GenerationStage.Carving.AIR, 0.1F))
-                    .count(FeatureSpread.of(14, 27))
-            */));
-
-    public static final RegistryObject<ConfiguredFeature<?, ?>> FLEIGNARITE_VINES = register("fleignarite_vines", new ConfiguredFeature<>(BPFeatures.PENDENT_FLEIGNARITE.get(),
-            new PendentBlocksFeatureConfig.Builder()
-                    .setTopBlock(Blocks.STONE).setMiddleBlock(BPBlocks.FLEIGNARITE_VINES_PLANT.get())
-                    .setFruitedBlock(BPBlocks.FLEIGNARITE_VINES_PLANT.get()).setEndBlock(BPBlocks.FLEIGNARITE_VINES.get().defaultBlockState().setValue(GrowingPlantHeadBlock.AGE, 23))
-                    .setWhitelist(BPVanillaBiomeFeatureGeneration.stoneBlocks())
-                    .setMinLength(1)
-                    .setMaxLength(2)
-                    .build())
-            /*.range(128).squared().count(512)*/);
+    public static final Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> SPINXELTHORN = makePendentConfig("spinxelthorn", 
+            Blocks.END_STONE, BPBlocks.SPINXELTHORN_PLANT.get(), BPBlocks.SPINXELTHORN.get(),
+            ImmutableList.of(Blocks.END_STONE),
+            1, 8);
     
-    // End Plants
-    public static final RegistryObject<ConfiguredFeature<?, ?>> CYRA_LAKE = register("cyra_lake", new ConfiguredFeature<>(BPFeatures.EXPANDED_LAKE.get(),
-    		new ExpandedLakeFeatureConfig.Builder()
-                    .setLiquid(Blocks.WATER.defaultBlockState())
-                    .setSides(BPBlocks.CYRA.get().defaultBlockState())
-                    .setBase(Blocks.OBSIDIAN.defaultBlockState())
-                    .build())
-    		/*.range(BPConfig.WORLDGEN.cyraLakesEndAmount.get()).squared().count(1)*/);
-
-    //TODO lazy moment
-    /*public static final ConfiguredFeature<?, ?> BYRSS_LANTERN_PLANT = register("byrss_lantern_plant", BPFeatures.SINGULAR_BLOCK.get()
-            .configured(new RandomPatchConfiguration(SimpleStateProvider.simple(BPBlocks.BYRSS_LANTERN_PLANT.get().defaultBlockState()), new DoublePlantBlockPlacer()).build())
-            .decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
-            ));
-    public static final ConfiguredFeature<?, ?> BYRSS_LANTERN_PLANT_PATCH = register("byrss_lantern_plant_patch", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(BYRSS_LANTERN_PLANT.weighted(0.4222667F)), BYRSS_LANTERN_PLANT))
-            .range(55).squared().count(2)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(2, 0.025F, 1))
-            ));
-    public static final ConfiguredFeature<?, ?> BYRSS_LANTERN_FOREST_PATCH = register("byrss_lantern_forest_patch", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(BYRSS_LANTERN_PLANT.weighted(0.4446667F)), BYRSS_LANTERN_PLANT))
-            .range(60).squared().count(5)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(2, 0.0175F, 1))
-            ));
-
-    public static final ConfiguredFeature<?, ?> END_LAND_SPONGE_PATCH_ML = register("end_land_sponge_patch_ml", BPFeatures.END_LAND_SPONGE.get()
-            .configured(new BasaltDeltasFeature(Blocks.WATER.defaultBlockState(), BPBlocks.ENDURION.get().defaultBlockState(),
-                    FeatureSpread.of(5, 15), FeatureSpread.of(2, 4)))
-            .decorated(Placement.COUNT_MULTILAYER.configured(new FeatureSpreadConfig(50))
-            ));
-    public static final ConfiguredFeature<?, ?> END_LAND_SPONGE_PATCH_HL = register("end_land_sponge_patch_hl", BPFeatures.END_LAND_SPONGE.get()
-            .configured(new BasaltDeltasFeature(Blocks.WATER.defaultBlockState(), BPBlocks.ENDURION.get().defaultBlockState(),
-                    FeatureSpread.of(7, 19), FeatureSpread.of(3, 6)))
-            .decorated(Placement.COUNT_MULTILAYER.configured(new FeatureSpreadConfig(40))
-            ));
-
-    public static final ConfiguredFeature<?, ?> CAERI_CAVERN = register("caeri_cavern",
-            BPFeatures.CAERI_CAVERN.get().configured(new NoneFeatureConfiguration()).range(7).squared().count(1)
-                    .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.015F, 1))
-                    ));
-
-    public static final ConfiguredFeature<?, ?> CHORUS_MYCHRODEGIA = register("chorus_plant", BPFeatures.CHORUS_MYCHRODEGIA.get().configured(IFeatureConfig.NONE).decorated(Features.Placements.HEIGHTMAP_SQUARE).countRandom(1));
-
-    public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_HL = register("end_land_spike_hl", BPFeatures.END_LAND_SPIKE.get()
-            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
-            ));
-    public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_PATCH_HL = register("end_land_spike_patch_hl", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(END_LAND_SPIKE_HL.weighted(0.4446667F)), END_LAND_SPIKE_HL))
-            .range(BPConfig.WORLDGEN.endSpikeHighlandsAmount.get()).squared().count(5)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(2, 0.15F, 1))
-            ));
-
-    public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_ML = register("end_land_spike_ml", BPFeatures.END_LAND_SPIKE.get()
-            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
-            ));
-    public static final ConfiguredFeature<?, ?> END_LAND_SPIKE_PATCH_ML = register("end_land_spike_patch_ml", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(END_LAND_SPIKE_ML.weighted(0.4446667F)), END_LAND_SPIKE_ML))
-            .range(BPConfig.WORLDGEN.endSpikeMidlandsAmount.get()).squared().count(1)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.45F, 0))
-            ));
-
-    public static final ConfiguredFeature<?, ?> CHORUS_LANTERN_PLANT = register("chorus_lantern_plant", BPFeatures.SINGULAR_BLOCK.get()
-            .configured(new RandomPatchConfiguration(SimpleStateProvider.simple(BPBlocks.CHORUS_LANTERN_PLANT.get().defaultBlockState()), new DoublePlantBlockPlacer()).build())
-            .decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
-            ));
-    public static final ConfiguredFeature<?, ?> CHORUS_LANTERN_HIGHLANDS_PATCH = register("chorus_lantern_highlands_patch", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(CHORUS_LANTERN_PLANT.weighted(0.4022667F)), CHORUS_LANTERN_PLANT))
-            .range(BPConfig.WORLDGEN.chorusLanternHighlandsAmount.get()).squared().count(2)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.035F, 1))
-            ));
-    public static final ConfiguredFeature<?, ?> CHORUS_LANTERN_MIDLANDS_PATCH = register("chorus_lantern_midlands_patch", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(CHORUS_LANTERN_PLANT.weighted(0.4224447F)), CHORUS_LANTERN_PLANT))
-            .range(BPConfig.WORLDGEN.chorusLanternMidlandsAmount.get()).squared().count(1)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.035F, 1))
-            ));
-
-    public static final ConfiguredFeature<?, ?> ENREDE_KELP = register("enrede_kelp",
-            BPFeatures.ENREDE_KELP.get().configured(IFeatureConfig.NONE).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP).squared()
-                    .decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 5, 10)).count(8)
-                    )
-    );
-
-    public static final ConfiguredFeature<?, ?> CELESTIA_BUD = register("celestia_bud",
-            BPFeatures.CELESTIA_BUD.get().configured(IFeatureConfig.NONE).count(128).decorated(Features.Placements.HEIGHTMAP_DOUBLE_SQUARE)
-                    .decorated(Placement.COUNT_NOISE.configured(new NoiseDependant(-0.8D, 4, 8)).count(6)
-                    )
-    );
-
-    public static final ConfiguredFeature<?, ?> ENREDE_CORSASCILE = register("enrede_corsascile",
-            BPFeatures.CORSASCILE.get().configured(new ProbabilityConfig(0.3F)).count(80).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE)
-    );
-    public static final ConfiguredFeature<?, ?> OCHAIM_PURPLE = register("ochaim_purple",
-            BPFeatures.WATER_PLANT.get().configured(new BlockStateFeatureConfig(BPBlocks.OCHAIM_PURPLE.get().defaultBlockState())).count(50).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE)
-    );
-    public static final ConfiguredFeature<?, ?> OCHAIM_RED = register("ochaim_red",
-            BPFeatures.WATER_PLANT.get().configured(new BlockStateFeatureConfig(BPBlocks.OCHAIM_RED.get().defaultBlockState())).count(50).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE)
-    );
-    public static final ConfiguredFeature<?, ?> OCHAIM_GREEN = register("ochaim_green",
-            BPFeatures.WATER_PLANT.get().configured(new BlockStateFeatureConfig(BPBlocks.OCHAIM_GREEN.get().defaultBlockState())).count(50).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE)
-    );
-
-    public static final ConfiguredFeature<?, ?> END_ISLANDS_ICICLE = register("end_islands_icicle", BPFeatures.END_ICICLE.get()
-            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
-            ));
-    public static final ConfiguredFeature<?, ?> END_ISLANDS_ICICLE_PATCH = register("end_islands_icicle_patch", Feature.RANDOM_SELECTOR
-            .configured(new MultipleRandomFeatureConfig(ImmutableList.of(END_ISLANDS_ICICLE.weighted(0.2224447F)), END_ISLANDS_ICICLE))
-            .range(BPConfig.WORLDGEN.endIcicleIslandsAmount.get()).squared().count(2)
-            .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(2, 0.035F, 1))
-            ));
-
-    public static final ConfiguredFeature<?, ?> END_FROZEN_ISLAND = register("end_frozen_island", BPFeatures.END_FROZEN_ISLAND.get()
-            .configured(new NoneFeatureConfiguration()).decorated(Placement.NOPE.configured(IPlacementConfig.NONE)
-            ));
-    public static final ConfiguredFeature<?, ?> END_FROZEN_ISLAND_DECORATED = register("end_frozen_island_decorated",
-            END_FROZEN_ISLAND.range(BPConfig.WORLDGEN.endFrozenIslandsAmount.get()).squared().count(1)
-                    .decorated(Placement.COUNT_EXTRA.configured(new AtSurfaceWithExtraConfig(1, 0.015F, 1))
-                    ));*/
-
-    //---------------------------
-    //   FEATURE HELPERS
-    //---------------------------
-
-    public static ConfiguredFeature<?, ?> makePendentConfig(Block top, Block middle, Block end, ImmutableList<Block> whitelist, int minLength, int maxLength, int range, int count) {
-        //.range(range) place feature, see @OrePlacements#commonOrePlacement
-    	//.squared() = placed feature, InSquarePlacement.spread();
-    	//.count(count); placed feature, CountPlacement.of see @OrePlacements#commonOrePlacement
-    	
-        return new ConfiguredFeature<PendentBlocksFeatureConfig, Feature<PendentBlocksFeatureConfig>>(BPFeatures.PENDENT_BLOCKS.get(), new PendentBlocksFeatureConfig.Builder()
+    public static final Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> SPIRIT_DANGLER = makePendentConfig("spirit_dangler", 
+            Blocks.SOUL_SOIL, BPBlocks.SPIRIT_DANGLER_PLANT.get(), BPBlocks.SPIRIT_DANGLER.get(),
+            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            1, 8);
+    
+    public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> LAVA_SPIRE = register("lava_spire", BPFeatures.LAVA_EDGE_CLUSTER.get(), new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.LAVA_SPIRE.get())))));
+	
+	public static Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> makePendentConfig(String name, Block top, Block middle, Block end, ImmutableList<Block> whitelist, int minLength, int maxLength) {
+		return register(name, BPFeatures.PENDENT_BLOCKS.get(), new PendentBlocksFeatureConfig.Builder()
                 .setTopBlock(top).setMiddleBlock(middle)
                 .setFruitedBlock(middle).setEndBlock(end.defaultBlockState().setValue(GrowingPlantHeadBlock.AGE, 23))
                 .setWhitelist(whitelist)
                 .setMinLength(minLength)
                 .setMaxLength(maxLength)
                 .build());
-    }
-
-    public static ConfiguredFeature<?, ?> makeFruitablePendentConfig(Block top, Block middle, Block fruited, Block end, ImmutableList<Block> whitelist, int minLength, int maxLength, int range, int count) {
-        return new ConfiguredFeature<PendentBlocksFeatureConfig, Feature<PendentBlocksFeatureConfig>>(BPFeatures.PENDENT_BLOCKS.get(), new PendentBlocksFeatureConfig.Builder()
+	}
+	
+	public static Holder<ConfiguredFeature<PendentBlocksFeatureConfig, ?>> makeFruitablePendentConfig(String name, Block top, Block middle, Block fruited, Block end, ImmutableList<Block> whitelist, int minLength, int maxLength) {
+		return register(name, BPFeatures.PENDENT_BLOCKS.get(), new PendentBlocksFeatureConfig.Builder()
                 .setTopBlock(top).setMiddleBlock(middle)
                 .setFruitedBlock(fruited).setEndBlock(end.defaultBlockState().setValue(GrowingPlantHeadBlock.AGE, 23))
                 .setWhitelist(whitelist)
                 .setMinLength(minLength)
                 .setMaxLength(maxLength)
                 .build());
-    }
-    
-    private static RegistryObject<ConfiguredFeature<?, ?>> register(String pId, ConfiguredFeature<?, ?> pConfiguredFeature) {
-        return CONFIGURED_FEATURES.register(pId, () -> pConfiguredFeature);
-    }
-
-    public static ConfiguredFeature<?, ?> makeClusterPlants(Feature<RandomPatchConfiguration> feature, Block block) {
-        return new ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>>(Feature.RANDOM_PATCH, FeatureUtils.simpleRandomPatchConfiguration(64, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(SimpleStateProvider.simple(block)))));
-    }
-
-    public static ConfiguredFeature<?, ?> makeNoProjectionClusterPlants(Feature<RandomPatchConfiguration> feature, Block block) {
-    	//noProjection removed
-    	return new ConfiguredFeature<RandomPatchConfiguration, Feature<RandomPatchConfiguration>>(Feature.RANDOM_PATCH, FeatureUtils.simpleRandomPatchConfiguration(64, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(SimpleStateProvider.simple(block)))));
-    }
-
-    public static ConfiguredFeature<?, ?> makeDecoratedClusterPlants(Feature<RandomPatchConfiguration> feature, Block block, int count) {
-    	//TODO placed feature i think?
-        return makeClusterPlants(feature, block);//.decorated(Features.Placements.ADD_32).decorated(PlacementUtils.HEIGHTMAP).count(count);
-    }
-
-    public static ConfiguredFeature<?, ?> makeNoProjectionDecoratedClusterPlants(Feature<RandomPatchConfiguration> feature, Block block, int count) {
-    	//TODO placed feature i think?
-        return makeNoProjectionClusterPlants(feature, block);//.decorated(Features.Placements.ADD_32).decorated(PlacementUtils.HEIGHTMAP).count(count);
-    }
+	}
+	
+	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String name, F feature, FC featureConfiguration) {
+		return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
+	}
+	
+	public static ResourceLocation prefix(String name) {
+		return new ResourceLocation(Bioplethora.MOD_ID, name.toLowerCase(Locale.ROOT));
+	}
 }

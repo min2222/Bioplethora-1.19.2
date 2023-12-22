@@ -29,6 +29,7 @@ public class BPStructures {
 	
     public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Bioplethora.MOD_ID);
     public static final DeferredRegister<StructureSet> STRUCTURES_SET = DeferredRegister.create(Registry.STRUCTURE_SET_REGISTRY, Bioplethora.MOD_ID);
+    public static final TagKey<Structure> ALPHANUM_MAUSOLEUM_TAG = create("alphanum_mausoleum");
     
 	public static final Holder<Structure> ALPHANUM_MAUSOLEUM = register(ResourceKey.create(Registry.STRUCTURE_REGISTRY, ALPHANUM_MAUSOLEUM_LOCATION), new AlphanumMausoleumStructure(new StructureSettings(BuiltinRegistries.BIOME.getOrCreateTag(tag("mausoleum")), Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE)));
 	public static final Holder<StructureSet> ALPHANUM_MAUSOLEUM_SETS = register(ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, ALPHANUM_MAUSOLEUM_LOCATION), new StructureSet(ALPHANUM_MAUSOLEUM, new RandomSpreadStructurePlacement(230, 30, RandomSpreadType.LINEAR, 1234567890)));
@@ -49,4 +50,9 @@ public class BPStructures {
     {
         return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, name));
     }
+    
+    private static TagKey<Structure> create(String name) 
+    {
+        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, name));
+     }
 }

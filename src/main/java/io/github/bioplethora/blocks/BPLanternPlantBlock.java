@@ -88,12 +88,10 @@ public class BPLanternPlantBlock extends DoublePlantBlock {
         pLevel.setBlock(pPos.below(), this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER), 3);
     }
     
-    //TODO static method can not be overriden
-    //@Override
-    public void placeAt(LevelAccessor p_196390_1_, BlockPos p_196390_2_, int p_196390_3_) {
-        p_196390_1_.setBlock(p_196390_2_, this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER), p_196390_3_);
-        p_196390_1_.setBlock(p_196390_2_.above(), this.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER), p_196390_3_);
-        p_196390_1_.setBlock(p_196390_2_.above().above(), this.fruit.defaultBlockState(), p_196390_3_);
+    public static void placeAt(LevelAccessor p_196390_1_, BPLanternPlantBlock block, BlockPos p_196390_2_, int p_196390_3_) {
+        p_196390_1_.setBlock(p_196390_2_, block.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER), p_196390_3_);
+        p_196390_1_.setBlock(p_196390_2_.above(), block.defaultBlockState().setValue(HALF, DoubleBlockHalf.UPPER), p_196390_3_);
+        p_196390_1_.setBlock(p_196390_2_.above().above(), block.fruit.defaultBlockState(), p_196390_3_);
     }
 
     @Override

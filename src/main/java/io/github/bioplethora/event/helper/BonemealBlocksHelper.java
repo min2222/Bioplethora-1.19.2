@@ -3,6 +3,7 @@ package io.github.bioplethora.event.helper;
 import com.google.common.collect.ImmutableList;
 
 import io.github.bioplethora.api.world.EntityUtils;
+import io.github.bioplethora.blocks.BPLanternPlantBlock;
 import io.github.bioplethora.blocks.SmallMushroomBlock;
 import io.github.bioplethora.registry.BPBlocks;
 import net.minecraft.core.BlockPos;
@@ -55,10 +56,13 @@ public class BonemealBlocksHelper {
 
                 if (pLevel.getBlockState(targetPos).isAir()) {
                     if (blockList.contains(pLevel.getBlockState(targetPos.below()).getBlock())) {
-                        if (blockSelector.getBlock() instanceof DoublePlantBlock) {
-                        	//TODO need some tweaks, because static method can not be overriden
-                            DoublePlantBlock.placeAt(pLevel, state, targetPos, 2);
-
+                        if (blockSelector.getBlock() instanceof DoublePlantBlock plant) {
+                        	if(plant instanceof BPLanternPlantBlock bpPlant) {
+                        		BPLanternPlantBlock.placeAt(pLevel, bpPlant, targetPos, 2);
+                        	}
+                        	else {
+                                DoublePlantBlock.placeAt(pLevel, state, targetPos, 2);
+                        	}
                         } else pLevel.setBlock(targetPos, blockSelector, 2);
                     }
                 }
