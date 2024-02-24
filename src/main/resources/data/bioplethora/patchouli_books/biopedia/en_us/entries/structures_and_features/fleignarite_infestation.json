@@ -1,7 +1,7 @@
 {
   "name": "Fleignarite Infestation",
   "icon": "bioplethora:fleignarite_splotch",
-  "category": "structures_and_features",
+  "category": "bioplethora:structures_and_features",
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,7 @@
 {
   "name": "Totem of Swerving",
   "icon": "bioplethora:totem_of_swerving",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

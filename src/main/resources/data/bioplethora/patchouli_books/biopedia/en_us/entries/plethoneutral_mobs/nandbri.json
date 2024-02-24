@@ -1,7 +1,7 @@
 {
   "name": "Nandbri",
   "icon": "bioplethora:nandbri_spawn_egg",
-  "category": "plethoneutral_mobs",
+  "category": "bioplethora:plethoneutral_mobs",
   "pages": [
     {
       "type": "patchouli:text",

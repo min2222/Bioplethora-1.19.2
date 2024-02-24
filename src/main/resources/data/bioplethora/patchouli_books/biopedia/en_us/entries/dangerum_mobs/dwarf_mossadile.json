@@ -1,7 +1,7 @@
 {
   "name": "Dwarf Mossadile",
   "icon": "bioplethora:dwarf_mossadile_spawn_egg",
-  "category": "dangerum_mobs",
+  "category": "bioplethora:dangerum_mobs",
   "pages": [
     {
       "type": "patchouli:text",

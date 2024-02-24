@@ -1,7 +1,7 @@
 {
   "name": "Nucleus Awakening",
   "icon": "bioplethora:alphanum_nucleus",
-  "category": "others",
+  "category": "bioplethora:others",
   "pages": [
     {
       "type": "patchouli:text",

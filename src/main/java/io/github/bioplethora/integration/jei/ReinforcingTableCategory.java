@@ -1,9 +1,24 @@
 package io.github.bioplethora.integration.jei;
 
-//TODO
-/*public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingRecipe> {
+import io.github.bioplethora.Bioplethora;
+import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
+import io.github.bioplethora.registry.BPBlocks;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
-    public static final ResourceLocation CATEGORY_ID = new ResourceLocation(BPRecipes.REINFORCING.toString());
+public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingRecipe> {
+
+    public static final mezz.jei.api.recipe.RecipeType<ReinforcingRecipe> CATEGORY_ID = mezz.jei.api.recipe.RecipeType.create(Bioplethora.MOD_ID, "reinforcing", ReinforcingRecipe.class);
     private IDrawable categoryIcon;
     private IDrawable categoryBackground;
 
@@ -30,28 +45,19 @@ package io.github.bioplethora.integration.jei;
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder recipeLayout, ReinforcingRecipe recipe, IFocusGroup ingredients) {
-
-        IGuiItemStackGroup recipeStacks = recipeLayout.getItemStacks();
-
-        recipeStacks.init(0, true, 43, 13);
-        recipeStacks.init(1, true, 43, 33);
-        recipeStacks.init(2, true, 43, 52);
-
-        recipeStacks.init(3, false, 126, 33);
-        recipeStacks.set(3, recipe.getResult());
-
-        List<List<ItemStack>> inputs = recipeLayout.getInputs(VanillaTypes.ITEM_STACK);
-        List<ItemStack> input;
-        for (int i = 0; i <= 2; i++) {
-            input = inputs.get(i);
-            if (input != null && !input.isEmpty()) {
-                recipeStacks.set(i, input);
-            }
-        }
+    	IRecipeSlotBuilder intputSlot = recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 13);
+    	IRecipeSlotBuilder intputSlot2 = recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 33);
+    	IRecipeSlotBuilder intputSlot3 = recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 52);
+    	IRecipeSlotBuilder outputSlot = recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 126, 33);
+    	//TODO
+    	/*intputSlot.addIngredient(VanillaTypes.ITEM_STACK, recipe.getIngredients().get(0).getItems()[0]);
+    	intputSlot2.addIngredient(VanillaTypes.ITEM_STACK, recipe.getIngredients().get(1).getItems()[0]);
+    	intputSlot3.addIngredient(VanillaTypes.ITEM_STACK, recipe.getIngredients().get(2).getItems()[0]);*/
+        outputSlot.addIngredient(VanillaTypes.ITEM_STACK, recipe.getResult());
     }
 
 	@Override
 	public RecipeType<ReinforcingRecipe> getRecipeType() {
-		return null;
+		return CATEGORY_ID;
 	}
-}*/
+}

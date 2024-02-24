@@ -1,7 +1,7 @@
 {
   "name": "Altyrus",
   "icon": "bioplethora:altyrus_spawn_egg",
-  "category": "elderia_mobs",
+  "category": "bioplethora:elderia_mobs",
   "pages": [
     {
       "type": "patchouli:text",

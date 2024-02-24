@@ -1,7 +1,7 @@
 {
   "name": "Frostbite Metal Shield",
   "icon": "bioplethora:frostbite_metal_shield",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

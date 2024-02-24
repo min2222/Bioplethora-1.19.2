@@ -1,7 +1,7 @@
 {
   "name": "Crephoxl",
   "icon": "bioplethora:crephoxl_spawn_egg",
-  "category": "hellsent_mobs",
+  "category": "bioplethora:hellsent_mobs",
   "pages": [
     {
       "type": "patchouli:text",

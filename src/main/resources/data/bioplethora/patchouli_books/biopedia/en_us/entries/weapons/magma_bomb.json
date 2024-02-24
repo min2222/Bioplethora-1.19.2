@@ -1,7 +1,7 @@
 {
   "name": "Magma Bomb",
   "icon": "bioplethora:magma_bomb",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

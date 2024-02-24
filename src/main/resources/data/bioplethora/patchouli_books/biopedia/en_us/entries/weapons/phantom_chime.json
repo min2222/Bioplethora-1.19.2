@@ -1,7 +1,7 @@
 {
   "name": "Phantom Chime",
   "icon": "bioplethora:phantom_chime",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

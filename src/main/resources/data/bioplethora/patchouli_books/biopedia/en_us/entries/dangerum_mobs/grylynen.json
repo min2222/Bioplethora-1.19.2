@@ -1,7 +1,7 @@
 {
   "name": "Grylynen",
   "icon": "bioplethora:iron_grylynen_spawn_egg",
-  "category": "dangerum_mobs",
+  "category": "bioplethora:dangerum_mobs",
   "pages": [
     {
       "type": "patchouli:text",

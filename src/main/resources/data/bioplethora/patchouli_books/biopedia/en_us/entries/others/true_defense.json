@@ -1,7 +1,7 @@
 {
   "name": "True Defense",
   "icon": "bioplethora:textures/particle/true_defense_clash.png",
-  "category": "others",
+  "category": "bioplethora:others",
   "pages": [
     {
       "type": "patchouli:text",

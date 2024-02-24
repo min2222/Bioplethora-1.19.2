@@ -1,7 +1,7 @@
 {
   "name": "The Altyrus Altar",
   "icon": "bioplethora:frostbite_metal_core_block",
-  "category": "others",
+  "category": "bioplethora:others",
   "pages": [
     {
       "type": "patchouli:text",

@@ -1,7 +1,7 @@
 {
   "name": "Alphem King",
   "icon": "bioplethora:alphem_king_spawn_egg",
-  "category": "elderia_mobs",
+  "category": "bioplethora:elderia_mobs",
   "pages": [
     {
       "type": "patchouli:text",

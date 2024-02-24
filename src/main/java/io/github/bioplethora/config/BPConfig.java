@@ -35,5 +35,5 @@ public class BPConfig {
     }
 
     //FIXME crash on start
-    public static final boolean IN_HELLMODE = false; //BPConfig.COMMON.hellMode.get();;
+    public static final boolean IN_HELLMODE = false; //BPConfig.COMMON.hellMode.get();
 }

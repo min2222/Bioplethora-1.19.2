@@ -1,7 +1,7 @@
 {
   "name": "Spirit Fission Charm",
   "icon": "bioplethora:spirit_fission_charm",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

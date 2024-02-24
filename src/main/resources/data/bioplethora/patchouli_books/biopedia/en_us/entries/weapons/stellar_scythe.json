@@ -1,7 +1,7 @@
 {
   "name": "Stellar Scythe",
   "icon": "bioplethora:stellar_scythe",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

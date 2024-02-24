@@ -1,7 +1,7 @@
 {
   "name": "Cuttlefish",
   "icon": "bioplethora:cuttlefish_spawn_egg",
-  "category": "ecoharmless_mobs",
+  "category": "bioplethora:ecoharmless_mobs",
   "pages": [
     {
       "type": "patchouli:text",

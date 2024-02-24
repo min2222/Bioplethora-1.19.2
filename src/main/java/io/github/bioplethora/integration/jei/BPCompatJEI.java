@@ -1,9 +1,10 @@
 package io.github.bioplethora.integration.jei;
-//TODO
-/*import io.github.bioplethora.Bioplethora;
+
+import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.gui.container.ReinforcingTableContainer;
 import io.github.bioplethora.gui.screen.ReinforcingTableScreen;
 import io.github.bioplethora.registry.BPBlocks;
+import io.github.bioplethora.registry.BPContainerTypes;
 import io.github.bioplethora.registry.BPRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -16,6 +17,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,19 +31,19 @@ public class BPCompatJEI implements IModPlugin {
     }
 
     private void addDescription(IRecipeRegistration registry, ItemStack itemStack) {
-        registry.addIngredientInfo(itemStack, VanillaTypes.ITEM_STACK, itemStack.getDescriptionId() + ".jei_desc");
+        registry.addIngredientInfo(itemStack, VanillaTypes.ITEM_STACK, Component.translatable(itemStack.getDescriptionId() + ".jei_desc"));
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registry) {
-        registry.addRecipeTransferHandler(ReinforcingTableContainer.class, ReinforcingTableCategory.CATEGORY_ID, 0, 3, 4, inventorySize);
+        registry.addRecipeTransferHandler(ReinforcingTableContainer.class, BPContainerTypes.REINFORCING_TABLE_CONTAINER.get(), ReinforcingTableCategory.CATEGORY_ID, 1, 9, 10, inventorySize);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registry) {
         @SuppressWarnings("resource")
         ClientLevel world = Minecraft.getInstance().level;
-        registry.addRecipes(world.getRecipeManager().getAllRecipesFor(BPRecipes.REINFORCING), ReinforcingTableCategory.CATEGORY_ID);
+        registry.addRecipes(ReinforcingTableCategory.CATEGORY_ID, world.getRecipeManager().getAllRecipesFor(BPRecipes.REINFORCING));
         addDescription(registry, new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
     }
 
@@ -60,4 +62,4 @@ public class BPCompatJEI implements IModPlugin {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(new ReinforcingTableCategory(guiHelper));
     }
-}*/
+}

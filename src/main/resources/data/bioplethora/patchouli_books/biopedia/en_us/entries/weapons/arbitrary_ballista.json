@@ -1,7 +1,7 @@
 {
   "name": "Arbitrary Ballista",
   "icon": "bioplethora:arbitrary_ballista",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

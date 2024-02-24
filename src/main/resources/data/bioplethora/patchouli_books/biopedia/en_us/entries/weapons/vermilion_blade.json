@@ -1,7 +1,7 @@
 {
   "name": "Vermilion Blade",
   "icon": "bioplethora:vermilion_blade",
-  "category": "weapons",
+  "category": "bioplethora:weapons",
   "pages": [
     {
       "type": "patchouli:spotlight",

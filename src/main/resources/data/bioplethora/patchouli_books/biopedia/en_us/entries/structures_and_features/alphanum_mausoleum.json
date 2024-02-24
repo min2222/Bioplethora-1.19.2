@@ -1,7 +1,7 @@
 {
   "name": "Alphanum Mausoleum",
   "icon": "bioplethora:alphanum_bricks",
-  "category": "structures_and_features",
+  "category": "bioplethora:structures_and_features",
   "pages": [
     {
       "type": "patchouli:text",
