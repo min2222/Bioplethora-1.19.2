@@ -172,9 +172,7 @@ public class BPPlacedFeatures {
 	}
 	
 	public static Holder<PlacedFeature> register(String name, Holder<ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
-		Holder<PlacedFeature> holder = BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, prefix(name).toString(), new PlacedFeature(feature, List.copyOf(placements)));
-		PLACED_FEATURES.register(name, () -> holder.get());
-		return holder;
+		return BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, prefix(name).toString(), new PlacedFeature(feature, List.copyOf(placements)));
 	}
 	
 	public static ResourceLocation prefix(String name) {

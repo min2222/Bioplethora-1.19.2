@@ -162,15 +162,11 @@ public class BPConfiguredFeatures {
 	}
 	
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<?, ?>> register(String name, ConfiguredFeature<FC, F> feature) {
-		Holder<ConfiguredFeature<?, ?>> holder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), feature);
-		CONFIGURED_FEATURES.register(name, () -> holder.get());
-		return holder;
+		return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), feature);
 	}
 	
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<?, ?>> register(String name, F feature, FC featureConfiguration) {
-		Holder<ConfiguredFeature<?, ?>> holder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
-		CONFIGURED_FEATURES.register(name, () -> holder.get());
-		return holder;
+		return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
 	}
 	
 	public static ResourceLocation prefix(String name) {
