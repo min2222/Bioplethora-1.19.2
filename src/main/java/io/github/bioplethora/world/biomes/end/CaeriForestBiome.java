@@ -16,11 +16,11 @@ public class CaeriForestBiome {
 
         //biomeGenSettings.addStructureStart(StructureFeatures.END_CITY);
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
-        if (BPConfig.WORLDGEN.endIcicleIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_ISLANDS_ICICLE_PATCH);
-        if (BPConfig.WORLDGEN.endFrozenIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_FROZEN_ISLAND_DECORATED);
+        if (BPConfig.WORLDGEN.endIcicleIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_ISLANDS_ICICLE_PATCH.getHolder().get());
+        if (BPConfig.WORLDGEN.endFrozenIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_FROZEN_ISLAND_DECORATED.getHolder().get());
         //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.FROSTEM);
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SPINXELTHORN);
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.GLACYNTH);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SPINXELTHORN.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.GLACYNTH.getHolder().get());
 
         return BPBiomeSettings.caeriEndBiome(biomeGenSettings);
     }

@@ -68,8 +68,8 @@ public class CryeanumPlains {
         /*biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA);
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_BELINE);
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_IDE_FAN);*/
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.RED_TWI);
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.PINK_TWI);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.RED_TWI.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.PINK_TWI.getHolder().get());
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CRYEANUM_FOREST_TREES);
 
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, MiscOverworldPlacements.SPRING_LAVA);
