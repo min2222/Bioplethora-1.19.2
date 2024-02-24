@@ -8,6 +8,7 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.worldgen.BPStructures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 public class AlphanumMausoleumStructure extends Structure {
 
@@ -50,13 +52,14 @@ public class AlphanumMausoleumStructure extends Structure {
         int z = chunkpos.getBlockZ(16);
         BlockPos blockpos = new BlockPos(x, 0, z);
         StructurePiecesBuilder structurepiecesbuilder = new StructurePiecesBuilder();
-        Optional<GenerationStub> optional = JigsawPlacement.addPieces(pContext, pContext.registryAccess().registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).getHolderOrThrow(null), Optional.of(new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum/start_pool")), 10, blockpos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
+        ResourceKey<StructureTemplatePool> key = ResourceKey.create(Registry.TEMPLATE_POOL_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum/start_pool"));
+        Optional<GenerationStub> optional = JigsawPlacement.addPieces(pContext, pContext.registryAccess().registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).getHolderOrThrow(key), Optional.empty(), 10, blockpos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
 
-        structurepiecesbuilder.offsetPiecesVertically(1);
         //TODO
-        //structurepiecesbuilder.getBoundingBox().minY -= 1;
+        /*structurepiecesbuilder.pieces.forEach(piece -> piece.move(0, 1, 0));
+        structurepiecesbuilder.pieces.forEach(piece -> piece.getBoundingBox().y0 -= 1);
         
-        //LogManager.getLogger().log(Level.DEBUG, "House at " + this.pieces.get(0).getBoundingBox().x0 + " " + this.pieces.get(0).getBoundingBox().y0 + " " + this.pieces.get(0).getBoundingBox().z0);
+        LogManager.getLogger().log(Level.DEBUG, "House at " + structurepiecesbuilder.pieces.get(0).getBoundingBox().x0 + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().y0 + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().z0);*/
     	return optional;
     }
 

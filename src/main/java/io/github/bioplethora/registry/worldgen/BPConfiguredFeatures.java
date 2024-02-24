@@ -83,8 +83,8 @@ public class BPConfiguredFeatures {
                     .build()));
 
     // End Plants
-    public static final RegistryObject<ConfiguredFeature<?, ?>> IRION_GRASS = CONFIGURED_FEATURES.register("irion_grass", () -> new ConfiguredFeature<>(new RandomPatchFeature(RandomPatchConfiguration.CODEC), 
-    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.IRION_GRASS.get()))))));
+    /*public static final RegistryObject<ConfiguredFeature<?, ?>> IRION_GRASS = CONFIGURED_FEATURES.register("irion_grass", () -> new ConfiguredFeature<>(new RandomPatchFeature(RandomPatchConfiguration.CODEC), 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.IRION_GRASS.get()))))));*/
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> IRION_TALL_GRASS = CONFIGURED_FEATURES.register("irion_tall_grass", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
     		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.IRION_TALL_GRASS.get()))))));
@@ -106,8 +106,8 @@ public class BPConfiguredFeatures {
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> END_LAND_SPONGE_PATCH_ML = CONFIGURED_FEATURES.register("end_land_sponge_patch_ml", () -> new ConfiguredFeature<>(BPFeatures.END_LAND_SPONGE.get(),
     		new DeltaFeatureConfiguration(Blocks.WATER.defaultBlockState(), BPBlocks.ENDURION.get().defaultBlockState(), UniformInt.of(5, 15), UniformInt.of(2, 4))));
-    public static final RegistryObject<ConfiguredFeature<?, ?>> END_LAND_SPONGE_PATCH_HL = CONFIGURED_FEATURES.register("end_land_sponge_patch_hl", () -> new ConfiguredFeature<>(BPFeatures.END_LAND_SPONGE.get(),
-    		new DeltaFeatureConfiguration(Blocks.WATER.defaultBlockState(), BPBlocks.ENDURION.get().defaultBlockState(), UniformInt.of(7, 19), UniformInt.of(3, 6))));
+    /*public static final RegistryObject<ConfiguredFeature<?, ?>> END_LAND_SPONGE_PATCH_HL = CONFIGURED_FEATURES.register("end_land_sponge_patch_hl", () -> new ConfiguredFeature<>(BPFeatures.END_LAND_SPONGE.get(),
+    		new DeltaFeatureConfiguration(Blocks.WATER.defaultBlockState(), BPBlocks.ENDURION.get().defaultBlockState(), UniformInt.of(7, 19), UniformInt.of(3, 6))));*/
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> CAERI_CAVERN = CONFIGURED_FEATURES.register("caeri_cavern", () -> new ConfiguredFeature<>(BPFeatures.CAERI_CAVERN.get(), new NoneFeatureConfiguration()));
 

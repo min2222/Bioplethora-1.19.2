@@ -64,9 +64,9 @@ public class BPPlacedFeatures {
 	public static final RegistryObject<PlacedFeature> END_LAND_SPONGE_PATCH_ML = PLACED_FEATURES.register("end_land_sponge_patch_ml", () -> register(BPConfiguredFeatures.END_LAND_SPONGE_PATCH_ML, 
 			ImmutableList.<PlacementModifier>builder()
 			.add(CountOnEveryLayerPlacement.of(50)).build()));
-	public static final RegistryObject<PlacedFeature> END_LAND_SPONGE_PATCH_HL = PLACED_FEATURES.register("end_land_sponge_patch_hl", () -> register(BPConfiguredFeatures.END_LAND_SPONGE_PATCH_HL, 
+	/*public static final RegistryObject<PlacedFeature> END_LAND_SPONGE_PATCH_HL = PLACED_FEATURES.register("end_land_sponge_patch_hl", () -> register(BPConfiguredFeatures.END_LAND_SPONGE_PATCH_HL, 
 			ImmutableList.<PlacementModifier>builder()
-			.add(CountOnEveryLayerPlacement.of(40)).build()));
+			.add(CountOnEveryLayerPlacement.of(40)).build()));*/
 	public static final RegistryObject<PlacedFeature> CAERI_CAVERN = PLACED_FEATURES.register("caeri_cavern", () -> register(BPConfiguredFeatures.CAERI_CAVERN, 
 			ImmutableList.<PlacementModifier>builder()
 			.add(CountPlacement.of(1))
@@ -147,11 +147,11 @@ public class BPPlacedFeatures {
 			.add(InSquarePlacement.spread())
 			.add(HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(BPConfig.WORLDGEN.endFrozenIslandsAmount.get() - 1)))
 			.add(CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(1), 99).add(ConstantInt.of(2), 2).build()))).build()));
-	public static final RegistryObject<PlacedFeature> IRION_GRASS = PLACED_FEATURES.register("irion_grass", () -> register(BPConfiguredFeatures.IRION_GRASS, 
+	/*public static final RegistryObject<PlacedFeature> IRION_GRASS = PLACED_FEATURES.register("irion_grass", () -> register(BPConfiguredFeatures.IRION_GRASS, 
 			ImmutableList.<PlacementModifier>builder()
 			.add(CountPlacement.of(32))
 			.add(InSquarePlacement.spread())
-			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));*/
 	public static final RegistryObject<PlacedFeature> IRION_TALL_GRASS = PLACED_FEATURES.register("irion_tall_grass", () -> register(BPConfiguredFeatures.IRION_TALL_GRASS, 
 			ImmutableList.<PlacementModifier>builder()
 			.add(CountPlacement.of(13))

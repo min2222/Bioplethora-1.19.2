@@ -3,19 +3,14 @@ package io.github.bioplethora.registry.worldgen;
 import java.util.function.Supplier;
 
 import io.github.bioplethora.Bioplethora;
-import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.world.biomes.end.CaeriForestBiome;
 import io.github.bioplethora.world.biomes.end.CaeriPlainsBiome;
-import io.github.bioplethora.world.biomes.end.configurable.LavenderLakesBiome;
-import io.github.bioplethora.world.biomes.nether.CryeanumPlains;
-import io.github.bioplethora.world.biomes.overworld.RockyWoodlandBiome;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.yeoxuhang.biomeapireforged.fabric.api.biome.NetherBiomes;
 import net.yeoxuhang.biomeapireforged.fabric.api.biome.TheEndBiomes;
 
 public class BPBiomes {
@@ -28,8 +23,8 @@ public class BPBiomes {
     //public static final ResourceKey<Biome> CRYEANUM_PLAINS = add("cryeanum_plains", () -> CryeanumPlains.make());
 
     // End
-    //public static final ResourceKey<Biome> CAERI_PLAINS = add("caeri_plains", () -> CaeriPlainsBiome.make());
-    //public static final ResourceKey<Biome> CAERI_FOREST = add("caeri_forest", () -> CaeriForestBiome.make());
+    public static final ResourceKey<Biome> CAERI_PLAINS = add("caeri_plains", () -> CaeriPlainsBiome.make());
+    public static final ResourceKey<Biome> CAERI_FOREST = add("caeri_forest", () -> CaeriForestBiome.make());
     public static final ResourceKey<Biome> WINTERFEST = add("winterfest", () -> CaeriForestBiome.make());
 
     // End (Configurable)
@@ -39,11 +34,11 @@ public class BPBiomes {
 	public static void generateBiomes() {
         //OverworldBiomes.addContinentalBiome(BPBiomes.ROCKY_WOODLANDS, ClimateSettings.COOL, 1);
 
-		/*NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS, CryeanumPlains.ATTRIBUTE);
+		/*NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS, CryeanumPlains.ATTRIBUTE);*/
 
         TheEndBiomes.addHighlandsBiome(BPBiomes.CAERI_FOREST, 7.0);
         TheEndBiomes.addMidlandsBiome(BPBiomes.CAERI_FOREST, BPBiomes.CAERI_PLAINS, 5);
-        TheEndBiomes.addBarrensBiome(BPBiomes.CAERI_FOREST, BPBiomes.CAERI_PLAINS, 5);*/
+        TheEndBiomes.addBarrensBiome(BPBiomes.CAERI_FOREST, BPBiomes.CAERI_PLAINS, 5);
 
         TheEndBiomes.addSmallIslandsBiome(BPBiomes.WINTERFEST, 4);
 
