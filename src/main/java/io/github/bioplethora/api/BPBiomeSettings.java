@@ -1,38 +1,173 @@
 package io.github.bioplethora.api;
 
+import io.github.bioplethora.config.BPConfig;
+import io.github.bioplethora.registry.BPEntities;
+import io.github.bioplethora.registry.BPParticles;
+import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
+import io.github.bioplethora.registry.worldgen.BPPlacedFeatureKey;
+import io.github.bioplethora.registry.worldgen.BPTreePlacedFeatures;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.Carvers;
+import net.minecraft.data.worldgen.placement.EndPlacements;
+import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
+import net.minecraft.data.worldgen.placement.NetherPlacements;
+import net.minecraft.data.worldgen.placement.OrePlacements;
+import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.AmbientAdditionsSettings;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.biome.AmbientParticleSettings;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.Climate.TargetPoint;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.GenerationStep.Carving;
+import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 
 public class BPBiomeSettings {
 
-    // End
-    public static Biome baseEndBiome(BiomeGenerationSettings.Builder pGenerationSettingsBuilder) {
-    	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
-        BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
-        return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)//.biomeCategory(Biome.Category.THEEND).depth(0.1F).scale(0.2F)
-                .temperature(0.5F).downfall(0.5F)
-                .specialEffects(
-                        (new BiomeSpecialEffects.Builder())
+    public static final TargetPoint ATTRIBUTE = Climate.target(-0.35F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+    
+    public static Biome rockyWoodlandsBiome() {
+    	MobSpawnSettings.Builder spawnInfo = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.farmAnimals(spawnInfo);
+        BiomeDefaultFeatures.commonSpawns(spawnInfo);
+
+        spawnInfo.addSpawn(MobCategory.CREATURE,
+                new MobSpawnSettings.SpawnerData(BPEntities.ALPHEM.get(), 50, 2, 6));
+
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+
+        BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
+        BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
+
+        BiomeDefaultFeatures.addSurfaceFreezing(biomeGenSettings);
+
+        BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeGenSettings);
+        BiomeDefaultFeatures.addTaigaGrass(biomeGenSettings);
+        BiomeDefaultFeatures.addFerns(biomeGenSettings);
+        BiomeDefaultFeatures.addForestFlowers(biomeGenSettings);
+        BiomeDefaultFeatures.addDefaultMonsterRoom(biomeGenSettings);
+        BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeGenSettings);
+        BiomeDefaultFeatures.addDefaultOres(biomeGenSettings);
+        BiomeDefaultFeatures.addSwampClayDisk(biomeGenSettings);
+        BiomeDefaultFeatures.addDefaultMushrooms(biomeGenSettings);
+        BiomeDefaultFeatures.addDesertExtraVegetation(biomeGenSettings);
+        BiomeDefaultFeatures.addDefaultSprings(biomeGenSettings);
+        BiomeDefaultFeatures.addBambooVegetation(biomeGenSettings);
+        BiomeDefaultFeatures.addMossyStoneBlock(biomeGenSettings);
+
+        biomeGenSettings.addFeature(Decoration.LAKES, MiscOverworldPlacements.LAKE_LAVA_SURFACE);
+
+        return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)
+                .temperature(-0.5F).downfall(0.5F).specialEffects((new BiomeSpecialEffects.Builder())
+                        .fogColor(12638463)
                         .waterColor(4159204)
                         .waterFogColor(329011)
-                        .fogColor(10518688)
-                        .skyColor(0)
-                        .ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).build()
-                )
-                .mobSpawnSettings(mobspawninfo$builder.build())
-                .generationSettings(pGenerationSettingsBuilder.build()).build();
+                        .skyColor(7972607)
+                        .foliageColorOverride(-13266085)
+                        .grassColorOverride(-9923462)
+                        .ambientLoopSound(SoundEvents.AMBIENT_CRIMSON_FOREST_LOOP)
+                        .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_WARPED_FOREST_MOOD, 6000, 8, 2.0D))
+                        .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_NETHER_WASTES_ADDITIONS, 0.0111D))
+                        .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_CRIMSON_FOREST))
+                        .build())
+                .mobSpawnSettings(spawnInfo.build()).generationSettings(biomeGenSettings.build()).build();
+    }
+    
+
+    public static Biome cryeanumPlainsBiome() {
+        MobSpawnSettings.Builder spawnInfoBuilder = new MobSpawnSettings.Builder();
+
+        if (BPConfig.COMMON.spawnMyuthine.get()) {
+            spawnInfoBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(BPEntities.MYUTHINE.get(), 15, 5, 5));
+        }
+
+        spawnInfoBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.GHAST, 50, 4, 4));
+        spawnInfoBuilder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(EntityType.ENDERMAN, 1, 4, 4));
+        spawnInfoBuilder.addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(EntityType.STRIDER, 60, 1, 2));
+
+        if (BPConfig.COMMON.spawnMyuthine.get()) {
+            spawnInfoBuilder.addMobCharge(BPEntities.MYUTHINE.get(), 0.7D, 0.15D);
+        }
+
+        spawnInfoBuilder.addMobCharge(EntityType.GHAST, 0.7D, 0.15D);
+        spawnInfoBuilder.addMobCharge(EntityType.ENDERMAN, 0.7D, 0.15D);
+        spawnInfoBuilder.addMobCharge(EntityType.STRIDER, 0.7D, 0.15D);
+
+        MobSpawnSettings mobspawninfo = spawnInfoBuilder.build();
+        BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder();
+
+        biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
+
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.KYRIA));
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.KYRIA_BELINE));
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.KYRIA_IDE_FAN));
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.RED_TWI));
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.PINK_TWI));
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CRYEANUM_FOREST_TREES);
+
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, MiscOverworldPlacements.SPRING_LAVA);
+        biomegenerationsettings$builder.addFeature(Decoration.LOCAL_MODIFICATIONS, NetherPlacements.BASALT_PILLAR);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.SPRING_OPEN);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.GLOWSTONE_EXTRA);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.GLOWSTONE);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.PATCH_CRIMSON_ROOTS);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.PATCH_FIRE);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.PATCH_SOUL_FIRE);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, OrePlacements.ORE_MAGMA);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, NetherPlacements.SPRING_CLOSED);
+        biomegenerationsettings$builder.addFeature(Decoration.UNDERGROUND_DECORATION, OrePlacements.ORE_SOUL_SAND);
+
+        BiomeDefaultFeatures.addNetherDefaultOres(biomegenerationsettings$builder);
+        Biome.BiomeBuilder builder1 = new Biome.BiomeBuilder();
+        builder1.precipitation(Biome.Precipitation.NONE);
+        builder1.temperature(1.0F);
+        builder1.downfall(0.0F);
+
+        builder1.specialEffects((new BiomeSpecialEffects.Builder())
+                .waterColor(4159204)
+                .waterFogColor(329011)
+                .fogColor(1787717)
+                .skyColor(calculateSkyColor(1.0F))
+                .ambientParticle(new AmbientParticleSettings(BPParticles.PINK_ENIVILE_LEAF.get(), 0.00225F))
+                .ambientLoopSound(SoundEvents.AMBIENT_WARPED_FOREST_LOOP)
+                .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
+                .ambientAdditionsSound(new AmbientAdditionsSettings(SoundEvents.AMBIENT_CRIMSON_FOREST_ADDITIONS, 0.0111D))
+                .backgroundMusic(Musics.createGameMusic(SoundEvents.MUSIC_BIOME_SOUL_SAND_VALLEY))
+                .build());
+
+        builder1.mobSpawnSettings(mobspawninfo);
+        builder1.generationSettings(biomegenerationsettings$builder.build());
+        return builder1.build();
+    }
+    
+    private static int calculateSkyColor(float pTemperature) {
+        float lvt_1_1_ = pTemperature / 3.0F;
+        lvt_1_1_ = Mth.clamp(lvt_1_1_, -1.0F, 1.0F);
+        return Mth.hsvToRgb(0.62222224F - lvt_1_1_ * 0.05F, 0.5F + lvt_1_1_ * 0.1F, 1.0F);
     }
 
     // Caeri
-    public static Biome caeriEndBiome(BiomeGenerationSettings.Builder pGenerationSettingsBuilder) {
+    public static Biome caeriPlainsBiome() {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+
+        biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CAERI_CAVERN));
+        //TODO
+        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_GRASS);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_TALL_GRASS));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ARTAIRIUS));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.BYRSS_LANTERN_PLANT_PATCH));
+        	
+        biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
+        
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
     	
@@ -51,11 +186,56 @@ public class BPBiomeSettings {
                                 .build()
                 )
                 .mobSpawnSettings(mobspawninfo$builder.build())
-                .generationSettings(pGenerationSettingsBuilder.build()).build();
+                .generationSettings(biomeGenSettings.build()).build();
+    }
+    
+    public static Biome caeriForestBiome() {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+        
+        biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
+        biomeGenSettings.addCarver(Carving.AIR, BuiltinRegistries.CONFIGURED_CARVER.getHolderOrThrow(BPConfiguredWorldCarvers.CAERI_FORMERS_KEY));
+        biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CAERI_CAVERN));
+
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CAERI_FOREST_TREES);
+
+        //TODO
+        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_GRASS);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_TALL_GRASS));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ARTAIRIUS));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.BYRSS_LANTERN_FOREST_PATCH));
+
+    	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
+    	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
+    	
+        return (new Biome.BiomeBuilder())
+                .precipitation(Biome.Precipitation.NONE)
+                .temperature(0.5F).downfall(0.5F)
+                .specialEffects(
+                        (new BiomeSpecialEffects.Builder())
+                                .waterColor(-14271360)
+                                .waterFogColor(-13348438)
+                                .fogColor(-14791063)
+                                .skyColor(-14791063)
+                                .ambientParticle(new AmbientParticleSettings(ParticleTypes.WHITE_ASH, 0.005F))
+                                .ambientLoopSound(SoundEvents.AMBIENT_WARPED_FOREST_LOOP)
+                                .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_WARPED_FOREST_MOOD, 6000, 8, 2.0D))
+                                .build()
+                )
+                .mobSpawnSettings(mobspawninfo$builder.build())
+                .generationSettings(biomeGenSettings.build()).build();
     }
 
     // Winterfest
-    public static Biome winterfestBiome(BiomeGenerationSettings.Builder pGenerationSettingsBuilder) {
+    public static Biome winterfestBiome() {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+        
+        biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
+        if (BPConfig.WORLDGEN.endIcicleIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_ISLANDS_ICICLE_PATCH));
+        if (BPConfig.WORLDGEN.endFrozenIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_FROZEN_ISLAND_DECORATED));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.FROSTEM));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.SPINXELTHORN));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.GLACYNTH));
+        
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
         return (new Biome.BiomeBuilder())
@@ -73,6 +253,84 @@ public class BPBiomeSettings {
                                 .build()
                 )
                 .mobSpawnSettings(mobspawninfo$builder.build())
-                .generationSettings(pGenerationSettingsBuilder.build()).build();
+                .generationSettings(biomeGenSettings.build()).build();
+    }
+    
+    public static Biome lavenderLakesBiome() {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+        MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
+
+        biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, EndPlacements.CHORUS_PLANT);
+        
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_MYCHRODEGIA));
+
+        if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_LANTERN_HIGHLANDS_PATCH));
+        if (BPConfig.WORLDGEN.endSpikeHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPIKE_PATCH_HL));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDON));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDE_FAN));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_KELP));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_CORSASCILE));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_PURPLE));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_RED));
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_GREEN));
+
+        //TODO
+        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPONGE_PATCH_HL);
+
+        return(new Biome.BiomeBuilder())
+                .precipitation(Biome.Precipitation.NONE)
+                .temperature(0.5F).downfall(0.5F)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                                .waterColor(-6599759)
+                                .waterFogColor(-13158998)
+                                .fogColor(-12378263)
+                                .skyColor(-12378263)
+                                .ambientParticle(new AmbientParticleSettings(BPParticles.NIGHT_GAZE.get(), 0.04F))
+                                .ambientLoopSound(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD)
+                                .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
+                                .build())
+                .mobSpawnSettings(mobspawninfo$builder.build())
+                .generationSettings(biomeGenSettings.build()).build();
+    }
+    
+    public static Biome lavenderPondsBiome() {
+
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+        MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
+        BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
+
+        biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, EndPlacements.CHORUS_PLANT);
+        
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_MYCHRODEGIA));
+
+        if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_LANTERN_MIDLANDS_PATCH));
+        if (BPConfig.WORLDGEN.endSpikeMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPIKE_PATCH_ML));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDON));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDE_FAN));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_KELP));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_CORSASCILE));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_PURPLE));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_RED));
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_GREEN));
+
+        if (BPConfig.WORLDGEN.endSpongeMidlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPONGE_PATCH_ML));
+
+        return(new Biome.BiomeBuilder())
+                .precipitation(Biome.Precipitation.NONE)
+                .temperature(0.5F).downfall(0.5F)
+                .specialEffects(new BiomeSpecialEffects.Builder()
+                                .waterColor(-6599759)
+                                .waterFogColor(-13158998)
+                                .fogColor(-12378263)
+                                .skyColor(-12378263)
+                                .ambientParticle(new AmbientParticleSettings(BPParticles.NIGHT_GAZE.get(), 0.04F))
+                                .ambientLoopSound(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD)
+                                .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
+                                .build())
+                .mobSpawnSettings(mobspawninfo$builder.build())
+                .generationSettings(biomeGenSettings.build()).build();
     }
 }

@@ -1,14 +1,8 @@
 package io.github.bioplethora.registry.worldgen;
 
 import io.github.bioplethora.Bioplethora;
+import io.github.bioplethora.api.BPBiomeSettings;
 import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.world.biomes.end.CaeriForestBiome;
-import io.github.bioplethora.world.biomes.end.CaeriPlainsBiome;
-import io.github.bioplethora.world.biomes.end.WinterfestBiome;
-import io.github.bioplethora.world.biomes.end.configurable.LavenderLakesBiome;
-import io.github.bioplethora.world.biomes.end.configurable.LavenderPondsBiome;
-import io.github.bioplethora.world.biomes.nether.CryeanumPlains;
-import io.github.bioplethora.world.biomes.overworld.RockyWoodlandBiome;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -23,32 +17,32 @@ public class BPBiomes {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, Bioplethora.MOD_ID);
     // Overworld
     public static final ResourceKey<Biome> ROCKY_WOODLANDS_KEY = createKey("rocky_woodlands");
-    public static final RegistryObject<Biome> ROCKY_WOODLANDS = BIOMES.register("rocky_woodlands", () -> RockyWoodlandBiome.make());
+    public static final RegistryObject<Biome> ROCKY_WOODLANDS = BIOMES.register("rocky_woodlands", () -> BPBiomeSettings.rockyWoodlandsBiome());
 
     // Nether
     public static final ResourceKey<Biome> CRYEANUM_PLAINS_KEY = createKey("cryeanum_plains");
-    public static final RegistryObject<Biome> CRYEANUM_PLAINS = BIOMES.register("cryeanum_plains", () -> CryeanumPlains.make());
+    public static final RegistryObject<Biome> CRYEANUM_PLAINS = BIOMES.register("cryeanum_plains", () -> BPBiomeSettings.cryeanumPlainsBiome());
 
     // End
     public static final ResourceKey<Biome> CAERI_PLAINS_KEY = createKey("caeri_plains");
     public static final ResourceKey<Biome> CAERI_FOREST_KEY = createKey("caeri_forest");
     public static final ResourceKey<Biome> WINTERFEST_KEY = createKey("winterfest");
     
-    public static final RegistryObject<Biome> CAERI_PLAINS = BIOMES.register("caeri_plains", () -> CaeriPlainsBiome.make());
-    public static final RegistryObject<Biome> CAERI_FOREST = BIOMES.register("caeri_forest", () -> CaeriForestBiome.make());
-    public static final RegistryObject<Biome> WINTERFEST = BIOMES.register("winterfest", () -> WinterfestBiome.make());
+    public static final RegistryObject<Biome> CAERI_PLAINS = BIOMES.register("caeri_plains", () -> BPBiomeSettings.caeriPlainsBiome());
+    public static final RegistryObject<Biome> CAERI_FOREST = BIOMES.register("caeri_forest", () -> BPBiomeSettings.caeriForestBiome());
+    public static final RegistryObject<Biome> WINTERFEST = BIOMES.register("winterfest", () -> BPBiomeSettings.winterfestBiome());
 
     // End (Configurable)
     public static final ResourceKey<Biome> LAVENDER_LAKES_KEY = createKey("lavender_lakes");
     public static final ResourceKey<Biome> LAVENDER_PONDS_KEY = createKey("lavender_ponds");
     
-    public static final RegistryObject<Biome> LAVENDER_LAKES = BIOMES.register("lavender_lakes", () -> LavenderLakesBiome.make());
-    public static final RegistryObject<Biome> LAVENDER_PONDS = BIOMES.register("lavender_ponds", () -> LavenderPondsBiome.make());
+    public static final RegistryObject<Biome> LAVENDER_LAKES = BIOMES.register("lavender_lakes", () -> BPBiomeSettings.lavenderLakesBiome());
+    public static final RegistryObject<Biome> LAVENDER_PONDS = BIOMES.register("lavender_ponds", () -> BPBiomeSettings.lavenderPondsBiome());
 
 	public static void generateBiomes() {
         //OverworldBiomes.addContinentalBiome(BPBiomes.ROCKY_WOODLANDS, ClimateSettings.COOL, 1);
 
-		NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS_KEY, CryeanumPlains.ATTRIBUTE);
+		NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS_KEY, BPBiomeSettings.ATTRIBUTE);
 
 		TheEndBiomes.addHighlandsBiome(BPBiomes.CAERI_FOREST_KEY, 7.0);
         TheEndBiomes.addMidlandsBiome(BPBiomes.CAERI_FOREST_KEY, BPBiomes.CAERI_PLAINS_KEY, 5);
