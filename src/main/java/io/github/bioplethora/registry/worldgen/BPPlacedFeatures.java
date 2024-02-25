@@ -161,6 +161,11 @@ public class BPPlacedFeatures {
 			ImmutableList.<PlacementModifier>builder()
 			.add(NoiseThresholdCountPlacement.of(-0.8, 5, 10))
 			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> FROSTEM = PLACED_FEATURES.register("frostem", () -> register(BPConfiguredFeatures.FROSTEM, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(48))
+			.add(InSquarePlacement.spread())
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
 	
 	private static ImmutableList.Builder<PlacementModifier> createPlacementModifier(int count) {
 		return ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(count), InSquarePlacement.spread(), BiomeFilter.biome());

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.RandomPatchFeature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
@@ -91,6 +90,9 @@ public class BPConfiguredFeatures {
     
     public static final RegistryObject<ConfiguredFeature<?, ?>> ARTAIRIUS = CONFIGURED_FEATURES.register("artairius", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
     		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.ARTAIRIUS.get()))))));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> FROSTEM = CONFIGURED_FEATURES.register("frostem", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.FROSTEM.get()))))));
     
     public static final RegistryObject<ConfiguredFeature<?, ?>> CYRA_LAKE = CONFIGURED_FEATURES.register("cyra_lake", () -> new ConfiguredFeature<>(BPFeatures.EXPANDED_LAKE.get(),
             	new ExpandedLakeFeatureConfig.Builder()
