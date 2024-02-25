@@ -195,6 +195,14 @@ public class BPConfiguredFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> END_FROZEN_ISLAND = CONFIGURED_FEATURES.register("end_frozen_island", () -> new ConfiguredFeature<>(BPFeatures.END_FROZEN_ISLAND.get(), new NoneFeatureConfiguration()));
     public static final RegistryObject<ConfiguredFeature<?, ?>> END_FROZEN_ISLAND_DECORATED = CONFIGURED_FEATURES.register("end_frozen_island_decorated", () -> END_FROZEN_ISLAND.get());
     
+    public static final RegistryObject<ConfiguredFeature<?, ?>> ENIVILE_TREE_CONFIG = CONFIGURED_FEATURES.register("enivile_tree", () -> new ConfiguredFeature<>(BPFeatures.ENIVILE_TREE.get(), new NoneFeatureConfiguration()));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CRYEANUM_FOREST_TREES = CONFIGURED_FEATURES.register("cryeanum_forest_trees", () -> new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(BPPlacedFeatures.CRYEANUM_FOREST_TREES.getHolder().get(), 0.31333334F)), BPPlacedFeatures.CRYEANUM_FOREST_TREES.getHolder().get())));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CAERULWOOD_TREE_CONFIG = CONFIGURED_FEATURES.register("caerulwood_tree", () -> new ConfiguredFeature<>(BPFeatures.CAERULWOOD_TREE.get(), new NoneFeatureConfiguration()));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CAERI_FOREST_TREES = CONFIGURED_FEATURES.register("caeri_forest_trees", () -> new ConfiguredFeature<>(Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(BPPlacedFeatures.CAERI_FOREST_TREES.getHolder().get(), 0.6666667F)), BPPlacedFeatures.CAERI_FOREST_TREES.getHolder().get())));
+    
 	public static ConfiguredFeature<?, ?> makePendentConfig(String name, Block top, Block middle, Block end, ImmutableList<Block> whitelist, int minLength, int maxLength) {
 		return register(name, BPFeatures.PENDENT_BLOCKS.get(), new PendentBlocksFeatureConfig.Builder()
                 .setTopBlock(top).setMiddleBlock(middle)

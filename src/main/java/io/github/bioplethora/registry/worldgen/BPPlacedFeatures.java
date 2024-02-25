@@ -231,6 +231,14 @@ public class BPPlacedFeatures {
 			.add(CountPlacement.of(30))
 			.add(NoiseThresholdCountPlacement.of(-0.8D, 4, 7))
 			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> CRYEANUM_FOREST_TREES = PLACED_FEATURES.register("enivile_tree", () -> register(BPConfiguredFeatures.ENIVILE_TREE_CONFIG, 
+			ImmutableList.<PlacementModifier>builder().
+			add(CountOnEveryLayerPlacement.of(2), BiomeFilter.biome()).build()));
+	public static final RegistryObject<PlacedFeature> CAERI_FOREST_TREES = PLACED_FEATURES.register("caerulwood_tree", () -> register(BPConfiguredFeatures.CAERULWOOD_TREE_CONFIG, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(InSquarePlacement.spread(), BiomeFilter.biome(), CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+					.add(ConstantInt.of(6), 85)
+					.add(ConstantInt.of(7), 15).build()))).build()));
 	
 	private static ImmutableList.Builder<PlacementModifier> createPlacementModifier(int count) {
 		return ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(count), InSquarePlacement.spread(), BiomeFilter.biome());

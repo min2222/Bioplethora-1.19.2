@@ -4,10 +4,8 @@ import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
 import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
-import io.github.bioplethora.registry.worldgen.BPPlacedFeatureKey;
-import io.github.bioplethora.registry.worldgen.BPTreePlacedFeatures;
+import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.placement.EndPlacements;
@@ -107,12 +105,12 @@ public class BPBiomeSettings {
 
         biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
 
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.KYRIA));
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.KYRIA_BELINE));
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.KYRIA_IDE_FAN));
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.RED_TWI));
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.PINK_TWI));
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CRYEANUM_FOREST_TREES);
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_BELINE.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_IDE_FAN.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.RED_TWI.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.PINK_TWI.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CRYEANUM_FOREST_TREES.getHolder().get());
 
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, MiscOverworldPlacements.SPRING_LAVA);
         biomegenerationsettings$builder.addFeature(Decoration.LOCAL_MODIFICATIONS, NetherPlacements.BASALT_PILLAR);
@@ -159,12 +157,12 @@ public class BPBiomeSettings {
     public static Biome caeriPlainsBiome() {
         BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
 
-        biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CAERI_CAVERN));
+        biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.CAERI_CAVERN.getHolder().get());
         //TODO
-        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_GRASS);
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_TALL_GRASS));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ARTAIRIUS));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.BYRSS_LANTERN_PLANT_PATCH));
+        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_TALL_GRASS.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ARTAIRIUS.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.BYRSS_LANTERN_PLANT_PATCH.getHolder().get());
         	
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
         
@@ -193,16 +191,16 @@ public class BPBiomeSettings {
         BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
         
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
-        biomeGenSettings.addCarver(Carving.AIR, BuiltinRegistries.CONFIGURED_CARVER.getHolderOrThrow(BPConfiguredWorldCarvers.CAERI_FORMERS_KEY));
-        biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CAERI_CAVERN));
+        biomeGenSettings.addCarver(Carving.AIR, BPConfiguredWorldCarvers.CAERI_FORMERS.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.CAERI_CAVERN.getHolder().get());
 
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CAERI_FOREST_TREES);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CAERI_FOREST_TREES.getHolder().get());
 
         //TODO
-        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_GRASS);
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.IRION_TALL_GRASS));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ARTAIRIUS));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.BYRSS_LANTERN_FOREST_PATCH));
+        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_TALL_GRASS.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ARTAIRIUS.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.BYRSS_LANTERN_FOREST_PATCH.getHolder().get());
 
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
@@ -230,11 +228,11 @@ public class BPBiomeSettings {
         BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
         
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
-        if (BPConfig.WORLDGEN.endIcicleIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_ISLANDS_ICICLE_PATCH));
-        if (BPConfig.WORLDGEN.endFrozenIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_FROZEN_ISLAND_DECORATED));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.FROSTEM));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.SPINXELTHORN));
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.GLACYNTH));
+        if (BPConfig.WORLDGEN.endIcicleIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_ISLANDS_ICICLE_PATCH.getHolder().get());
+        if (BPConfig.WORLDGEN.endFrozenIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_FROZEN_ISLAND_DECORATED.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.FROSTEM.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SPINXELTHORN.getHolder().get());
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.GLACYNTH.getHolder().get());
         
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
@@ -264,20 +262,20 @@ public class BPBiomeSettings {
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, EndPlacements.CHORUS_PLANT);
         
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_MYCHRODEGIA));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_MYCHRODEGIA.getHolder().get());
 
-        if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_LANTERN_HIGHLANDS_PATCH));
-        if (BPConfig.WORLDGEN.endSpikeHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPIKE_PATCH_HL));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDON));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDE_FAN));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_KELP));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_CORSASCILE));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_PURPLE));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_RED));
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_GREEN));
+        if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_LANTERN_HIGHLANDS_PATCH.getHolder().get());
+        if (BPConfig.WORLDGEN.endSpikeHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_CORSASCILE.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_PURPLE.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_RED.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
         //TODO
-        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPONGE_PATCH_HL);
+        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
 
         return(new Biome.BiomeBuilder())
                 .precipitation(Biome.Precipitation.NONE)
@@ -304,19 +302,19 @@ public class BPBiomeSettings {
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, EndPlacements.CHORUS_PLANT);
         
-        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_MYCHRODEGIA));
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_MYCHRODEGIA.getHolder().get());
 
-        if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_LANTERN_MIDLANDS_PATCH));
-        if (BPConfig.WORLDGEN.endSpikeMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPIKE_PATCH_ML));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDON));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.CHORUS_IDE_FAN));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_KELP));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.ENREDE_CORSASCILE));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_PURPLE));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_RED));
-        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.OCHAIM_GREEN));
+        if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_LANTERN_MIDLANDS_PATCH.getHolder().get());
+        if (BPConfig.WORLDGEN.endSpikeMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_LAND_SPIKE_PATCH_ML.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_CORSASCILE.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_PURPLE.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_RED.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
-        if (BPConfig.WORLDGEN.endSpongeMidlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BuiltinRegistries.PLACED_FEATURE.getHolderOrThrow(BPPlacedFeatureKey.END_LAND_SPONGE_PATCH_ML));
+        if (BPConfig.WORLDGEN.endSpongeMidlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_ML.getHolder().get());
 
         return(new Biome.BiomeBuilder())
                 .precipitation(Biome.Precipitation.NONE)

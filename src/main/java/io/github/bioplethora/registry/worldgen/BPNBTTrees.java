@@ -10,7 +10,7 @@ public class BPNBTTrees {
 
         @Override
         protected ConfiguredFeature<?, ?> getTree(RandomSource random) {
-            return BPTreeConfiguredFeatures.ENIVILE_TREE_CONFIG.get();
+            return BPConfiguredFeatures.ENIVILE_TREE_CONFIG.get();
         }
     }
 
@@ -18,7 +18,7 @@ public class BPNBTTrees {
 
         @Override
         protected ConfiguredFeature<?, ?> getTree(RandomSource random) {
-            return BPTreeConfiguredFeatures.CAERULWOOD_TREE_CONFIG.get();
+            return BPConfiguredFeatures.CAERULWOOD_TREE_CONFIG.get();
         }
     }
 }
