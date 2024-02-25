@@ -5,8 +5,6 @@ import io.github.bioplethora.api.world.BlockUtils;
 import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import io.github.bioplethora.entity.others.BPEffectEntity;
 import io.github.bioplethora.enums.BPEffectTypes;
-import io.github.bioplethora.network.BPNetwork;
-import io.github.bioplethora.network.functions.NucleusActivatePacket;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
