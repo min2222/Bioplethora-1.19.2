@@ -50,10 +50,11 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.LAVA_SPIRE.getHolder().get());
         		}
         		if(biome.is(Biomes.SOUL_SAND_VALLEY)) {
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_MINISHROOM.getHolder().get());
+        			//TODO
+            		/*builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_MINISHROOM.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_BIGSHROOM.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_SPROUTS.getHolder().get());
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_TALL_GRASS.getHolder().get());
+            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_TALL_GRASS.getHolder().get());*/
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SPIRIT_DANGLER.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_ETERN.getHolder().get());
         		}
@@ -67,15 +68,15 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.TOP_LAYER_MODIFICATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
 
                         if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_LANTERN_HIGHLANDS_PATCH.getHolder().get());
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON);
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN);
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON.getHolder().get());
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_CORSASCILE.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_PURPLE.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_RED.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
                         if (BPConfig.WORLDGEN.endSpikeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL.getHolder().get());
-                        if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
+                        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
                     }
 
                     if (biome.is(Biomes.END_MIDLANDS) || biome.is(Biomes.END_BARRENS)) {
@@ -84,8 +85,8 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.TOP_LAYER_MODIFICATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
 
                         if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_LANTERN_MIDLANDS_PATCH.getHolder().get());
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON);
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN);
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON.getHolder().get());
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_CORSASCILE.getHolder().get());
                         if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_PURPLE.getHolder().get());

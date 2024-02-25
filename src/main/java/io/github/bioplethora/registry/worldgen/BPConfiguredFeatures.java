@@ -80,7 +80,39 @@ public class BPConfiguredFeatures {
                     .setMinLength(1)
                     .setMaxLength(2)
                     .build()));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> BASALT_SPELEOTHERM = CONFIGURED_FEATURES.register("basalt_speleotherm", () -> makeFruitablePendentConfig("basalt_speleotherm", 
+            Blocks.BASALT, BPBlocks.BASALT_SPELEOTHERM_PLANT.get(), BPBlocks.FIERY_BASALT_SPELEOTHERM.get(), BPBlocks.BASALT_SPELEOTHERM.get(),
+            ImmutableList.of(Blocks.BASALT, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            1, 8));
 
+    public static final RegistryObject<ConfiguredFeature<?, ?>> THONTUS_THISTLE = CONFIGURED_FEATURES.register("thontus_thistle", () -> makeFruitablePendentConfig("thontus_thistle", 
+            Blocks.NETHERRACK, BPBlocks.THONTUS_THISTLE_PLANT.get(), BPBlocks.BERRIED_THONTUS_THISTLE.get(), BPBlocks.THONTUS_THISTLE.get(),
+            ImmutableList.of(Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            2, 10));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> TURQUOISE_PENDENT = CONFIGURED_FEATURES.register("turquoise_pendent", () -> makeFruitablePendentConfig("turquoise_pendent", 
+            Blocks.WARPED_WART_BLOCK, BPBlocks.TURQUOISE_PENDENT_PLANT.get(), BPBlocks.BLOSSOMING_TURQUOISE_PENDENT.get(), BPBlocks.TURQUOISE_PENDENT.get(),
+            ImmutableList.of(Blocks.WARPED_WART_BLOCK, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            2, 8));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CERISE_IVY = CONFIGURED_FEATURES.register("cerise_ivy", () -> makeFruitablePendentConfig("cerise_ivy",
+            Blocks.NETHER_WART_BLOCK, BPBlocks.CERISE_IVY_PLANT.get(), BPBlocks.SEEDED_CERISE_IVY.get(), BPBlocks.CERISE_IVY.get(),
+            ImmutableList.of(Blocks.NETHER_WART_BLOCK, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            1, 8));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_ETERN = CONFIGURED_FEATURES.register("soul_etern", () -> makeFruitablePendentConfig("soul_etern",
+            Blocks.SOUL_SOIL, BPBlocks.SOUL_ETERN_PLANT.get(), BPBlocks.FLOURISHED_SOUL_ETERN.get(), BPBlocks.SOUL_ETERN.get(),
+            ImmutableList.of(Blocks.SOUL_SOIL, Blocks.SOUL_SAND, Blocks.NETHERRACK, Blocks.BLACKSTONE),
+            2, 10));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CHORUS_IDON = CONFIGURED_FEATURES.register("chorus_idon", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.CHORUS_IDON.get()))))));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> CHORUS_IDE_FAN = CONFIGURED_FEATURES.register("chorus_ide_fan", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.CHORUS_IDE_FAN.get()))))));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> WARPED_DANCER  = CONFIGURED_FEATURES.register("warped_dancer", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.SOUL_SPROUTS.get()))))));
     // End Plants
     /*public static final RegistryObject<ConfiguredFeature<?, ?>> IRION_GRASS = CONFIGURED_FEATURES.register("irion_grass", () -> new ConfiguredFeature<>(new RandomPatchFeature(RandomPatchConfiguration.CODEC), 
     		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.IRION_GRASS.get()))))));*/
@@ -163,12 +195,10 @@ public class BPConfiguredFeatures {
 	}
 	
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> ConfiguredFeature<?, ?> register(String name, ConfiguredFeature<FC, F> feature) {
-		//Holder<ConfiguredFeature<?, ?>> holder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), feature);
 		return feature;
 	}
 	
 	public static <FC extends FeatureConfiguration, F extends Feature<FC>> ConfiguredFeature<?, ?> register(String name, F feature, FC featureConfiguration) {
-		//Holder<ConfiguredFeature<?, ?>> holder = BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, prefix(name).toString(), new ConfiguredFeature<>(feature, featureConfiguration));
 		return new ConfiguredFeature<>(feature, featureConfiguration);
 	}
 	

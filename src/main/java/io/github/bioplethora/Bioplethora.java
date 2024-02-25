@@ -92,14 +92,12 @@ public class Bioplethora {
         BPAttributes.ATTRIBUTES.register(bus);
         BPConfiguredWorldCarvers.CONFIGURED_CARVER.register(bus);
         BPBiomeModifiers.BIOME_MODIFIERS.register(bus);
-        //BPBlockPlacers.BLOCK_PLACERS.register(bus);
-        //BPSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         BPTileEntities.TILE_ENTITIES.register(bus);
         BPContainerTypes.CONTAINERS.register(bus);
+        BPRecipes.RECIPE_SERIALIZERS.register(bus);
+        BPRecipes.RECIPE_TYPES.register(bus);
         BPConfig.loadConfig(BPConfig.COMMON_SPEC, FMLPaths.CONFIGDIR.get().resolve("bioplethora-common.toml").toString());
         BPConfig.loadConfig(BPConfig.WORLDGEN_SPEC, FMLPaths.CONFIGDIR.get().resolve("bioplethora-worldgen.toml").toString());
-
-        BPRecipes.registerRecipes(bus);
 
         bus.addListener(this::setup);
         bus.addListener(this::gatherData);

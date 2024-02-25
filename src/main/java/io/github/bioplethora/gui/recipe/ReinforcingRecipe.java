@@ -93,13 +93,12 @@ public class ReinforcingRecipe implements Recipe<Container> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return BPRecipes.REINFORCING_SERIALIZER.get();
+        return BPRecipes.REINFORCING.get();
     }
 
     public RecipeType<?> getType() {
-        return BPRecipes.REINFORCING;
+        return BPRecipes.REINFORCING_TYPE.get();
     }
-
 
     public static class ReinforcingRecipeType implements RecipeType<ReinforcingRecipe> {
 

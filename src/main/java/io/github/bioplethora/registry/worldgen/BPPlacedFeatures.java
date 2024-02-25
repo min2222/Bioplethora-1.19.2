@@ -164,7 +164,39 @@ public class BPPlacedFeatures {
 	public static final RegistryObject<PlacedFeature> FROSTEM = PLACED_FEATURES.register("frostem", () -> register(BPConfiguredFeatures.FROSTEM, 
 			ImmutableList.<PlacementModifier>builder()
 			.add(CountPlacement.of(48))
-			.add(InSquarePlacement.spread())
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> BASALT_SPELEOTHERM = PLACED_FEATURES.register("basalt_speleotherm", () -> register(BPConfiguredFeatures.BASALT_SPELEOTHERM, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(115))
+			.add(HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(131))).build()));
+	public static final RegistryObject<PlacedFeature> THONTUS_THISTLE = PLACED_FEATURES.register("thontus_thistle", () -> register(BPConfiguredFeatures.THONTUS_THISTLE, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(125))
+			.add(HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(131))).build()));
+	public static final RegistryObject<PlacedFeature> TURQUOISE_PENDENT = PLACED_FEATURES.register("turquoise_pendent", () -> register(BPConfiguredFeatures.TURQUOISE_PENDENT, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(122))
+			.add(HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(131))).build()));
+	public static final RegistryObject<PlacedFeature> CERISE_IVY = PLACED_FEATURES.register("cerise_ivy", () -> register(BPConfiguredFeatures.CERISE_IVY, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(122))
+			.add(HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(131))).build()));
+	public static final RegistryObject<PlacedFeature> SOUL_ETERN = PLACED_FEATURES.register("soul_etern", () -> register(BPConfiguredFeatures.SOUL_ETERN, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(125))
+			.add(HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(131))).build()));
+	public static final RegistryObject<PlacedFeature> CHORUS_IDON = PLACED_FEATURES.register("chorus_idon", () -> register(BPConfiguredFeatures.CHORUS_IDON, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(32))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> CHORUS_IDE_FAN = PLACED_FEATURES.register("chorus_ide_fan", () -> register(BPConfiguredFeatures.CHORUS_IDE_FAN, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(12))
+			.add(NoiseThresholdCountPlacement.of(-0.8, 4, 7))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> WARPED_DANCER = PLACED_FEATURES.register("warped_dancer", () -> register(BPConfiguredFeatures.WARPED_DANCER, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(15))
 			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
 	
 	private static ImmutableList.Builder<PlacementModifier> createPlacementModifier(int count) {
@@ -176,7 +208,7 @@ public class BPPlacedFeatures {
 	}
 	
 	public static PlacedFeature register(RegistryObject<ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
-		//BuiltinRegistries.register(BuiltinRegistries.PLACED_FEATURE, prefix(name).toString(), new PlacedFeature(feature.getHolder().get(), List.copyOf(placements)));
+		placements.add(BiomeFilter.biome());
 		return new PlacedFeature(feature.getHolder().get(), List.copyOf(placements));
 	}
 	
