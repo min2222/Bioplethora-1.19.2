@@ -43,7 +43,7 @@ public class BPCompatJEI implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registry) {
         @SuppressWarnings("resource")
         ClientLevel world = Minecraft.getInstance().level;
-        registry.addRecipes(ReinforcingTableCategory.CATEGORY_ID, world.getRecipeManager().getAllRecipesFor(BPRecipes.REINFORCING));
+        registry.addRecipes(ReinforcingTableCategory.CATEGORY_ID, world.getRecipeManager().getAllRecipesFor(BPRecipes.REINFORCING_TYPE.get()));
         addDescription(registry, new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
     }
 
