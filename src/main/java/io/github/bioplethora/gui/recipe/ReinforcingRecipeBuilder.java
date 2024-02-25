@@ -35,7 +35,7 @@ public class ReinforcingRecipeBuilder {
     }
 
     public static ReinforcingRecipeBuilder reinforcing(Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult) {
-        return new ReinforcingRecipeBuilder(BPRecipes.REINFORCING_SERIALIZER.get(), topIngredient, midIngredient, botIngredient, pResult);
+        return new ReinforcingRecipeBuilder(BPRecipes.REINFORCING.get(), topIngredient, midIngredient, botIngredient, pResult);
     }
 
     public ReinforcingRecipeBuilder unlocks(String pName, CriterionTriggerInstance pCriterion) {

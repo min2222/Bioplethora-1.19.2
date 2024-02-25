@@ -60,7 +60,7 @@ public class ReinforcingTableContainer extends AbstractReinforcingContainer {
     }
 
     public void createResult() {
-        List<ReinforcingRecipe> list = this.level.getRecipeManager().getRecipesFor(BPRecipes.REINFORCING, this.inputSlots, this.level);
+        List<ReinforcingRecipe> list = this.level.getRecipeManager().getRecipesFor(BPRecipes.REINFORCING_TYPE.get(), this.inputSlots, this.level);
         if (list.isEmpty()) {
             this.resultSlots.setItem(0, ItemStack.EMPTY);
         } else {
