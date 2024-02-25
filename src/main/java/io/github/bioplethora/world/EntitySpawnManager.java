@@ -1,54 +1,21 @@
 package io.github.bioplethora.world;
 
-//TODO
-/*import io.github.bioplethora.api.world.WorldgenUtils;
-import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.common.world.ForgeBiomeModifiers.AddSpawnsBiomeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
-
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import io.github.bioplethora.api.world.WorldgenUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.data.worldgen.biome.OverworldBiomes;
-import net.minecraft.data.worldgen.features.MiscOverworldFeatures;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraftforge.common.BiomeManager.BiomeType;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.Tags.Biomes;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.common.world.ForgeBiomeModifiers.AddSpawnsBiomeModifier;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Used for spawning Bioplethora's mobs in vanilla biomes, spawning in Bioplethora's biomes will be handled inside the biome class itself.
- //
+ */
 public class EntitySpawnManager {
-
-    public static final ForgeBiomeModifiers.AddSpawnsBiomeModifier OVERWORLD = new AddSpawnsBiomeModifier(BuiltinRegistries.BIOME.getTag(BiomeTags.IS_OVERWORLD).get(), null);
-    
-    public static void onBiomeLoadingEvent(MobSpawnSettings.Builder event) {
-        BioplethoraMobSpawns.acceptMobSpawns(event);
-    }
-
     public static class BioplethoraMobSpawns {
 
         static Integer spawnMultiplier = BPConfig.COMMON.mobSpawnWeightMultiplier.get();
@@ -209,69 +176,6 @@ public class EntitySpawnManager {
             //Triggerfish
             createSpawn(builder, monster, BPEntities.TRIGGERFISH, 5, 3, 5, BPConfig.COMMON.spawnTriggerfish);
         };
-
-        public static void acceptMobSpawns(MobSpawnSettings.Builder spawnInfoBuilder) {
-            MobSpawnSettings.Builder spawnInfoBuilder 
-            RegistryKey<Biome> biome = RegistryKey.create(ForgeRegistries.Keys.BIOMES, event.getName());
-            boolean hasOverworldType = BiomeDictionary.hasType(biome, BiomeDictionary.Type.OVERWORLD);
-
-            if (hasOverworldType) {
-                OVERWORLD_ENTITIES.accept(spawnInfoBuilder);
-            }
-
-            switch (event.getCategory()) {
-                case FOREST:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.FOREST))
-                        FOREST_ENTITIES.accept(spawnInfoBuilder);
-                case DESERT:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY))
-                        DESERT_ENTITIES.accept(spawnInfoBuilder);
-                case SWAMP:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SWAMP))
-                        SWAMP_ENTITIES.accept(spawnInfoBuilder);
-                case JUNGLE:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.JUNGLE))
-                        JUNGLE_ENTITIES.accept(spawnInfoBuilder);
-                case TAIGA:
-                    if (hasOverworldType && (BiomeDictionary.hasType(biome, BiomeDictionary.Type.CONIFEROUS) || BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD)))
-                        TAIGA_ENTITIES.accept(spawnInfoBuilder);
-                case ICY:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.COLD))
-                        ICY_ENTITIES.accept(spawnInfoBuilder);
-                case SAVANNA:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SAVANNA))
-                        SAVANNA_ENTITIES.accept(spawnInfoBuilder);
-                case RIVER:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER))
-                        RIVER_ENTITIES.accept(spawnInfoBuilder);
-                case OCEAN:
-                    if (hasOverworldType && BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN))
-                        OCEAN_ENTITIES.accept(spawnInfoBuilder);
-                case NETHER:
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.BASALT_DELTAS)) {
-                        BASALT_DELTAS_ENTITIES.accept(spawnInfoBuilder);
-                    }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.NETHER_WASTES)) {
-                        NETHER_WASTES_ENTITIES.accept(spawnInfoBuilder);
-                    }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.WARPED_FOREST)) {
-                        WARPED_FOREST_ENTITIES.accept(spawnInfoBuilder);
-                    }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.CRIMSON_FOREST)) {
-                        CRIMSON_FOREST_ENTITIES.accept(spawnInfoBuilder);
-                    }
-                    if (WorldgenUtils.getBiomeFromEvent(event, WorldgenUtils.SOUL_SAND_VALLEY)) {
-                        SOUL_SAND_VALLEY_ENTITIES.accept(spawnInfoBuilder);
-                    }
-                case THEEND:
-                    if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.END))
-                        END_ENTITIES.accept(spawnInfoBuilder);
-                    break;
-                default:
-                    if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.OCEAN) && !BiomeDictionary.hasType(biome, BiomeDictionary.Type.RIVER))
-                        break;
-            }
-        }
     }
 
     public static void createSpawn(MobSpawnSettings.Builder builder, MobCategory classification, Supplier<? extends EntityType<?>> entity, int initWeight, int minSpawn, int maxSpawn, @Nullable ForgeConfigSpec.ConfigValue<Boolean> config) {
@@ -283,4 +187,4 @@ public class EntitySpawnManager {
             builder.addSpawn(classification, new MobSpawnSettings.SpawnerData(entity.get(), initWeight * BPConfig.COMMON.mobSpawnWeightMultiplier.get(), minSpawn, maxSpawn));
         }
     }
-}*/
+}

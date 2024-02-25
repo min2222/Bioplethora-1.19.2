@@ -49,17 +49,6 @@ public class BPBiomes {
         }*/
     }
 
-	//TODO changed to tag
-    /*public static final class Type {
-        public static final BiomeDictionary.Type CRYEANUM = BiomeDictionary.Type.getType("CRYEANUM");
-        public static final BiomeDictionary.Type CAERI = BiomeDictionary.Type.getType("CAERI");
-        public static final BiomeDictionary.Type CAERI_PLAINS = BiomeDictionary.Type.getType("CAERI_PLAINS");
-        public static final BiomeDictionary.Type CAERI_FOREST = BiomeDictionary.Type.getType("CAERI_FOREST");
-        public static final BiomeDictionary.Type WINTERFEST = BiomeDictionary.Type.getType("WINTERFEST");
-        public static final BiomeDictionary.Type LAVENDER_LAKE = BiomeDictionary.Type.getType("LAVENDE_LAKE");
-        public static final BiomeDictionary.Type LAVENDER_POND = BiomeDictionary.Type.getType("LAVENDE_POND");
-    }*/
-
     //==============================================
     //                OTHERS
     //==============================================

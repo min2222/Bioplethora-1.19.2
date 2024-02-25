@@ -2,6 +2,9 @@ package io.github.bioplethora.world.structures;
 
 import java.util.Optional;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.Bioplethora;
@@ -55,11 +58,10 @@ public class AlphanumMausoleumStructure extends Structure {
         ResourceKey<StructureTemplatePool> key = ResourceKey.create(Registry.TEMPLATE_POOL_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum/start_pool"));
         Optional<GenerationStub> optional = JigsawPlacement.addPieces(pContext, pContext.registryAccess().registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).getHolderOrThrow(key), Optional.empty(), 10, blockpos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
 
-        //TODO
-        /*structurepiecesbuilder.pieces.forEach(piece -> piece.move(0, 1, 0));
-        structurepiecesbuilder.pieces.forEach(piece -> piece.getBoundingBox().y0 -= 1);
+        structurepiecesbuilder.pieces.forEach(piece -> piece.move(0, 1, 0));
+        structurepiecesbuilder.pieces.forEach(piece -> piece.getBoundingBox().minY -= 1);
         
-        LogManager.getLogger().log(Level.DEBUG, "House at " + structurepiecesbuilder.pieces.get(0).getBoundingBox().x0 + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().y0 + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().z0);*/
+        LogManager.getLogger().log(Level.DEBUG, "House at " + structurepiecesbuilder.pieces.get(0).getBoundingBox().minX() + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().minY() + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().minZ());
     	return optional;
     }
 

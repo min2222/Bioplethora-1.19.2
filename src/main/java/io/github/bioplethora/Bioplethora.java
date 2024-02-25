@@ -30,6 +30,7 @@ import io.github.bioplethora.registry.BPRecipes;
 import io.github.bioplethora.registry.BPSoundEvents;
 import io.github.bioplethora.registry.BPTileEntities;
 import io.github.bioplethora.registry.BPVillagerTrades;
+import io.github.bioplethora.registry.worldgen.BPBiomeModifiers;
 import io.github.bioplethora.registry.worldgen.BPBiomes;
 import io.github.bioplethora.registry.worldgen.BPConfiguredFeatures;
 import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
@@ -43,10 +44,12 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -61,6 +64,7 @@ public class Bioplethora {
     public static final String MOD_ID = "bioplethora";
     public static final String MOD_NAME = "Bioplethora";
     public static final Logger LOGGER = LogManager.getLogger();
+    public static boolean HELL_MODE;
 
     public Bioplethora() {
         instance = this;
@@ -87,6 +91,7 @@ public class Bioplethora {
         BPStructures.STRUCTURES_SET.register(bus);
         BPAttributes.ATTRIBUTES.register(bus);
         BPConfiguredWorldCarvers.CONFIGURED_CARVER.register(bus);
+        BPBiomeModifiers.BIOME_MODIFIERS.register(bus);
         //BPBlockPlacers.BLOCK_PLACERS.register(bus);
         //BPSurfaceBuilders.SURFACE_BUILDERS.register(bus);
         BPTileEntities.TILE_ENTITIES.register(bus);
@@ -98,6 +103,7 @@ public class Bioplethora {
 
         bus.addListener(this::setup);
         bus.addListener(this::gatherData);
+        bus.addListener(this::onModConfigEvent);
         bus.addListener(this::onInterModEnqueueEvent);
 
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
@@ -112,6 +118,15 @@ public class Bioplethora {
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BPConfig.COMMON_SPEC, "bioplethora/common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BPConfig.WORLDGEN_SPEC, "bioplethora/worldgen.toml");
+    }
+    
+    @SubscribeEvent
+    public void onModConfigEvent(final ModConfigEvent event) {
+        final ModConfig config = event.getConfig();
+        // Rebake the configs when they change
+        if (config.getSpec() == BPConfig.COMMON_SPEC) {
+        	HELL_MODE = BPConfig.COMMON.hellMode.get();
+        }
     }
 
     private void onInterModEnqueueEvent(final InterModEnqueueEvent event) {

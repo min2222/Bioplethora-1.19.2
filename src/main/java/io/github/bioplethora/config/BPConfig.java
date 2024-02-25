@@ -5,6 +5,7 @@ import java.io.File;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
 
+import io.github.bioplethora.Bioplethora;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class BPConfig {
@@ -34,6 +35,5 @@ public class BPConfig {
         config.setConfig(file);
     }
 
-    //FIXME crash on start
-    public static final boolean IN_HELLMODE = false; //BPConfig.COMMON.hellMode.get();
+    public static final boolean IN_HELLMODE = Bioplethora.HELL_MODE;
 }

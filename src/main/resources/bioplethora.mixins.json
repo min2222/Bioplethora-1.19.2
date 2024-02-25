@@ -10,11 +10,9 @@
     "ChorusPlantFeatureMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
-    "MobSpawnerTileEntityMixin",
     "MonsterEntityMixin",
     "PlayerEntityMixin",
     "QuickChargeEnchantmentMixin",
-    "ServerPlayNetHandlerMixin",
     "ServerWorldInfoMixin"
   ],
   "injectors": {

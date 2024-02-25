@@ -1,6 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "alphanum_obliterator",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "bioplethora:item/alphanum_obliterator",

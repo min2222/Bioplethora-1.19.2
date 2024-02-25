@@ -20,15 +20,4 @@ public class BPWoodTypes {
             WoodType.register(PETRAWOOD);
         });
     }
-
-    //TODO doesn't necessary (i think)
-    /*@OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void registerWoodTypeClient(final FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            Atlases.addWoodType(ENIVILE);
-            Atlases.addWoodType(CAERULWOOD);
-            Atlases.addWoodType(PETRAWOOD);
-        });
-    }*/
 }

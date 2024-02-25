@@ -1,6 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "fleignarite_splotch_inventory",
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "bioplethora:block/fleignarite_splotch",

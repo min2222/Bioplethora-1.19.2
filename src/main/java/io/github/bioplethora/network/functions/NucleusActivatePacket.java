@@ -2,6 +2,7 @@ package io.github.bioplethora.network.functions;
 
 import java.util.function.Supplier;
 
+import io.github.bioplethora.blocks.tile_entities.AlphanumNucleusTileEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -20,8 +21,8 @@ public class NucleusActivatePacket {
 
     public static void setState(NucleusActivatePacket message, Supplier<NetworkEvent.Context> context) {
         context.get().setPacketHandled(true);
-        //TODO 
-        //((AlphanumNucleusTileEntity) Minecraft.getInstance().level.getBlockEntity(new BlockPos(message.x, message.y, message.z))).tick();
+        //TODO
+        AlphanumNucleusTileEntity.tick(null, null, null, null);
     }
 
     public static void encode(NucleusActivatePacket message, FriendlyByteBuf buffer) {

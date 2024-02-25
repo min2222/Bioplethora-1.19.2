@@ -1,6 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "ide_fan_budded",
 	"texture_size": [48, 48],
 	"textures": {
 		"0": "block/texture",

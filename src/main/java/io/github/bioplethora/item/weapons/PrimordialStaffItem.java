@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import io.github.bioplethora.api.BPItemSettings;
+import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.others.PrimordialRingEntity;
 import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.client.gui.screens.Screen;
@@ -30,8 +31,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class PrimordialStaffItem extends Item {
 
-	//FIXME crash on start
-    public boolean hellConfig = false; //BPConfig.COMMON.hellMode.get();
+    public boolean hellConfig = BPConfig.IN_HELLMODE;
     public int charge = 0;
 
     public PrimordialStaffItem(Properties properties) {
