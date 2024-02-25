@@ -24,13 +24,7 @@ public class RockyWoodlandBiome {
         spawnInfo.addSpawn(MobCategory.CREATURE,
                 new MobSpawnSettings.SpawnerData(BPEntities.ALPHEM.get(), 50, 2, 6));
 
-        BiomeGenerationSettings.Builder biomeGenSettings = (new BiomeGenerationSettings.Builder());//.surfaceBuilder(surfaceBuilder);
-
-        //Handled in tag definition
-        /*biomeGenSettings.addStructureStart(StructureFeatures.VILLAGE_SNOWY);
-        biomeGenSettings.addStructureStart(StructureFeatures.MINESHAFT);
-        biomeGenSettings.addStructureStart(StructureFeatures.RUINED_PORTAL_SWAMP);
-        biomeGenSettings.addStructureStart(StructureFeatures.BURIED_TREASURE);*/
+        BiomeGenerationSettings.Builder biomeGenSettings = (new BiomeGenerationSettings.Builder());
 
         BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
         BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
@@ -53,7 +47,7 @@ public class RockyWoodlandBiome {
 
         biomeGenSettings.addFeature(Decoration.LAKES, MiscOverworldPlacements.LAKE_LAVA_SURFACE);
 
-        return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)//.biomeCategory(Biome.Category.ICY).depth(depth).scale(scale)
+        return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)
                 .temperature(-0.5F).downfall(0.5F).specialEffects((new BiomeSpecialEffects.Builder())
                         .fogColor(12638463)
                         .waterColor(4159204)

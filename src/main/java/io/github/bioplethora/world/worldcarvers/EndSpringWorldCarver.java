@@ -26,8 +26,6 @@ public class EndSpringWorldCarver extends CaveWorldCarver {
 
     public EndSpringWorldCarver(Codec<CaveCarverConfiguration> p_i231921_1_) {
         super(p_i231921_1_);
-        //Handled in tag definition
-        //this.replaceableBlocks = ImmutableSet.of(Blocks.WATER);
     }
 
     @Override

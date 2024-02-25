@@ -46,7 +46,7 @@ public class BPSpawnParticlePacket {
 
     public static void spawnParticles(BPSpawnParticlePacket message, Supplier<NetworkEvent.Context> context) {
         Minecraft minecraft = Minecraft.getInstance();
-        
+        context.get().setPacketHandled(true);
         if (minecraft.level == null) {
             return;
         }

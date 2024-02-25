@@ -50,7 +50,7 @@ public class BPBiomes {
 
 		NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS_KEY, CryeanumPlains.ATTRIBUTE);
 
-        TheEndBiomes.addHighlandsBiome(BPBiomes.CAERI_FOREST_KEY, 7.0);
+		TheEndBiomes.addHighlandsBiome(BPBiomes.CAERI_FOREST_KEY, 7.0);
         TheEndBiomes.addMidlandsBiome(BPBiomes.CAERI_FOREST_KEY, BPBiomes.CAERI_PLAINS_KEY, 5);
         TheEndBiomes.addBarrensBiome(BPBiomes.CAERI_FOREST_KEY, BPBiomes.CAERI_PLAINS_KEY, 5);
 

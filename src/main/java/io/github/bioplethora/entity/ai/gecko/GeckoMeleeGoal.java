@@ -89,6 +89,11 @@ public class GeckoMeleeGoal<E extends Mob> extends GeckoGoal<E> {
             }
         }
     }
+    
+    @Override
+    public boolean requiresUpdateEveryTick() {
+    	return true;
+    }
 
     public void setWhat(IGeckoBaseEntity entity, boolean value) {
         entity.setAttacking(value);
