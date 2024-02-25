@@ -43,7 +43,7 @@ public class AlphanumNucleusBlock extends RotatedPillarBlock implements EntityBl
     
     @Nullable
     protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<AlphanumNucleusTileEntity> p_151990_) {
-        return p_151988_.isClientSide ? null : createTickerHelper(p_151989_, p_151990_, AlphanumNucleusTileEntity::tick);
+        return createTickerHelper(p_151989_, p_151990_, AlphanumNucleusTileEntity::tick);
     }
 
     @SuppressWarnings("unchecked")

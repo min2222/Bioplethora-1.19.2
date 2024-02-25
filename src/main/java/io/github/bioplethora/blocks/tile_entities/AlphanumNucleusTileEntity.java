@@ -43,7 +43,6 @@ public class AlphanumNucleusTileEntity extends BlockEntity {
     public static void tick(Level p_155014_, BlockPos p_155015_, BlockState p_155016_, AlphanumNucleusTileEntity p_155017_) {
         if (p_155016_.getValue(AlphanumNucleusBlock.ACTIVATED)) {
             ++p_155017_.activeTicks;
-            BPNetwork.CHANNEL.sendToServer(new NucleusActivatePacket(p_155015_.getX(), p_155015_.getY(), p_155015_.getZ()));
 
             int areaint = 15;
             AABB aabb = new AABB(p_155015_.getX() - areaint, p_155015_.getY() - areaint, p_155015_.getZ() - areaint, p_155015_.getX() + areaint, p_155015_.getY() + areaint, p_155015_.getZ() + areaint);

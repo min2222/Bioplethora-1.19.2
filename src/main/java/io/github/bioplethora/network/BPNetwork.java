@@ -3,7 +3,6 @@ package io.github.bioplethora.network;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.network.functions.BPSpawnParticlePacket;
 import io.github.bioplethora.network.functions.LeftSwingPacket;
-import io.github.bioplethora.network.functions.NucleusActivatePacket;
 import io.github.bioplethora.network.functions.RightSwingPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +23,6 @@ public class BPNetwork {
         CHANNEL.registerMessage(packetIndex++, LeftSwingPacket.class, LeftSwingPacket::encode, LeftSwingPacket::decode, LeftSwingPacket::leftClickTrigger);
         CHANNEL.registerMessage(packetIndex++, RightSwingPacket.class, RightSwingPacket::encode, RightSwingPacket::decode, RightSwingPacket::rightClickTrigger);
 
-        CHANNEL.registerMessage(packetIndex++, NucleusActivatePacket.class, NucleusActivatePacket::encode, NucleusActivatePacket::decode, NucleusActivatePacket::setState);
         CHANNEL.registerMessage(packetIndex++, BPSpawnParticlePacket.class, BPSpawnParticlePacket::encode, BPSpawnParticlePacket::decode, BPSpawnParticlePacket::spawnParticles);
     }
 
