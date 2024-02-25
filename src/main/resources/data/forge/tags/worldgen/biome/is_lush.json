@@ -1,9 +1,6 @@
 {
 	"replace": false,
 	"values": [
-		"bioplethora:caeri_plains",
-		"bioplethora:caeri_forest",
-		"bioplethora:winterfest",
 		"bioplethora:lavender_lakes",
 		"bioplethora:lavender_ponds"
 	]

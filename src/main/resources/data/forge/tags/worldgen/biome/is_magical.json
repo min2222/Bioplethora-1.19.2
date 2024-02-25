@@ -1,6 +1,11 @@
 {
-  "replace": false,
-  "values": [
-	"bioplethora:winterfest"
-  ]
+	"replace": false,
+	"values": [
+		"bioplethora:cryeanum_plains",
+		"bioplethora:caeri_plains",
+		"bioplethora:caeri_forest",
+		"bioplethora:winterfest",
+		"bioplethora:lavender_lakes",
+		"bioplethora:lavender_ponds"
+	]
 }

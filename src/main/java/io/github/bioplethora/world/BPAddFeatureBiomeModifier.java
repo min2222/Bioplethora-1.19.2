@@ -4,10 +4,14 @@ import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
+import io.github.bioplethora.registry.BPParticles;
 import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.AmbientParticleSettings;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
@@ -64,6 +68,14 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
                 if (!BPConfig.WORLDGEN.createNewSpongeBiome.get()) {
                     if (biome.is(Biomes.END_HIGHLANDS)) {
                         builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_MYCHRODEGIA.getHolder().get());
+                        builder.getSpecialEffects().waterColor(-6599759)
+                        .waterFogColor(-13158998)
+                        .fogColor(-12378263)
+                        .skyColor(-12378263)
+                        .ambientParticle(new AmbientParticleSettings(BPParticles.NIGHT_GAZE.get(), 0.04F))
+                        .ambientLoopSound(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD)
+                        .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
+                        .build();
 
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.TOP_LAYER_MODIFICATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
 
@@ -81,6 +93,15 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
 
                     if (biome.is(Biomes.END_MIDLANDS) || biome.is(Biomes.END_BARRENS)) {
                         builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_MYCHRODEGIA.getHolder().get());
+                        builder.getSpecialEffects()
+                        .waterColor(-6599759)
+                        .waterFogColor(-13158998)
+                        .fogColor(-12378263)
+                        .skyColor(-12378263)
+                        .ambientParticle(new AmbientParticleSettings(BPParticles.NIGHT_GAZE.get(), 0.03F))
+                        .ambientLoopSound(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD)
+                        .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
+                        .build();
 
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.TOP_LAYER_MODIFICATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
 
