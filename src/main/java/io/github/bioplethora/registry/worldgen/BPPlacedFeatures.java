@@ -208,9 +208,7 @@ public class BPPlacedFeatures {
 	}
 	
 	public static PlacedFeature register(RegistryObject<ConfiguredFeature<?, ?>> feature, List<PlacementModifier> placements) {
-		List<PlacementModifier> list = List.copyOf(placements);
-		list.add(BiomeFilter.biome());
-		return new PlacedFeature(feature.getHolder().get(), list);
+		return new PlacedFeature(feature.getHolder().get(), List.copyOf(placements));
 	}
 	
 	public static ResourceLocation prefix(String name) {
