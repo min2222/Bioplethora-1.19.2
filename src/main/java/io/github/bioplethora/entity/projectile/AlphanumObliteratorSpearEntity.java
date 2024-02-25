@@ -3,7 +3,6 @@ package io.github.bioplethora.entity.projectile;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPDamageSources;
 import io.github.bioplethora.registry.BPEntities;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerLevel;
@@ -103,7 +102,6 @@ public class AlphanumObliteratorSpearEntity extends AbstractHurtingProjectile im
 
     public void hitAndExplode() {
         double x = this.getX(), y = this.getY(), z = this.getZ();
-        BlockPos blockpos = new BlockPos((int) this.getX(), (int) this.getY(), (int) this.getZ());
         DamageSource castration = BPDamageSources.indirectCastration(this.getOwner(), this.getOwner());
 
         if (this.level instanceof ServerLevel) {

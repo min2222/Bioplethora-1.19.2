@@ -1,5 +1,6 @@
 package io.github.bioplethora.entity.ai.goals;
 
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.entity.creatures.CrephoxlEntity;
 import io.github.bioplethora.registry.BPDamageSources;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.Explosion;
 
 public class CrephoxlChargingGoal extends Goal {
 
@@ -70,7 +70,7 @@ public class CrephoxlChargingGoal extends Goal {
 
                 if (this.crephoxl.getBoundingBox().inflate(2F).intersects(target.getBoundingBox())) {
                     this.crephoxl.doHurtTarget(target);
-                    this.crephoxl.level.explode(this.crephoxl, target.getX(), target.getY(), target.getZ(), 1.5F, Explosion.BlockInteraction.BREAK);
+                    this.crephoxl.level.explode(this.crephoxl, target.getX(), target.getY(), target.getZ(), 1.5F, EntityUtils.getMobGriefingEvent(this.crephoxl.level, this.crephoxl));
 
                     this.chargeTime = 0;
                 }

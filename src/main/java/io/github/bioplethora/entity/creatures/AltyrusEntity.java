@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import io.github.bioplethora.api.advancements.AdvancementUtils;
 import io.github.bioplethora.api.world.BlockUtils;
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.BPMonsterEntity;
 import io.github.bioplethora.entity.IBioClassification;
@@ -49,7 +50,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -163,7 +163,7 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, Flyin
         boolean flag = super.doHurtTarget(entity);
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
 
-        this.level.explode(null, (int) x, (int) y, (int) z, (float) 3, Explosion.BlockInteraction.BREAK);
+        this.level.explode(null, (int) x, (int) y, (int) z, (float) 3, EntityUtils.getMobGriefingEvent(this.level, this));
         if (this.level instanceof ServerLevel) {
             ((ServerLevel) this.level).sendParticles(ParticleTypes.POOF, x, y, z, 40, 0.75, 0.75, 0.75, 0.1);
         }

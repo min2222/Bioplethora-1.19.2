@@ -1,5 +1,6 @@
 package io.github.bioplethora.entity.projectile;
 
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.registry.BPDamageSources;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPItems;
@@ -10,6 +11,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
@@ -70,7 +72,7 @@ public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile im
         super.onHit(result);
 
         if (result.getType() != HitResult.Type.ENTITY || !((EntityHitResult) result).getEntity().is(owner)) {
-            this.level.explode(this, x, y, z, 1.5F * ((float) this.bladeSize * 0.5F), Explosion.BlockInteraction.BREAK);
+            this.level.explode(this, x, y, z, 1.5F * ((float) this.bladeSize * 0.5F), this.getOwner() instanceof Player ? Explosion.BlockInteraction.BREAK : EntityUtils.getMobGriefingEvent(this.level, this));
             this.discard();
         }
     }

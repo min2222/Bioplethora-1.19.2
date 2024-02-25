@@ -1,5 +1,6 @@
 package io.github.bioplethora.entity.ai.goals;
 
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.entity.creatures.MyliothanEntity;
 import io.github.bioplethora.entity.others.BPEffectEntity;
 import io.github.bioplethora.enums.BPEffectTypes;
@@ -8,7 +9,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
@@ -64,7 +64,7 @@ public class MyliothanChargeAttackGoal extends Goal {
                             this.myliothan.doHurtTarget(targets);
                         }
                     }
-                    world.explode(this.myliothan, target.getX(), target.getY(), target.getZ(), 3F, Explosion.BlockInteraction.BREAK);
+                    world.explode(this.myliothan, target.getX(), target.getY(), target.getZ(), 3F, EntityUtils.getMobGriefingEvent(this.myliothan.level, this.myliothan));
 
                     this.chargeTime = 0;
                 }

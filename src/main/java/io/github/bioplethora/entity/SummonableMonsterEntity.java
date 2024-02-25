@@ -1,10 +1,10 @@
 package io.github.bioplethora.entity;
 
+import io.github.bioplethora.api.world.EntityUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -77,14 +77,14 @@ public abstract class SummonableMonsterEntity extends BPMonsterEntity implements
 
             if (this.limitedLifeTicks >= this.lifeLimitBeforeDeath) {
                 if (this.explodeOnExpiry) {
-                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, Explosion.BlockInteraction.BREAK);
+                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, EntityUtils.getMobGriefingEvent(this.level, this));
                 }
                 this.discard();
             }
 
             if (this.getOwner() != null) {
                 if (!this.level.isClientSide && this.getOwner().isDeadOrDying() && this.explodeOnExpiry) {
-                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 2F, Explosion.BlockInteraction.BREAK);
+                    this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 2F, EntityUtils.getMobGriefingEvent(this.level, this));
                     this.kill();
                 }
             }

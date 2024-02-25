@@ -186,7 +186,7 @@ public class FrostbiteGolemEntity extends SummonableMonsterEntity implements IAn
         if (!level.isClientSide()) {
             if (this.getHealth() <= 100 && BPConfig.IN_HELLMODE) {
                 if (this.level instanceof ServerLevel) {
-                    this.level.explode(null, getX() + d0, getY(), getZ() + d1, 2F, Explosion.BlockInteraction.BREAK);
+                    this.level.explode(null, getX() + d0, getY(), getZ() + d1, 2F, EntityUtils.getMobGriefingEvent(this.level, this));
                     ((ServerLevel) this.level).sendParticles(ParticleTypes.POOF, getX() + d0, getY(), getZ() + d1, 40, 0.75, 0.75,
                             0.75, 0.1);
                 }

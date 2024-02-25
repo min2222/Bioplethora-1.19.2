@@ -1,6 +1,7 @@
 package io.github.bioplethora.entity.others;
 
 import io.github.bioplethora.api.advancements.AdvancementUtils;
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.entity.creatures.AltyrusEntity;
 import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -71,7 +71,7 @@ public class AltyrusSummoningEntity extends Entity implements IAnimatable {
         if (this.birthTime >= 100) {
 
             if (!this.level.isClientSide) {
-                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 5F, Explosion.BlockInteraction.BREAK);
+                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 5F, EntityUtils.getMobGriefingEvent(this.level, this));
 
                 ServerLevel serverworld = (ServerLevel)this.level;
                 BlockPos blockpos = (new BlockPos(this.getX(), this.getY(), this.getZ()));

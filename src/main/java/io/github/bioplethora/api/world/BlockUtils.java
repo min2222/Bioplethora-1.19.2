@@ -11,6 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -56,7 +57,6 @@ public class BlockUtils {
     }
 
     public static void knockUpRandomNearbyBlocks(Level world, double yDelta, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean sendParticles, boolean randomYDelta) {
-
         for (int radY = point.getY(); radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {
                 for (int radZ = point.getZ() - radiusZ; radZ <= point.getZ() + radiusZ; radZ++) {
@@ -91,7 +91,6 @@ public class BlockUtils {
     }
 
     public static void destroyNearbySpecificBlocks(Level world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop, Block... specifiedBlocks) {
-
         for (int radY = point.getY() - radiusX; radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {
                 for (int radZ = point.getZ() - radiusZ; radZ <= point.getZ() + radiusZ; radZ++) {
@@ -109,13 +108,11 @@ public class BlockUtils {
     }
 
     public static void destroyAllNearbyBlocks(Level world, BlockPos point, int radiusX, int radiusY, int radiusZ, boolean shouldDrop) {
-
         for (int radY = point.getY() - radiusX; radY <= point.getY() + radiusY; radY++) {
             for (int radX = point.getX() - radiusX; radX <= point.getX() + radiusX; radX++) {
                 for (int radZ = point.getZ() - radiusZ; radZ <= point.getZ() + radiusZ; radZ++) {
 
                     BlockPos pos = new BlockPos(radX, radY, radZ);
-                    BlockState blockState = world.getBlockState(pos);
 
                     world.destroyBlock(pos, shouldDrop);
                 }
