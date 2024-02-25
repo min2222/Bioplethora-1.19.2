@@ -198,6 +198,39 @@ public class BPPlacedFeatures {
 			ImmutableList.<PlacementModifier>builder()
 			.add(CountPlacement.of(15))
 			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> SOUL_MINISHROOM = PLACED_FEATURES.register("soul_minishroom", () -> register(BPConfiguredFeatures.SOUL_MINISHROOM, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(15))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> SOUL_BIGSHROOM = PLACED_FEATURES.register("soul_bigshroom", () -> register(BPConfiguredFeatures.SOUL_BIGSHROOM, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(12))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> SOUL_SPROUTS = PLACED_FEATURES.register("soul_sprouts", () -> register(BPConfiguredFeatures.SOUL_SPROUTS, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(26))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> SOUL_TALL_GRASS = PLACED_FEATURES.register("soul_tall_grass", () -> register(BPConfiguredFeatures.SOUL_TALL_GRASS, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(22))
+			.add(NoiseThresholdCountPlacement.of(-0.8D, 5, 10))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> KYRIA = PLACED_FEATURES.register("kyria", () -> register(BPConfiguredFeatures.KYRIA, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(55))
+			.add(CountPlacement.of(18))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> KYRIA_BELINE = PLACED_FEATURES.register("kyria_beline", () -> register(BPConfiguredFeatures.KYRIA_BELINE, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(19))
+			.add(NoiseThresholdCountPlacement.of(-0.8D, 5, 10))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
+	public static final RegistryObject<PlacedFeature> KYRIA_IDE_FAN = PLACED_FEATURES.register("kyria_ide_fan", () -> register(BPConfiguredFeatures.KYRIA_IDE_FAN, 
+			ImmutableList.<PlacementModifier>builder()
+			.add(CountPlacement.of(12))
+			.add(CountPlacement.of(30))
+			.add(NoiseThresholdCountPlacement.of(-0.8D, 4, 7))
+			.add(HeightmapPlacement.onHeightmap(Types.MOTION_BLOCKING)).build()));
 	
 	private static ImmutableList.Builder<PlacementModifier> createPlacementModifier(int count) {
 		return ImmutableList.<PlacementModifier>builder().add(CountPlacement.of(count), InSquarePlacement.spread(), BiomeFilter.biome());

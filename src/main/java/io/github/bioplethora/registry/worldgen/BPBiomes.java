@@ -4,7 +4,9 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.world.biomes.end.CaeriForestBiome;
 import io.github.bioplethora.world.biomes.end.CaeriPlainsBiome;
+import io.github.bioplethora.world.biomes.end.WinterfestBiome;
 import io.github.bioplethora.world.biomes.end.configurable.LavenderLakesBiome;
+import io.github.bioplethora.world.biomes.end.configurable.LavenderPondsBiome;
 import io.github.bioplethora.world.biomes.nether.CryeanumPlains;
 import io.github.bioplethora.world.biomes.overworld.RockyWoodlandBiome;
 import net.minecraft.core.Registry;
@@ -34,14 +36,14 @@ public class BPBiomes {
     
     public static final RegistryObject<Biome> CAERI_PLAINS = BIOMES.register("caeri_plains", () -> CaeriPlainsBiome.make());
     public static final RegistryObject<Biome> CAERI_FOREST = BIOMES.register("caeri_forest", () -> CaeriForestBiome.make());
-    public static final RegistryObject<Biome> WINTERFEST = BIOMES.register("winterfest", () -> CaeriForestBiome.make());
+    public static final RegistryObject<Biome> WINTERFEST = BIOMES.register("winterfest", () -> WinterfestBiome.make());
 
     // End (Configurable)
     public static final ResourceKey<Biome> LAVENDER_LAKES_KEY = createKey("lavender_lakes");
     public static final ResourceKey<Biome> LAVENDER_PONDS_KEY = createKey("lavender_ponds");
     
     public static final RegistryObject<Biome> LAVENDER_LAKES = BIOMES.register("lavender_lakes", () -> LavenderLakesBiome.make());
-    public static final RegistryObject<Biome> LAVENDER_PONDS = BIOMES.register("lavender_ponds", () -> LavenderLakesBiome.make());
+    public static final RegistryObject<Biome> LAVENDER_PONDS = BIOMES.register("lavender_ponds", () -> LavenderPondsBiome.make());
 
 	public static void generateBiomes() {
         //OverworldBiomes.addContinentalBiome(BPBiomes.ROCKY_WOODLANDS, ClimateSettings.COOL, 1);

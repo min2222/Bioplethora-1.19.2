@@ -38,6 +38,27 @@ public class BPConfiguredFeatures {
 
     public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Bioplethora.MOD_ID);
     
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_MINISHROOM =  CONFIGURED_FEATURES.register("soul_minishroom", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.SOUL_MINISHROOM.get()))))));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_BIGSHROOM =  CONFIGURED_FEATURES.register("soul_bigshroom", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.SOUL_BIGSHROOM.get()))))));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> KYRIA =  CONFIGURED_FEATURES.register("kyria", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.KYRIA.get()))))));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> KYRIA_BELINE =  CONFIGURED_FEATURES.register("kyria_beline", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.KYRIA_BELINE.get()))))));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> KYRIA_IDE_FAN =  CONFIGURED_FEATURES.register("kyria_ide_fan", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.KYRIA_IDE_FAN.get()))))));
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_SPROUTS = CONFIGURED_FEATURES.register("soul_sprouts", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.SOUL_SPROUTS.get()))))));
+    
+    public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_TALL_GRASS =  CONFIGURED_FEATURES.register("soul_tall_grass", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
+    		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.SOUL_TALL_GRASS.get()))))));
+    
 	public static final RegistryObject<ConfiguredFeature<?, ?>> GLACYNTH = CONFIGURED_FEATURES.register("glacynth", () -> makePendentConfig("glacynth", 
             Blocks.ICE, BPBlocks.GLACYNTH_PLANT.get(), BPBlocks.GLACYNTH.get(),
             ImmutableList.of(Blocks.ICE, Blocks.BLUE_ICE, Blocks.PACKED_ICE, Blocks.FROSTED_ICE),

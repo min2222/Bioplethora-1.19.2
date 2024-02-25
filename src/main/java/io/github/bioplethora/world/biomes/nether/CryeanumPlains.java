@@ -54,20 +54,11 @@ public class CryeanumPlains {
         MobSpawnSettings mobspawninfo = spawnInfoBuilder.build();
         BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder();
 
-        //biomegenerationsettings$builder.surfaceBuilder(surfaceBuilder);
-
-        //Handled in tag definition
-        /*biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_BRIDGE);
-        biomegenerationsettings$builder.addStructureStart(StructureFeatures.NETHER_FOSSIL);
-        biomegenerationsettings$builder.addStructureStart(StructureFeatures.RUINED_PORTAL_NETHER);
-        biomegenerationsettings$builder.addStructureStart(StructureFeatures.BASTION_REMNANT);*/
-
         biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
 
-        //need to use BuiltinRegistries.getHolderOrThrow, also resource key
-        /*biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA);
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_BELINE);
-        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_IDE_FAN);*/
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_BELINE.getHolder().get());
+        biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.KYRIA_IDE_FAN.getHolder().get());
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.RED_TWI.getHolder().get());
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.PINK_TWI.getHolder().get());
         biomegenerationsettings$builder.addFeature(Decoration.VEGETAL_DECORATION, BPTreePlacedFeatures.CRYEANUM_FOREST_TREES);
@@ -87,9 +78,6 @@ public class CryeanumPlains {
         BiomeDefaultFeatures.addNetherDefaultOres(biomegenerationsettings$builder);
         Biome.BiomeBuilder builder1 = new Biome.BiomeBuilder();
         builder1.precipitation(Biome.Precipitation.NONE);
-        /*builder1.biomeCategory(Biome.Category.NETHER);
-        builder1.depth(0.1F);
-        builder1.scale(0.2F);*/
         builder1.temperature(1.0F);
         builder1.downfall(0.0F);
 

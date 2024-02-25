@@ -14,7 +14,7 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 
-public class LavenderLakesBiome {
+public class LavenderPondsBiome {
 
     public static Biome make() {
 
@@ -27,18 +27,17 @@ public class LavenderLakesBiome {
         
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_MYCHRODEGIA.getHolder().get());
 
-        if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_LANTERN_HIGHLANDS_PATCH.getHolder().get());
-        if (BPConfig.WORLDGEN.endSpikeHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_CORSASCILE.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_PURPLE.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_RED.getHolder().get());
-        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_LANTERN_MIDLANDS_PATCH.getHolder().get());
+        if (BPConfig.WORLDGEN.endSpikeMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_LAND_SPIKE_PATCH_ML.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDON.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CHORUS_IDE_FAN.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_KELP.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ENREDE_CORSASCILE.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_PURPLE.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_RED.getHolder().get());
+        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
-        //TODO
-        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
+        if (BPConfig.WORLDGEN.endSpongeMidlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_ML.getHolder().get());
 
         return(new Biome.BiomeBuilder())
                 .precipitation(Biome.Precipitation.NONE)

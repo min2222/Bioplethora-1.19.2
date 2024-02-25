@@ -11,10 +11,8 @@ public class CaeriPlainsBiome {
 
     public static Biome make() {
 
-        BiomeGenerationSettings.Builder biomeGenSettings = (new BiomeGenerationSettings.Builder());//.surfaceBuilder(surfaceBuilder);
+        BiomeGenerationSettings.Builder biomeGenSettings = (new BiomeGenerationSettings.Builder());
 
-        //biomeGenSettings.addStructureStart(StructureFeatures.END_CITY);
-        
         biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.CAERI_CAVERN.getHolder().get());
         //TODO
         //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS.getHolder().get());

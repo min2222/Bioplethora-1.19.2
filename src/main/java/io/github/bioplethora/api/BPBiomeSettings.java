@@ -37,7 +37,7 @@ public class BPBiomeSettings {
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
     	
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)//.biomeCategory(Biome.Category.THEEND).depth(0.2F).scale(0.15F)
+                .precipitation(Biome.Precipitation.NONE)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
@@ -59,7 +59,7 @@ public class BPBiomeSettings {
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)//.biomeCategory(Biome.Category.THEEND).depth(0.1F).scale(0.2F)
+                .precipitation(Biome.Precipitation.NONE)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())

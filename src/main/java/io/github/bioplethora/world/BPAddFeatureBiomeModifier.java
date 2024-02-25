@@ -54,11 +54,11 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.LAVA_SPIRE.getHolder().get());
         		}
         		if(biome.is(Biomes.SOUL_SAND_VALLEY)) {
-        			//TODO
-            		/*builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_MINISHROOM.getHolder().get());
+        			
+        			builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_MINISHROOM.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_BIGSHROOM.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_SPROUTS.getHolder().get());
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_TALL_GRASS.getHolder().get());*/
+            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_TALL_GRASS.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SPIRIT_DANGLER.getHolder().get());
             		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.SOUL_ETERN.getHolder().get());
         		}
@@ -88,6 +88,7 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
                         if (BPConfig.WORLDGEN.endSpikeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL.getHolder().get());
+                        //TODO
                         //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
                     }
 
