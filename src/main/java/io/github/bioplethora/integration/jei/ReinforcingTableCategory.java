@@ -22,7 +22,7 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
 
     public ReinforcingTableCategory(IGuiHelper helper) {
         categoryIcon = helper.createDrawableItemStack(new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
-        categoryBackground = helper.drawableBuilder(new ResourceLocation(Bioplethora.MOD_ID, "textures/gui/container/jei/reinforcing_table.png"), 0, 0, 170, 80).setTextureSize(170, 80).build();
+        categoryBackground = helper.createDrawable(new ResourceLocation(Bioplethora.MOD_ID, "textures/gui/container/jei/reinforcing_table.png"), 0, 0, 176, 80);
     }
 
     @Override
@@ -42,16 +42,16 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder recipeLayout, ReinforcingRecipe recipe, IFocusGroup ingredients) {
-        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 13)
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 44, 18)
         .addIngredients(recipe.topIngredient);
 
-        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 33)
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 44, 37)
         .addIngredients(recipe.midIngredient);
 
-        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 52)
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 44, 55)
         .addIngredients(recipe.botIngredient);
         
-        recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 126, 33)
+        recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 127, 37)
         .addItemStack(recipe.getResultItem());
     }
 
