@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "cookingtime": 150,
+  "experience": 0.4,
+  "ingredient": {
+    "item": "bioplethora:raw_flentair"
+  },
+  "result": "bioplethora:cooked_flentair"
+}

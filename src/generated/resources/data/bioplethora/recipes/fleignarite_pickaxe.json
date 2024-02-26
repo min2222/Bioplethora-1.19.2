@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": {
+      "item": "bioplethora:fleignarite_scales"
+    },
+    "S": {
+      "item": "bioplethora:fleignarite_scales"
+    }
+  },
+  "pattern": [
+    "MMM",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "bioplethora:fleignarite_pickaxe"
+  }
+}

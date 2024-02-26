@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "bioplethora:block/irion_tall_grass_lower"
+    },
+    "half=upper": {
+      "model": "bioplethora:block/irion_tall_grass_upper"
+    }
+  }
+}

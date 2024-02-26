@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BioItemModelProvider extends ItemModelProvider {
@@ -160,7 +161,7 @@ public class BioItemModelProvider extends ItemModelProvider {
 
     public void createBow(RegistryObject<Item> item) {
         Item items = item.get();
-        String name = items.getDescriptionId();
+        String name = ForgeRegistries.ITEMS.getKey(items).getPath();
         ResourceLocation datagenLoc = new ResourceLocation(Bioplethora.MOD_ID, "item/" + name);
 
         if (items instanceof ShieldItem) {
@@ -175,7 +176,7 @@ public class BioItemModelProvider extends ItemModelProvider {
     public void grylynenShield(RegistryObject<Item> item) {
 
         Item items = item.get();
-        String name = items.getDescriptionId();
+        String name = ForgeRegistries.ITEMS.getKey(items).getPath();
         ResourceLocation datagenLoc = new ResourceLocation(Bioplethora.MOD_ID, "item/" + name);
 
         ModelFile.ExistingModelFile modelType = getBioLoc("item/grylynen_shield_base");
@@ -211,11 +212,11 @@ public class BioItemModelProvider extends ItemModelProvider {
     }
 
     public void flatBlock(RegistryObject<? extends Block> block, RegistryObject<? extends Block> textureBlock) {
-        this.flatBlock(block, textureBlock.get().getDescriptionId());
+        this.flatBlock(block, ForgeRegistries.BLOCKS.getKey(textureBlock.get()).getPath());
     }
 
     public void flatBlock(RegistryObject<? extends Block> block, RegistryObject<? extends Block> textureBlock, String fileDirectory) {
-        flatBlock(block, textureBlock.get().getDescriptionId(), fileDirectory);
+        flatBlock(block, ForgeRegistries.BLOCKS.getKey(textureBlock.get()).getPath(), fileDirectory);
     }
 
     public void flatBlock(RegistryObject<? extends Block> block, String texture) {

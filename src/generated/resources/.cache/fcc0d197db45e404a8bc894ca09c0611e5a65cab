@@ -1,0 +1,5 @@
+// 1.19.2	2024-02-26T12:08:27.648643	Tags for minecraft:entity_type
+1ebc28e88b11bca3252bad765b1ec31456578978 data/forge/tags/entity_types/automaton_type.json
+567255d988332de5f9d71b17a1aaa9c5feca7784 data/forge/tags/entity_types/avoider_killable.json
+31fcbd306e174cb3011cad6c507c722bc13f8102 data/forge/tags/entity_types/cavern_fleignar_targets.json
+7d663a1cd89949874a4dc30900fcfa0df167a6c7 data/minecraft/tags/entity_types/arrows.json

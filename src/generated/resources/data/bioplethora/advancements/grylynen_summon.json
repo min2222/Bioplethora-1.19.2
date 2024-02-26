@@ -1,0 +1,29 @@
+{
+  "parent": "bioplethora:bioplethora_startup",
+  "criteria": {
+    "grylynen_summon": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "bioplethora:textures/block/frostbite_metal_core_block.png",
+    "description": {
+      "translate": "advancements.bioplethora.grylynen_summon.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "bioplethora:green_grylynen_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bioplethora.grylynen_summon.title"
+    }
+  },
+  "requirements": [
+    [
+      "grylynen_summon"
+    ]
+  ]
+}

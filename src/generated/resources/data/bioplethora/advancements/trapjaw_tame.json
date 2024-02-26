@@ -1,0 +1,40 @@
+{
+  "parent": "bioplethora:bioplethora_startup",
+  "criteria": {
+    "trapjaw": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "bioplethora:trapjaw"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "bioplethora:textures/block/frostbite_metal_core_block.png",
+    "description": {
+      "translate": "advancements.bioplethora.trapjaw_tame.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "bioplethora:trapjaw_spawn_egg"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bioplethora.trapjaw_tame.title"
+    }
+  },
+  "requirements": [
+    [
+      "trapjaw"
+    ]
+  ]
+}

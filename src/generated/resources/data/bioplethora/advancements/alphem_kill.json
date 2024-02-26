@@ -1,0 +1,40 @@
+{
+  "parent": "bioplethora:bioplethora_startup",
+  "criteria": {
+    "alphem": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "bioplethora:alphem"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "bioplethora:textures/block/frostbite_metal_core_block.png",
+    "description": {
+      "translate": "advancements.bioplethora.alphem_kill.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "bioplethora:alphem_spawn_egg"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bioplethora.alphem_kill.title"
+    }
+  },
+  "requirements": [
+    [
+      "alphem"
+    ]
+  ]
+}

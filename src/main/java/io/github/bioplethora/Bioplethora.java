@@ -44,7 +44,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -70,8 +69,6 @@ public class Bioplethora {
         instance = this;
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        //bus.addListener(BPWoodTypes::registerWoodType);
-        
         /* final step of registering elements like Items, Entities, etc. */
 
         BPEntities.ENTITIES.register(bus);
@@ -104,22 +101,19 @@ public class Bioplethora {
         bus.addListener(this::onModConfigEvent);
         bus.addListener(this::onInterModEnqueueEvent);
 
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-        forgeBus.addListener(EventPriority.NORMAL, BPVillagerTrades::onVillagerTrades);
-        forgeBus.addListener(EventPriority.NORMAL, BPAttributes::useTrueDefenseAttribute);
-        forgeBus.register(this);
-
-        GeckoLib.initialize();
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, BPVillagerTrades::onVillagerTrades);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, BPAttributes::useTrueDefenseAttribute);
 
         // register this class through the Minecraft Forge Event Bus
         MinecraftForge.EVENT_BUS.register(this);
+
+        GeckoLib.initialize();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BPConfig.COMMON_SPEC, "bioplethora/common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BPConfig.WORLDGEN_SPEC, "bioplethora/worldgen.toml");
     }
     
-    @SubscribeEvent
-    public void onModConfigEvent(final ModConfigEvent event) {
+    private void onModConfigEvent(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
         // Rebake the configs when they change
         if (config.getSpec() == BPConfig.COMMON_SPEC) {
@@ -143,8 +137,7 @@ public class Bioplethora {
         BPExtras.addExtras();
     }
 
-    @SubscribeEvent
-    public void gatherData(final GatherDataEvent event) {
+    private void gatherData(final GatherDataEvent event) {
         DataGenerator dataGenerator = event.getGenerator();
         final ExistingFileHelper efh = event.getExistingFileHelper();
 

@@ -248,8 +248,8 @@ public class BioBlockstateProvider extends BlockStateProvider {
     }
 
     public void signBlock(Block sign, Block wallSign, ResourceLocation texture) {
-        BlockModelBuilder pSign = models().getBuilder(sign.getDescriptionId()).texture("particle", texture);
-        BlockModelBuilder pWallSign = models().getBuilder(wallSign.getDescriptionId()).texture("particle", texture);
+        BlockModelBuilder pSign = models().getBuilder(ForgeRegistries.BLOCKS.getKey(sign).getPath()).texture("particle", texture);
+        BlockModelBuilder pWallSign = models().getBuilder(ForgeRegistries.BLOCKS.getKey(wallSign).getPath()).texture("particle", texture);
 
         getVariantBuilder(sign).partialState().setModels(new ConfiguredModel(pSign));
         getVariantBuilder(wallSign).partialState().setModels(new ConfiguredModel(pWallSign));
@@ -361,14 +361,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void wsabbSoilMCResLoc(Block topAndSides, Block soil) {
         getVariantBuilder(topAndSides).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(topAndSides.getDescriptionId(),
-                                mcResLoc(soil.getDescriptionId()),
-                                bioResLoc(topAndSides.getDescriptionId() + "_top"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side")
-                        ).texture("particle", bioResLoc(topAndSides.getDescriptionId() + "_top"))
+                        .cube(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath(),
+                                mcResLoc(ForgeRegistries.BLOCKS.getKey(soil).getPath()),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_top"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side")
+                        ).texture("particle", bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_top"))
                 )
         );
     }
@@ -376,14 +376,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void withSidesAndBottomBlock(Block topAndSides, Block soil) {
         getVariantBuilder(topAndSides).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(topAndSides.getDescriptionId(),
-                                bioResLoc(soil.getDescriptionId()),
-                                bioResLoc(topAndSides.getDescriptionId() + "_top"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side")
-                        ).texture("particle", bioResLoc(topAndSides.getDescriptionId() + "_top"))
+                        .cube(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath(),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(soil).getPath()),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_top"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side")
+                        ).texture("particle", bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_top"))
                 )
         );
     }
@@ -391,14 +391,14 @@ public class BioBlockstateProvider extends BlockStateProvider {
     public void mcWithSidesAndBottomBlock(Block topAndSides, Block soil) {
         getVariantBuilder(topAndSides).partialState().setModels(
                 new ConfiguredModel(models()
-                        .cube(topAndSides.getDescriptionId(),
-                                mcResLoc(soil.getDescriptionId()),
-                                bioResLoc(topAndSides.getDescriptionId() + "_top"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side"),
-                                bioResLoc(topAndSides.getDescriptionId() + "_side")
-                        ).texture("particle", bioResLoc(topAndSides.getDescriptionId() + "_top"))
+                        .cube(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath(),
+                                mcResLoc(ForgeRegistries.BLOCKS.getKey(soil).getPath()),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_top"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side"),
+                                bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_side")
+                        ).texture("particle", bioResLoc(ForgeRegistries.BLOCKS.getKey(topAndSides).getPath() + "_top"))
                 )
         );
     }

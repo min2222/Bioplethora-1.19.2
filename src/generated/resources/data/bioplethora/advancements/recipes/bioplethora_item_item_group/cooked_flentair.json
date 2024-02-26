@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_item.bioplethora.raw_flentair": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bioplethora:raw_flentair"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bioplethora:cooked_flentair"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_item.bioplethora.raw_flentair",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bioplethora:cooked_flentair"
+    ]
+  }
+}

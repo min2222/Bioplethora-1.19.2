@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "bioplethora:block/reinforcing_table"
+      },
+      {
+        "model": "bioplethora:block/reinforcing_table"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "bioplethora:reinforcing",
+  "core": {
+    "item": "bioplethora:red_grylynen_crystal"
+  },
+  "material": {
+    "item": "bioplethora:frostbite_metal"
+  },
+  "result": {
+    "item": "bioplethora:arbitrary_ballista"
+  },
+  "weapon": {
+    "item": "minecraft:crossbow"
+  }
+}
