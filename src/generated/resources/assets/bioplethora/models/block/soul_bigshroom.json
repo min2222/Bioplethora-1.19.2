@@ -1,7 +1,0 @@
-{
-  "parent": "bioplethora:block/big_mushroom",
-  "textures": {
-    "0": "bioplethora:block/soul_bigshroom",
-    "particle": "bioplethora:block/soul_bigshroom"
-  }
-}

@@ -3,9 +3,7 @@ package io.github.bioplethora.integration.jei;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.gui.recipe.ReinforcingRecipe;
 import io.github.bioplethora.registry.BPBlocks;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -23,9 +21,8 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
     private IDrawable categoryBackground;
 
     public ReinforcingTableCategory(IGuiHelper helper) {
-        categoryIcon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
-        categoryBackground = helper.drawableBuilder(new ResourceLocation(Bioplethora.MOD_ID, "textures/gui/container/jei/reinforcing_table.png"),
-                0, 0, 170, 80).setTextureSize(170, 80).build();
+        categoryIcon = helper.createDrawableItemStack(new ItemStack(BPBlocks.REINFORCING_TABLE.get()));
+        categoryBackground = helper.drawableBuilder(new ResourceLocation(Bioplethora.MOD_ID, "textures/gui/container/jei/reinforcing_table.png"), 0, 0, 170, 80).setTextureSize(170, 80).build();
     }
 
     @Override
@@ -45,15 +42,17 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder recipeLayout, ReinforcingRecipe recipe, IFocusGroup ingredients) {
-    	IRecipeSlotBuilder intputSlot = recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 13);
-    	IRecipeSlotBuilder intputSlot2 = recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 33);
-    	IRecipeSlotBuilder intputSlot3 = recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 52);
-    	IRecipeSlotBuilder outputSlot = recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 126, 33);
-    	//TODO
-    	/*intputSlot.addIngredient(VanillaTypes.ITEM_STACK, recipe.getIngredients().get(0).getItems()[0]);
-    	intputSlot2.addIngredient(VanillaTypes.ITEM_STACK, recipe.getIngredients().get(1).getItems()[0]);
-    	intputSlot3.addIngredient(VanillaTypes.ITEM_STACK, recipe.getIngredients().get(2).getItems()[0]);*/
-        outputSlot.addIngredient(VanillaTypes.ITEM_STACK, recipe.getResult());
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 13)
+        .addIngredients(recipe.topIngredient);
+
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 33)
+        .addIngredients(recipe.midIngredient);
+
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 43, 52)
+        .addIngredients(recipe.botIngredient);
+        
+        recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 126, 33)
+        .addItemStack(recipe.getResultItem());
     }
 
 	@Override

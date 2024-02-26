@@ -25,7 +25,7 @@ import net.minecraft.world.level.Level;
 public class ReinforcingRecipe implements Recipe<Container> {
 
     protected final ResourceLocation recipeId;
-    protected final Ingredient topIngredient, midIngredient, botIngredient;
+    public final Ingredient topIngredient, midIngredient, botIngredient;
     protected final ItemStack resultItem;
 
     public ReinforcingRecipe(ResourceLocation recipeId, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient,

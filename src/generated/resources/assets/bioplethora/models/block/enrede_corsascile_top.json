@@ -1,7 +1,0 @@
-{
-  "parent": "bioplethora:block/corsascile_top",
-  "textures": {
-    "0": "bioplethora:block/enrede_corsascile",
-    "particle": "bioplethora:block/enrede_corsascile"
-  }
-}

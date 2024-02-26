@@ -34,7 +34,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 @Mod.EventBusSubscriber(modid = Bioplethora.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModCommonRegister {
 
-	//TODO might be incorrect event
     @SubscribeEvent
     public static void onRegisterEntities(FMLCommonSetupEvent event) {
         BioplethoraSpawnEggItem.initUnaddedEggs();

@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.entity.SummonableMonsterEntity;
 import io.github.bioplethora.registry.BPDamageSources;
 import io.github.bioplethora.registry.BPEntities;
@@ -22,7 +23,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -150,7 +150,7 @@ public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjecti
         }
 
         if (!this.level.isClientSide) {
-            this.level.explode(this, x, this.getY(0.0625D), z, 3F, Explosion.BlockInteraction.BREAK);
+            this.level.explode(this, x, this.getY(0.0625D), z, 3F, EntityUtils.getMobGriefingEvent(this.level, this));
             this.discard();
         }
     }

@@ -1,7 +1,0 @@
-{
-  "parent": "bioplethora:block/reinforcing_table_base",
-  "textures": {
-    "1": "bioplethora:block/reinforcing_table",
-    "particle": "bioplethora:block/reinforcing_table"
-  }
-}

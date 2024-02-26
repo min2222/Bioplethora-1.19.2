@@ -1,5 +1,6 @@
 package io.github.bioplethora.entity.projectile;
 
+import io.github.bioplethora.api.world.EntityUtils;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.entity.SummonableMonsterEntity;
 import io.github.bioplethora.registry.BPDamageSources;
@@ -16,6 +17,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -142,9 +144,9 @@ public class FrostbiteMetalClusterEntity extends AbstractHurtingProjectile imple
 
         if (!this.level.isClientSide && this.getOwner() != null) {
             if (((LivingEntity) this.getOwner()).getHealth() <= 100 && BPConfig.COMMON.hellMode.get()) {
-                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, Explosion.BlockInteraction.BREAK);
+                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, this.getOwner() instanceof Player ? Explosion.BlockInteraction.BREAK : EntityUtils.getMobGriefingEvent(this.level, this));
             } else {
-                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 1.5F, Explosion.BlockInteraction.BREAK);
+                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 1.5F, this.getOwner() instanceof Player ? Explosion.BlockInteraction.BREAK : EntityUtils.getMobGriefingEvent(this.level, this));
             }
             this.discard();
         }

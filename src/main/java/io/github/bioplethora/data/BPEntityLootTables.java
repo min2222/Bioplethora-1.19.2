@@ -381,7 +381,7 @@ public class BPEntityLootTables extends EntityLoot {
         );
 
         // Fiery Eurydn
-        add(BPEntities.SOUL_EURYDN.get(), LootTable.lootTable()
+        add(BPEntities.FIERY_EURYDN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(BPItems.FIERY_CUBE.get())

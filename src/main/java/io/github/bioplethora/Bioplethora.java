@@ -143,7 +143,8 @@ public class Bioplethora {
         BPExtras.addExtras();
     }
 
-    private void gatherData(final GatherDataEvent event) {
+    @SubscribeEvent
+    public void gatherData(final GatherDataEvent event) {
         DataGenerator dataGenerator = event.getGenerator();
         final ExistingFileHelper efh = event.getExistingFileHelper();
 
