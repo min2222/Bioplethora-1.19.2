@@ -1,6 +1,5 @@
 package io.github.bioplethora.network.functions;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 import io.github.bioplethora.Bioplethora;
