@@ -1,5 +1,6 @@
 package io.github.bioplethora.network.functions;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 import io.github.bioplethora.Bioplethora;
@@ -8,6 +9,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
@@ -63,9 +65,10 @@ public class BPSpawnParticlePacket {
             }
         } else {
             for(int i = 0; i < message.getCount(); ++i) {
-                double d1 = minecraft.level.random.nextGaussian() * (double)message.getXDist();
-                double d3 = minecraft.level.random.nextGaussian() * (double)message.getYDist();
-                double d5 = minecraft.level.random.nextGaussian() * (double)message.getZDist();
+            	RandomSource random = RandomSource.create();
+                double d1 = random.nextGaussian() * (double)message.getXDist();
+                double d3 = random.nextGaussian() * (double)message.getYDist();
+                double d5 = random.nextGaussian() * (double)message.getZDist();
                 double d6 = message.getXSpeed();
                 double d7 = message.getYSpeed();
                 double d8 = message.getZSpeed();
