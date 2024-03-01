@@ -31,7 +31,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class EchoGaidiusEntity extends GaidiusBaseEntity {
 
-    public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(GaidiusBaseEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(EchoGaidiusEntity.class, EntityDataSerializers.INT);
     public static final int NULL_TARGET_INT = -1;
     public int relocateCD = 0;
 

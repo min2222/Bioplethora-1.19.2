@@ -71,6 +71,7 @@ public class BlockUtils {
                             } else {
                                 blockEntity.setDeltaMovement(blockEntity.getDeltaMovement().add(0, yDelta, 0));
                             }
+                            blockEntity.cancelDrop = true;
                             world.addFreshEntity(blockEntity);
 
                             if (sendParticles) {
