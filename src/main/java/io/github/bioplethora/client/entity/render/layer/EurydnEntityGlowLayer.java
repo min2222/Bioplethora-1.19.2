@@ -39,7 +39,6 @@ public class EurydnEntityGlowLayer extends GeoLayerRenderer<EurydnEntity> {
         if (!entityLivingBaseIn.level.isEmptyBlock(entityLivingBaseIn.blockPosition())) {
             RenderType trslct =  isFiery ? RenderType.eyes(TRSLCT_FIERY) : RenderType.eyes(TRSLCT_SOUL);
 
-            matrixStackIn.scale(1.5F, 1.5F, 1.5F);
             this.getRenderer().render(this.getEntityModel().getModel(MODEL), entityLivingBaseIn, partialTicks, trslct, matrixStackIn, bufferIn, bufferIn.getBuffer(trslct), packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 0.15f);
         }
     }

@@ -6,6 +6,7 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
 import io.github.bioplethora.registry.BPParticles;
 import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
+import io.github.bioplethora.world.EntitySpawnManager.BioplethoraMobSpawns;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -15,21 +16,73 @@ import net.minecraft.world.level.biome.AmbientParticleSettings;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class BPAddFeatureBiomeModifier implements BiomeModifier {
-    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(Bioplethora.MOD_ID, "bp_add_features"), ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Bioplethora.MOD_ID);
+public class BPBiomeModifier implements BiomeModifier {
+    private static final RegistryObject<Codec<? extends BiomeModifier>> SERIALIZER = RegistryObject.create(new ResourceLocation(Bioplethora.MOD_ID, "bp_modifiers"), ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Bioplethora.MOD_ID);
 
-    public BPAddFeatureBiomeModifier() {
+    public BPBiomeModifier() {
     	
     }
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (phase == Phase.ADD) {
+        	if(biome.is(BiomeTags.IS_OVERWORLD)) {
+        		BioplethoraMobSpawns.OVERWORLD_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(BiomeTags.IS_FOREST)) {
+        		BioplethoraMobSpawns.FOREST_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(Tags.Biomes.IS_DRY)) {
+        		BioplethoraMobSpawns.DESERT_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(Tags.Biomes.IS_SWAMP)) {
+        		BioplethoraMobSpawns.SWAMP_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(BiomeTags.IS_JUNGLE)) {
+        		BioplethoraMobSpawns.JUNGLE_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && (biome.is(Tags.Biomes.IS_CONIFEROUS) || biome.is(Tags.Biomes.IS_COLD))) {
+        		BioplethoraMobSpawns.TAIGA_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(Tags.Biomes.IS_COLD)) {
+        		BioplethoraMobSpawns.ICY_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(BiomeTags.IS_SAVANNA)) {
+        		BioplethoraMobSpawns.SAVANNA_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(BiomeTags.IS_RIVER)) {
+        		BioplethoraMobSpawns.RIVER_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_OVERWORLD) && biome.is(BiomeTags.IS_OCEAN)) {
+        		BioplethoraMobSpawns.OCEAN_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	if(biome.is(BiomeTags.IS_NETHER)) {
+        		 if(biome.is(Biomes.BASALT_DELTAS)) {
+        			 BioplethoraMobSpawns.BASALT_DELTAS_ENTITIES.accept(builder.getMobSpawnSettings());
+        		 }
+        		 if(biome.is(Biomes.NETHER_WASTES)) {
+        			 BioplethoraMobSpawns.NETHER_WASTES_ENTITIES.accept(builder.getMobSpawnSettings());
+        		 }
+        		 if(biome.is(Biomes.WARPED_FOREST)) {
+        			 BioplethoraMobSpawns.WARPED_FOREST_ENTITIES.accept(builder.getMobSpawnSettings());
+        		 }
+        		 if(biome.is(Biomes.CRIMSON_FOREST)) {
+        			 BioplethoraMobSpawns.CRIMSON_FOREST_ENTITIES.accept(builder.getMobSpawnSettings());
+        		 }
+        		 if(biome.is(Biomes.SOUL_SAND_VALLEY)) {
+        			 BioplethoraMobSpawns.SOUL_SAND_VALLEY_ENTITIES.accept(builder.getMobSpawnSettings());
+        		 }
+        	}
+        	if(biome.is(BiomeTags.IS_END)) {
+        		BioplethoraMobSpawns.END_ENTITIES.accept(builder.getMobSpawnSettings());
+        	}
+        	
         	if(biome.is(BiomeTags.IS_OVERWORLD)) {
         		builder.getGenerationSettings().addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.FLEIGNARITE_REMAINS.getHolder().get());
         		builder.getGenerationSettings().addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.FLEIGNARITE_VINES.getHolder().get());
@@ -88,8 +141,8 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
                         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
                         if (BPConfig.WORLDGEN.endSpikeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL.getHolder().get());
-                        //TODO
-                        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
+                        
+                        if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL.getHolder().get());
                     }
 
                     if (biome.is(Biomes.END_MIDLANDS) || biome.is(Biomes.END_BARRENS)) {
@@ -129,7 +182,7 @@ public class BPAddFeatureBiomeModifier implements BiomeModifier {
         return SERIALIZER.get();
     }
 
-    public static Codec<BPAddFeatureBiomeModifier> makeCodec() {
-        return Codec.unit(BPAddFeatureBiomeModifier::new);
+    public static Codec<BPBiomeModifier> makeCodec() {
+        return Codec.unit(BPBiomeModifier::new);
     }
 }

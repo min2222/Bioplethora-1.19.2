@@ -158,8 +158,8 @@ public class BPBiomeSettings {
         BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
 
         biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.CAERI_CAVERN.getHolder().get());
-        //TODO
-        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS);
+
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS.getHolder().get());
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_TALL_GRASS.getHolder().get());
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ARTAIRIUS.getHolder().get());
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.BYRSS_LANTERN_PLANT_PATCH.getHolder().get());
@@ -196,8 +196,7 @@ public class BPBiomeSettings {
 
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CAERI_FOREST_TREES.getHolder().get());
 
-        //TODO
-        //biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS);
+        biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_GRASS.getHolder().get());
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.IRION_TALL_GRASS.getHolder().get());
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.ARTAIRIUS.getHolder().get());
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.BYRSS_LANTERN_FOREST_PATCH.getHolder().get());
@@ -274,8 +273,7 @@ public class BPBiomeSettings {
         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_RED.getHolder().get());
         if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.OCHAIM_GREEN.getHolder().get());
 
-        //TODO
-        //if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL);
+        if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL.getHolder().get());
 
         return(new Biome.BiomeBuilder())
                 .precipitation(Biome.Precipitation.NONE)

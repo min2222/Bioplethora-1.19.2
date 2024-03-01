@@ -2,9 +2,6 @@ package io.github.bioplethora.world.structures;
 
 import java.util.Optional;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-
 import com.mojang.serialization.Codec;
 
 import io.github.bioplethora.Bioplethora;
@@ -60,9 +57,7 @@ public class AlphanumMausoleumStructure extends Structure {
 
         structurepiecesbuilder.pieces.forEach(piece -> piece.move(0, 1, 0));
         structurepiecesbuilder.pieces.forEach(piece -> piece.getBoundingBox().minY -= 1);
-        
-        //FIXME
-        //LogManager.getLogger().log(Level.DEBUG, "House at " + structurepiecesbuilder.pieces.get(0).getBoundingBox().minX() + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().minY() + " " + structurepiecesbuilder.pieces.get(0).getBoundingBox().minZ());
+
     	return optional;
     }
 

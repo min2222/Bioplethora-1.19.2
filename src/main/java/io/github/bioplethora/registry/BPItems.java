@@ -193,7 +193,8 @@ public class BPItems {
     public static final RegistryObject<Item> COOKED_JAWFLESH = ITEMS.register("cooked_jawflesh", () -> new Item(new Item.Properties().food(BPFoods.COOKED_JAWFLESH).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
     // Plant Items
-    public static  final RegistryObject<Item> SWIVELBLOOM = ITEMS.register("swivelbloom", () -> new Item(new Item.Properties().tab(BPItemGroup.BioplethoraItemItemGroup)));
+    //FIXME no model
+    public static  final RegistryObject<Item> SWIVELBLOOM = ITEMS.register("swivelbloom", () -> new Item(new Item.Properties()));
 
     //=================================================================
     //                  BIOPLETHORA SPAWN EGGS
