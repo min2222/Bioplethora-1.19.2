@@ -91,14 +91,7 @@ public class ServerWorldEvents {
 
     @SubscribeEvent
     public static void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-
-        hitHandler(event.getEntity(), event.getItemStack());
-
-        if (event.getItemStack().getItem() instanceof IReachWeapon) {
-            if (event.getLevel().isClientSide()) {
-                BPNetwork.CHANNEL.sendToServer(new LeftSwingPacket());
-            }
-        }
+        BPNetwork.CHANNEL.sendToServer(new LeftSwingPacket());
     }
 
 
