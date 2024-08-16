@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.MyliothanEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class MyliothanEntityModel extends AnimatedGeoModel<MyliothanEntity> {
+public class MyliothanEntityModel extends GeoModel<MyliothanEntity> {
 
     @Override
     public ResourceLocation getModelResource(MyliothanEntity entity) {
@@ -23,12 +23,12 @@ public class MyliothanEntityModel extends AnimatedGeoModel<MyliothanEntity> {
     }
 
     /*@Override
-    public void setLivingAnimations(MyliothanEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(MyliothanEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
-        IBone head = this.getAnimationProcessor().getBone("head");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX((extraData.headPitch) * ((float) Math.PI / 180F));
-        head.setRotationY((extraData.netHeadYaw) * ((float) Math.PI / 270F));
+        CoreGeoBone head = this.getAnimationProcessor().getBone("head");
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
+        head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
     }*/
 }

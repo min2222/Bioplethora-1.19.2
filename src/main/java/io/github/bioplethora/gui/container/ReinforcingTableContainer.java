@@ -45,7 +45,7 @@ public class ReinforcingTableContainer extends AbstractReinforcingContainer {
             ((ServerLevel) pPlayer.level).sendParticles(ParticleTypes.FIREWORK, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), 55, 0.65, 0.65, 0.65, 0.01);
         }
 
-        this.resultSlots.awardUsedRecipes(pPlayer);
+        this.resultSlots.awardUsedRecipes(pPlayer, List.of(this.resultSlots.getItem(0)));
         this.shrinkStackInSlot(0);
         this.shrinkStackInSlot(1);
         this.shrinkStackInSlot(2);
@@ -65,7 +65,7 @@ public class ReinforcingTableContainer extends AbstractReinforcingContainer {
             this.resultSlots.setItem(0, ItemStack.EMPTY);
         } else {
             this.selectedRecipe = list.get(0);
-            ItemStack itemstack = this.selectedRecipe.assemble(this.inputSlots);
+            ItemStack itemstack = this.selectedRecipe.assemble(this.inputSlots, this.level.registryAccess());
             this.resultSlots.setRecipeUsed(this.selectedRecipe);
             this.resultSlots.setItem(0, itemstack);
         }

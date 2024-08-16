@@ -47,9 +47,9 @@ public class ShachathQuickShootingGoal extends Goal {
             }
             if (this.chargeTime == 200) {
 
-                BlockPos blockpos = new BlockPos(this.shachath.getX(), this.shachath.getY() - 3, this.shachath.getZ());
+                BlockPos blockpos = BlockPos.containing(this.shachath.getX(), this.shachath.getY() - 3, this.shachath.getZ());
 
-                if (!this.shachath.level.getBlockState(blockpos).getMaterial().blocksMotion()) {
+                if (!this.shachath.level.getBlockState(blockpos).blocksMotion()) {
                     this.shachath.teleportWithEffect(this.shachath.getX(), this.shachath.getY() - 3, this.shachath.getZ());
                 } else {
                     this.shachath.setDeltaMovement(0, -3, 0);

@@ -6,8 +6,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.eventbus.api.Event.Result;
 
 public class BPSaplingBlock extends SaplingBlock {
 
@@ -25,9 +27,14 @@ public class BPSaplingBlock extends SaplingBlock {
         if (state.getValue(STAGE) == 0) {
             world.setBlock(pos, state.cycle(STAGE), 4);
         } else {
-            if (!net.minecraftforge.event.ForgeEventFactory.saplingGrowTree(world, rand, pos)) return;
+            if (!saplingGrowTree(world, rand, pos)) return;
             this.nbtTree.placeAt(world, world.getChunkSource().getGenerator(), pos, state, rand);
         }
+    }
+    
+    public static boolean saplingGrowTree(LevelAccessor level, RandomSource randomSource, BlockPos pos)
+    {
+        return !net.minecraftforge.event.ForgeEventFactory.blockGrowFeature(level, randomSource, pos, null).getResult().equals(Result.DENY);
     }
 
     @Override

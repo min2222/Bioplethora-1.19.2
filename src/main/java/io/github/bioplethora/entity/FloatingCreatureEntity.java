@@ -16,8 +16,8 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 /**
  * Must implement a.i. goals {@link MoveRandomGoal} and move controller {@link MoveHelperController} for the floating to work.
@@ -31,10 +31,10 @@ public abstract class FloatingCreatureEntity extends BPCreatureEntity implements
     }
 
     @Override
-    public abstract void registerControllers(AnimationData data);
+    public abstract void registerControllers(AnimatableManager.ControllerRegistrar data);
 
     @Override
-    public abstract AnimationFactory getFactory();
+    public abstract AnimatableInstanceCache getAnimatableInstanceCache();
 
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);

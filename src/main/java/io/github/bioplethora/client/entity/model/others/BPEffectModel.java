@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model.others;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.others.BPEffectEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class BPEffectModel extends AnimatedGeoModel<BPEffectEntity> {
+public class BPEffectModel extends GeoModel<BPEffectEntity> {
 
     @Override
     public ResourceLocation getModelResource(BPEffectEntity entity) {
@@ -28,10 +28,10 @@ public class BPEffectModel extends AnimatedGeoModel<BPEffectEntity> {
 
     /*
     @Override
-    public void setLivingAnimations(InfernalQuarterstaffSlashEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
-        IBone head = this.getAnimationProcessor().getBone("bone");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationY((extraData.netHeadYaw) * ((float) Math.PI / 270F));
+    public void setCustomAnimations(InfernalQuarterstaffSlashEntity entity, long uniqueID, @Nullable AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
+        CoreGeoBone head = this.getAnimationProcessor().getBone("bone");
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
     }*/
 }

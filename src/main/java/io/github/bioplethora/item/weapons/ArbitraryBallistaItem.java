@@ -5,8 +5,8 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import io.github.bioplethora.api.BPItemSettings;
 import io.github.bioplethora.api.mixin.IAbstractArrowMixin;
@@ -24,7 +24,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -66,11 +65,11 @@ public class ArbitraryBallistaItem extends CrossbowItem implements Vanishable {
 
             for (LivingEntity area : world.getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(1))) {
                 if (area != entity) {
-                    area.hurt(DamageSource.explosion(entity), 5);
+                    area.hurt(entity.damageSources().explosion(entity, entity), 5);
                 }
             }
 
-            entity.hurt(DamageSource.explosion((LivingEntity) null), 1);
+            entity.hurt(entity.damageSources().explosion((LivingEntity) null, null), 1);
 
             return InteractionResultHolder.consume(itemstack);
         } else if (!entity.getProjectile(itemstack).isEmpty()) {
@@ -129,10 +128,11 @@ public class ArbitraryBallistaItem extends CrossbowItem implements Vanishable {
                 icrossbowuser.shootCrossbowProjectile(icrossbowuser.getTarget(), stack, projectileentity, v);
             } else {
                 Vec3 vector3d1 = entity.getUpVector(1.0F);
-                Quaternion quaternion = new Quaternion(new Vector3f(vector3d1), v, true);
+                Vector3f vector3f1 = vector3d1.toVector3f();
+                Quaternionf quaternion = new Quaternionf().setAngleAxis(Math.toRadians(v), vector3f1.x, vector3f1.y, vector3f1.z);
                 Vec3 vector3d = entity.getViewVector(1.0F);
-                Vector3f vector3f = new Vector3f(vector3d);
-                vector3f.transform(quaternion);
+                Vector3f vector3f = vector3d.toVector3f();
+                vector3f.rotate(quaternion);
                 projectileentity.shoot(vector3f.x(), vector3f.y(), vector3f.z(), p_220016_7_, p_220016_8_);
             }
 

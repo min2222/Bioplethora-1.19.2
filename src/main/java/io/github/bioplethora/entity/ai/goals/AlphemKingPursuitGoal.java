@@ -10,7 +10,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,7 +75,7 @@ public class AlphemKingPursuitGoal extends Goal {
             if (pursTime == 60) {
                 if (king.getRandom().nextBoolean()) {
                     teleportWithEffect(target.getX(), target.getY() + 5, target.getZ());
-                    targetPos = new BlockPos(target.getX(), king.getGroundPos(king.level, (int) target.getX(), (int) target.getZ()).getY(), target.getZ());
+                    targetPos = BlockPos.containing(target.getX(), king.getGroundPos(king.level, (int) target.getX(), (int) target.getZ()).getY(), target.getZ());
                     this.king.setNoGravity(true);
 
                     hasRaised = true;
@@ -101,7 +100,7 @@ public class AlphemKingPursuitGoal extends Goal {
         for (LivingEntity areaEnt : king.level.getEntitiesOfClass(LivingEntity.class, aabb)) {
             if (areaEnt != this.king) {
                 areaEnt.moveTo(areaEnt.getX(), targetPos.getY(), areaEnt.getZ());
-                areaEnt.hurt(DamageSource.explosion(this.king), 5.0F);
+                areaEnt.hurt(this.king.damageSources().explosion(this.king, this.king), 5.0F);
             }
         }
 
@@ -110,7 +109,7 @@ public class AlphemKingPursuitGoal extends Goal {
         BPEffectEntity.createInstance(king, BPEffectTypes.ALPHEM_KING_IMPACT);
         for (LivingEntity areaEnt : king.level.getEntitiesOfClass(LivingEntity.class, king.getBoundingBox().inflate(7, 1, 7).move(targetPos))) {
             if (areaEnt != this.king) {
-                areaEnt.hurt(DamageSource.explosion(this.king), 7.0F);
+                areaEnt.hurt(this.king.damageSources().explosion(this.king, this.king), 7.0F);
                 areaEnt.knockback(2F, this.king.getX() - areaEnt.getX(), this.king.getZ() - areaEnt.getZ());
                 areaEnt.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
             }

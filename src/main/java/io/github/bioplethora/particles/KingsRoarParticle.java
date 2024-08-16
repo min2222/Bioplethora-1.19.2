@@ -1,7 +1,9 @@
 package io.github.bioplethora.particles;
 
+import org.joml.Vector3f;
+
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import io.github.bioplethora.api.extras.ClientUtils;
 import net.minecraft.Util;
@@ -49,12 +51,12 @@ public class KingsRoarParticle extends TextureSheetParticle {
     public void render(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks) {
         this.alpha = 1.0F - Mth.clamp(((float)this.age + pPartialTicks) / (float)this.lifetime, 0.0F, 1.0F);
         ClientUtils.renderRotatedParticle(this, pBuffer, pRenderInfo, pPartialTicks, (p_234005_) -> {
-            p_234005_.mul(Vector3f.YP.rotation(0.0F));
-            p_234005_.mul(Vector3f.XP.rotation(-(1.0472F + (1.0472F / 2F))));
+            p_234005_.mul(Axis.YP.rotation(0.0F));
+            p_234005_.mul(Axis.XP.rotation(-(1.0472F + (1.0472F / 2F))));
         });
         ClientUtils.renderRotatedParticle(this, pBuffer, pRenderInfo, pPartialTicks, (p_234000_) -> {
-            p_234000_.mul(Vector3f.YP.rotation(-(float)Math.PI));
-            p_234000_.mul(Vector3f.XP.rotation(1.0472F + (1.0472F / 2F)));
+            p_234000_.mul(Axis.YP.rotation(-(float)Math.PI));
+            p_234000_.mul(Axis.XP.rotation(1.0472F + (1.0472F / 2F)));
         });
     }
 

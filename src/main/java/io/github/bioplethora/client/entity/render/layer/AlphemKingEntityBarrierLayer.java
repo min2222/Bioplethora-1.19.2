@@ -8,14 +8,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
-import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
+import software.bernie.geckolib.renderer.GeoRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class AlphemKingEntityBarrierLayer extends GeoLayerRenderer<AlphemKingEntity> {
+public class AlphemKingEntityBarrierLayer extends GeoRenderLayer<AlphemKingEntity> {
 
     private static final ResourceLocation MODEL = new ResourceLocation(Bioplethora.MOD_ID, "geo/alphem_king.geo.json");
 
-    public AlphemKingEntityBarrierLayer(IGeoRenderer<AlphemKingEntity> entityRendererIn) {
+    public AlphemKingEntityBarrierLayer(GeoRenderer<AlphemKingEntity> entityRendererIn) {
         super(entityRendererIn);
     }
 

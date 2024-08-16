@@ -128,8 +128,8 @@ public class PrimordialRingFollowOwnerGoal extends Goal {
                 return this.level.noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
             }
         }*/
-        BlockState blockState = this.tamable.getLevel().getBlockState(blockPos.below());
-        return blockState.isValidSpawn(this.tamable.getLevel(), blockPos.below(), this.tamable.getType()) && this.tamable.getLevel().isEmptyBlock(blockPos) && this.tamable.getLevel().isEmptyBlock(blockPos.above());
+        BlockState blockState = this.tamable.level.getBlockState(blockPos.below());
+        return blockState.isValidSpawn(this.tamable.level, blockPos.below(), this.tamable.getType()) && this.tamable.level.isEmptyBlock(blockPos) && this.tamable.level.isEmptyBlock(blockPos.above());
     }
 
     private int randomIntInclusive(int p_226327_1_, int p_226327_2_) {

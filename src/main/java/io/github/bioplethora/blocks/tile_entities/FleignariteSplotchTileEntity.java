@@ -5,19 +5,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class FleignariteSplotchTileEntity extends BlockEntity implements IAnimatable {
+public class FleignariteSplotchTileEntity extends BlockEntity implements GeoBlockEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("animation.fleignarite_splotch.idle");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public FleignariteSplotchTileEntity(BlockEntityType<?> type, BlockPos pPos, BlockState pBlockState) {
         super(type, pPos, pBlockState);
@@ -27,18 +27,18 @@ public class FleignariteSplotchTileEntity extends BlockEntity implements IAnimat
         this(BPTileEntities.FLEIGNARITE_SPLOTCH.get(), pPos, pBlockState);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.fleignarite_splotch.idle", EDefaultLoopTypes.LOOP));
+    private <E extends GeoBlockEntity> PlayState predicate(AnimationState<E> event) {
+        event.getController().setAnimation(IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "fleignarite_splotch_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "fleignarite_splotch_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 }

@@ -66,15 +66,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class ShachathEntity extends SummonableMonsterEntity implements IAnimatable, IBioClassification, IMobCappedEntity {
     protected static final EntityDataAccessor<Boolean> ATTACKING2 = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
@@ -86,7 +85,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
 
     private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), BossBarColor.RED, BossBarOverlay.PROGRESS);
     private final ServerBossEvent cloneProgress = new ServerBossEvent(cloneProgText, BossBarColor.WHITE, BossBarOverlay.PROGRESS);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public BlockPos boundOrigin;
     protected int tpParticleAmount = 30;
     protected double tpParticleRadius = 0.3;
@@ -143,16 +142,16 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "shachath_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "shachath_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable>PlayState predicate(AnimationState<E> event) {
 
         if (this.isQuickShooting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.quick_shooting", EDefaultLoopTypes.LOOP));

@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.Material;
 
 public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
@@ -65,8 +64,8 @@ public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
                     for (int k = 0; k < 8; ++k) {
                         boolean flag = !aboolean[(k1 * 16 + l2) * 8 + k] && (k1 < 15 && aboolean[((k1 + 1) * 16 + l2) * 8 + k] || k1 > 0 && aboolean[((k1 - 1) * 16 + l2) * 8 + k] || l2 < 15 && aboolean[(k1 * 16 + l2 + 1) * 8 + k] || l2 > 0 && aboolean[(k1 * 16 + (l2 - 1)) * 8 + k] || k < 7 && aboolean[(k1 * 16 + l2) * 8 + k + 1] || k > 0 && aboolean[(k1 * 16 + l2) * 8 + (k - 1)]);
                         if (flag) {
-                            Material material = seedReader.getBlockState(pos.offset(k1, k, l2)).getMaterial();
-                            if (k >= 4 && material.isLiquid()) {
+                            BlockState material = seedReader.getBlockState(pos.offset(k1, k, l2));
+                            if (k >= 4 && material.liquid()) {
                                 return false;
                             }
 
@@ -106,7 +105,7 @@ public class ExpandedLakeFeature extends Feature<ExpandedLakeFeatureConfig> {
                 for (int k3 = 0; k3 < 16; ++k3) {
                     for (int k4 = 0; k4 < 8; ++k4) {
                         boolean flag1 = !aboolean[(j2 * 16 + k3) * 8 + k4] && (j2 < 15 && aboolean[((j2 + 1) * 16 + k3) * 8 + k4] || j2 > 0 && aboolean[((j2 - 1) * 16 + k3) * 8 + k4] || k3 < 15 && aboolean[(j2 * 16 + k3 + 1) * 8 + k4] || k3 > 0 && aboolean[(j2 * 16 + (k3 - 1)) * 8 + k4] || k4 < 7 && aboolean[(j2 * 16 + k3) * 8 + k4 + 1] || k4 > 0 && aboolean[(j2 * 16 + k3) * 8 + (k4 - 1)]);
-                        if (flag1 && (k4 < 4 || random.nextInt(2) != 0) && seedReader.getBlockState(pos.offset(j2, k4, k3)).getMaterial().isSolid()) {
+                        if (flag1 && (k4 < 4 || random.nextInt(2) != 0) && seedReader.getBlockState(pos.offset(j2, k4, k3)).isSolid()) {
                             seedReader.setBlock(pos.offset(j2, k4, k3), config.getSides(), 2);
                         }
                     }

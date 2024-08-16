@@ -7,7 +7,7 @@ import com.mojang.serialization.Codec;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.worldgen.BPStructures;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -52,8 +52,8 @@ public class AlphanumMausoleumStructure extends Structure {
         int z = chunkpos.getBlockZ(16);
         BlockPos blockpos = new BlockPos(x, 0, z);
         StructurePiecesBuilder structurepiecesbuilder = new StructurePiecesBuilder();
-        ResourceKey<StructureTemplatePool> key = ResourceKey.create(Registry.TEMPLATE_POOL_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum/start_pool"));
-        Optional<GenerationStub> optional = JigsawPlacement.addPieces(pContext, pContext.registryAccess().registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY).getHolderOrThrow(key), Optional.empty(), 10, blockpos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
+        ResourceKey<StructureTemplatePool> key = ResourceKey.create(Registries.TEMPLATE_POOL, new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum/start_pool"));
+        Optional<GenerationStub> optional = JigsawPlacement.addPieces(pContext, pContext.registryAccess().registryOrThrow(Registries.TEMPLATE_POOL).getHolderOrThrow(key), Optional.empty(), 10, blockpos, false, Optional.of(Heightmap.Types.WORLD_SURFACE_WG), 80);
 
         structurepiecesbuilder.pieces.forEach(piece -> piece.move(0, 1, 0));
         structurepiecesbuilder.pieces.forEach(piece -> piece.getBoundingBox().minY -= 1);

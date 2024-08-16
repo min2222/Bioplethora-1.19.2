@@ -6,7 +6,6 @@ import io.github.bioplethora.entity.IVerticalMount;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 // Unused
@@ -33,7 +32,6 @@ public class VerticalMountUpPacket {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            Level world = player.getLevel();
             Entity riddenEntity = player.getVehicle();
 
             if (riddenEntity instanceof IVerticalMount) {

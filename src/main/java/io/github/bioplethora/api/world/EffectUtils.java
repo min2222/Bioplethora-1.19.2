@@ -65,7 +65,7 @@ public class EffectUtils {
     }
 
     private static boolean sendParticles(ServerPlayer pPlayer, boolean pLongDistance, double pPosX, double pPosY, double pPosZ, BPSpawnParticlePacket packet) {
-        if (pPlayer.getLevel().isClientSide()) {
+        if (pPlayer.level.isClientSide()) {
             return false;
         } else {
             BlockPos blockpos = pPlayer.blockPosition();

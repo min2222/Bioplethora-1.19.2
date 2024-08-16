@@ -62,7 +62,6 @@ public class ShachathClashInnerParticle extends TextureSheetParticle {
         public void begin(BufferBuilder pBuilder, TextureManager pTextureManager) {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(true);
-            RenderSystem.enableTexture();
             RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

@@ -11,18 +11,18 @@ import net.minecraftforge.fml.common.Mod;
 public class BPParticleUtil {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void registerParticles(RegisterParticleProvidersEvent event) {
-    	event.register(BPParticles.WIND_POOF.get(), WindPoofParticle.Factory::new);
-    	event.register(BPParticles.NIGHT_GAZE.get(), NightGazeParticle.Factory::new);
-    	event.register(BPParticles.ANTIBIO_SPELL.get(), AntibioSpellParticle.Factory::new);
-    	event.register(BPParticles.TRUE_DEFENSE_CLASH.get(), TrueDefenseClashParticle.Factory::new);
-        event.register(BPParticles.KINGS_ROAR.get(), KingsRoarParticle.Factory::new);
-        event.register(BPParticles.FROSTBITE_EYE.get(), FrostbiteEyeParticle.Factory::new);
-        event.register(BPParticles.SHACHATH_CLASH_INNER.get(), ShachathClashInnerParticle.Factory::new);
-        event.register(BPParticles.SHACHATH_CLASH_OUTER.get(), ShachathClashOuterParticle.Factory::new);
+    public static void registerSpriteSetParticles(RegisterParticleProvidersEvent event) {
+    	event.registerSpriteSet(BPParticles.WIND_POOF.get(), WindPoofParticle.Factory::new);
+    	event.registerSpriteSet(BPParticles.NIGHT_GAZE.get(), NightGazeParticle.Factory::new);
+    	event.registerSpriteSet(BPParticles.ANTIBIO_SPELL.get(), AntibioSpellParticle.Factory::new);
+    	event.registerSpriteSet(BPParticles.TRUE_DEFENSE_CLASH.get(), TrueDefenseClashParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.KINGS_ROAR.get(), KingsRoarParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.FROSTBITE_EYE.get(), FrostbiteEyeParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.SHACHATH_CLASH_INNER.get(), ShachathClashInnerParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.SHACHATH_CLASH_OUTER.get(), ShachathClashOuterParticle.Factory::new);
 
-        event.register(BPParticles.CAERULWOOD_LEAF.get(), FallingLeavesParticle.Factory::new);
-        event.register(BPParticles.PINK_ENIVILE_LEAF.get(), FallingLeavesParticle.Factory::new);
-        event.register(BPParticles.RED_ENIVILE_LEAF.get(), FallingLeavesParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.CAERULWOOD_LEAF.get(), FallingLeavesParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.PINK_ENIVILE_LEAF.get(), FallingLeavesParticle.Factory::new);
+        event.registerSpriteSet(BPParticles.RED_ENIVILE_LEAF.get(), FallingLeavesParticle.Factory::new);
     }
 }

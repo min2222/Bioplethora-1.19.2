@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
-public class MyliothanEntityChargeLayer extends GeoLayerRenderer<MyliothanEntity> {
+public class MyliothanEntityChargeLayer extends GeoRenderLayer<MyliothanEntity> {
 
     private static final ResourceLocation MODEL = new ResourceLocation(Bioplethora.MOD_ID, "geo/myliothan.geo.json");
 

@@ -1,10 +1,10 @@
 package io.github.bioplethora.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.gui.container.AbstractReinforcingContainer;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -38,25 +38,24 @@ public class ReinforcingTableScreen extends AbstractContainerScreen<AbstractRein
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(GuiGraphics matrixStack, float partialTicks, int x, int y) {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.enableTexture();
         RenderSystem.setShaderTexture(0, GUI);
         int i = this.leftPos;
         int j = this.topPos;
-        this.blit(matrixStack, i, j, 0, 0, this.getXSize(), this.getYSize());
+        matrixStack.blit(GUI, i, j, 0, 0, this.getXSize(), this.getYSize());
 
-        this.blit(matrixStack, i + 59, j + 20, 0, this.imageHeight + (this.menu.getSlot(0).hasItem() ? 0 : 16), 110, 16);
+        matrixStack.blit(GUI, i + 59, j + 20, 0, this.imageHeight + (this.menu.getSlot(0).hasItem() ? 0 : 16), 110, 16);
 
         if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem() || this.menu.getSlot(2).hasItem()) && !this.menu.getSlot(3).hasItem()) {
-            this.blit(matrixStack, i + 99, j + 45, this.imageWidth, 0, 28, 21);
+        	matrixStack.blit(GUI, i + 99, j + 45, this.imageWidth, 0, 28, 21);
         }
     }
 

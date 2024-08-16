@@ -96,7 +96,7 @@ public class AbyssalBladeItem extends SwordItem implements IReachWeapon {
                     f3 = f3 * (f5 / f4);
                     playerentity.push(f1, f2, f3);
                     playerentity.startAutoSpinAttack(20);
-                    if (playerentity.isOnGround()) {
+                    if (playerentity.onGround()) {
                         float f6 = 1.1999999F;
                         playerentity.move(MoverType.SELF, new Vec3(0.0D, f6, 0.0D));
                     }

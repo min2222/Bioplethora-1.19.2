@@ -13,6 +13,7 @@ import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -22,20 +23,22 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ReinforcingRecipeBuilder {
 
     private final Ingredient topIngredient, midIngredient, botIngredient;
+    private final RecipeCategory category;
     private final Item result;
     private final Advancement.Builder advancement = Advancement.Builder.advancement();
     private final RecipeSerializer<?> type;
 
-    public ReinforcingRecipeBuilder(RecipeSerializer<?> pType, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult) {
+    public ReinforcingRecipeBuilder(RecipeCategory category, RecipeSerializer<?> pType, Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult) {
         this.type = pType;
         this.topIngredient = topIngredient;
         this.midIngredient = midIngredient;
         this.botIngredient = botIngredient;
         this.result = pResult;
+        this.category = category;
     }
 
     public static ReinforcingRecipeBuilder reinforcing(Ingredient topIngredient, Ingredient midIngredient, Ingredient botIngredient, Item pResult) {
-        return new ReinforcingRecipeBuilder(BPRecipes.REINFORCING.get(), topIngredient, midIngredient, botIngredient, pResult);
+        return new ReinforcingRecipeBuilder(RecipeCategory.COMBAT, BPRecipes.REINFORCING.get(), topIngredient, midIngredient, botIngredient, pResult);
     }
 
     public ReinforcingRecipeBuilder unlocks(String pName, CriterionTriggerInstance pCriterion) {
@@ -50,7 +53,7 @@ public class ReinforcingRecipeBuilder {
     public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pId) {
         this.ensureValid(pId);
         this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pId)).rewards(AdvancementRewards.Builder.recipe(pId)).requirements(RequirementsStrategy.OR);
-        pFinishedRecipeConsumer.accept(new ReinforcingRecipeBuilder.Result(pId, this.type, this.topIngredient, this.midIngredient, this.botIngredient, this.result, this.advancement, new ResourceLocation(pId.getNamespace(), "recipes/" + this.result.getItemCategory().getRecipeFolderName() + "/" + pId.getPath())));
+        pFinishedRecipeConsumer.accept(new ReinforcingRecipeBuilder.Result(pId, this.type, this.topIngredient, this.midIngredient, this.botIngredient, this.result, this.advancement, new ResourceLocation(pId.getNamespace(), "recipes/" + this.category.getFolderName() + "/" + pId.getPath())));
     }
 
     private void ensureValid(ResourceLocation pId) {

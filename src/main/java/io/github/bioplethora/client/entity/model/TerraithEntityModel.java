@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.TerraithEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class TerraithEntityModel extends AnimatedGeoModel<TerraithEntity> {
+public class TerraithEntityModel extends GeoModel<TerraithEntity> {
 
     @Override
     public ResourceLocation getModelResource(TerraithEntity object) {

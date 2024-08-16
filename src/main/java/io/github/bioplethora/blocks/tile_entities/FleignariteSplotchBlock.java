@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -60,8 +59,7 @@ public class FleignariteSplotchBlock extends BPFlatBlock implements SimpleWaterl
     }
 
     public static boolean isFree(BlockState pState) {
-        Material material = pState.getMaterial();
-        return pState.isAir() || pState.is(BlockTags.FIRE) || material.isLiquid() || material.isReplaceable() || pState.getBlock() instanceof BPFlatBlock;
+        return pState.isAir() || pState.is(BlockTags.FIRE) || pState.liquid() || pState.canBeReplaced() || pState.getBlock() instanceof BPFlatBlock;
     }
 
     @Override

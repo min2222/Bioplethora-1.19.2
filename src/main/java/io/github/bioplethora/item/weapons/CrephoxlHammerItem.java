@@ -21,7 +21,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,7 +51,7 @@ public class CrephoxlHammerItem extends AxeItem {
         boolean retval = super.hurtEnemy(stack, entity, source);
         Level world = entity.level;
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = BlockPos.containing(x, y, z);
         Player player = (Player) source;
 
         if(player.isCrouching() && ItemUtils.checkCooldownUsable(entity, stack)) {
@@ -68,7 +67,7 @@ public class CrephoxlHammerItem extends AxeItem {
                         EffectUtils.addEffectNoIcon(entityIterator, MobEffects.MOVEMENT_SLOWDOWN, 60, 4);
                     }
                     if(entityIterator != entity) {
-                        entityIterator.hurt(DamageSource.mobAttack(player), this.getAttackDamage() * 0.8F);
+                        entityIterator.hurt(player.damageSources().mobAttack(player), this.getAttackDamage() * 0.8F);
                     }
                 }
             }
@@ -82,7 +81,7 @@ public class CrephoxlHammerItem extends AxeItem {
 
         //Deals more damage to Entities over 50 max health.
         if (entity.getMaxHealth() >= 50) {
-            entity.hurt(DamageSource.mobAttack(entity), getAttackDamage() * 2);
+            entity.hurt(entity.damageSources().mobAttack(entity), getAttackDamage() * 2);
         }
 
         return retval;
@@ -119,7 +118,7 @@ public class CrephoxlHammerItem extends AxeItem {
 
             for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (7 / 2d), y - (3 / 2d), z - (7 / 2d), x + (4 / 2d), y + (4 / 2d), z + (4 / 2d)))) {
                 if (entityIterator instanceof LivingEntity && entityIterator != entity) {
-                    entityIterator.hurt(DamageSource.mobAttack(entity), 9.0F);
+                    entityIterator.hurt(entity.damageSources().mobAttack(entity), 9.0F);
                     entityIterator.setDeltaMovement((entity.getDeltaMovement().x()), 1, (entity.getDeltaMovement().z()));
                 }
             }

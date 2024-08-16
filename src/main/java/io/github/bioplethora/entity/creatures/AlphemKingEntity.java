@@ -74,20 +74,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IBioClassification, IMobCappedEntity {
 
@@ -106,7 +104,7 @@ public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IB
 
     public BossEvent.BossBarColor bossColor = BossEvent.BossBarColor.GREEN;
     private final ServerBossEvent bossInfo = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), bossColor, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true).setPlayBossMusic(true));
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public boolean explodedOnDeath = false;
     public double healthRegenTimer = 0;
     public int summonShardTimer;
@@ -206,9 +204,9 @@ public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IB
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         AnimationController<AlphemKingEntity> controller = new AnimationController<>(this, "alphem_king_controller", 0, this::predicate);
-        data.addAnimationController(controller);
+        data.add(controller);
     }
 
     public boolean isBusy() {
@@ -216,11 +214,11 @@ public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IB
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem_king.death", EDefaultLoopTypes.LOOP));
@@ -638,7 +636,7 @@ public class AlphemKingEntity extends BPMonsterEntity implements IAnimatable, IB
             target.hasImpulse = true;
             Vec3 vector3d = target.getDeltaMovement();
             Vec3 vector3d1 = (new Vec3(pRatioX, 0.0D, pRatioZ)).normalize().scale(pStrength);
-            target.setDeltaMovement(vector3d.x / 2.0D - vector3d1.x, target.isOnGround() ? Math.min(0.4D, vector3d.y / 2.0D + (double) pStrength) : vector3d.y, vector3d.z / 2.0D - vector3d1.z);
+            target.setDeltaMovement(vector3d.x / 2.0D - vector3d1.x, target.onGround() ? Math.min(0.4D, vector3d.y / 2.0D + (double) pStrength) : vector3d.y, vector3d.z / 2.0D - vector3d1.z);
             if (target instanceof Player) target.hurtMarked = true;
         }
     }

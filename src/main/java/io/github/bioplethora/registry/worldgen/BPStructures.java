@@ -5,9 +5,9 @@ import java.util.Map;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.world.structures.AlphanumMausoleumStructure;
 import io.github.bioplethora.world.structures.AlphanumMausoleumStructureType;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -27,32 +27,32 @@ public class BPStructures {
 
 	public static final ResourceLocation ALPHANUM_MAUSOLEUM_LOCATION = new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum");
 	
-    public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Bioplethora.MOD_ID);
-    public static final DeferredRegister<StructureSet> STRUCTURES_SET = DeferredRegister.create(Registry.STRUCTURE_SET_REGISTRY, Bioplethora.MOD_ID);
-    public static final TagKey<Structure> ALPHANUM_MAUSOLEUM_TAG = create("alphanum_mausoleum");
+    public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, Bioplethora.MOD_ID);
+    public static final DeferredRegister<StructureSet> STRUCTURES_SET = DeferredRegister.create(Registries.STRUCTURE_SET, Bioplethora.MOD_ID);
     
-	public static final Holder<Structure> ALPHANUM_MAUSOLEUM = register(ResourceKey.create(Registry.STRUCTURE_REGISTRY, ALPHANUM_MAUSOLEUM_LOCATION), new AlphanumMausoleumStructure(new StructureSettings(BuiltinRegistries.BIOME.getOrCreateTag(tag("mausoleum")), Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE)));
-	public static final Holder<StructureSet> ALPHANUM_MAUSOLEUM_SETS = register(ResourceKey.create(Registry.STRUCTURE_SET_REGISTRY, ALPHANUM_MAUSOLEUM_LOCATION), new StructureSet(ALPHANUM_MAUSOLEUM, new RandomSpreadStructurePlacement(230, 30, RandomSpreadType.LINEAR, 1234567890)));
+    public static final TagKey<Structure> ALPHANUM_MAUSOLEUM_TAG = create("alphanum_mausoleum");
+    public static final ResourceKey<StructureSet> ALPHANUM_MAUSOLEUM_TAG_SETS_KEY = ResourceKey.create(Registries.STRUCTURE_SET, ALPHANUM_MAUSOLEUM_LOCATION);
+    public static final ResourceKey<Structure> ALPHANUM_MAUSOLEUM_TAG_KEY = ResourceKey.create(Registries.STRUCTURE, ALPHANUM_MAUSOLEUM_LOCATION);
 
     public static final RegistryObject<StructureType<?>> ALPHANUM_MAUSOLEUM_TYPE = STRUCTURES.register("alphanum_mausoleum", () -> new AlphanumMausoleumStructureType().TYPE);
-	
-    private static Holder<Structure> register(ResourceKey<Structure> p_236534_, Structure p_236535_)
-	{
-		return BuiltinRegistries.register(BuiltinRegistries.STRUCTURES, p_236534_, p_236535_);
+    
+	public static void bootstrapStructures(BootstapContext<Structure> context) {
+		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
+		context.register(ALPHANUM_MAUSOLEUM_TAG_KEY, new AlphanumMausoleumStructure(new StructureSettings(biomes.getOrThrow(tag("mausoleum")), Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE)));
 	}
-	
-    static Holder<StructureSet> register(ResourceKey<StructureSet> p_211129_, StructureSet p_211130_) 
-	{
-		return BuiltinRegistries.register(BuiltinRegistries.STRUCTURE_SETS, p_211129_, p_211130_);
+    
+	public static void bootstrapSets(BootstapContext<StructureSet> context) {
+		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
+		context.register(ALPHANUM_MAUSOLEUM_TAG_SETS_KEY, new StructureSet(structures.getOrThrow(ALPHANUM_MAUSOLEUM_TAG_KEY), new RandomSpreadStructurePlacement(230, 30, RandomSpreadType.LINEAR, 1234567890)));
 	}
     
     private static TagKey<Biome> tag(String name)
     {
-        return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, name));
+        return TagKey.create(Registries.BIOME, new ResourceLocation(Bioplethora.MOD_ID, name));
     }
     
     private static TagKey<Structure> create(String name) 
     {
-        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, name));
+        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(Bioplethora.MOD_ID, name));
      }
 }

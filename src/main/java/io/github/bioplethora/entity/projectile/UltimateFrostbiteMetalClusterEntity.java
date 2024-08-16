@@ -11,6 +11,7 @@ import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -31,23 +32,23 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjectile implements IAnimatable {
+public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjectile implements GeoEntity {
 
     public double xPower;
     public double yPower;
     public double zPower;
     public int lifespan = 0;
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("animation.frostbite_metal_cluster.main");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public UltimateFrostbiteMetalClusterEntity(EntityType<? extends AbstractHurtingProjectile> type, Level world) {
         super(type, world);
@@ -62,18 +63,18 @@ public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjecti
         super(BPEntities.ULTIMATE_BELLOPHITE_CLUSTER.get(), entity, v, v1, v2, world);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_cluster.main", EDefaultLoopTypes.LOOP));
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
+        event.getController().setAnimation(IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "ultimate_frostbite_metal_cluster_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "ultimate_frostbite_metal_cluster_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -119,7 +120,7 @@ public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjecti
 
     public void hitAndExplode() {
         double x = this.getX(), y = this.getY(), z = this.getZ();
-        BlockPos blockPos = new BlockPos(x, y, z);
+        BlockPos blockPos = BlockPos.containing(x, y, z);
         AABB area = new AABB(x - (7 / 2d), y, z - (7 / 2d), x + (7 / 2d), y + (7 / 2d), z + (7 / 2d));
         DamageSource castration = BPDamageSources.indirectCastration(this.getOwner(), this.getOwner());
 
@@ -156,7 +157,7 @@ public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjecti
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

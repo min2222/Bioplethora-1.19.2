@@ -2,7 +2,7 @@ package io.github.bioplethora.client.armor.render;
 
 import io.github.bioplethora.client.armor.model.AquChestplateModel;
 import io.github.bioplethora.item.armor.AquChestplateItem;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
 public class AquChestplateRender extends GeoArmorRenderer<AquChestplateItem> {
 

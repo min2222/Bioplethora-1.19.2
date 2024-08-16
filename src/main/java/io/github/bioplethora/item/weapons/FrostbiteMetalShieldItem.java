@@ -58,7 +58,7 @@ public class FrostbiteMetalShieldItem extends ShieldItem {
     public void executeSkill(ItemStack stack, LivingEntity player, Level world) {
 
         double x = player.getX(), y = player.getY(), z = player.getZ();
-        BlockPos pos = new BlockPos(x, y + 1, z);
+        BlockPos pos = BlockPos.containing(x, y + 1, z);
 
         if (!((Player) player).getCooldowns().isOnCooldown(stack.getItem())) {
 
@@ -99,8 +99,8 @@ public class FrostbiteMetalShieldItem extends ShieldItem {
         this.corePoints = 0;
     }
 
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
-        super.onUsingTick(stack, player, count);
+    public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
+        super.onUseTick(level, player, stack, count);
         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 5, 2));
         player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 5, 1));
     }

@@ -6,12 +6,12 @@ import io.github.bioplethora.entity.creatures.AltyrusEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class AltyrusEntityModel extends AnimatedGeoModel<AltyrusEntity> implements IAdvancedGeoModel<AltyrusEntity> {
+public class AltyrusEntityModel extends GeoModel<AltyrusEntity> implements IAdvancedGeoModel<AltyrusEntity> {
 
     @Override
     public ResourceLocation getModelResource(AltyrusEntity entity) {
@@ -29,14 +29,14 @@ public class AltyrusEntityModel extends AnimatedGeoModel<AltyrusEntity> implemen
     }
 
     @Override
-    public void setLivingAnimations(AltyrusEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent event) {
-        super.setLivingAnimations(entity, uniqueID, event);
+    public void setCustomAnimations(AltyrusEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState event) {
+        super.setCustomAnimations(entity, uniqueID, event);
 
-        IBone head = getB("head"), altyrus = getB("altyrus");
-        IBone ringsCenter = getB("rings_crenter"), bodyBot = getB("bodybot");
-        IBone htr = getB("hand_top_right"), htl = getB("hand_top_left"), hbr = getB("hand_bottom_right"), hbl = getB("hand_bottom_left");
+        CoreGeoBone head = getB("head"), altyrus = getB("altyrus");
+        CoreGeoBone ringsCenter = getB("rings_crenter"), bodyBot = getB("bodybot");
+        CoreGeoBone htr = getB("hand_top_right"), htl = getB("hand_top_left"), hbr = getB("hand_bottom_right"), hbl = getB("hand_bottom_left");
 
-        EntityModelData extraData = (EntityModelData) event.getExtraDataOfType(EntityModelData.class).get(0);
+        EntityModelData extraData = (EntityModelData) event.getExtraData().get(0);
 
         if (entity.isCharging()) {
             adaptHeadOnLook(extraData, altyrus);
@@ -50,19 +50,19 @@ public class AltyrusEntityModel extends AnimatedGeoModel<AltyrusEntity> implemen
 
         if (entity.prevHurtTime > 0 && !Minecraft.getInstance().isPaused()) {
             lerpHelper = lerpHelper * lerpHelper * lerpHelper;
-            altyrus.setRotationX(altyrus.getRotationX() + -Mth.cos(lerpHelper * pi) * 0.30f);
-            head.setRotationX(head.getRotationX() + -Mth.sin(lerpHelper * pi) * 0.30f);
-            ringsCenter.setRotationZ(ringsCenter.getRotationZ() + -Mth.cos(lerpHelper * pi) * 0.75f);
-            bodyBot.setRotationX(bodyBot.getRotationX() + Mth.sin(lerpHelper * pi) * 0.45f);
+            altyrus.setRotX(altyrus.getRotX() + -Mth.cos(lerpHelper * pi) * 0.30f);
+            head.setRotX(head.getRotX() + -Mth.sin(lerpHelper * pi) * 0.30f);
+            ringsCenter.setRotZ(ringsCenter.getRotZ() + -Mth.cos(lerpHelper * pi) * 0.75f);
+            bodyBot.setRotX(bodyBot.getRotX() + Mth.sin(lerpHelper * pi) * 0.45f);
 
-            htr.setRotationX(htr.getRotationX() + -Mth.cos(lerpHelper * pi) * 0.30f);
-            htl.setRotationX(htl.getRotationX() + -Mth.cos(lerpHelper * pi) * 0.30f);
-            hbr.setRotationX(hbr.getRotationX() + -Mth.cos(lerpHelper * pi) * -0.30f);
-            hbl.setRotationX(hbl.getRotationX() + -Mth.cos(lerpHelper * pi) * -0.30f);
+            htr.setRotX(htr.getRotX() + -Mth.cos(lerpHelper * pi) * 0.30f);
+            htl.setRotX(htl.getRotX() + -Mth.cos(lerpHelper * pi) * 0.30f);
+            hbr.setRotX(hbr.getRotX() + -Mth.cos(lerpHelper * pi) * -0.30f);
+            hbl.setRotX(hbl.getRotX() + -Mth.cos(lerpHelper * pi) * -0.30f);
         }
     }
 
-    public IBone getB(String bone) {
+    public CoreGeoBone getB(String bone) {
         return this.getAnimationProcessor().getBone(bone);
     }
 }

@@ -54,23 +54,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification, IMobCappedEntity {
+public class AltyrusEntity extends BPMonsterEntity implements GeoEntity, FlyingAnimal, IBioClassification, IMobCappedEntity {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(AltyrusEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_IS_SUMMONING = SynchedEntityData.defineId(AltyrusEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_IS_DODGING = SynchedEntityData.defineId(AltyrusEntity.class, EntityDataSerializers.BOOLEAN);
     private final ServerBossEvent bossInfo = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossBarColor.PURPLE, BossBarOverlay.PROGRESS).setDarkenScreen(true).setPlayBossMusic(true));
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public BlockPos boundOrigin;
     public int dodgeTimer;
 
@@ -119,16 +118,16 @@ public class AltyrusEntity extends BPMonsterEntity implements IAnimatable, Flyin
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "altyrus_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "altyrus_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying() || this.dead) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.death", EDefaultLoopTypes.LOOP));

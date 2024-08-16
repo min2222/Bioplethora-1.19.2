@@ -29,20 +29,21 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class PrimordialRingEntity extends SummonableMonsterEntity implements IAnimatable {
+public class PrimordialRingEntity extends SummonableMonsterEntity implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(PrimordialRingEntity.class, EntityDataSerializers.BOOLEAN);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("animation.primordial_ring.idle");
+	private static final RawAnimation SHOOT_ANIM = RawAnimation.begin().thenPlay("animation.primordial_ring.shoot");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public PrimordialRingEntity(EntityType<? extends SummonableMonsterEntity> type, Level world) {
         super(type, world);
@@ -74,13 +75,13 @@ public class PrimordialRingEntity extends SummonableMonsterEntity implements IAn
         this.targetSelector.addGoal(2, new PrimordialRingOwnerHurtTargetGoal(this));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.primordial_ring.shoot", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(SHOOT_ANIM);
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.primordial_ring.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
@@ -110,12 +111,12 @@ public class PrimordialRingEntity extends SummonableMonsterEntity implements IAn
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "primordial_ring_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "primordial_ring_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 

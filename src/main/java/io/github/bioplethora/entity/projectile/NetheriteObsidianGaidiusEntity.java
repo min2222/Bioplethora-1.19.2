@@ -12,7 +12,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -51,7 +50,7 @@ public class NetheriteObsidianGaidiusEntity extends GaidiusBaseEntity {
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        if (level.getBlockState(pResult.getBlockPos()).getMaterial() == Material.GLASS) {
+        if (level.getBlockState(pResult.getBlockPos()) == Material.GLASS) {
             level.destroyBlock(pResult.getBlockPos(), false);
         } else {
             this.playSound(SoundEvents.WITHER_BREAK_BLOCK, 0.65F, 0.65F);

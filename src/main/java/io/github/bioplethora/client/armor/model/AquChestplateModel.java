@@ -3,9 +3,9 @@ package io.github.bioplethora.client.armor.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.item.armor.AquChestplateItem;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AquChestplateModel extends AnimatedGeoModel<AquChestplateItem> {
+public class AquChestplateModel extends GeoModel<AquChestplateItem> {
 
     @Override
     public ResourceLocation getModelResource(AquChestplateItem object) {

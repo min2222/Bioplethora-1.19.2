@@ -8,12 +8,12 @@ import io.github.bioplethora.entity.creatures.MyuthineEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class MyuthineEntityModel extends AnimatedGeoModel<MyuthineEntity> implements IAdvancedGeoModel<MyuthineEntity> {
+public class MyuthineEntityModel extends GeoModel<MyuthineEntity> implements IAdvancedGeoModel<MyuthineEntity> {
 
     @Override
     public ResourceLocation getModelResource(MyuthineEntity entity) {
@@ -31,11 +31,11 @@ public class MyuthineEntityModel extends AnimatedGeoModel<MyuthineEntity> implem
     }
 
     @Override
-    public void setLivingAnimations(MyuthineEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
+    public void setCustomAnimations(MyuthineEntity entity, long uniqueID, @Nullable AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
 
-        IBone head = getB("bodytop");
+        CoreGeoBone head = getB("bodytop");
         float tickCountNeg = entity.ageInTicks - (float) entity.tickCount;
         float lerpHelper = Mth.lerp(tickCountNeg, entity.prevHurtTime, entity.hurtTime) / entity.hurtDuration;
         float pi = (float) Math.PI;
@@ -44,11 +44,11 @@ public class MyuthineEntityModel extends AnimatedGeoModel<MyuthineEntity> implem
 
         if (entity.prevHurtTime > 0 && !Minecraft.getInstance().isPaused()) {
             lerpHelper = lerpHelper * lerpHelper * lerpHelper;
-            head.setRotationX(head.getRotationX() + -Mth.sin(lerpHelper * pi) * 0.35f);
+            head.setRotX(head.getRotX() + -Mth.sin(lerpHelper * pi) * 0.35f);
         }
     }
 
-    public IBone getB(String bone) {
+    public CoreGeoBone getB(String bone) {
         return this.getAnimationProcessor().getBone(bone);
     }
 }

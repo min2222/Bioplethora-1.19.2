@@ -3,10 +3,10 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.CavernFleignarEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CavernFleignarEntityModel extends AnimatedGeoModel<CavernFleignarEntity> {
+public class CavernFleignarEntityModel extends GeoModel<CavernFleignarEntity> {
 
     @Override
     public ResourceLocation getModelResource(CavernFleignarEntity entity) {
@@ -24,7 +24,7 @@ public class CavernFleignarEntityModel extends AnimatedGeoModel<CavernFleignarEn
     }
 
     @Override
-    public void setLivingAnimations(CavernFleignarEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(CavernFleignarEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
     }
 }

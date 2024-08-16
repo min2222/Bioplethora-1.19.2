@@ -24,7 +24,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -137,7 +136,7 @@ public class InfernalQuarterstaffItem extends SwordItem implements IReachWeapon 
         for (LivingEntity itr : aabb) {
             if (itr != pAttacker && EntityUtils.IsNotPet(pAttacker).test(itr)) {
                 itr.invulnerableTime = 0;
-                itr.hurt(DamageSource.indirectMagic(pAttacker, pAttacker), 4 + shr);
+                itr.hurt(pAttacker.damageSources().indirectMagic(pAttacker, pAttacker), 4 + shr);
                 EntityUtils.knockbackAwayFromUser(0.8F, pAttacker, itr);
 
                 if (itr != pTarget) {
@@ -175,7 +174,7 @@ public class InfernalQuarterstaffItem extends SwordItem implements IReachWeapon 
                 player.swing(hand);
                 player.addEffect(new MobEffectInstance(MobEffects.GLOWING, 40));
                 player.playSound(SoundEvents.GENERIC_BURN, 2.0F, 0.8F);
-                result.getEntity().hurt(DamageSource.indirectMagic(player, player), hasWeaponInOppositeHand ? 7.5F : 4F);
+                result.getEntity().hurt(player.damageSources().indirectMagic(player, player), hasWeaponInOppositeHand ? 7.5F : 4F);
                 result.getEntity().setSecondsOnFire(hasWeaponInOppositeHand ? 10 : 7);
                 BPEffectEntity.createInstance(player, BPEffectTypes.FLAMING_SNIPE);
                 ItemUtils.setStackOnCooldown(player, player.getItemInHand(hand), hasWeaponInOppositeHand ? 40 : 100, true);

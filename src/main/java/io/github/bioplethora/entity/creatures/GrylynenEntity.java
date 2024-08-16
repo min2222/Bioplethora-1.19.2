@@ -26,19 +26,18 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class GrylynenEntity extends FloatingMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final IGrylynenTier tier;
 
     public GrylynenEntity(EntityType<? extends Monster> type, Level worldIn, IGrylynenTier IGrylynenTier) {
@@ -83,7 +82,7 @@ public class GrylynenEntity extends FloatingMonsterEntity implements IAnimatable
         return BPEntityClasses.DANGERUM;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.grylynen.death", EDefaultLoopTypes.LOOP));
@@ -98,8 +97,8 @@ public class GrylynenEntity extends FloatingMonsterEntity implements IAnimatable
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "grylynen_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "grylynen_controller", 0, this::predicate));
     }
 
     public int getMaxSpawnClusterSize() {
@@ -130,7 +129,7 @@ public class GrylynenEntity extends FloatingMonsterEntity implements IAnimatable
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 

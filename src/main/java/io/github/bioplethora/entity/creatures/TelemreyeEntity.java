@@ -38,20 +38,19 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 
 public class TelemreyeEntity extends BPMonsterEntity implements IAnimatable, IBioClassification, FlyingAnimal {
     
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private TelemreyeEntity.AttackPhase attackPhase = TelemreyeEntity.AttackPhase.CIRCLE;
     private Vec3 moveTargetPoint = Vec3.ZERO;
     private BlockPos anchorPoint = BlockPos.ZERO;
@@ -94,7 +93,7 @@ public class TelemreyeEntity extends BPMonsterEntity implements IAnimatable, IBi
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
 
         if (this.attackPhase == AttackPhase.SWOOP) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.telemreye.charging", EDefaultLoopTypes.LOOP));
@@ -109,8 +108,8 @@ public class TelemreyeEntity extends BPMonsterEntity implements IAnimatable, IBi
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "telemreye_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "telemreye_controller", 0, this::predicate));
     }
 
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
@@ -141,7 +140,7 @@ public class TelemreyeEntity extends BPMonsterEntity implements IAnimatable, IBi
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 

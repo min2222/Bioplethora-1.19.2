@@ -6,13 +6,13 @@ import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.AnimationProcessor;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationProcessor;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class AlphemKingEntityModel extends AnimatedGeoModel<AlphemKingEntity> implements IAdvancedGeoModel<AlphemKingEntity> {
+public class AlphemKingEntityModel extends GeoModel<AlphemKingEntity> implements IAdvancedGeoModel<AlphemKingEntity> {
 
     @Override
     public ResourceLocation getModelResource(AlphemKingEntity entity) {
@@ -34,14 +34,14 @@ public class AlphemKingEntityModel extends AnimatedGeoModel<AlphemKingEntity> im
     }
 
     @Override
-    public void setLivingAnimations(AlphemKingEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(AlphemKingEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         AnimationProcessor ap = this.getAnimationProcessor();
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        IBone head = ap.getBone("head"), bodytop = ap.getBone("bodytop"), bodymid = ap.getBone("bodymid");
-        IBone arml = ap.getBone("arml"), armr = ap.getBone("armr");
-        IBone legl = ap.getBone("legl"), legr = ap.getBone("legr");
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        CoreGeoBone head = ap.getBone("head"), bodytop = ap.getBone("bodytop"), bodymid = ap.getBone("bodymid");
+        CoreGeoBone arml = ap.getBone("arml"), armr = ap.getBone("armr");
+        CoreGeoBone legl = ap.getBone("legl"), legr = ap.getBone("legr");
 
         adaptHeadOnLook(extraData, head);
 
@@ -51,19 +51,19 @@ public class AlphemKingEntityModel extends AnimatedGeoModel<AlphemKingEntity> im
         float rotationScale = entity.isBerserked() ? 0.5f : 0.25f;
 
         if (entity.isCharging() && !entity.getAttacking() && !entity.getAttacking() && !entity.getAttacking2() && !entity.getSmashing() && !entity.isPursuit()) {
-            arml.setRotationX(70);
-            armr.setRotationX(70);
+            arml.setRotX(70);
+            armr.setRotX(70);
         }
 
         if (entity.prevHurtTime > 0 && !Minecraft.getInstance().isPaused()) {
             lerpHelper = lerpHelper * lerpHelper * lerpHelper;
-            head.setRotationX(head.getRotationX() + -Mth.sin(lerpHelper * pi) * rotationScale);
-            bodytop.setRotationX(bodytop.getRotationX() + -Mth.sin(lerpHelper * pi) * rotationScale);
+            head.setRotX(head.getRotX() + -Mth.sin(lerpHelper * pi) * rotationScale);
+            bodytop.setRotX(bodytop.getRotX() + -Mth.sin(lerpHelper * pi) * rotationScale);
 
             float cosVal = Mth.cos(lerpHelper * 2 * pi);
-            bodytop.setRotationY(bodytop.getRotationX() + (entity.hurtRandomizer ? cosVal * (rotationScale / 2) : -cosVal * -(rotationScale / 2)));
+            bodytop.setRotY(bodytop.getRotX() + (entity.hurtRandomizer ? cosVal * (rotationScale / 2) : -cosVal * -(rotationScale / 2)));
 
-            bodymid.setRotationX(bodymid.getRotationX() + -Mth.sin(lerpHelper * pi) * rotationScale);
+            bodymid.setRotX(bodymid.getRotX() + -Mth.sin(lerpHelper * pi) * rotationScale);
         }
     }
 }

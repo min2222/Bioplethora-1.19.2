@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -168,7 +167,7 @@ public abstract class BPFruitableVinesBlock extends BPVinesBlock {
         @Override
         public void entityInside(BlockState p_196262_1_, Level p_196262_2_, BlockPos p_196262_3_, Entity entity) {
             super.entityInside(p_196262_1_, p_196262_2_, p_196262_3_, entity);
-            entity.hurt(DamageSource.CACTUS, 1);
+            entity.hurt(entity.damageSources().cactus(), 1);
         }
     }
     public static class BerriedThontusThistleBlock extends BPFruitableVinesBlock {
@@ -195,7 +194,7 @@ public abstract class BPFruitableVinesBlock extends BPVinesBlock {
         @Override
         public void entityInside(BlockState p_196262_1_, Level p_196262_2_, BlockPos p_196262_3_, Entity entity) {
             super.entityInside(p_196262_1_, p_196262_2_, p_196262_3_, entity);
-            entity.hurt(DamageSource.CACTUS, 1);
+            entity.hurt(entity.damageSources().cactus(), 1);
         }
 
         @Override

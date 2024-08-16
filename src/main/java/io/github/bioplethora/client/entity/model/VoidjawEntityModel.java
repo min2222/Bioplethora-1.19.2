@@ -4,11 +4,11 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.IAdvancedGeoModel;
 import io.github.bioplethora.entity.creatures.VoidjawEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class VoidjawEntityModel extends AnimatedGeoModel<VoidjawEntity> implements IAdvancedGeoModel<VoidjawEntity> {
+public class VoidjawEntityModel extends GeoModel<VoidjawEntity> implements IAdvancedGeoModel<VoidjawEntity> {
 
     @Override
     public ResourceLocation getModelResource(VoidjawEntity entity) {
@@ -34,9 +34,9 @@ public class VoidjawEntityModel extends AnimatedGeoModel<VoidjawEntity> implemen
     }
 
     @Override
-    public void setLivingAnimations(VoidjawEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent event) {
-        super.setLivingAnimations(entity, uniqueID, event);
-        EntityModelData extraData = (EntityModelData) event.getExtraDataOfType(EntityModelData.class).get(0);
+    public void setCustomAnimations(VoidjawEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState event) {
+        super.setCustomAnimations(entity, uniqueID, event);
+        EntityModelData extraData = (EntityModelData) event.getExtraData().get(0);
         adaptHeadOnLook(extraData, getAnimationProcessor().getBone("trapjaw"));
     }
 }

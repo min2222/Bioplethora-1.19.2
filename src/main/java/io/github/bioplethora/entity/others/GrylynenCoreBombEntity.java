@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,19 +20,19 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GrylynenCoreBombEntity extends Entity implements IAnimatable {
+public class GrylynenCoreBombEntity extends Entity implements GeoEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("animation.grylynen_core_bomb.idle");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public IGrylynenTier tier;
     public int birthTime = 0;
     public boolean hasSound;
@@ -45,19 +46,19 @@ public class GrylynenCoreBombEntity extends Entity implements IAnimatable {
     protected void defineSynchedData() {
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.grylynen_core_bomb.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "grylynen_core_bomb_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "grylynen_core_bomb_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -78,7 +79,7 @@ public class GrylynenCoreBombEntity extends Entity implements IAnimatable {
 
             if (!this.level.isClientSide) {
                 ServerLevel serverworld = (ServerLevel) this.level;
-                BlockPos blockpos = (new BlockPos(this.getX(), this.getY(), this.getZ()));
+                BlockPos blockpos = this.blockPosition();
 
                 GrylynenEntity grylynen = BPEntities.WOODEN_GRYLYNEN.get().create(this.level);
 
@@ -141,7 +142,7 @@ public class GrylynenCoreBombEntity extends Entity implements IAnimatable {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

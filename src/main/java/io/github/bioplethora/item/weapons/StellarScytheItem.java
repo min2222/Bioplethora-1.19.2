@@ -14,7 +14,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -40,7 +39,7 @@ public class StellarScytheItem extends SwordItem implements IReachWeapon {
 
         Level world = entity.level;
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = BlockPos.containing(x, y, z);
         Player player = (Player) source;
 
         if (!player.getCooldowns().isOnCooldown(stack.getItem())) {
@@ -55,7 +54,7 @@ public class StellarScytheItem extends SwordItem implements IReachWeapon {
                 for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, player.getBoundingBox().inflate(2D, 1D, 2D))) {
                     if (entityIterator instanceof LivingEntity && entityIterator != player) {
                         if(entityIterator != entity) {
-                            entityIterator.hurt(DamageSource.mobAttack(player), (this.getDamage() * 0.8F) * EnchantmentHelper.getEnchantmentLevel(Enchantments.SWEEPING_EDGE, source));
+                            entityIterator.hurt(player.damageSources().mobAttack(player), (this.getDamage() * 0.8F) * EnchantmentHelper.getEnchantmentLevel(Enchantments.SWEEPING_EDGE, source));
                         }
                     }
                 }

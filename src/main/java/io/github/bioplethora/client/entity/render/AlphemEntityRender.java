@@ -1,8 +1,9 @@
 package io.github.bioplethora.client.entity.render;
 
+import org.joml.Vector3f;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.client.entity.model.AlphemEntityModel;
@@ -13,19 +14,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.geo.render.built.GeoBone;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class AlphemEntityRender extends GeoEntityRenderer<AlphemEntity> {
 
     public AlphemEntityRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new AlphemEntityModel());
         this.shadowRadius = 0.5F;
-    }
-
-    @Override
-    public void renderEarly(AlphemEntity animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
     }
 
     @Override
@@ -36,10 +32,10 @@ public class AlphemEntityRender extends GeoEntityRenderer<AlphemEntity> {
             return new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/alphem.png");
         }
     }
-
+    
     @Override
-    public RenderType getRenderType(AlphemEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityTranslucent(getTextureLocation(animatable));
+    public RenderType getRenderType(AlphemEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+    	return RenderType.entityTranslucent(texture);
     }
 
     @Override

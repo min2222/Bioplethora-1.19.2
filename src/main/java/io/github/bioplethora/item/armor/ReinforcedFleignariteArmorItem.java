@@ -24,7 +24,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class ReinforcedFleignariteArmorItem extends ArmorItem implements IHurtSkillArmor {
 
-    public ReinforcedFleignariteArmorItem(ArmorMaterial material, EquipmentSlot type, Properties properties) {
+    public ReinforcedFleignariteArmorItem(ArmorMaterial material, ArmorItem.Type type, Properties properties) {
         super(material, type, properties);
     }
 

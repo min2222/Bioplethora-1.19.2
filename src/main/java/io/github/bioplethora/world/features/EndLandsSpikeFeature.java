@@ -49,7 +49,7 @@ public class EndLandsSpikeFeature extends Feature<NoneFeatureConfiguration> {
                 if(fromCenter <= radius) {
                     Vec3 from = new Vec3(pos.getX() + x, pos.getY(), pos.getZ() + z);
 
-                    if(world.getBlockState(new BlockPos(from).below()).isAir()) {
+                    if(world.getBlockState(BlockPos.containing(from).below()).isAir()) {
                         continue;
                     }
 
@@ -58,7 +58,7 @@ public class EndLandsSpikeFeature extends Feature<NoneFeatureConfiguration> {
                     double distance = from.distanceTo(to);
 
                     for (double i = 0; i < distance; i++) {
-                        BlockPos targetPos = new BlockPos(current);
+                        BlockPos targetPos = BlockPos.containing(current);
                         world.setBlock(targetPos, Blocks.END_STONE.defaultBlockState(), 3);
                         current = current.add(per);
                     }

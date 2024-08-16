@@ -135,11 +135,11 @@ public class BPAvoidEntityGoal<T extends LivingEntity> extends Goal {
                     }
                 }
 
-                BlockPos blockpos3 = new BlockPos((double)j + p_226339_0_.getX(), (double)k + p_226339_0_.getY(), (double)l + p_226339_0_.getZ());
+                BlockPos blockpos3 = BlockPos.containing((double)j + p_226339_0_.getX(), (double)k + p_226339_0_.getY(), (double)l + p_226339_0_.getZ());
                 if (blockpos3.getY() >= 0 && blockpos3.getY() <= p_226339_0_.level.getMaxBuildHeight() && (!flag || p_226339_0_.isWithinRestriction(blockpos3)) && (!p_226339_12_ || pathnavigator.isStableDestination(blockpos3))) {
                     if (p_226339_9_) {
                         blockpos3 = moveUpToAboveSolid(blockpos3, random.nextInt(p_226339_10_ + 1) + p_226339_11_, p_226339_0_.level.getMaxBuildHeight(), (p_226341_1_) -> {
-                            return p_226339_0_.level.getBlockState(p_226341_1_).getMaterial().isSolid();
+                            return p_226339_0_.level.getBlockState(p_226341_1_).isSolid();
                         });
                     }
 
@@ -194,7 +194,7 @@ public class BPAvoidEntityGoal<T extends LivingEntity> extends Goal {
             double d2 = d0 * Math.cos(d4);
             if (!(Math.abs(d1) > (double)p_226343_1_) && !(Math.abs(d2) > (double)p_226343_1_)) {
                 int l = p_226343_0_.nextInt(2 * p_226343_2_ + 1) - p_226343_2_ + p_226343_3_;
-                return new BlockPos(d1, (double)l, d2);
+                return BlockPos.containing(d1, (double)l, d2);
             } else {
                 return null;
             }

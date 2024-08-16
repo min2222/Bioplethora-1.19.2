@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableList;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.config.BPConfig;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -35,7 +35,7 @@ import net.minecraftforge.registries.RegistryObject;
 @SuppressWarnings("deprecation")
 public class BPPlacedFeatures {
 
-	public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Bioplethora.MOD_ID);
+	public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, Bioplethora.MOD_ID);
 	
 	public static final RegistryObject<PlacedFeature> GLACYNTH = PLACED_FEATURES.register("glacynth", () -> register(BPConfiguredFeatures.GLACYNTH, createPlacementModifier(115, 0, 131).build()));
 	public static final RegistryObject<PlacedFeature> PINK_TWI = PLACED_FEATURES.register("pink_twi", () -> register(BPConfiguredFeatures.PINK_TWI, createPlacementModifier(115, 0, 131).build()));

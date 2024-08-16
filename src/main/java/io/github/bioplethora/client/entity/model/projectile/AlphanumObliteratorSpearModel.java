@@ -3,12 +3,12 @@ package io.github.bioplethora.client.entity.model.projectile;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.projectile.AlphanumObliteratorSpearEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class AlphanumObliteratorSpearModel extends AnimatedGeoModel<AlphanumObliteratorSpearEntity> {
+public class AlphanumObliteratorSpearModel extends GeoModel<AlphanumObliteratorSpearEntity> {
 
     @Override
     public ResourceLocation getModelResource(AlphanumObliteratorSpearEntity object) {
@@ -26,12 +26,12 @@ public class AlphanumObliteratorSpearModel extends AnimatedGeoModel<AlphanumObli
     }
 
     @Override
-    public void setLivingAnimations(AlphanumObliteratorSpearEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(AlphanumObliteratorSpearEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
-        IBone head = this.getAnimationProcessor().getBone("spear");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX((extraData.headPitch) * ((float) Math.PI / 180F));
-        head.setRotationY((extraData.netHeadYaw) * ((float) Math.PI / 270F));
+        CoreGeoBone head = this.getAnimationProcessor().getBone("spear");
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
+        head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
     }
 }

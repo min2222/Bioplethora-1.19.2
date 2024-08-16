@@ -15,7 +15,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -48,13 +47,13 @@ public class NandbricShortswordItem extends SwordItem {
         if(selected) {
             if(using) {
                 InteractionHand hand = attacker.getUsedItemHand();
-                BlockPos attackerPos = new BlockPos(attacker.getX(), attacker.getY(), attacker.getZ());
+                BlockPos attackerPos = attacker.blockPosition();
 
                 if (this.target != null) {
                     AABB hitrange = attacker.getBoundingBox().inflate(2);
 
                     if (hitrange.intersects(this.target.getBoundingBox())) {
-                        this.target.hurt(DamageSource.mobAttack(attacker), 7);
+                        this.target.hurt(attacker.damageSources().mobAttack(attacker), 7);
                         this.target.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 1));
                         if (attacker instanceof Player) {
                             ((Player) attacker).getCooldowns().addCooldown(itemstack.getItem(), 22);
@@ -113,7 +112,7 @@ public class NandbricShortswordItem extends SwordItem {
         boolean retval = super.hurtEnemy(stack, entity, source);
         Level world = entity.level;
         double x = entity.getX(), y = entity.getY(), z = entity.getZ();
-        BlockPos pos = new BlockPos(x, y, z);
+        BlockPos pos = BlockPos.containing(x, y, z);
 
         if(retval) {
             entity.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 5));

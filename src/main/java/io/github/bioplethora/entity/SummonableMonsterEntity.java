@@ -6,11 +6,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public abstract class SummonableMonsterEntity extends BPMonsterEntity implements IAnimatable {
+public abstract class SummonableMonsterEntity extends BPMonsterEntity implements GeoEntity {
 
     private LivingEntity owner;
     private boolean hasLimitedLife;
@@ -23,10 +23,10 @@ public abstract class SummonableMonsterEntity extends BPMonsterEntity implements
     }
 
     @Override
-    abstract public void registerControllers(AnimationData data);
+    abstract public void registerControllers(AnimatableManager.ControllerRegistrar data);
 
     @Override
-    abstract public AnimationFactory getFactory();
+    abstract public AnimatableInstanceCache getAnimatableInstanceCache();
 
     public LivingEntity getOwner() {
         return this.owner;

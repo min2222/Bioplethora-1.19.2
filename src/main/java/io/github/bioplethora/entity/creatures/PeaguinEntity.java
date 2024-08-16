@@ -66,15 +66,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class PeaguinEntity extends WaterAndLandAnimalEntity implements IAnimatable, NeutralMob, IBioClassification {
 
@@ -85,7 +84,7 @@ public class PeaguinEntity extends WaterAndLandAnimalEntity implements IAnimatab
 
     private UUID persistentAngerTarget;
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public PeaguinEntity(EntityType<? extends BPAnimalEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -148,12 +147,12 @@ public class PeaguinEntity extends WaterAndLandAnimalEntity implements IAnimatab
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "peaguin_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "peaguin_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -181,7 +180,7 @@ public class PeaguinEntity extends WaterAndLandAnimalEntity implements IAnimatab
         this.playSound(SoundEvents.SALMON_FLOP, 0.15f, 1);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying() || this.dead) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.death", EDefaultLoopTypes.LOOP));

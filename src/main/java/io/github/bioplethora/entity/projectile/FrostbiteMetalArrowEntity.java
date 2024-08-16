@@ -7,10 +7,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -42,7 +42,7 @@ public class FrostbiteMetalArrowEntity extends AbstractArrow {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -84,9 +84,9 @@ public class FrostbiteMetalArrowEntity extends AbstractArrow {
             for (Entity entityIterator : this.level.getEntitiesOfClass(Entity.class, area)) {
                 if (entityIterator instanceof LivingEntity && entityIterator != this.getOwner()) {
                     if (this.getOwner() != null) {
-                        entityIterator.hurt(DamageSource.indirectMagic(this.getOwner(), this.getOwner()), (float) 10.5);
+                        entityIterator.hurt(this.damageSources().indirectMagic(this.getOwner(), this.getOwner()), (float) 10.5);
                     } else {
-                        entityIterator.hurt(DamageSource.MAGIC, (float) 10.5);
+                        entityIterator.hurt(this.damageSources().magic(), (float) 10.5);
                     }
                     ((LivingEntity) entityIterator).addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
                     ((LivingEntity) entityIterator).addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 60, 2));

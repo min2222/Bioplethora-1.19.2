@@ -7,6 +7,7 @@ import io.github.bioplethora.registry.BPItems;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,19 +16,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile implements IAnimatable, ItemSupplier {
+public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile implements GeoEntity, ItemSupplier {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public double lifespan = 0;
     public int bladeSize = 1;
 
@@ -40,12 +40,12 @@ public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile im
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
 
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -72,7 +72,7 @@ public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile im
         super.onHit(result);
 
         if (result.getType() != HitResult.Type.ENTITY || !((EntityHitResult) result).getEntity().is(owner)) {
-            this.level.explode(this, x, y, z, 1.5F * ((float) this.bladeSize * 0.5F), this.getOwner() instanceof Player ? Explosion.BlockInteraction.BREAK : EntityUtils.getMobGriefingEvent(this.level, this));
+            this.level.explode(this, x, y, z, 1.5F * ((float) this.bladeSize * 0.5F), this.getOwner() instanceof Player ? Level.ExplosionInteraction.BLOCK : EntityUtils.getMobGriefingEvent(this.level, this));
             this.discard();
         }
     }
@@ -82,7 +82,7 @@ public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile im
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

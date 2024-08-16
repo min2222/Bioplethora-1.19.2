@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class PrimordialStaffItem extends Item {
 
@@ -56,8 +57,8 @@ public class PrimordialStaffItem extends Item {
         }
     }
 
-    public void onUsingTick(ItemStack stack, LivingEntity player, int count) {
-        super.onUsingTick(stack, player, count);
+    public void onUseTick(Level level, LivingEntity player, ItemStack stack, int count) {
+        super.onUseTick(level, player, stack, count);
 
         if (player instanceof Player) {
             Level worldIn = player.level;
@@ -89,7 +90,7 @@ public class PrimordialStaffItem extends Item {
                     PrimordialRingEntity ring = BPEntities.PRIMORDIAL_RING.get().create(worldIn);
                     ring.moveTo(blockpos, 0.0F, 0.0F);
                     ring.setOwner(playerIn);
-                    ring.finalizeSpawn((ServerLevelAccessor) worldIn, worldIn.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
+                    ForgeEventFactory.onFinalizeSpawn(ring, (ServerLevelAccessor) worldIn, worldIn.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
 
                     ring.setHasLimitedLife(true);
                     ring.setLifeLimitBeforeDeath(hellConfig ? 1000 : 850 + playerIn.getRandom().nextInt(200));
@@ -99,7 +100,7 @@ public class PrimordialStaffItem extends Item {
                     PrimordialRingEntity ring2 = BPEntities.PRIMORDIAL_RING.get().create(worldIn);
                     ring2.moveTo(blockpos, 0.0F, 0.0F);
                     ring2.setOwner(playerIn);
-                    ring2.finalizeSpawn((ServerLevelAccessor) worldIn, worldIn.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
+                    ForgeEventFactory.onFinalizeSpawn(ring2, (ServerLevelAccessor) worldIn, worldIn.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, null, null);
 
                     ring2.setHasLimitedLife(true);
                     ring2.setLifeLimitBeforeDeath(hellConfig ? 1000 : 850 + playerIn.getRandom().nextInt(200));

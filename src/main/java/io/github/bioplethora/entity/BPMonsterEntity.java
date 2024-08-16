@@ -10,14 +10,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public abstract class BPMonsterEntity extends Monster implements IAnimatable, IGeckoBaseEntity {
+public abstract class BPMonsterEntity extends Monster implements GeoEntity, IGeckoBaseEntity {
 
     protected static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(BPMonsterEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(BPMonsterEntity.class, EntityDataSerializers.BOOLEAN);
@@ -33,10 +33,10 @@ public abstract class BPMonsterEntity extends Monster implements IAnimatable, IG
     }
 
     @Override
-    abstract public void registerControllers(AnimationData data);
+    abstract public void registerControllers(AnimatableManager.ControllerRegistrar data);
 
     @Override
-    abstract public AnimationFactory getFactory();
+    abstract public AnimatableInstanceCache getAnimatableInstanceCache();
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {

@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model.projectile;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.projectile.CryoblazeEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CryoblazeModel extends AnimatedGeoModel<CryoblazeEntity> {
+public class CryoblazeModel extends GeoModel<CryoblazeEntity> {
 
     @Override
     public ResourceLocation getModelResource(CryoblazeEntity object) {

@@ -16,8 +16,8 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public abstract class WaterAndLandAnimalEntity extends BPAnimalEntity {
 
@@ -90,8 +90,8 @@ public abstract class WaterAndLandAnimalEntity extends BPAnimalEntity {
     public abstract AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_);
 
     @Override
-    public abstract void registerControllers(AnimationData data);
+    public abstract void registerControllers(AnimatableManager.ControllerRegistrar data);
 
     @Override
-    public abstract AnimationFactory getFactory();
+    public abstract AnimatableInstanceCache getAnimatableInstanceCache();
 }

@@ -3,26 +3,26 @@ package io.github.bioplethora.entity.others;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatable {
+public class FrostbiteMetalShieldWaveEntity extends Entity implements GeoEntity {
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("animation.frostbite_metal_shield_wave.default");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private LivingEntity owner;
     public int lifespan;
 
@@ -43,15 +43,15 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
         lifespan = value;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_shield_wave.default", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "frostbite_metal_shield_wave_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "frostbite_metal_shield_wave_controller", 0, this::predicate));
     }
 
     public void tick() {
@@ -60,14 +60,14 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
         if (this.getOwner() != null) {
             double x = this.getOwner().getX(), y = this.getOwner().getY(), z = this.getOwner().getZ();
             AABB area = new AABB(x - (10 / 2d), y, z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d));
-            BlockPos pos = new BlockPos(x, y + 1, z);
+            BlockPos pos = BlockPos.containing(x, y + 1, z);
             Level world = this.level;
 
             ++lifespan;
             this.moveTo(pos, 0.0F, 0.0F);
             for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, area)) {
                 if (entityIterator instanceof LivingEntity && entityIterator != this.getOwner()) {
-                    entityIterator.hurt(DamageSource.indirectMagic(this.getOwner(), this.getOwner()), 1F);
+                    entityIterator.hurt(this.damageSources().indirectMagic(this.getOwner(), this.getOwner()), 1F);
                 }
             }
         }
@@ -78,7 +78,7 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -97,7 +97,7 @@ public class FrostbiteMetalShieldWaveEntity extends Entity implements IAnimatabl
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

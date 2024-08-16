@@ -8,6 +8,7 @@ import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -27,23 +27,23 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class FrostbiteMetalClusterEntity extends AbstractHurtingProjectile implements IAnimatable {
+public class FrostbiteMetalClusterEntity extends AbstractHurtingProjectile implements GeoEntity {
 
     public double xPower;
     public double yPower;
     public double zPower;
     public int lifespan = 0;
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("animation.frostbite_metal_cluster.main");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public FrostbiteMetalClusterEntity(EntityType<? extends AbstractHurtingProjectile> type, Level world) {
         super(type, world);
@@ -59,18 +59,18 @@ public class FrostbiteMetalClusterEntity extends AbstractHurtingProjectile imple
     }
 
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_metal_cluster.main", EDefaultLoopTypes.LOOP));
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
+        event.getController().setAnimation(IDLE_ANIM);
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "frostbite_metal_cluster_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "frostbite_metal_cluster_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -144,16 +144,16 @@ public class FrostbiteMetalClusterEntity extends AbstractHurtingProjectile imple
 
         if (!this.level.isClientSide && this.getOwner() != null) {
             if (((LivingEntity) this.getOwner()).getHealth() <= 100 && BPConfig.COMMON.hellMode.get()) {
-                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, this.getOwner() instanceof Player ? Explosion.BlockInteraction.BREAK : EntityUtils.getMobGriefingEvent(this.level, this));
+                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 3F, this.getOwner() instanceof Player ? Level.ExplosionInteraction.BLOCK : EntityUtils.getMobGriefingEvent(this.level, this));
             } else {
-                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 1.5F, this.getOwner() instanceof Player ? Explosion.BlockInteraction.BREAK : EntityUtils.getMobGriefingEvent(this.level, this));
+                this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 1.5F, this.getOwner() instanceof Player ? Level.ExplosionInteraction.BLOCK : EntityUtils.getMobGriefingEvent(this.level, this));
             }
             this.discard();
         }
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

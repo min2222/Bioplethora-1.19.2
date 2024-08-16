@@ -7,6 +7,7 @@ import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -85,11 +86,11 @@ public class WindblazeEntity extends AbstractHurtingProjectile {
 
         if (this.getOwner() != null) {
             if (BPConfig.COMMON.hellMode.get()) {
-                entityArea.hurt(DamageSource.indirectMagic(this.getOwner(), this.getOwner()), 3);
+                entityArea.hurt(this.damageSources().indirectMagic(this.getOwner(), this.getOwner()), 3);
                 entityArea.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 1));
                 entityArea.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 60));
             } else {
-                entityArea.hurt(DamageSource.indirectMagic(this.getOwner(), this.getOwner()), 1);
+                entityArea.hurt(this.damageSources().indirectMagic(this.getOwner(), this.getOwner()), 1);
                 entityArea.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60));
             }
         }
@@ -97,7 +98,7 @@ public class WindblazeEntity extends AbstractHurtingProjectile {
 
     @Nonnull
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

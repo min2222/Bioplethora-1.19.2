@@ -6,6 +6,7 @@ import java.util.Map;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.loot.conditions.InHellmode;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -23,6 +24,6 @@ public class BPLootConditions {
     }
 
     public static void registerConditions() {
-        LOOT_CONDITIONS.forEach((key, condition) -> Registry.register(Registry.LOOT_CONDITION_TYPE, key, condition));
+        LOOT_CONDITIONS.forEach((key, condition) -> Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, key, condition));
     }
 }

@@ -61,7 +61,7 @@ public class EchoGaidiusEntity extends GaidiusBaseEntity {
     public void tick() {
         super.tick();
 
-        if (!this.onGround) {
+        if (!this.onGround()) {
             double px = getDeltaMovement().x() / 10, py = getDeltaMovement().y() / 10, pz = getDeltaMovement().z() / 10;
 
             for (int i = 0; i < 10; i += 1) {
@@ -72,18 +72,18 @@ public class EchoGaidiusEntity extends GaidiusBaseEntity {
         }
 
         if (!level.isClientSide && this.tickCount > 3) {
-            if (hasTarget() && (!getTarget().isAlive() || this.onGround)) {
+            if (hasTarget() && (!getTarget().isAlive() || this.onGround())) {
                 entityData.set(TARGET_ID, NULL_TARGET_INT);
             }
 
-            if (!hasTarget() && !this.onGround && relocateCD <= 0) {
+            if (!hasTarget() && !this.onGround() && relocateCD <= 0) {
                 locateAnotherTarget();
             } else {
                 relocateCD--;
             }
         }
 
-        if (tickCount > 3 && hasTarget() && !this.onGround) {
+        if (tickCount > 3 && hasTarget() && !this.onGround()) {
             double deltaX = getDeltaMovement().x(), deltaY = getDeltaMovement().y(), deltaZ = getDeltaMovement().z();
             Entity target = getTarget();
 

@@ -14,15 +14,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class EntityUtils {
 	
-	public static Explosion.BlockInteraction getMobGriefingEvent(Level level, Entity entity) {
-		return ForgeEventFactory.getMobGriefingEvent(level, entity) ? Explosion.BlockInteraction.BREAK : Explosion.BlockInteraction.NONE;
+	public static Level.ExplosionInteraction getMobGriefingEvent(Level level, Entity entity) {
+		return ForgeEventFactory.getMobGriefingEvent(level, entity) ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE;
 	}
 
     public static Predicate<Entity> IsNotPet(Entity owner) {

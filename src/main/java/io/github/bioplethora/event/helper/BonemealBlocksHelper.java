@@ -75,7 +75,7 @@ public class BonemealBlocksHelper {
                 double d6 = (double)pPos.getX() + pRand.nextDouble() * 2.0D;
                 double d7 = (double)pPos.getY() + pRand.nextDouble() * 3.0D;
                 double d8 = (double)pPos.getZ() + pRand.nextDouble() * 2.0D;
-                if (!pLevel.getBlockState((new BlockPos(d6, d7, d8)).below()).isAir()) {
+                if (!pLevel.getBlockState((BlockPos.containing(d6, d7, d8)).below()).isAir()) {
                     pLevel.addParticle(ParticleTypes.SOUL, d6, d7, d8, d2, d3, d4);
                 }
             }

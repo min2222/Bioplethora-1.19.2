@@ -1,7 +1,8 @@
 package io.github.bioplethora.client.entity.render.projectile;
 
+import org.joml.Vector3f;
+
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 
 import io.github.bioplethora.entity.projectile.VermilionBladeProjectileEntity;
 import net.minecraft.client.renderer.MultiBufferSource;

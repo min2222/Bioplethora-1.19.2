@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class NandbricArmorItem extends ArmorItem {
-    public NandbricArmorItem(ArmorMaterial material, EquipmentSlot slot, Properties properties) {
+    public NandbricArmorItem(ArmorMaterial material, ArmorItem.Type slot, Properties properties) {
         super(material, slot, properties);
     }
     
@@ -39,6 +39,6 @@ public class NandbricArmorItem extends ArmorItem {
         String defaultTexture = Bioplethora.MOD_ID + ":textures/models/armor/nandbric_layer_1.png";
         String legTexture = Bioplethora.MOD_ID + ":textures/models/armor/nandbric_layer_2.png";
 
-        return slot == EquipmentSlot.LEGS ? legTexture : defaultTexture;
+        return this.type == ArmorItem.Type.LEGGINGS ? legTexture : defaultTexture;
     }
 }

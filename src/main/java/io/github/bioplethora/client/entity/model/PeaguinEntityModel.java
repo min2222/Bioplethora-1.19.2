@@ -4,9 +4,9 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.PeaguinEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class PeaguinEntityModel extends AnimatedGeoModel<PeaguinEntity> {
+public class PeaguinEntityModel extends GeoModel<PeaguinEntity> {
 
     @Override
     public ResourceLocation getModelResource(PeaguinEntity entity) {
@@ -36,14 +36,14 @@ public class PeaguinEntityModel extends AnimatedGeoModel<PeaguinEntity> {
     }
 
     /*@Override
-    public void setLivingAnimations(PeaguinEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(PeaguinEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         if (!((LivingEntity) entity).isBaby()) {
-            IBone head = this.getAnimationProcessor().getBone("head");
-            EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-            head.setRotationX((extraData.headPitch) * ((float) Math.PI / 180F));
-            head.setRotationY((extraData.netHeadYaw) * ((float) Math.PI / 270F));
+            CoreGeoBone head = this.getAnimationProcessor().getBone("head");
+            EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+            head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
+            head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
         }
     }*/
 }

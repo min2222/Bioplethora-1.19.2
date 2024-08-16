@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model.others;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.others.AlphanumShardEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AlphanumShardModel extends AnimatedGeoModel<AlphanumShardEntity> {
+public class AlphanumShardModel extends GeoModel<AlphanumShardEntity> {
 
     @Override
     public ResourceLocation getModelResource(AlphanumShardEntity entity) {

@@ -9,11 +9,9 @@ import io.github.bioplethora.registry.BPParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 
 public class AlphemKingRoarGoal extends Goal {
@@ -130,7 +128,7 @@ public class AlphemKingRoarGoal extends Goal {
     }
 
     public void explodeOnBlockPos(BlockPos pos, Level world) {
-        world.explode(null, DamageSource.indirectMagic(this.king, this.king), null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Explosion.BlockInteraction.NONE);
+        world.explode(null, this.king.damageSources().indirectMagic(this.king, this.king), null, pos.getX(), pos.getY(), pos.getZ(), 1.5F, false, Level.ExplosionInteraction.NONE);
 
         if (world instanceof ServerLevel) {
 

@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.TrapjawEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class TrapjawEntityModel extends AnimatedGeoModel<TrapjawEntity> {
+public class TrapjawEntityModel extends GeoModel<TrapjawEntity> {
 
     @Override
     public ResourceLocation getModelResource(TrapjawEntity entity) {

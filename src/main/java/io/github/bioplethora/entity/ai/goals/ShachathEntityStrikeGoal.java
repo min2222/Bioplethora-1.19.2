@@ -13,7 +13,6 @@ import io.github.bioplethora.registry.BPSoundEvents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -124,7 +123,7 @@ public class ShachathEntityStrikeGoal extends Goal {
         }
         shachath.moveTo(target.getX(), target.getY(), target.getZ());
         shachath.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 1.0F);
-        target.hurt(DamageSource.mobAttack(shachath), 7);
+        target.hurt(this.shachath.damageSources().mobAttack(shachath), 7);
         shachath.particleCharge(phase + 1);
         if (phase == 0) {
             BPEffectEntity.createInstance(shachath, BPEffectTypes.SHACHATH_SLASH_FLAT);
@@ -133,7 +132,7 @@ public class ShachathEntityStrikeGoal extends Goal {
             for (LivingEntity entities : world.getEntitiesOfClass(LivingEntity.class, shachath.getBoundingBox().inflate(2.4, 0, 2.4))) {
                 if (entities != shachath) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                    entities.hurt(DamageSource.mobAttack(shachath), (shachath.isClone() ? 6F : 9F) / damageReduction);
+                    entities.hurt(this.shachath.damageSources().mobAttack(shachath), (shachath.isClone() ? 6F : 9F) / damageReduction);
                     world.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                     world.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                 }
@@ -145,7 +144,7 @@ public class ShachathEntityStrikeGoal extends Goal {
             for (LivingEntity entities : world.getEntitiesOfClass(LivingEntity.class, new AABB(shachath.getX() - d0, shachath.getY() - 2.5, shachath.getZ() - d1, shachath.getX() + d0, shachath.getY() + 2.5, shachath.getZ() + d1))) {
                 if (entities != shachath) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                    entities.hurt(DamageSource.mobAttack(shachath), (shachath.isClone() ? 6F : 9F) / damageReduction);
+                    entities.hurt(this.shachath.damageSources().mobAttack(shachath), (shachath.isClone() ? 6F : 9F) / damageReduction);
                     world.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                     world.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                 }
@@ -158,7 +157,7 @@ public class ShachathEntityStrikeGoal extends Goal {
             for (LivingEntity entities : world.getEntitiesOfClass(LivingEntity.class, shachath.getBoundingBox().inflate(2.4, 0, 2.4))) {
                 if (entities != shachath) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                    entities.hurt(DamageSource.mobAttack(shachath), (shachath.isClone() ? 9F : 14F) / damageReduction);
+                    entities.hurt(this.shachath.damageSources().mobAttack(shachath), (shachath.isClone() ? 9F : 14F) / damageReduction);
                     world.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                     world.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                 }
@@ -166,7 +165,7 @@ public class ShachathEntityStrikeGoal extends Goal {
             for (LivingEntity entities : world.getEntitiesOfClass(LivingEntity.class, new AABB(shachath.getX() - d0, shachath.getY() - 2.5, shachath.getZ() - d1, shachath.getX() + d0, shachath.getY() + 2.5, shachath.getZ() + d1))) {
                 if (entities != shachath) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                    entities.hurt(DamageSource.mobAttack(shachath), (shachath.isClone() ? 9F : 14F) / damageReduction);
+                    entities.hurt(this.shachath.damageSources().mobAttack(shachath), (shachath.isClone() ? 9F : 14F) / damageReduction);
                     world.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                     world.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                 }

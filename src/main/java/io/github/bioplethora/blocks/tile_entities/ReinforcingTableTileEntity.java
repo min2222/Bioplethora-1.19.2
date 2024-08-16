@@ -46,7 +46,7 @@ public class ReinforcingTableTileEntity extends BlockEntity {
 
     private ItemStack getResult(@Nullable ReinforcingRecipe recipe) {
         if (recipe != null) {
-            return recipe.assemble((Container) this);
+            return recipe.assemble((Container) this, this.level.registryAccess());
         }
         return ItemStack.EMPTY;
     }

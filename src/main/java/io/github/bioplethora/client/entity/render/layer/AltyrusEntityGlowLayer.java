@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
-public class AltyrusEntityGlowLayer extends GeoLayerRenderer<AltyrusEntity> {
+public class AltyrusEntityGlowLayer extends GeoRenderLayer<AltyrusEntity> {
 
     private static final ResourceLocation GLOW_DEFAULT = new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/layers/altyrus_glow_layer_default.png");
     private static final ResourceLocation GLOW_ATTACK_OR_SHOOT = new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/layers/altyrus_glow_layer_shoot_or_attack.png");

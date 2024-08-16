@@ -4,13 +4,13 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.EurydnEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.AnimationProcessor;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationProcessor;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class EurydnEntityModel extends AnimatedGeoModel<EurydnEntity> {
+public class EurydnEntityModel extends GeoModel<EurydnEntity> {
 
     @Override
     public ResourceLocation getModelResource(EurydnEntity entity) {
@@ -34,20 +34,20 @@ public class EurydnEntityModel extends AnimatedGeoModel<EurydnEntity> {
     }
 
     @Override
-    public void setLivingAnimations(EurydnEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent event) {
-        super.setLivingAnimations(entity, uniqueID, event);
+    public void setCustomAnimations(EurydnEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState event) {
+        super.setCustomAnimations(entity, uniqueID, event);
 
         AnimationProcessor ap = this.getAnimationProcessor();
-        EntityModelData extraData = (EntityModelData) event.getExtraDataOfType(EntityModelData.class).get(0);
-        IBone head = ap.getBone("head");
-        IBone tailfront = ap.getBone("tailfront"), tailmid = ap.getBone("tailmid"), tailbot = ap.getBone("tailbot");
+        EntityModelData extraData = (EntityModelData) event.getExtraData().get(0);
+        CoreGeoBone head = ap.getBone("head");
+        CoreGeoBone tailfront = ap.getBone("tailfront"), tailmid = ap.getBone("tailmid"), tailbot = ap.getBone("tailbot");
 
-        head.setRotationX((extraData.headPitch) * ((float) Math.PI / 180F));
-        head.setRotationY((extraData.netHeadYaw) * ((float) Math.PI / 270F));
+        head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
+        head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
 
-        tailfront.setRotationX(tailfront.getRotationX() + this.tailRotationHelper(0.4F, 0.5F * 0.1F, 3F, -0.1F, event.getLimbSwing(), event.getLimbSwingAmount(), false));
-        tailmid.setRotationX(tailmid.getRotationX() + this.tailRotationHelper(0.4F, 0.5F * 0.1F, 3F, -0.1F, event.getLimbSwing(), event.getLimbSwingAmount(), true));
-        tailbot.setRotationX(tailbot.getRotationX() + this.tailRotationHelper(0.4F, 0.5F * 0.1F, 3F, -0.1F, event.getLimbSwing(), event.getLimbSwingAmount(), true));
+        tailfront.setRotX(tailfront.getRotX() + this.tailRotationHelper(0.4F, 0.5F * 0.1F, 3F, -0.1F, event.getLimbSwing(), event.getLimbSwingAmount(), false));
+        tailmid.setRotX(tailmid.getRotX() + this.tailRotationHelper(0.4F, 0.5F * 0.1F, 3F, -0.1F, event.getLimbSwing(), event.getLimbSwingAmount(), true));
+        tailbot.setRotX(tailbot.getRotX() + this.tailRotationHelper(0.4F, 0.5F * 0.1F, 3F, -0.1F, event.getLimbSwing(), event.getLimbSwingAmount(), true));
     }
 
     public float tailRotationHelper(float speed, float degree, float offset, float weight, float limbswing, float limbswingamount, boolean neg) {

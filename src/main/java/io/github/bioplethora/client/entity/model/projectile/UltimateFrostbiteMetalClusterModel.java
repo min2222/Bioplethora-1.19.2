@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model.projectile;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.projectile.UltimateFrostbiteMetalClusterEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class UltimateFrostbiteMetalClusterModel extends AnimatedGeoModel<UltimateFrostbiteMetalClusterEntity> {
+public class UltimateFrostbiteMetalClusterModel extends GeoModel<UltimateFrostbiteMetalClusterEntity> {
 
     @Override
     public ResourceLocation getModelResource(UltimateFrostbiteMetalClusterEntity object) {

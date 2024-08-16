@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.CuttlefishEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class CuttlefishEntityModel extends AnimatedGeoModel<CuttlefishEntity> {
+public class CuttlefishEntityModel extends GeoModel<CuttlefishEntity> {
 
     @Override
     public ResourceLocation getModelResource(CuttlefishEntity entity) {

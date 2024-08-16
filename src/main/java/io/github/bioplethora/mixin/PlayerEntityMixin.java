@@ -11,12 +11,14 @@ import io.github.bioplethora.api.mixin.IPlayerEntityMixin;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -111,6 +113,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
         } else if (pSlot.getType() == EquipmentSlot.Type.ARMOR) {
             this.playEquipSound(pStack);
             this.inventory.armor.set(pSlot.getIndex(), pStack);
+        }
+    }
+    
+    protected void playEquipSound(ItemStack p_217042_) 
+    {
+    	if (!p_217042_.isEmpty() && !this.isSpectator()) {
+    		SoundEvent soundevent = Equipable.get(p_217042_).getEquipSound();
+    		if (soundevent != null) {
+    			this.playSound(soundevent, 1.0F, 1.0F);
+    		}
         }
     }
 

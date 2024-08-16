@@ -49,7 +49,7 @@ public class EndIcicleFeature extends Feature<NoneFeatureConfiguration> {
                 if (fromCenter <= radius) {
                     Vec3 from = new Vec3(pos.getX() + x, pos.getY(), pos.getZ() + z);
 
-                    if (world.getBlockState(new BlockPos(from).above()).isAir()) {
+                    if (world.getBlockState(BlockPos.containing(from).above()).isAir()) {
                         continue;
                     }
 
@@ -58,7 +58,7 @@ public class EndIcicleFeature extends Feature<NoneFeatureConfiguration> {
                     double distance = from.distanceTo(to);
 
                     for (double i = 0; i < distance; i++) {
-                        BlockPos targetPos = new BlockPos(current);
+                        BlockPos targetPos = BlockPos.containing(current);
                         world.setBlock(targetPos, Blocks.ICE.defaultBlockState(), 3);
                         current = current.add(per);
                     }
@@ -68,7 +68,7 @@ public class EndIcicleFeature extends Feature<NoneFeatureConfiguration> {
                     double opdistance = from.distanceTo(opto);
 
                     for (double i = 0; i < opdistance; i++) {
-                        BlockPos targetPos = new BlockPos(opcurrent);
+                        BlockPos targetPos = BlockPos.containing(opcurrent);
                         world.setBlock(targetPos, Blocks.ICE.defaultBlockState(), 3);
                         opcurrent = opcurrent.add(opper);
                     }

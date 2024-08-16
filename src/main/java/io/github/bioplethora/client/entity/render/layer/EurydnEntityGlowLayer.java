@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.renderers.geo.GeoLayerRenderer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
-public class EurydnEntityGlowLayer extends GeoLayerRenderer<EurydnEntity> {
+public class EurydnEntityGlowLayer extends GeoRenderLayer<EurydnEntity> {
 
     private static final ResourceLocation GLOW_FIERY = new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/layers/fiery_eurydn_glow_layer.png");
     private static final ResourceLocation GLOW_SOUL = new ResourceLocation(Bioplethora.MOD_ID, "textures/entity/layers/soul_eurydn_glow_layer.png");

@@ -3,9 +3,9 @@ package io.github.bioplethora.entity.projectile;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPItems;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -52,7 +52,7 @@ public class AbyssalScalesEntity extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();
-        entity.hurt(DamageSource.thrown(this, this.getOwner()), 6);
+        entity.hurt(entity.damageSources().thrown(this, this.getOwner()), 6);
         this.playSound(SoundEvents.GLASS_BREAK, 1.2F, 0.8F);
         if (entity instanceof LivingEntity && entity != this.getOwner()) {
             LivingEntity living = (LivingEntity) entity;
@@ -92,7 +92,7 @@ public class AbyssalScalesEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

@@ -6,15 +6,14 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -43,7 +42,7 @@ public class MagmaBombEntity extends ThrowableItemProjectile {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -79,8 +78,8 @@ public class MagmaBombEntity extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity = result.getEntity();
-        entity.hurt(DamageSource.thrown(this, this.getOwner()), 3);
-        this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), this.explosionPower, Explosion.BlockInteraction.BREAK);
+        entity.hurt(this.damageSources().thrown(this, this.getOwner()), 3);
+        this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), this.explosionPower, Level.ExplosionInteraction.BLOCK);
         if (!this.level.isClientSide) {
             this.level.broadcastEntityEvent(this, (byte)3);
         }
@@ -90,7 +89,7 @@ public class MagmaBombEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), this.explosionPower, Explosion.BlockInteraction.BREAK);
+        this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), this.explosionPower, Level.ExplosionInteraction.BLOCK);
         if (!this.level.isClientSide) {
             this.level.broadcastEntityEvent(this, (byte)3);
             this.discard();

@@ -11,7 +11,7 @@ import io.github.bioplethora.world.BPVanillaBiomeFeatureGeneration;
 import io.github.bioplethora.world.featureconfigs.ExpandedLakeFeatureConfig;
 import io.github.bioplethora.world.featureconfigs.FleignariteSplotchConfig;
 import io.github.bioplethora.world.featureconfigs.PendentBlocksFeatureConfig;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -36,7 +36,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BPConfiguredFeatures {
 
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, Bioplethora.MOD_ID);
+    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registries.CONFIGURED_FEATURE, Bioplethora.MOD_ID);
     
     public static final RegistryObject<ConfiguredFeature<?, ?>> SOUL_MINISHROOM =  CONFIGURED_FEATURES.register("soul_minishroom", () -> new ConfiguredFeature<>(Feature.RANDOM_PATCH, 
     		new RandomPatchConfiguration(64, 7, 3, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(BPBlocks.SOUL_MINISHROOM.get()))))));

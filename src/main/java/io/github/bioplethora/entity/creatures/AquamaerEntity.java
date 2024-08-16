@@ -31,20 +31,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable, IBioClassification, ItemSteerable, IVerticalMount, ISaddleable {
 
     private static final EntityDataAccessor<Boolean> HAS_SADDLE = SynchedEntityData.defineId(TrapjawEntity.class, EntityDataSerializers.BOOLEAN);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public AquamaerEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
@@ -98,7 +97,7 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -250,7 +249,7 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     public void travelWithInput(Vec3 pTravelVec) {
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
         if (event.isMoving() && this.getTarget() == null) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.walk", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;
@@ -260,8 +259,8 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "aquamaer_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "aquamaer_controller", 0, this::predicate));
     }
 
     @Override

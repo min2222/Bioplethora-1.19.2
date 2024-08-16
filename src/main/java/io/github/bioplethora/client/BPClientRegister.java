@@ -5,7 +5,6 @@ import io.github.bioplethora.blocks.BPIdeFanBlock;
 import io.github.bioplethora.blocks.BPLanternPlantBlock;
 import io.github.bioplethora.client.armor.model.NandbricArmorModel;
 import io.github.bioplethora.client.armor.model.ReinforcedFleignariteArmorModel;
-import io.github.bioplethora.client.armor.render.AquChestplateRender;
 import io.github.bioplethora.client.block.render.FleignariteSplotchBlockRender;
 import io.github.bioplethora.client.entity.render.AlphemEntityRender;
 import io.github.bioplethora.client.entity.render.AlphemKingEntityRender;
@@ -47,7 +46,6 @@ import io.github.bioplethora.client.entity.render.projectile.VermilionBladeProje
 import io.github.bioplethora.client.entity.render.projectile.WindArrowRender;
 import io.github.bioplethora.client.entity.render.projectile.WindBlazeRender;
 import io.github.bioplethora.gui.screen.ReinforcingTableScreen;
-import io.github.bioplethora.item.armor.AquChestplateItem;
 import io.github.bioplethora.item.weapons.AlphanumObliteratorItem;
 import io.github.bioplethora.item.weapons.ArbitraryBallistaItem;
 import io.github.bioplethora.item.weapons.FrostbiteMetalShieldItem;
@@ -85,7 +83,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
-import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 @Mod.EventBusSubscriber(modid = Bioplethora.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class BPClientRegister {
@@ -215,9 +212,6 @@ public class BPClientRegister {
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.ARTAIRIUS.get(), RenderType.cutout());
 
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.FROSTEM.get(), RenderType.cutout());
-
-        // Armor
-        GeoArmorRenderer.registerArmorRenderer(AquChestplateItem.class, () -> new AquChestplateRender());
 
         MenuScreens.register(BPContainerTypes.REINFORCING_TABLE_CONTAINER.get(), ReinforcingTableScreen::new);
 

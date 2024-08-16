@@ -10,11 +10,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.geo.render.built.GeoBone;
-import software.bernie.geckolib3.renderers.geo.GeoProjectilesRenderer;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 
-public class UltimateFrostbiteMetalClusterRender extends GeoProjectilesRenderer<UltimateFrostbiteMetalClusterEntity> {
+public class UltimateFrostbiteMetalClusterRender extends GeoEntityRenderer<UltimateFrostbiteMetalClusterEntity> {
 
     public UltimateFrostbiteMetalClusterRender(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new UltimateFrostbiteMetalClusterModel());

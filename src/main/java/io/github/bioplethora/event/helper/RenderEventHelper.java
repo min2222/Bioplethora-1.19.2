@@ -73,7 +73,6 @@ public class RenderEventHelper {
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(770, 771);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, (float) curseAlpha);
-            RenderSystem.enableTexture();
             RenderSystem.setShaderTexture(0, new ResourceLocation(Bioplethora.MOD_ID, "textures/misc/alphanum_curse.png"));
             Tesselator tessellator = Tesselator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuilder();

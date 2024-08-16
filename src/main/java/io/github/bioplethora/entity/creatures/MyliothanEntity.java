@@ -47,22 +47,22 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class MyliothanEntity extends WaterAnimal implements IAnimatable, IBioClassification {
+public class MyliothanEntity extends WaterAnimal implements GeoEntity, IBioClassification {
 
     public final BPPartEntity[] subEntities;
     public final BPPartEntity head;
@@ -80,7 +80,7 @@ public class MyliothanEntity extends WaterAnimal implements IAnimatable, IBioCla
 
     private static final EntityDataAccessor<Boolean> SHAKING = SynchedEntityData.defineId(MyliothanEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CHARGING = SynchedEntityData.defineId(MyliothanEntity.class, EntityDataSerializers.BOOLEAN);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public MyliothanEntity(EntityType<? extends WaterAnimal> type, Level worldIn) {
         super(type, worldIn);
@@ -284,7 +284,7 @@ public class MyliothanEntity extends WaterAnimal implements IAnimatable, IBioCla
     }
 
     // TODO: 26/01/2022 - Better Myliothan charging animation.
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
 
         if (this.isCharging()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myliothan.charge", EDefaultLoopTypes.LOOP));
@@ -296,12 +296,12 @@ public class MyliothanEntity extends WaterAnimal implements IAnimatable, IBioCla
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "myliothan_controller", 5, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "myliothan_controller", 5, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 

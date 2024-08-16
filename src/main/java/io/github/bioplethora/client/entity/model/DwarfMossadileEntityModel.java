@@ -3,9 +3,9 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.DwarfMossadileEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class DwarfMossadileEntityModel extends AnimatedGeoModel<DwarfMossadileEntity> {
+public class DwarfMossadileEntityModel extends GeoModel<DwarfMossadileEntity> {
 
     @Override
     public ResourceLocation getModelResource(DwarfMossadileEntity entity) {
@@ -27,12 +27,12 @@ public class DwarfMossadileEntityModel extends AnimatedGeoModel<DwarfMossadileEn
     }
 
     /*@Override
-    public void setLivingAnimations(DwarfMossadileEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(DwarfMossadileEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
-        IBone head = this.getAnimationProcessor().getBone("head2");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX((extraData.headPitch) * ((float) Math.PI / 180F));
-        head.setRotationY((extraData.netHeadYaw) * ((float) Math.PI / 270F));
+        CoreGeoBone head = this.getAnimationProcessor().getBone("head2");
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
+        head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
     }*/
 }

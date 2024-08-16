@@ -28,7 +28,7 @@ public class GrylynenSpawnHelper {
 
             Level world = (Level) event.getLevel();
             double x = event.getPos().getX(), y = event.getPos().getY(), z = event.getPos().getZ();
-            BlockPos pos = new BlockPos(x, y, z);
+            BlockPos pos = BlockPos.containing(x, y, z);
 
             if (!event.getPlayer().isCreative() && checkSpawnRules()) {
 

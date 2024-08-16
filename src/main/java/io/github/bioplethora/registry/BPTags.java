@@ -1,7 +1,7 @@
 package io.github.bioplethora.registry;
 
 import io.github.bioplethora.Bioplethora;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -28,15 +28,15 @@ public class BPTags {
         public static final TagKey<Block> ALPHANIA = forgeLoc("alphania");
 
         private static TagKey<Block> bioLoc(String path) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, path));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(Bioplethora.MOD_ID, path));
         }
 
         private static TagKey<Block> mcLoc(String path) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("minecraft", path));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation("minecraft", path));
         }
 
         private static TagKey<Block> forgeLoc(String path) {
-            return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", path));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation("forge", path));
         }
     }
 
@@ -66,19 +66,19 @@ public class BPTags {
         public static final TagKey<Item> WOBR_SABRE = forgeLoc("wobr_sabre");
 
         private static TagKey<Item> bioLoc(String path) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation(Bioplethora.MOD_ID, path));
         }
 
         private static TagKey<Item> mcLoc(String path) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("minecraft", path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation("minecraft", path));
         }
 
         private static TagKey<Item> forgeLoc(String path) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation("forge", path));
         }
 
         private static TagKey<Item> curiosLoc(String path) {
-            return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("curios", path));
+            return TagKey.create(Registries.ITEM, new ResourceLocation("curios", path));
         }
     }
 
@@ -91,15 +91,15 @@ public class BPTags {
         public static final TagKey<EntityType<?>> AUTOMATON_TYPE = forgeLoc("automaton_type");
 
         private static TagKey<EntityType<?>> bioLoc(String path) {
-            return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Bioplethora.MOD_ID, path));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Bioplethora.MOD_ID, path));
         }
 
         private static TagKey<EntityType<?>> mcLoc(String path) {
-            return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation("minecraft", path));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("minecraft", path));
         }
 
         private static TagKey<EntityType<?>> forgeLoc(String path) {
-            return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation("forge", path));
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", path));
         }
     }
 }

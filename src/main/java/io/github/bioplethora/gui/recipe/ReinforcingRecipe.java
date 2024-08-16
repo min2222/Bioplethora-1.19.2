@@ -8,6 +8,7 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.registry.BPBlocks;
 import io.github.bioplethora.registry.BPRecipes;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -45,7 +46,7 @@ public class ReinforcingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public ItemStack assemble(Container pInv) {
+    public ItemStack assemble(Container pInv, RegistryAccess access) {
         ItemStack itemstack = this.resultItem.copy();
         CompoundTag compoundnbt = pInv.getItem(2).getTag();
         if (compoundnbt != null) {
@@ -78,7 +79,7 @@ public class ReinforcingRecipe implements Recipe<Container> {
         return pWidth * pHeight >= 2;
     }
 
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess access) {
         return this.resultItem;
     }
 

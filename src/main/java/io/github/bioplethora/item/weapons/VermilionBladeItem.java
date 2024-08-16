@@ -20,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -65,7 +64,7 @@ public class VermilionBladeItem extends SwordItem implements IReachWeapon {
                     for (LivingEntity entities : entity.level.getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(2.4, 0, 2.4))) {
                         if (entities != entity) {
                             double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                            entities.hurt(DamageSource.mobAttack(entity), 6F + (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SWEEPING_EDGE, stack) * 1.5F));
+                            entities.hurt(entity.damageSources().mobAttack(entity), 6F + (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SWEEPING_EDGE, stack) * 1.5F));
                             entity.level.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                             entity.level.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                         }
@@ -78,7 +77,7 @@ public class VermilionBladeItem extends SwordItem implements IReachWeapon {
                     for (LivingEntity entities : entity.level.getEntitiesOfClass(LivingEntity.class, new AABB(entity.getX() - d0, entity.getY() - 2.5, entity.getZ() - d1, entity.getX() + d0, entity.getY() + 2.5, entity.getZ() + d1))) {
                         if (entities != entity) {
                             double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                            entities.hurt(DamageSource.mobAttack(entity), 8F + (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SWEEPING_EDGE, stack) * 1.5F));
+                            entities.hurt(entity.damageSources().mobAttack(entity), 8F + (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SWEEPING_EDGE, stack) * 1.5F));
                             entity.level.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                             entity.level.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                         }

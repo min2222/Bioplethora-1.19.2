@@ -3,12 +3,12 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.GaugalemEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.model.data.EntityModelData;
 
-public class GaugalemEntityModel extends AnimatedGeoModel<GaugalemEntity> {
+public class GaugalemEntityModel extends GeoModel<GaugalemEntity> {
 
     @Override
     public ResourceLocation getModelResource(GaugalemEntity entity) {
@@ -26,11 +26,11 @@ public class GaugalemEntityModel extends AnimatedGeoModel<GaugalemEntity> {
     }
 
     @Override
-    public void setLivingAnimations(GaugalemEntity entity, Integer uniqueID, @SuppressWarnings("rawtypes") AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(GaugalemEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState customPredicate) {
+        super.setCustomAnimations(entity, uniqueID, customPredicate);
 
-        IBone head = this.getAnimationProcessor().getBone("gaugalem");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
-        head.setRotationX((extraData.headPitch) * ((float) Math.PI / 180F));
+        CoreGeoBone head = this.getAnimationProcessor().getBone("gaugalem");
+        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
     }
 }

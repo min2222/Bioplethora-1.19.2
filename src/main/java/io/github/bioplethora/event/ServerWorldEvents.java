@@ -38,7 +38,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -207,10 +207,10 @@ public class ServerWorldEvents {
             Item getItem = getUseItem.getItem();
 
             boolean[] dmgEx = new boolean[]{
-                    event.getSource() != DamageSource.IN_FIRE,
-                    event.getSource() != DamageSource.LAVA,
-                    event.getSource() != DamageSource.CACTUS,
-                    event.getSource() != DamageSource.OUT_OF_WORLD
+                    !event.getSource().is(DamageTypes.IN_FIRE),
+                    !event.getSource().is(DamageTypes.LAVA),
+                    !event.getSource().is(DamageTypes.CACTUS),
+                    !event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD)
             };
 
             if (dmgEx[0] && dmgEx[1] && dmgEx[2] && dmgEx[3]) {
@@ -245,10 +245,10 @@ public class ServerWorldEvents {
 
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-
-        boolean dsFire = (event.getSource() == DamageSource.IN_FIRE);
-        boolean dsVoid = (event.getSource() == DamageSource.OUT_OF_WORLD);
-        boolean dsFire2 = (event.getSource() == DamageSource.ON_FIRE);
+    	
+        boolean dsFire = (event.getSource().is(DamageTypes.IN_FIRE));
+        boolean dsVoid = (event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD));
+        boolean dsFire2 = (event.getSource().is(DamageTypes.ON_FIRE));
 
         if (event.getEntity() instanceof LivingEntity) {
 
@@ -338,9 +338,9 @@ public class ServerWorldEvents {
                             ((ServerLevel) user.level).sendParticles(ParticleTypes.POOF, user.getX(), user.getY(), user.getZ(), 50, 0.65, 0.65, 0.65, 0.01);
                         }
 
-                        BlockPos blockpos = new BlockPos(user.getX() + (isNegVal ? tpLoc : -tpLoc), user.getY(), user.getZ() + (isNegVal ? tpLoc : -tpLoc));
+                        BlockPos blockpos = BlockPos.containing(user.getX() + (isNegVal ? tpLoc : -tpLoc), user.getY(), user.getZ() + (isNegVal ? tpLoc : -tpLoc));
 
-                        if (!user.level.getBlockState(blockpos).getMaterial().blocksMotion()) {
+                        if (!user.level.getBlockState(blockpos).blocksMotion()) {
                             user.teleportTo(blockpos.getX(), blockpos.getY(), blockpos.getZ());
 
                             event.setCanceled(true);

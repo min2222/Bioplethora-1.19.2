@@ -9,7 +9,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
@@ -21,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class PeaguinScaleArmorItem extends ArmorItem {
 
-    public PeaguinScaleArmorItem(ArmorMaterial material, EquipmentSlot slotType, Properties properties) {
+    public PeaguinScaleArmorItem(ArmorMaterial material, ArmorItem.Type slotType, Properties properties) {
         super(material, slotType, properties);
     }
 

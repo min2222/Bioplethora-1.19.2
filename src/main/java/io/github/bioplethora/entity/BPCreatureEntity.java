@@ -8,14 +8,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 /**
  * Credits: WeirdNerd (Permission Granted)
  */
-public abstract class BPCreatureEntity extends PathfinderMob implements IAnimatable, IGeckoBaseEntity {
+public abstract class BPCreatureEntity extends PathfinderMob implements GeoEntity, IGeckoBaseEntity {
 
     protected static final EntityDataAccessor<Boolean> MOVING = SynchedEntityData.defineId(BPCreatureEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(BPCreatureEntity.class, EntityDataSerializers.BOOLEAN);
@@ -30,10 +30,10 @@ public abstract class BPCreatureEntity extends PathfinderMob implements IAnimata
     }
 
     @Override
-    abstract public void registerControllers(AnimationData data);
+    abstract public void registerControllers(AnimatableManager.ControllerRegistrar data);
 
     @Override
-    abstract public AnimationFactory getFactory();
+    abstract public AnimatableInstanceCache getAnimatableInstanceCache();
 
     @Override
     protected void defineSynchedData() {

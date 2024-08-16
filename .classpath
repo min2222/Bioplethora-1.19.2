@@ -52,122 +52,107 @@
 	</classpathentry>
 	<classpathentry kind="output" path="bin/default"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-common-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-common-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-common-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-common-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.20.1-common-api/15.12.3.54_mapped_parchment_2023.09.03-1.20.1/jei-1.20.1-common-api-15.12.3.54_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.20.1-common-api/15.12.3.54_mapped_parchment_2023.09.03-1.20.1/jei-1.20.1-common-api-15.12.3.54_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge-api/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-api-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.20.1-forge-api/15.12.3.54_mapped_parchment_2023.09.03-1.20.1/jei-1.20.1-forge-api-15.12.3.54_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.20.1-forge-api/15.12.3.54_mapped_parchment_2023.09.03-1.20.1/jei-1.20.1-forge-api-15.12.3.54_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2-api.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1/Patchouli-1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1/Patchouli-1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1-api.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2-api.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1/curios-forge-5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1/curios-forge-5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1-api.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.5_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.3.5_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.20.1-47.3.5_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.3.5_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/minecraft_repo/versions/1.19.2/client-extra.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/minecraft_repo/versions/1.20.1/client-extra.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/23.0.0/ca5088d615accaabd2aa956b10b236a4e75cfccb/annotations-23.0.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/23.0.0/8cc20c07506ec18e0834947b84a864bfc094484e/annotations-23.0.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.0.1/2f9be7fbab3157633befe74c684bd3badb28a876/annotations-24.0.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.0.1/13c5c75c4206580aa4d683bffee658caae6c9f43/annotations-24.0.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/software/bernie/geckolib/geckolib-forge-1.19/3.1.40_mapped_parchment_2022.11.27-1.19.2/geckolib-forge-1.19-3.1.40_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/software/bernie/geckolib/geckolib-forge-1.19/3.1.40_mapped_parchment_2022.11.27-1.19.2/geckolib-forge-1.19-3.1.40_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/software/bernie/geckolib/geckolib-forge-1.20.1/4.4.7_mapped_parchment_2023.09.03-1.20.1/geckolib-forge-1.20.1-4.4.7_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/software/bernie/geckolib/geckolib-forge-1.20.1/4.4.7_mapped_parchment_2023.09.03-1.20.1/geckolib-forge-1.20.1-4.4.7_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/net/yeoxuhang/biomeapireforged/biomeapireforged-1.19.2/1.0.0_mapped_parchment_2022.11.27-1.19.2/biomeapireforged-1.19.2-1.0.0_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.eliotlash.mclib/mclib/20/3383672fb61b6a210e8fb93ffdd9fdae4549e4fc/mclib-20.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/just-enough-resources-jer-240630/4862430_mapped_parchment_2022.11.27-1.19.2/just-enough-resources-jer-240630-4862430_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/just-enough-resources-jer-240630/5057220_mapped_parchment_2023.09.03-1.20.1/just-enough-resources-jer-240630-5057220_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/just-enough-effect-descriptions-jeed-532286/4599099_mapped_parchment_2022.11.27-1.19.2/just-enough-effect-descriptions-jeed-532286-4599099_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/just-enough-effect-descriptions-jeed-532286/5589681_mapped_parchment_2023.09.03-1.20.1/just-enough-effect-descriptions-jeed-532286-5589681_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/appleskin-248787/3872808_mapped_parchment_2022.11.27-1.19.2/appleskin-248787-3872808_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/appleskin-248787/4770828_mapped_parchment_2023.09.03-1.20.1/appleskin-248787-4770828_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/the-one-probe-245211/3965693_mapped_parchment_2022.11.27-1.19.2/the-one-probe-245211-3965693_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/the-one-probe-245211/5159287_mapped_parchment_2023.09.03-1.20.1/the-one-probe-245211-5159287_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/jade-324717/4914105_mapped_parchment_2022.11.27-1.19.2/jade-324717-4914105_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/jade-324717/5493390_mapped_parchment_2023.09.03-1.20.1/jade-324717-5493390_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/configured-457570/4462837_mapped_parchment_2022.11.27-1.19.2/configured-457570-4462837_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/configured-457570/5180900_mapped_parchment_2023.09.03-1.20.1/configured-457570-5180900_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/catalogue-459701/4171024_mapped_parchment_2022.11.27-1.19.2/catalogue-459701-4171024_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/catalogue-459701/4766090_mapped_parchment_2023.09.03-1.20.1/catalogue-459701-4766090_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/gamemenumodoption-353051/4657763_mapped_parchment_2022.11.27-1.19.2/gamemenumodoption-353051-4657763_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.20.1-47.3.5/fef0d664944ab7bdc5f6c87c4636ae9a6519c24a/fmlloader-1.20.1-47.3.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.20.1-47.3.5/dc36aaad8320f6c0a0a006ba6dfe8b548c0a0ec/fmlloader-1.20.1-47.3.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/damage-indicator-mod-for-forge-557596/3946489_mapped_parchment_2022.11.27-1.19.2/damage-indicator-mod-for-forge-557596-3946489_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.19/72e3169a88d7f58a3cd0d5baa1483d6147dc61a9/JarJarSelector-0.3.19-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.19/376cc9c8ea60720cf027c01fc033de915699801c/JarJarSelector-0.3.19.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/curse/maven/forge-criticalib-560696/3946347_mapped_parchment_2022.11.27-1.19.2/forge-criticalib-560696-3946347_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.19/2be05c62a2daa0f29f73ec4291d7381a003a6d0b/JarJarMetadata-0.3.19-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.19/83feaa9b770e6ac0e96ee4fc23fa89325c5fe2/JarJarMetadata-0.3.19.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.19.2-43.3.0/d42327984560a8fb3f3a8884a6aeb4244d944635/fmlloader-1.19.2-43.3.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlloader/1.19.2-43.3.0/daf431c3a88b84dbbd5df2c8abc1d2deb51094a6/fmlloader-1.19.2-43.3.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/fd70844ad56424d4d5004c415b47d97313dd723d/datafixerupper-6.0.8-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/6.0.8/3ba4a30557a9b057760af4011f909ba619fc5125/datafixerupper-6.0.8.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.16/a17c0e45e6fb9eb73cbd7cdd6767baa5125fed07/JarJarSelector-0.3.16-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarSelector/0.3.16/2a31421fb5e267249da103a644f23afb43d158af/JarJarSelector-0.3.16.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.16/b68f0b2c0016cf410fc8fe397b0c25acd0296ae7/JarJarMetadata-0.3.16-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarMetadata/0.3.16/f62c8c898dffc8666f5097a8587ed72095e8e83a/JarJarMetadata-0.3.16.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/5.0.28/db75a9299540c2b371afa8ee048dcd396d4591fc/datafixerupper-5.0.28-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/5.0.28/e2157e236e529aff80a5fc3ccb506e56d46b130b/datafixerupper-5.0.28.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.0.1-jre/d34772c01bd6637982d1aafe895c4fcd8b42e139/guava-31.0.1-jre-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.0.1-jre/119ea2b2bc205b138974d351777b20f02b92704b/guava-31.0.1-jre.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/c388a68bc2b17a314dfa7c769d858ada0fc32dcf/guava-31.1-jre-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -182,19 +167,29 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/7.0.1/c8298f054a2aa1de8cf83c0406c806143c289bb9/forgespi-7.0.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/7.0.1/3b4972a0cdb135853dba219be61a79b22cff1309/forgespi-7.0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mergetool/1.1.5/43e6a124292079d99f7f20fb57b8c8b17dc28c8e/mergetool-1.1.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mergetool/1.1.5/f3da18e12c696d35a47c82cbb2cc8b5aa15e1154/mergetool-1.1.5-api.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.4/84ea6d693c679e6307bb36cb31619ee7bb47f9e0/securejarhandler-2.1.4-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.4/f47e3b9dd860a7b82154b8f90a650ffd0aaa5582/securejarhandler-2.1.4.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.10/96331802dca7d09fd109500a708200ae758ff412/securejarhandler-2.1.10-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/securejarhandler/2.1.10/51e6a22c6c716beb11e244bf5b8be480f51dd6b5/securejarhandler-2.1.10.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.8/798829d8a90337242531eb3afd0778af9430ba2f/modlauncher-10.0.8-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.8/658c4ddb704aeeaa94ff3e668785a5eebddd0cb5/modlauncher-10.0.8.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.1.6/5df143de774caf5aee3f5f64d2adf4014e7d4f40/coremods-5.1.6-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.1.6/62fab3c3d59d37f8e15af311cb638c6f6123423/coremods-5.1.6.jar">
 		<attributes>
-			<attribute name="gradle_used_by_scope" value=""/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/3a731130cea80690b50d02303e3a0bd5c2a808fc/modlauncher-10.0.9-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/6d9443f56f50bb85cea383686ff9c867391458b/modlauncher-10.0.9.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.openjdk.nashorn/nashorn-core/15.3/d1b08eaf27fa4468ea714555377d74079b8b9e99/nashorn-core-15.3-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.openjdk.nashorn/nashorn-core/15.3/43977e804697048fc8d81d333a36c17d07a5b3dd/nashorn-core-15.3.jar">
@@ -202,27 +197,27 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.5/3b13ed8d997eb49e62d7e237dd37ce8e9e825208/asm-commons-9.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.5/19ab5b5800a3910d30d3a3e64fdb00fd0cb42de0/asm-commons-9.5.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.7/8b509f2656913c785ef828e747c5a52644ea3d3/asm-commons-9.7-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.7/e86dda4696d3c185fcc95d8d311904e7ce38a53f/asm-commons-9.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.5/a957cd8d5834981ffbea32104fa45971e38d8f1a/asm-util-9.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.5/64b5a1fc8c1b15ed2efd6a063e976bc8d3dc5ffe/asm-util-9.5.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.7/94c3b1394f70e0cd38be9feb3ba946d5cc24b66c/asm-util-9.7-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.7/c0655519f24d92af2202cb681cd7c1569df6ead6/asm-util-9.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.5/47b38de3ca0cb7c6d14efc52f83bd69b763698ac/asm-analysis-9.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.5/490bacc77de7cbc0be1a30bb3471072d705be4a4/asm-analysis-9.5.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.7/7eadf46ec06b22b1deb423e06fb6cadce70a1cd5/asm-analysis-9.7-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.7/e4a258b7eb96107106c0599f0061cfc1832fe07a/asm-analysis-9.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.5/c7aaa36489c3f86b32f707f0b944f8b7165fbe3f/asm-tree-9.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.5/fd33c8b6373abaa675be407082fdfda35021254a/asm-tree-9.5.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.7/d51ed23b9b4d0e222d0a0cacaf6296e8a009d81b/asm-tree-9.7-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.7/e446a17b175bfb733b87c5c2560ccb4e57d69f1a/asm-tree-9.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.5/75c1feea760d9b5c12394bf366bdd9bd65ce4c83/asm-9.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.5/dc6ea1875f4d64fbc85e1691c95b96a3d8569c90/asm-9.5.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.7/765c0ee4137adc89519f583e9110b938bcd122fa/asm-9.7-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.7/73d7b3086e14beb604ced229c302feff6449723/asm-9.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -242,22 +237,12 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.19.2-43.3.0/a3b5846755eb4691dcb556f54aacd1cfbb9ad821/fmlcore-1.19.2-43.3.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.19.2-43.3.0/5db2801308d3c89c8ef4750f3d8a402a8d3a7522/fmlcore-1.19.2-43.3.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.3.5/8f7ecf150dcd96ceb55d81c32560b58b40498222/fmlcore-1.20.1-47.3.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlcore/1.20.1-47.3.5/cc377ceca3274bd1e429c0da17f73720ce29a4d6/fmlcore-1.20.1-47.3.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.3/daa1254e3b62f3ca68d1a741d3ed9869fab1e751/eventbus-6.0.3-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.3/42fe522ace1bbcbcbba9c880c42411857baf36a9/eventbus-6.0.3.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/6.0.0/967492de644e97862394821789c938e6ec2291ed/forgespi-6.0.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/forgespi/6.0.0/4a2004591666531f8b30d3402317b1ff6411bd3e/forgespi-6.0.0.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.0.1/a668cc3a77a31a42d9763d37fb348acbaa968f13/coremods-5.0.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/coremods/5.0.1/386b00279628b105b2d507539c46e134e96f6237/coremods-5.0.1.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.5/9e63113e81f9d25c5082ba61df851935d510957/eventbus-6.0.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/eventbus/6.0.5/699143dd438431d06b57416944f7cedbe52e1475/eventbus-6.0.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -282,7 +267,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.8.3/98f84f353457629e81cc6827224871b1a8faa7af/typetools-0.8.3.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.6.3/de30205cf0153746a489a53203c41fa3766d7d24/typetools-0.6.3-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.jodah/typetools/0.6.3/a01aaa6ddaea9ec07ec4f209487b7a46a526283a/typetools-0.6.3.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -312,122 +297,37 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.16/529150af64ba23b7cf5986fa4c7d8b07dc3fae80/JarJarFileSystems-0.3.16-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.16/e52afbb2599dc7c6f779efea0496d32fc01152e3/JarJarFileSystems-0.3.16.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/90623b0e129d0d0e9d9b5d452bf877c375d5d405/JarJarFileSystems-0.3.19-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/JarJarFileSystems/0.3.19/2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020/JarJarFileSystems-0.3.19.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.19.2-43.3.0/473d83e6b0a161450441849c6082f06e6a73cb79/javafmllanguage-1.19.2-43.3.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.19.2-43.3.0/2edd99fb09dd01b6487188e8da2ce4b034d79217/javafmllanguage-1.19.2-43.3.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlearlydisplay/1.20.1-47.3.5/5e8c4de5a21635610b709ed31e07b49bdb6856f4/fmlearlydisplay-1.20.1-47.3.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/fmlearlydisplay/1.20.1-47.3.5/26dd5e9a33fb4938a189b2766b8d5f1daec1ab48/fmlearlydisplay-1.20.1-47.3.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.19.2-43.3.0/c5e851fbe48995d81cc4c53491235e19f90fb10f/lowcodelanguage-1.19.2-43.3.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.19.2-43.3.0/5facdae56496bfc1ea0e1dbe1385463d7aa7bc69/lowcodelanguage-1.19.2-43.3.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.3.5/974dcf811cd1e1dd54127da21a989257412d1e2c/javafmllanguage-1.20.1-47.3.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/javafmllanguage/1.20.1-47.3.5/4c589c051ef533f8898fb5d83514d4186faa0eeb/javafmllanguage-1.20.1-47.3.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.19.2-43.3.0/7740b9d7f05a9c7e1d89e09183f710aecb20d046/mclanguage-1.19.2-43.3.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.19.2-43.3.0/3da09fccf425982d55412b36aaffe711fcff8740/mclanguage-1.19.2-43.3.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.3.5/17529985e95f41812445b4cb6e595573a5690d64/lowcodelanguage-1.20.1-47.3.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/lowcodelanguage/1.20.1-47.3.5/8251eee89645828a05f3b04f5df8945baa0743c4/lowcodelanguage-1.20.1-47.3.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.0.0/600952f78e73b97b05b3a6e1a9c6ef049cfe0112/logging-1.0.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.0.0/f6ca3b2eee0b80b384e8ed93d368faecb82dfb9b/logging-1.0.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.3.5/3b1b02b957e68203bbaf39d24e9aedb71ebec977/mclanguage-1.20.1-47.3.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.minecraftforge/mclanguage/1.20.1-47.3.5/53971d6fe08ae7ce74a72fa7d14a82de70a8bd1/mclanguage-1.20.1-47.3.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/ef44852fa1707a833bfa8e8518659ab18f368d25/blocklist-1.0.10-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/5c685c5ffa94c4cd39496c7184c1d122e515ecef/blocklist-1.0.10.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.2.2/d78c032d2eb0aa476fbd8acf3ba1d6bb3845d03b/oshi-core-6.2.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/6.2.2/54f5efc19bca95d709d9a37d19ffcbba3d21c1a6/oshi-core-6.2.2.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/2.2.10/da05971b07cbb379d002cf7eaec6a2048211fefc/patchy-2.2.10.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/5.8.5/2b307812731b13ff8b133a96322b0a8cf9b2879a/oshi-core-5.8.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.github.oshi/oshi-core/5.8.5/1d0ec654d820741327f5a9229d513732a4b7ce50/oshi-core-5.8.5.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.10.0/1ffcbea712326d2ada01104eb577d90a8ebf6097/jna-platform-5.10.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.10.0/fbed7d9669dba47714ad0d4f4454290a997aee69/jna-platform-5.10.0.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.10.0/ff0287cd964354b358d49ad41e5bae9c7d1b4ae/jna-5.10.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.10.0/7cf4c87dd802db50721db66947aa237d7ad09418/jna-5.10.0.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j18-impl/2.17.0/8440a408e5fae9e742a2f2d8126f05fde058e9f2/log4j-slf4j18-impl-2.17.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j18-impl/2.17.0/bd7f6c0b9224dd214afb4e684957e2349b529a8d/log4j-slf4j18-impl-2.17.0.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/3c242b5f554474cab03425de7f9d8eb433ead19b/noexception-1.7.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/b65330c98e38a1f915fa54a6e5eca496505e3f0a/noexception-1.7.1.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.8.0-beta4/b36a694fefcf7c2a274765143dc63e86389b33d1/slf4j-api-1.8.0-beta4-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.8.0-beta4/83b0359d847ee053d745be7ec0d8e9e8a44304b4/slf4j-api-1.8.0-beta4.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/70.1/21551c094193ab59d284b434c1e33a3ddf4b5c0e/icu4j-70.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/70.1/dfa3a1fbc55bf5db8c6e79fc0935ac7ab1202950/icu4j-70.1.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/javabridge/1.2.24/a9ca59eebc32c5c771075df31a0b6e31d2ed8565/javabridge-1.2.24-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/javabridge/1.2.24/c876796229b2ef5120f186eab5acc870699d3b9/javabridge-1.2.24.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/950831646d014c9162999019a3cb17d5fc01ac0d/jopt-simple-5.0.4-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.77.Final/5ba8b7a0587082e623f0f4817a6be1fe781bc7ac/netty-handler-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.77.Final/47a81089de03635a27f509f3e4e13386ae1db275/netty-handler-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.77.Final/686609be4b4aac724b234a75da054d9999fac9c7/netty-codec-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.77.Final/4efc5f59335301d6ba0d7cd31dd10651119b03c8/netty-codec-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.77.Final/15d6dcb08a2ae46ff1bf7cfc7b686aa76844079/netty-transport-classes-epoll-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.77.Final/dd70dbccbcf98382223a59044f3c08d8e9920cad/netty-transport-classes-epoll-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.77.Final/7132bf861874ca8ebda98367223d8833546db1ee/netty-transport-native-unix-common-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.77.Final/c95d53486414b3270d08057957c5da8e0c37e4eb/netty-transport-native-unix-common-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.77.Final/51ddcf7f16ff13e71e285ebad2f511188c134205/netty-transport-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.77.Final/2a3373bbd20d520c821f210bd5ee886788512043/netty-transport-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.77.Final/75b24da85044450fc95722243b4a93fa0aa627e3/netty-buffer-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.77.Final/d97571f99e5e739d86824d0df99f35d295276b5f/netty-buffer-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.77.Final/5439471197f64a381b0201571fa52ad34533ed41/netty-resolver-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.77.Final/4a239dbf8d8bb5f98aa51462c35011c0516395fd/netty-resolver-4.1.77.Final.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.77.Final/4e7168bc86be425681048e6519f5a666521fa82a/netty-common-4.1.77.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.77.Final/ea0fc20f4e6178966b9d62017b7fcb83dfe0e713/netty-common-4.1.77.Final.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/6ed5748c6f0860e81e09d4d2582fe914cfa41d1e/gson-2.10-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/dd9b193aef96e973d5a11ab13cd17430c2e4306b/gson-2.10.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -437,12 +337,37 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/198b882fdc2c72c89c63401d946f6ba46c3acea3/commons-lang3-3.12.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/71.1/cc9684d401adeb1a90404a5d77fd38d348a41ec1/icu4j-71.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/71.1/9e7d3304c23f9ba5cb71915f7cce23231a57a445/icu4j-71.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/2ef0187124bbfc7aed3038d4ffdd2241e8992937/commons-io-2.11.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/4.0.43/d82e437f9964a53d2cda4b120f4cc7698697323b/authlib-4.0.43-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/4.0.43/2ff9d747a77570a07a60d32ac77eb6162ad2a2d9/authlib-4.0.43.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/ef44852fa1707a833bfa8e8518659ab18f368d25/blocklist-1.0.10-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/blocklist/1.0.10/5c685c5ffa94c4cd39496c7184c1d122e515ecef/blocklist-1.0.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.1.8/d876490896dc5d91c01d8fbc8f14f9f1756a9f67/brigadier-1.1.8-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.1.8/5244ce82c3337bba4a196a3ce858bfaecc74404a/brigadier-1.1.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/9e1dd652bab1d082df57ceb5a7ad96cdaea61808/logging-1.1.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/logging/1.1.1/832b8e6674a9b325a5175a3a6267dfaf34c85139/logging-1.1.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/2.2.10/da05971b07cbb379d002cf7eaec6a2048211fefc/patchy-2.2.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.17.9/1898fbfd00a552b7f9a3cc0438623845a91e74ed/text2speech-1.17.9-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.17.9/3cad216e3a7f0c19b4b394388bc9ffc446f13b14/text2speech-1.17.9.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -457,22 +382,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.0.18/f93ce897789cb28518ebb7a8a6bc3946922bc8b6/brigadier-1.0.18-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/brigadier/1.0.18/c1ef1234282716483c92183f49bef47b1a89bfa9/brigadier-1.0.18.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.9/e1167849f172a0b75d6ffe4e4b2f34b9259795bb/gson-2.8.9-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.9/8a432c1d6825781e21a02db2e2c33c5fde2833b9/gson-2.8.9.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/3.11.49/6feee4b25a47d4bc8492b062a841d437045cf154/authlib-3.11.49-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/3.11.49/2e3055ec2a017c7f94b79744b4a68b65695a118c/authlib-3.11.49.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/b3e0a269baa0d05b02f9b4447be463d25da8c097/commons-compress-1.21-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/2ef0187124bbfc7aed3038d4ffdd2241e8992937/commons-io-2.11.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -482,82 +392,97 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.14/9d3e55f73fedca10282469031cf6bc3a69e36711/httpcore-4.4.14-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.14/9dd1a631c082d92ecd4bd8fd4cf55026c720a8c1/httpcore-4.4.14.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.82.Final/eb21430492b4087f179f378def9c101af2ceb3a3/netty-handler-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.82.Final/644041d1fa96a5d3130a29e8978630d716d76e38/netty-handler-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.6/cae16d296ddc343bfb4e20ef67fbcef07fca40e/fastutil-8.5.6-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.6/76f95700418a68fbc4ac050525261f05dc681ca1/fastutil-8.5.6.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.82.Final/cca3483023dc4ea2fecd674a43e6648104b93bef/netty-codec-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.82.Final/b77200379acb345a9ffdece1c605e591ac3e4e0a/netty-codec-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.17.0/293933e165c0f05a9c2b5a65c19d7462bf630b5/log4j-core-2.17.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.17.0/fe6e7a32c1228884b9691a744f953a55d0dd8ead/log4j-core-2.17.0.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value=""/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.0/9082ee1815f0c0052e8b981159ec836cc45487cd/log4j-api-2.17.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.0/bbd791e9c8c9421e45337c4fe0a10851c086e36c/log4j-api-2.17.0.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value=""/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/a817bcf213db49f710603677457567c37d53e103/lwjgl-jemalloc-3.3.1.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.82.Final/7d479710b4240ddd900a9bc8fe31c8f752df25f8/netty-transport-classes-epoll-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.82.Final/e7c7dd18deac93105797f30057c912651ea76521/netty-transport-classes-epoll-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/948a89b76a16aa324b046ae9308891216ffce5f9/lwjgl-jemalloc-3.3.1-natives-windows.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.82.Final/93bda191a15bd338a03de553d63d539aa8e9ad46/netty-transport-native-unix-common-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.82.Final/3e895b35ca1b8a0eca56cacff4c2dde5d2c6abce/netty-transport-native-unix-common-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/fb476c8ec110e1c137ad3ce8a7f7bfe6b11c6324/lwjgl-jemalloc-3.3.1-natives-windows-x86.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.82.Final/a7d580e125df85b115e42a00ee7adfb2b81b3367/netty-transport-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.82.Final/e431a218d91acb6476ccad5f5aafde50aa3945ca/netty-transport-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/cae85c4edb219c88b6a0c26a87955ad98dc9519d/lwjgl-jemalloc-3.3.1-natives-windows-arm64.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.82.Final/6eca8b1b4342f92f178eabf50fbdb9a6732fb350/netty-buffer-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.82.Final/a544270cf1ae8b8077082f5036436a9a9971ea71/netty-buffer-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/2623a6b8ae1dfcd880738656a9f0243d2e6840bd/lwjgl-openal-3.3.1.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.82.Final/7855042d98fd07633901c09987d814f0e49f1b21/netty-resolver-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.82.Final/38f665ae8dcd29032eea31245ba7806bed2e0fa8/netty-resolver-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/30a474d0e57193d7bc128849a3ab66bc9316fdb1/lwjgl-openal-3.3.1-natives-windows.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.82.Final/66841700234dd5771962ec51d940813d421329bf/netty-common-4.1.82.Final-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.82.Final/22d148e85c3f5ebdacc0ce1f5aabb1d420f73f3/netty-common-4.1.82.Final.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/888349f7b1be6fbae58bf8edfb9ef12def04c4e3/lwjgl-openal-3.3.1-natives-windows-x86.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.9/98ad0726f121ae5e8109f21c6bc0d7791100916d/fastutil-8.5.9-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.9/bb7ea75ecdb216654237830b3a96d87ad91f8cc5/fastutil-8.5.9.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/40d65f1a7368a2aa47336f9cb69f5a190cf9975a/lwjgl-openal-3.3.1-natives-windows-arm64.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.12.1/13250aea879918ee2cf861703733a1b1f834d13e/jna-platform-5.12.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.12.1/97406a297c852f4a41e688a176ec675f72e8329/jna-platform-5.12.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/831a5533a21a5f4f81bbc51bb13e9899319b5411/lwjgl-opengl-3.3.1.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.12.1/a558f0c18863579764c8adcdf2312e0b9711c5af/jna-5.12.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.12.1/b1e93a735caea94f503e95e6fe79bf9cdc1e985d/jna-5.12.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/c1807e9bd571402787d7e37e3029776ae2513bb8/lwjgl-opengl-3.3.1-natives-windows.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/950831646d014c9162999019a3cb17d5fc01ac0d/jopt-simple-5.0.4-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.4/4fdac2fbe92dfad86aa6e9301736f6b4342a3f5c/jopt-simple-5.0.4.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/deef3eb9b178ff2ff3ce893cc72ae741c3a17974/lwjgl-opengl-3.3.1-natives-windows-x86.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/b3e0a269baa0d05b02f9b4447be463d25da8c097/commons-compress-1.21-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/527d78f1e9056aff3ed02ce93019c73c5e8f1721/lwjgl-opengl-3.3.1-natives-windows-arm64.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/198b882fdc2c72c89c63401d946f6ba46c3acea3/commons-lang3-3.12.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.15/2ab1724e80d075698903a49f5e8fa90b077937ac/httpcore-4.4.15-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.15/7f2e0c573eaa7a74bac2e89b359e1f73d92a0a1d/httpcore-4.4.15.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.19.0/b01fda4bda99fce653352ebe79897e43dee2e67f/log4j-core-2.19.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.19.0/3b6eeb4de4c49c0fe38a4ee27188ff5fee44d0bb/log4j-core-2.19.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j2-impl/2.19.0/628978b55e7195966a111841796d17ae048bce62/log4j-slf4j2-impl-2.19.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-slf4j2-impl/2.19.0/5c04bfdd63ce9dceb2e284b81e96b6a70010ee10/log4j-slf4j2-impl-2.19.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/e50c05b05437e7f5fc11609b8366a5e151f74461/log4j-api-2.19.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.19.0/ea1b37f38c327596b216542bc636cfdc0b8036fa/log4j-api-2.19.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/c1f2266a7d0386d7643879ed1b93f51d29126180/joml-1.10.5-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -572,12 +497,72 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/e502700e6a1a0d02bddb8b4ef85afcdc15c88358/lwjgl-glfw-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/beda65ee503443e60aa196d58ed31f8d001dc22a/lwjgl-glfw-3.3.1-natives-windows-arm64.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/e502700e6a1a0d02bddb8b4ef85afcdc15c88358/lwjgl-glfw-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/b997e3391d6ce8f05487e7335d95c606043884a1/lwjgl-glfw-3.3.1-natives-windows-x86.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/e502700e6a1a0d02bddb8b4ef85afcdc15c88358/lwjgl-glfw-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.3.1/beda65ee503443e60aa196d58ed31f8d001dc22a/lwjgl-glfw-3.3.1-natives-windows-arm64.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/a817bcf213db49f710603677457567c37d53e103/lwjgl-jemalloc-3.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/948a89b76a16aa324b046ae9308891216ffce5f9/lwjgl-jemalloc-3.3.1-natives-windows.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/cae85c4edb219c88b6a0c26a87955ad98dc9519d/lwjgl-jemalloc-3.3.1-natives-windows-arm64.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/f5858d34e06053b1866858fed7a685cf0c6b5926/lwjgl-jemalloc-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.3.1/fb476c8ec110e1c137ad3ce8a7f7bfe6b11c6324/lwjgl-jemalloc-3.3.1-natives-windows-x86.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/2623a6b8ae1dfcd880738656a9f0243d2e6840bd/lwjgl-openal-3.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/30a474d0e57193d7bc128849a3ab66bc9316fdb1/lwjgl-openal-3.3.1-natives-windows.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/40d65f1a7368a2aa47336f9cb69f5a190cf9975a/lwjgl-openal-3.3.1-natives-windows-arm64.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/9c563bf7c10b71c6609b9f96a7c7859bdf05d21f/lwjgl-openal-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.3.1/888349f7b1be6fbae58bf8edfb9ef12def04c4e3/lwjgl-openal-3.3.1-natives-windows-x86.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/831a5533a21a5f4f81bbc51bb13e9899319b5411/lwjgl-opengl-3.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/c1807e9bd571402787d7e37e3029776ae2513bb8/lwjgl-opengl-3.3.1-natives-windows.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/527d78f1e9056aff3ed02ce93019c73c5e8f1721/lwjgl-opengl-3.3.1-natives-windows-arm64.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/1a827bc02651fa44d32f424c380edc6d53f94a62/lwjgl-opengl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.3.1/deef3eb9b178ff2ff3ce893cc72ae741c3a17974/lwjgl-opengl-3.3.1-natives-windows-x86.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -592,12 +577,12 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/22cb295464f44068add8443204ec8c85fd379cbe/lwjgl-stb-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/a8d41f419eecb430b7c91ea2ce2c5c451cae2091/lwjgl-stb-3.3.1-natives-windows-x86.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/22cb295464f44068add8443204ec8c85fd379cbe/lwjgl-stb-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/fde63cdd2605c00636721a6c8b961e41d1f6b247/lwjgl-stb-3.3.1-natives-windows-arm64.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/22cb295464f44068add8443204ec8c85fd379cbe/lwjgl-stb-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/fde63cdd2605c00636721a6c8b961e41d1f6b247/lwjgl-stb-3.3.1-natives-windows-arm64.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/22cb295464f44068add8443204ec8c85fd379cbe/lwjgl-stb-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-stb/3.3.1/a8d41f419eecb430b7c91ea2ce2c5c451cae2091/lwjgl-stb-3.3.1-natives-windows-x86.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -612,12 +597,12 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/4784c20508b51386ce9d572632524a5bf47ccb40/lwjgl-tinyfd-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/842eedd876fae354abc308c98a263f6bbc9e8a4d/lwjgl-tinyfd-3.3.1-natives-windows-x86.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/4784c20508b51386ce9d572632524a5bf47ccb40/lwjgl-tinyfd-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/83a5e780df610829ff3a737822b4f931cffecd91/lwjgl-tinyfd-3.3.1-natives-windows-arm64.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/4784c20508b51386ce9d572632524a5bf47ccb40/lwjgl-tinyfd-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/83a5e780df610829ff3a737822b4f931cffecd91/lwjgl-tinyfd-3.3.1-natives-windows-arm64.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/4784c20508b51386ce9d572632524a5bf47ccb40/lwjgl-tinyfd-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-tinyfd/3.3.1/842eedd876fae354abc308c98a263f6bbc9e8a4d/lwjgl-tinyfd-3.3.1-natives-windows-x86.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -632,17 +617,22 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/e918fb595d1ca293a68807a9da8b519ea348a67a/lwjgl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/3b14f4beae9dd39791ec9e12190a9380cd8a3ce6/lwjgl-3.3.1-natives-windows-x86.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/e918fb595d1ca293a68807a9da8b519ea348a67a/lwjgl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/f46cadcf95675908fd3a550d63d9d709cb68998/lwjgl-3.3.1-natives-windows-arm64.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.16.7/9b31a4efa417c674b2a25d5ab001e1909a3865bd/text2speech-1.16.7-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.16.7/ee4095669061d1fe4bce5fea23d69d1520bc2d58/text2speech-1.16.7.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/e918fb595d1ca293a68807a9da8b519ea348a67a/lwjgl-3.3.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.3.1/3b14f4beae9dd39791ec9e12190a9380cd8a3ce6/lwjgl-3.3.1-natives-windows-x86.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/3c242b5f554474cab03425de7f9d8eb433ead19b/noexception-1.7.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.machinezoo.noexception/noexception/1.7.1/b65330c98e38a1f915fa54a6e5eca496505e3f0a/noexception-1.7.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.1/99dd49517b321de42b34501d877d3ab69b4de6b5/slf4j-api-2.0.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.1/f48d81adce2abf5ad3cfe463df517952749e03bc/slf4j-api-2.0.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -662,7 +652,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.7.1/2ca80bf7ac820fce6c743561b550c8bfb6c87c57/error_prone_annotations-2.7.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.7.1/458d9042f7aa6fa9a634df902b37f544e15aacac/error_prone_annotations-2.7.1.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/d060e42b6aa896a3abe2ec612e1cf8cc307f8a49/error_prone_annotations-2.11.0-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
@@ -692,42 +682,27 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.19.2-forge/11.6.0.1018_mapped_parchment_2022.11.27-1.19.2/jei-1.19.2-forge-11.6.0.1018_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.20.1-forge/15.12.3.54_mapped_parchment_2023.09.03-1.20.1/jei-1.20.1-forge-15.12.3.54_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/mezz/jei/jei-1.20.1-forge/15.12.3.54_mapped_parchment_2023.09.03-1.20.1/jei-1.20.1-forge-15.12.3.54_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.19.2-77_mapped_parchment_2022.11.27-1.19.2/Patchouli-1.19.2-77_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1/Patchouli-1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/vazkii/patchouli/Patchouli/1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1/Patchouli-1.20.1-84-FORGE_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2/curios-forge-1.19.2-5.1.4.3_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1/curios-forge-5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/forge_gradle/deobf_dependencies/top/theillusivec4/curios/curios-forge/5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1/curios-forge-5.9.1+1.20.1_mapped_parchment_2023.09.03-1.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/parchmentgradle/org/parchmentmc/data/parchment-1.19.2/2022.11.27/parchment-1.19.2-2022.11.27.zip">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/3a731130cea80690b50d02303e3a0bd5c2a808fc/modlauncher-10.0.9-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/cpw.mods/modlauncher/10.0.9/6d9443f56f50bb85cea383686ff9c867391458b/modlauncher-10.0.9.jar">
+	<classpathentry kind="lib" path="C:/Users/storm/.gradle/caches/parchmentgradle/org/parchmentmc/data/parchment-1.20.1/2023.09.03/parchment-1.20.1-2023.09.03.zip">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-simple/1.7.30/5d6530a871f57605c828f2d330ea8f9817837a6f/slf4j-simple-1.7.30-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-simple/1.7.30/e606eac955f55ecf1d8edcccba04eb8ac98088dd/slf4j-simple-1.7.30.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.17.1/311c00d3764db7fa3ba5f26d0acb5840e52454aa/log4j-core-2.17.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.17.1/779f60f3844dadc3ef597976fcb1e5127b1f343d/log4j-core-2.17.1.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.1/d23d37cc41300a7f6eba7813855dbb224e2a3177/log4j-api-2.17.1-sources.jar" kind="lib" path="C:/Users/storm/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.1/d771af8e336e372fb5399c99edabe0919aeaf5b2/log4j-api-2.17.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>

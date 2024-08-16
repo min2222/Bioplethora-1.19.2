@@ -61,7 +61,7 @@ import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -71,24 +71,24 @@ public class BPBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Bioplethora.MOD_ID);
     public static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Bioplethora.MOD_ID);
 
-    public static final RegistryObject<ReinforcingTableBlock> REINFORCING_TABLE = registerBlock("reinforcing_table", () -> new ReinforcingTableBlock(BlockBehaviour.Properties.of(Material.METAL)
+    public static final RegistryObject<ReinforcingTableBlock> REINFORCING_TABLE = registerBlock("reinforcing_table", () -> new ReinforcingTableBlock(BlockBehaviour.Properties.of()
             .strength(20.0F, 35).sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops().noOcclusion()), BPItemGroup.BioplethoraItemItemGroup);
 
-    public static final RegistryObject<Block> NANDBRI_SCALE_BLOCK = registerBlock("nandbri_scale_block", () -> new Block(BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.COLOR_LIGHT_GRAY)
-            .strength(0.8F, 0.8F).sound(SoundType.BONE_BLOCK)), BPItemGroup.BioplethoraItemItemGroup);
-    public static final RegistryObject<Block> BELLOPHITE_BLOCK = registerFireResBlock("frostbite_metal_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL).requiresCorrectToolForDrops()
+    public static final RegistryObject<Block> NANDBRI_SCALE_BLOCK = registerBlock("nandbri_scale_block", () -> new Block(BlockBehaviour.Properties.of()
+            .strength(0.8F, 0.8F).sound(SoundType.BONE_BLOCK).mapColor(MapColor.COLOR_LIGHT_GRAY)), BPItemGroup.BioplethoraItemItemGroup);
+    public static final RegistryObject<Block> BELLOPHITE_BLOCK = registerFireResBlock("frostbite_metal_block", () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
             .strength(50.0F, 1200.0F).sound(SoundType.NETHERITE_BLOCK)), BPItemGroup.BioplethoraItemItemGroup);
-    public static final RegistryObject<Block> BELLOPHITE_CORE_BLOCK = registerFireResBlock("frostbite_metal_core_block", () -> new FrostbiteMetalCoreBlock(BlockBehaviour.Properties.of(Material.GLASS)
+    public static final RegistryObject<Block> BELLOPHITE_CORE_BLOCK = registerFireResBlock("frostbite_metal_core_block", () -> new FrostbiteMetalCoreBlock(BlockBehaviour.Properties.of()
             .strength(0.3F).sound(SoundType.GLASS).noOcclusion().hasPostProcess((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
-    public static final RegistryObject<Block> GREEN_GRYLYNEN_CRYSTAL_BLOCK = registerFireResBlock("green_grylynen_crystal_block", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS)
+    public static final RegistryObject<Block> GREEN_GRYLYNEN_CRYSTAL_BLOCK = registerFireResBlock("green_grylynen_crystal_block", () -> new Block(BlockBehaviour.Properties.of()
             .strength(0.3F).sound(SoundType.NETHER_GOLD_ORE).lightLevel((block) -> 7).hasPostProcess((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
-    public static final RegistryObject<Block> YELLOW_GRYLYNEN_CRYSTAL_BLOCK = registerFireResBlock("yellow_grylynen_crystal_block", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS)
+    public static final RegistryObject<Block> YELLOW_GRYLYNEN_CRYSTAL_BLOCK = registerFireResBlock("yellow_grylynen_crystal_block", () -> new Block(BlockBehaviour.Properties.of()
             .strength(0.4F).sound(SoundType.NETHER_GOLD_ORE).lightLevel((block) -> 9).hasPostProcess((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
-    public static final RegistryObject<Block> RED_GRYLYNEN_CRYSTAL_BLOCK = registerFireResBlock("red_grylynen_crystal_block", () -> new Block(BlockBehaviour.Properties.of(Material.GLASS)
+    public static final RegistryObject<Block> RED_GRYLYNEN_CRYSTAL_BLOCK = registerFireResBlock("red_grylynen_crystal_block", () -> new Block(BlockBehaviour.Properties.of()
             .strength(0.5F).sound(SoundType.NETHER_GOLD_ORE).lightLevel((block) -> 12).hasPostProcess((bs, br, bp) -> true)), BPItemGroup.BioplethoraItemItemGroup);
 
-    public static final RegistryObject<Block> MIRESTONE = registerBlock("mirestone", () -> new Block(BlockBehaviour.Properties.of(Material.STONE)
+    public static final RegistryObject<Block> MIRESTONE = registerBlock("mirestone", () -> new Block(BlockBehaviour.Properties.of()
             .strength(1.2F, 4.8F).sound(SoundType.GRAVEL)), null);
 
     // Fleignarite Blocks

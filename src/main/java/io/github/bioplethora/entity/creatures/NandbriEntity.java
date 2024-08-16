@@ -32,15 +32,14 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class NandbriEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
     public int attackPhase;
@@ -50,7 +49,7 @@ public class NandbriEntity extends BPMonsterEntity implements IAnimatable, IBioC
     // TODO: Toxic Spit Attack
     // public int timeBeforeSpit = 60;
 
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public NandbriEntity(EntityType<? extends Monster> type, Level world) {
         super(type, world);
@@ -90,16 +89,16 @@ public class NandbriEntity extends BPMonsterEntity implements IAnimatable, IBioC
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "nandbri_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "nandbri_controller", 0, this::predicate));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationEvent<E> event) {
+    private <E extends IAnimatable>PlayState predicate(AnimationState<E> event) {
         if(this.getAttacking()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.nandbri.attack", EDefaultLoopTypes.LOOP));
             return PlayState.CONTINUE;

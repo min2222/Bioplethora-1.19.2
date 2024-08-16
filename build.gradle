@@ -109,12 +109,18 @@ repositories {
         url = "https://maven.jaackson.me"
     }
     maven {
-        name = "CurseForge Maven"
-        url = "https://www.cursemaven.com"
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
     maven {
-        name = "GeckoLib Maven"
+        name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+                includeGroupByRegex("software\\.bernie.*")
+                includeGroup("com.eliotlash.mclib")
+        }
     }
     maven {
         name = "Progwml6 maven"
@@ -151,9 +157,9 @@ dependencies {
 	implementation("org.jetbrains:annotations:23.0.0")
 
 	// Dependencies
-	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:${geckolib_version}")
-	//implementation fg.deobf("com.github.Reforged-Mods:FabricBiomeApiReforged:${fbApi_version}")
-	implementation fg.deobf("net.yeoxuhang.biomeapireforged:biomeapireforged-1.19.2:1.0.0")
+	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:${geckolib_version}")
+	implementation("com.eliotlash.mclib:mclib:20")
+	//implementation fg.deobf("net.yeoxuhang.biomeapireforged:biomeapireforged-1.20.1:1.0.0")
 	
 	// Extras
 	
@@ -172,34 +178,11 @@ dependencies {
 	implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
 	implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
 	
-	implementation fg.deobf("curse.maven:gamemenumodoption-353051:${gmmo_version}")
-	
-	//implementation fg.deobf("curse.maven:datafixerslayer-416519:${dfs_version}")
-
 	compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
 	runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
 	runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
 	compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
-
-	implementation fg.deobf("curse.maven:damage-indicator-mod-for-forge-557596:${damage_indicators_version}")
-	implementation fg.deobf("curse.maven:forge-criticalib-560696:${criticallib_version}")
-
-    //Rubidium
-    //implementation fg.deobf("curse.maven:rubidium-574856:3769736")
-    //Oculus
-    //implementation fg.deobf("curse.maven:oculus-581495:3821219")
-
-    /*
-    //FTB Chunks
-    implementation fg.deobf("curse.maven:ftb-chunks-forge-314906:3603374")
-    //Architectury API
-    mplementation fg.deobf("curse.maven:architectury-forge-419699:3705903")
-    //FTB Library
-    implementation fg.deobf("curse.maven:ftb-library-forge-404465:3553840")
-    //FTB Teams
-    implementation fg.deobf("curse.maven:ftb-teams-forge-404468:3535953")
-    */
 }
 
 jar {

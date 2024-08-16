@@ -5,6 +5,7 @@ import io.github.bioplethora.enums.BPEffectTypes;
 import io.github.bioplethora.registry.BPEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,20 +15,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BPEffectEntity extends Entity implements IAnimatable {
+public class BPEffectEntity extends Entity implements GeoEntity {
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(BPEffectEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> FRAME_LEVEL = SynchedEntityData.defineId(BPEffectEntity.class, EntityDataSerializers.INT);
-    private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private static final RawAnimation SPIN_ANIM = RawAnimation.begin().thenPlay("animation.bp_effect.spin");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private LivingEntity owner;
     public int lifespan;
     public int frameTimer;
@@ -99,19 +100,19 @@ public class BPEffectEntity extends Entity implements IAnimatable {
         owner.level.addFreshEntity(getEffectInstance(owner, effectTypes));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (getEffectType() != null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation(getEffectType().getAnimation().getAnimationString(), EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop(getEffectType().getAnimation().getAnimationString()));
         } else {
             Bioplethora.LOGGER.info("EffectType for BPEffectEntity is null!");
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bp_effect.spin", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(SPIN_ANIM);
         }
         return PlayState.CONTINUE;
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "bp_effect_controller", 0, this::predicate));
+    public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        data.add(new AnimationController<>(this, "bp_effect_controller", 0, this::predicate));
     }
 
     @Override
@@ -139,7 +140,7 @@ public class BPEffectEntity extends Entity implements IAnimatable {
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
@@ -156,7 +157,7 @@ public class BPEffectEntity extends Entity implements IAnimatable {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

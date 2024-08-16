@@ -5,7 +5,6 @@ import io.github.bioplethora.entity.ai.gecko.GeckoMeleeGoal;
 import io.github.bioplethora.entity.creatures.NandbriEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -101,12 +100,12 @@ public class NandbriScratchAttackGoal extends GeckoMeleeGoal<NandbriEntity> {
             double x = target.getX(), y = target.getY(), z = target.getZ();
 
             if (this.attackPredicate.apply(this.animationProgress, this.animationLength) && !this.hasHit) {
-                target.hurt(DamageSource.mobAttack(this.nandbri), 9.0F);
+                target.hurt(this.nandbri.damageSources().mobAttack(this.nandbri), 9.0F);
                 target.knockback(2, 2, 2);
                 world.playSound(null, this.nandbri, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.HOSTILE, 1, 1);
                 for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (3 / 2d), y, z - (3 / 2d), x + (3 / 2d), y + (3 / 2d), z + (3 / 2d)))) {
                     if(entityIterator != nandbri && entityIterator != target) {
-                        entityIterator.hurt(DamageSource.mobAttack(nandbri), 4);
+                        entityIterator.hurt(this.nandbri.damageSources().mobAttack(nandbri), 4);
                     }
                 }
                 this.hasHit = true;

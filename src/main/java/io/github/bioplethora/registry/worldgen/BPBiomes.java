@@ -3,14 +3,14 @@ package io.github.bioplethora.registry.worldgen;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.BPBiomeSettings;
 import io.github.bioplethora.config.BPConfig;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.biome.NetherBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.yeoxuhang.biomeapireforged.fabric.api.biome.NetherBiomes;
 import net.yeoxuhang.biomeapireforged.fabric.api.biome.TheEndBiomes;
 
 public class BPBiomes {
@@ -63,7 +63,7 @@ public class BPBiomes {
 	
     private static ResourceKey<Biome> createKey(String name) {
         ResourceLocation id = new ResourceLocation(Bioplethora.MOD_ID, name);
-        ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, id);
+        ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, id);
         return key;
     }
 }

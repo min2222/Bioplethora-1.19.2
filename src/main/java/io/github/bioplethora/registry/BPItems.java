@@ -52,6 +52,7 @@ import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedF
 import io.github.bioplethora.item.weapons.reinforced_fleignarite_set.ReinforcedFleignariteSwordItem;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.HoneyBottleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -174,7 +175,7 @@ public class BPItems {
     public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_LEGGINGS = ITEMS.register("reinforced_fleignarite_leggings", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlot.LEGS, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
     public static final RegistryObject<Item> REINFORCED_FLEIGNARITE_BOOTS = ITEMS.register("reinforced_fleignarite_boots", () -> new ReinforcedFleignariteArmorItem(BPArmorMaterials.REINFORCED_FLEIGNARITE, EquipmentSlot.FEET, new Item.Properties().rarity(BPRarityTypes.SACRED).tab(BPItemGroup.BioplethoraItemItemGroup)));
 
-    public static final RegistryObject<Item> AQU_CHESTPLATE = ITEMS.register("aqu_chestplate", () -> new AquChestplateItem(BPArmorMaterials.AQU, EquipmentSlot.CHEST, new Item.Properties().rarity(BPRarityTypes.BOSS_WEAPON).fireResistant()));
+    public static final RegistryObject<Item> AQU_CHESTPLATE = ITEMS.register("aqu_chestplate", () -> new AquChestplateItem(BPArmorMaterials.AQU, ArmorItem.Type.CHESTPLATE, new Item.Properties().rarity(BPRarityTypes.BOSS_WEAPON).fireResistant()));
 
     // Food Items
     public static final RegistryObject<Item> FIERY_SAP_BOTTLE = ITEMS.register("fiery_sap_bottle", () -> new HoneyBottleItem(new Item.Properties().craftRemainder(Items.GLASS_BOTTLE).food(BPFoods.FIERY_SAP_BOTTLE).tab(BPItemGroup.BioplethoraItemItemGroup)));
