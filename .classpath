@@ -2,29 +2,23 @@
 <classpath>
 	<classpathentry output="bin/main" kind="src" path="src/main/java">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="E:\Desktop2\Mods\Forge\1165\Bioplethora\bioplethora\build\natives"/>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\natives"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry output="bin/main" kind="src" path="src/main/resources">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="E:\Desktop2\Mods\Forge\1165\Bioplethora\bioplethora\build\natives"/>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path=".apt_generated">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-1.19.2\build\natives"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\natives"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry output="bin/main" kind="src" path="src/generated/resources">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-1.19.2\build\natives"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\natives"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry output="bin/test" kind="src" path="src/test/java">
@@ -32,7 +26,7 @@
 			<attribute name="gradle_scope" value="test"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
 			<attribute name="test" value="true"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-1.19.2\build\natives"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\natives"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry output="bin/test" kind="src" path="src/test/resources">
@@ -40,14 +34,7 @@
 			<attribute name="gradle_scope" value="test"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
 			<attribute name="test" value="true"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-1.19.2\build\natives"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry output="bin/test" kind="src" path=".apt_generated_tests">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="test" value="true"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-1.19.2\build\natives"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\natives"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin/default"/>
@@ -72,7 +59,7 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2.jar">
+	<classpathentry sourcepath="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2-sources.jar" kind="lib" path="C:/Users/storm/Documents/GitHub/Bioplethora-Port/build/fg_cache/net/minecraftforge/forge/1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2/forge-1.19.2-43.3.0_mapped_parchment_2022.11.27-1.19.2-recomp.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
