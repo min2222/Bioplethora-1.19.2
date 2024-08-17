@@ -10,8 +10,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -108,7 +108,7 @@ public class GrylynenEntity extends FloatingMonsterEntity implements GeoEntity, 
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             amount = 1;
         }
         return super.hurt(source, amount);

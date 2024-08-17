@@ -41,12 +41,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -329,7 +329,7 @@ public class AlphemKingEntity extends BPMonsterEntity implements GeoEntity, IBio
     public boolean hurt(DamageSource pSource, float pAmount) {
         float moveVector = (float) Math.toRadians(this.vecOfTarget + 90 + this.getRandom().nextFloat() * 150 - 75);
         Vec3 getVector = this.getDeltaMovement().add(1.75F * Math.cos(moveVector), 0, 1.75F * Math.sin(moveVector));
-        if (!pSource.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+        if (!pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (this.getWaking()) {
                 this.playSound(SoundEvents.ANVIL_LAND, 1.0F, 1.5F);
                 return false;

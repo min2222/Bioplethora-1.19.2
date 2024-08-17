@@ -3,6 +3,7 @@ package io.github.bioplethora.client.entity.model;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.GaugalemEntity;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
@@ -30,7 +31,7 @@ public class GaugalemEntityModel extends GeoModel<GaugalemEntity> {
         super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         CoreGeoBone head = this.getAnimationProcessor().getBone("gaugalem");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
         head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
     }
 }

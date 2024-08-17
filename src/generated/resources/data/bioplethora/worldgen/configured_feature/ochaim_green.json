@@ -1,0 +1,8 @@
+{
+  "type": "bioplethora:water_plant",
+  "config": {
+    "state": {
+      "Name": "bioplethora:ochaim_green"
+    }
+  }
+}

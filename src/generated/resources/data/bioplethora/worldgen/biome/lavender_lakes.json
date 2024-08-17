@@ -1,0 +1,71 @@
+{
+  "carvers": {},
+  "downfall": 0.5,
+  "effects": {
+    "ambient_sound": "minecraft:ambient.soul_sand_valley.mood",
+    "fog_color": -12378263,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.nether_wastes.mood",
+      "tick_delay": 6000
+    },
+    "particle": {
+      "options": {
+        "type": "bioplethora:night_gaze"
+      },
+      "probability": 0.04
+    },
+    "sky_color": -12378263,
+    "water_color": -6599759,
+    "water_fog_color": -13158998
+  },
+  "features": [
+    [],
+    [],
+    [
+      "bioplethora:end_land_sponge_patch_hl"
+    ],
+    [],
+    [
+      "minecraft:end_gateway_return"
+    ],
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:chorus_plant",
+      "bioplethora:chorus_plant",
+      "bioplethora:chorus_lantern_highlands_patch",
+      "bioplethora:end_land_spike_patch_hl",
+      "bioplethora:chorus_idon",
+      "bioplethora:chorus_ide_fan",
+      "bioplethora:enrede_kelp",
+      "bioplethora:enrede_corsascile",
+      "bioplethora:ochaim_purple",
+      "bioplethora:ochaim_red",
+      "bioplethora:ochaim_green"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.5
+}

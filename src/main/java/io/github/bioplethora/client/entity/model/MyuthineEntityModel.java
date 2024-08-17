@@ -8,6 +8,7 @@ import io.github.bioplethora.entity.creatures.MyuthineEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
@@ -33,7 +34,7 @@ public class MyuthineEntityModel extends GeoModel<MyuthineEntity> implements IAd
     @Override
     public void setCustomAnimations(MyuthineEntity entity, long uniqueID, @Nullable AnimationState customPredicate) {
         super.setCustomAnimations(entity, uniqueID, customPredicate);
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
 
         CoreGeoBone head = getB("bodytop");
         float tickCountNeg = entity.ageInTicks - (float) entity.tickCount;

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_top_right",
-  "textures": {
-    "bottom": "bioplethora:block/enivile_door_lower",
-    "top": "bioplethora:block/enivile_door_upper"
-  }
-}

@@ -1,0 +1,9 @@
+{
+  "feature": "bioplethora:end_land_sponge_patch_ml",
+  "placement": [
+    {
+      "type": "minecraft:count_on_every_layer",
+      "count": 50
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/bioplethora"/>
+    </listAttribute>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="4"/>
+    </listAttribute>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="MCP_MAPPINGS" value="parchment_2023.09.03-1.20.1"/>
+        <mapEntry key="MOD_CLASSES" value="bioplethora%%C:\Users\storm\Documents\GitHub\Bioplethora-Port\bin\main;bioplethora%%C:\Users\storm\Documents\GitHub\Bioplethora-Port\bin\main"/>
+    </mapAttribute>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="cpw.mods.bootstraplauncher.BootstrapLauncher"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="bioplethora"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="--launchTarget forgeclientuserdev --version MOD_DEV --assetIndex 5 --assetsDir C:\Users\storm\.gradle\caches\forge_gradle\assets --gameDir . --fml.forgeVersion 47.3.5 --fml.mcVersion 1.20.1 --fml.forgeGroup net.minecraftforge --fml.mcpVersion 20230612.114412 -mixin.config=bioplethora.mixins.json --mixin.config bioplethora.mixins.json"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bioplethora"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dforge.logging.console.level=debug -Dforge.logging.markers=REGISTRIES -DlegacyClassPath.file=C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\classpath\runClient_minecraftClasspath.txt -Dmixin.env.remapRefMap=true -Dmixin.env.refMapRemappingFile=C:\Users\storm\Documents\GitHub\Bioplethora-Port/build/createSrgToMcp/output.srg -Dnet.minecraftforge.gradle.GradleStart.srg.srg-mcp=C:\Users\storm\Documents\GitHub\Bioplethora-Port\build\createSrgToMcp\output.srg -DignoreList=bootstraplauncher,securejarhandler,asm-commons,asm-util,asm-analysis,asm-tree,asm,JarJarFileSystems,client-extra,fmlcore,javafmllanguage,lowcodelanguage,mclanguage,forge- -DmergeModules=jna-5.10.0.jar,jna-platform-5.10.0.jar -Dforge.enableGameTest=true -Dmixin.debug.verbose=true -Dmixin.debug.export=true -Djava.net.preferIPv6Addresses=system -p C:\Users\storm\.gradle\caches\modules-2\files-2.1\cpw.mods\bootstraplauncher\1.1.2\c546e00443d8432cda6baa1c860346980742628\bootstraplauncher-1.1.2.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\cpw.mods\securejarhandler\2.1.10\51e6a22c6c716beb11e244bf5b8be480f51dd6b5\securejarhandler-2.1.10.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-commons\9.7\e86dda4696d3c185fcc95d8d311904e7ce38a53f\asm-commons-9.7.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-util\9.7\c0655519f24d92af2202cb681cd7c1569df6ead6\asm-util-9.7.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-analysis\9.7\e4a258b7eb96107106c0599f0061cfc1832fe07a\asm-analysis-9.7.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm-tree\9.7\e446a17b175bfb733b87c5c2560ccb4e57d69f1a\asm-tree-9.7.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\org.ow2.asm\asm\9.7\73d7b3086e14beb604ced229c302feff6449723\asm-9.7.jar;C:\Users\storm\.gradle\caches\modules-2\files-2.1\net.minecraftforge\JarJarFileSystems\0.3.19\2464eb7d6b9ddb9db36a82cf8a95193e5c6fe020\JarJarFileSystems-0.3.19.jar --add-modules ALL-MODULE-PATH --add-opens java.base/java.util.jar=cpw.mods.securejarhandler --add-opens java.base/java.lang.invoke=cpw.mods.securejarhandler --add-exports java.base/sun.security.util=cpw.mods.securejarhandler --add-exports jdk.naming.dns/com.sun.jndi.dns=java.naming -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="C:\Users\storm\Documents\GitHub\Bioplethora-Port\run"/>
+</launchConfiguration>

@@ -1,0 +1,21 @@
+{
+  "feature": "bioplethora:turquoise_pendent",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 122
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 131
+        },
+        "min_inclusive": {
+          "absolute": 0
+        }
+      }
+    }
+  ]
+}

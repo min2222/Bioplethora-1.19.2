@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "bioplethora:block/caerulwood_planks",
-    "side": "bioplethora:block/caerulwood_planks",
-    "top": "bioplethora:block/caerulwood_planks"
-  }
-}

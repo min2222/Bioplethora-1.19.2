@@ -1,0 +1,48 @@
+{
+  "type": "bioplethora:pendent_blocks",
+  "config": {
+    "base_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:soul_soil"
+      }
+    },
+    "block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:soul_etern_plant"
+      }
+    },
+    "end_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:soul_etern",
+        "Properties": {
+          "age": "23"
+        }
+      }
+    },
+    "fruited_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:flourished_soul_etern"
+      }
+    },
+    "max_length": 11,
+    "min_length": 2,
+    "whitelist": [
+      {
+        "Name": "minecraft:blackstone"
+      },
+      {
+        "Name": "minecraft:netherrack"
+      },
+      {
+        "Name": "minecraft:soul_sand"
+      },
+      {
+        "Name": "minecraft:soul_soil"
+      }
+    ]
+  }
+}

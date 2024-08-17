@@ -74,19 +74,14 @@ public class Bioplethora {
         BPItems.ITEMS.register(bus);
         BPBlocks.BLOCKS.register(bus);
         BPBlocks.BLOCK_ITEMS.register(bus);
-        BPBiomes.BIOMES.register(bus);
-        BPFeatures.FEATURES.register(bus);
-        BPPlacedFeatures.PLACED_FEATURES.register(bus);
-        BPConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
         BPWorldCarvers.WORLD_CARVERS.register(bus);
         BPSoundEvents.SOUNDS.register(bus);
         BPParticles.PARTICLES.register(bus);
         BPEffects.EFFECTS.register(bus);
         BPEnchantments.ENCHANTMENTS.register(bus);
+        BPFeatures.FEATURES.register(bus);
         BPStructures.STRUCTURES.register(bus);
-        BPStructures.STRUCTURES_SET.register(bus);
         BPAttributes.ATTRIBUTES.register(bus);
-        BPConfiguredWorldCarvers.CONFIGURED_CARVER.register(bus);
         BPBiomeModifiers.BIOME_MODIFIERS.register(bus);
         BPTileEntities.TILE_ENTITIES.register(bus);
         BPContainerTypes.CONTAINERS.register(bus);
@@ -147,7 +142,9 @@ public class Bioplethora {
     			.add(Registries.CONFIGURED_CARVER, BPConfiguredWorldCarvers::bootstrap)
     			.add(Registries.BIOME, BPBiomes::bootstrap)
     			.add(Registries.STRUCTURE, BPStructures::bootstrapStructures)
-    			.add(Registries.STRUCTURE_SET, BPStructures::bootstrapSets);
+    			.add(Registries.STRUCTURE_SET, BPStructures::bootstrapSets)
+    			.add(Registries.PLACED_FEATURE, BPPlacedFeatures::bootstrap)
+    			.add(Registries.CONFIGURED_FEATURE, BPConfiguredFeatures::bootstrap);
         
     	private BPWorldGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
     		super(output, provider, BUILDER, Set.of(Bioplethora.MOD_ID));

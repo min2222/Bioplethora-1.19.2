@@ -1,0 +1,6 @@
+{
+  "type": "bioplethora:corsascile",
+  "config": {
+    "probability": 0.3
+  }
+}

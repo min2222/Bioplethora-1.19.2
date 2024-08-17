@@ -2,6 +2,7 @@ package io.github.bioplethora.registry;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.item.BioplethoraSpawnEggItem;
+import io.github.bioplethora.item.armor.AquChestplateItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -26,7 +27,7 @@ public class BPItemGroup {
     		{
     			for (RegistryObject<Item> items : BPItems.ITEMS.getEntries()) {
     				if (!(items.get() instanceof BioplethoraSpawnEggItem)) {
-    					if (!items.getId().getPath().equals("swivelbloom")) {
+    					if (!items.getId().getPath().equals("swivelbloom") && !(items.get() instanceof AquChestplateItem)) {
     						output.accept(items.get());
     					}
     				}
@@ -54,7 +55,7 @@ public class BPItemGroup {
     		{
     			for (RegistryObject<Item> items : BPItems.ITEMS.getEntries()) {
     				if (items.get() instanceof BioplethoraSpawnEggItem) {
-    					if (!items.getId().getPath().equals("swivelbloom")) {
+    					if (!items.getId().getPath().equals("swivelbloom") && !(items.get() instanceof AquChestplateItem)) {
     						output.accept(items.get());
     					}
     				}

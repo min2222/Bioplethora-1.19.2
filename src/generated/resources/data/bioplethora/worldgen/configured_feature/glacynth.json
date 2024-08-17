@@ -1,0 +1,51 @@
+{
+  "type": "bioplethora:pendent_blocks",
+  "config": {
+    "base_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:ice"
+      }
+    },
+    "block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:glacynth_plant"
+      }
+    },
+    "end_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:glacynth",
+        "Properties": {
+          "age": "23"
+        }
+      }
+    },
+    "fruited_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:glacynth_plant"
+      }
+    },
+    "max_length": 10,
+    "min_length": 3,
+    "whitelist": [
+      {
+        "Name": "minecraft:frosted_ice",
+        "Properties": {
+          "age": "0"
+        }
+      },
+      {
+        "Name": "minecraft:packed_ice"
+      },
+      {
+        "Name": "minecraft:ice"
+      },
+      {
+        "Name": "minecraft:blue_ice"
+      }
+    ]
+  }
+}

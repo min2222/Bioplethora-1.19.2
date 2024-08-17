@@ -1,0 +1,17 @@
+{
+  "type": "bioplethora:expanded_lake",
+  "config": {
+    "base": {
+      "Name": "minecraft:obsidian"
+    },
+    "liquid": {
+      "Name": "minecraft:water",
+      "Properties": {
+        "level": "0"
+      }
+    },
+    "sides": {
+      "Name": "bioplethora:cyra"
+    }
+  }
+}

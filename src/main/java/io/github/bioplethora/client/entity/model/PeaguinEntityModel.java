@@ -41,7 +41,7 @@ public class PeaguinEntityModel extends GeoModel<PeaguinEntity> {
 
         if (!((LivingEntity) entity).isBaby()) {
             CoreGeoBone head = this.getAnimationProcessor().getBone("head");
-            EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+            EntityModelData extraData = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
             head.setRotX((extraData.headPitch()) * ((float) Math.PI / 180F));
             head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
         }

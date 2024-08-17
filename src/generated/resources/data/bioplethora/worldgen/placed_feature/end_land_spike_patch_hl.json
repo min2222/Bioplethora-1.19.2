@@ -1,0 +1,40 @@
+{
+  "feature": "bioplethora:end_land_spike_patch_hl",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 5
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 84
+        },
+        "min_inclusive": {
+          "absolute": 0
+        }
+      }
+    },
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:weighted_list",
+        "distribution": [
+          {
+            "data": 2,
+            "weight": 85
+          },
+          {
+            "data": 3,
+            "weight": 15
+          }
+        ]
+      }
+    }
+  ]
+}

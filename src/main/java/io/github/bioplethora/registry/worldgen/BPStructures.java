@@ -25,12 +25,12 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BPStructures {
 
+    public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, Bioplethora.MOD_ID);
+    
 	public static final ResourceLocation ALPHANUM_MAUSOLEUM_LOCATION = new ResourceLocation(Bioplethora.MOD_ID, "alphanum_mausoleum");
 	
-    public static final DeferredRegister<StructureType<?>> STRUCTURES = DeferredRegister.create(Registries.STRUCTURE_TYPE, Bioplethora.MOD_ID);
-    public static final DeferredRegister<StructureSet> STRUCTURES_SET = DeferredRegister.create(Registries.STRUCTURE_SET, Bioplethora.MOD_ID);
-    
     public static final TagKey<Structure> ALPHANUM_MAUSOLEUM_TAG = create("alphanum_mausoleum");
+    
     public static final ResourceKey<StructureSet> ALPHANUM_MAUSOLEUM_TAG_SETS_KEY = ResourceKey.create(Registries.STRUCTURE_SET, ALPHANUM_MAUSOLEUM_LOCATION);
     public static final ResourceKey<Structure> ALPHANUM_MAUSOLEUM_TAG_KEY = ResourceKey.create(Registries.STRUCTURE, ALPHANUM_MAUSOLEUM_LOCATION);
 

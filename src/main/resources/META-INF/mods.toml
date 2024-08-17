@@ -1,6 +1,6 @@
 modLoader="javafml"
 
-loaderVersion="[43,)"
+loaderVersion="[47,)"
 license="MIT"
 
 [[mods]]
@@ -17,122 +17,21 @@ A minecraft mod that adds plenty of new content which mainly focuses on new crea
 [[dependencies.bioplethora]]
 	modId="forge"
 	mandatory=true
-	versionRange="[43,)"
+	versionRange="[47,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.bioplethora]]
 	modId="minecraft"
 	mandatory=true
-	versionRange="[1.19.2,1.20)"
+	versionRange="[1.20.1,1.21)"
 	ordering="NONE"
 	side="BOTH"
 
 # Dependencies
 [[dependencies.bioplethora]]
-	modId="geckolib3"
+	modId="geckolib"
 	mandatory=true
-	versionRange="[3.1.40,)"
+	versionRange="[4.4.7,)"
 	ordering="NONE"
 	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="biomeapireforged"
-	mandatory=true
-	versionRange="[1.0.0,)"
-	ordering="AFTER"
-	side="BOTH"
-
-# Extras
-	# COMMON
-[[dependencies.bioplethora]]
-	modId="patchouli"
-	mandatory=false
-	versionRange="[1.19.2-77,)"
-	ordering="NONE"
-	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="jei"
-	mandatory=false
-	versionRange="[11.6.0.1018,]"
-	ordering="AFTER"
-	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="jeresources"
-	mandatory=false
-	versionRange="[1.2.3.243,]"
-	ordering="AFTER"
-	side="BOTH"
-	
-[[dependencies.bioplethora]]
-	modId="jeed"
-	mandatory=false
-	versionRange="[1.19.2-2.1.4,]"
-	ordering="AFTER"
-	side="BOTH"
-	
-[[dependencies.bioplethora]]
-	modId="theoneprobe"
-	mandatory=false
-	versionRange="[1.19-6.2.2,]"
-	ordering="AFTER"
-	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="jade"
-	mandatory=false
-	versionRange="[8.9.2,]"
-	ordering="AFTER"
-	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="curios"
-	mandatory=false
-	versionRange="[1.19.2-5.1.4.3,]"
-	ordering="AFTER"
-	side="BOTH"
-	
-[[dependencies.bioplethora]]
-	modId="damageindicator"
-	mandatory=false
-	versionRange="[1.0,]"
-	ordering="AFTER"
-	side="BOTH"
-
-[[dependencies.bioplethora]]
-	modId="criticallib"
-	mandatory=false
-	versionRange="[1.19.2-1.0.0,]"
-	ordering="AFTER"
-	side="BOTH"
-
-	# CLIENT
-[[dependencies.bioplethora]]
-	modId="appleskin"
-	mandatory=false
-	versionRange="[mc1.19-2.4.2,]"
-	ordering="AFTER"
-	side="CLIENT"
-
-[[dependencies.bioplethora]]
-	modId="configured"
-	mandatory=false
-	versionRange="[2.1.1,]"
-	ordering="AFTER"
-	side="CLIENT"
-
-[[dependencies.bioplethora]]
-	modId="catalogue"
-	mandatory=false
-	versionRange="[1.7.0,]"
-	ordering="AFTER"
-	side="CLIENT"
-
-[[dependencies.bioplethora]]
-	modId="gamemenumodoption"
-	mandatory=false
-	versionRange="[1.18.1,]"
-	ordering="AFTER"
-	side="CLIENT"

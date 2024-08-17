@@ -1,0 +1,13 @@
+{
+  "feature": "bioplethora:soul_sprouts",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 26
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

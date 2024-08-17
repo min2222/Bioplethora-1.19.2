@@ -1,0 +1,53 @@
+{
+  "type": "bioplethora:pendent_blocks",
+  "config": {
+    "base_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:pink_enivile_leaves",
+        "Properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
+        }
+      }
+    },
+    "block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:pink_twi_plant"
+      }
+    },
+    "end_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:pink_twi",
+        "Properties": {
+          "age": "23"
+        }
+      }
+    },
+    "fruited_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:pink_twi_plant"
+      }
+    },
+    "max_length": 7,
+    "min_length": 1,
+    "whitelist": [
+      {
+        "Name": "minecraft:blackstone"
+      },
+      {
+        "Name": "minecraft:netherrack"
+      },
+      {
+        "Name": "minecraft:soul_sand"
+      },
+      {
+        "Name": "minecraft:soul_soil"
+      }
+    ]
+  }
+}

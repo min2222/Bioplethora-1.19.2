@@ -1,0 +1,23 @@
+{
+  "feature": "bioplethora:fleignarite_remains",
+  "placement": [
+    {
+      "type": "minecraft:carving_mask",
+      "step": "air"
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 10
+    },
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:uniform",
+        "value": {
+          "max_inclusive": 41,
+          "min_inclusive": 14
+        }
+      }
+    }
+  ]
+}

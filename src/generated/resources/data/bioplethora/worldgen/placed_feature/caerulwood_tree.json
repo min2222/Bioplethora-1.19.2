@@ -1,0 +1,27 @@
+{
+  "feature": "bioplethora:caerulwood_tree",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:weighted_list",
+        "distribution": [
+          {
+            "data": 6,
+            "weight": 85
+          },
+          {
+            "data": 7,
+            "weight": 15
+          }
+        ]
+      }
+    }
+  ]
+}

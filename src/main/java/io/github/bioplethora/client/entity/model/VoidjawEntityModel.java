@@ -4,6 +4,7 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.IAdvancedGeoModel;
 import io.github.bioplethora.entity.creatures.VoidjawEntity;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
@@ -36,7 +37,7 @@ public class VoidjawEntityModel extends GeoModel<VoidjawEntity> implements IAdva
     @Override
     public void setCustomAnimations(VoidjawEntity entity, long uniqueID, @SuppressWarnings("rawtypes") AnimationState event) {
         super.setCustomAnimations(entity, uniqueID, event);
-        EntityModelData extraData = (EntityModelData) event.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) event.getData(DataTickets.ENTITY_MODEL_DATA);
         adaptHeadOnLook(extraData, getAnimationProcessor().getBone("trapjaw"));
     }
 }

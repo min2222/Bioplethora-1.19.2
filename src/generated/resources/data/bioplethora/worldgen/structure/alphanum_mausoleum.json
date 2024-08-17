@@ -1,0 +1,6 @@
+{
+  "type": "bioplethora:alphanum_mausoleum",
+  "biomes": "#bioplethora:mausoleum",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

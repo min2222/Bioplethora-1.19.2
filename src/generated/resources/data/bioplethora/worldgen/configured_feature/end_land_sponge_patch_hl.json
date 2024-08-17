@@ -1,0 +1,28 @@
+{
+  "type": "bioplethora:end_land_sponge",
+  "config": {
+    "contents": {
+      "Name": "minecraft:water",
+      "Properties": {
+        "level": "0"
+      }
+    },
+    "rim": {
+      "Name": "bioplethora:endurion"
+    },
+    "rim_size": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 6,
+        "min_inclusive": 3
+      }
+    },
+    "size": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 16,
+        "min_inclusive": 7
+      }
+    }
+  }
+}

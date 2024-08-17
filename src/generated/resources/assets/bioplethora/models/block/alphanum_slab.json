@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "bioplethora:block/alphanum",
-    "side": "bioplethora:block/alphanum",
-    "top": "bioplethora:block/alphanum"
-  }
-}

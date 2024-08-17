@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "bioplethora:byrss_lantern_plant_patch",
+    "features": [
+      {
+        "chance": 0.4222667,
+        "feature": "bioplethora:byrss_lantern_plant_patch"
+      }
+    ]
+  }
+}

@@ -6,6 +6,7 @@ import io.github.bioplethora.entity.creatures.AlphemKingEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationProcessor;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -38,7 +39,7 @@ public class AlphemKingEntityModel extends GeoModel<AlphemKingEntity> implements
         super.setCustomAnimations(entity, uniqueID, customPredicate);
 
         AnimationProcessor ap = this.getAnimationProcessor();
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
         CoreGeoBone head = ap.getBone("head"), bodytop = ap.getBone("bodytop"), bodymid = ap.getBone("bodymid");
         CoreGeoBone arml = ap.getBone("arml"), armr = ap.getBone("armr");
         CoreGeoBone legl = ap.getBone("legl"), legr = ap.getBone("legr");

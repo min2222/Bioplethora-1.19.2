@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "bioplethora:chorus_lantern_midlands_patch",
+    "features": [
+      {
+        "chance": 0.4224447,
+        "feature": "bioplethora:chorus_lantern_midlands_patch"
+      }
+    ]
+  }
+}

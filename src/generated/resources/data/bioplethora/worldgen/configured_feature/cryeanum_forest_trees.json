@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "bioplethora:enivile_tree",
+    "features": [
+      {
+        "chance": 0.31333333,
+        "feature": "bioplethora:enivile_tree"
+      }
+    ]
+  }
+}

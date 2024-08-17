@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "bioplethora:end_land_spike_patch_ml",
+    "features": [
+      {
+        "chance": 0.4446667,
+        "feature": "bioplethora:end_land_spike_patch_ml"
+      }
+    ]
+  }
+}

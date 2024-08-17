@@ -1,0 +1,19 @@
+{
+  "feature": "bioplethora:kyria_beline",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 19
+    },
+    {
+      "type": "minecraft:noise_threshold_count",
+      "above_noise": 10,
+      "below_noise": 5,
+      "noise_level": -0.8
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "MOTION_BLOCKING"
+    }
+  ]
+}

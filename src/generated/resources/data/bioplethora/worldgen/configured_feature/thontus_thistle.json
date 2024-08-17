@@ -1,0 +1,42 @@
+{
+  "type": "bioplethora:pendent_blocks",
+  "config": {
+    "base_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:netherrack"
+      }
+    },
+    "block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:thontus_thistle_plant"
+      }
+    },
+    "end_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:thontus_thistle",
+        "Properties": {
+          "age": "23"
+        }
+      }
+    },
+    "fruited_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:berried_thontus_thistle"
+      }
+    },
+    "max_length": 11,
+    "min_length": 2,
+    "whitelist": [
+      {
+        "Name": "minecraft:blackstone"
+      },
+      {
+        "Name": "minecraft:netherrack"
+      }
+    ]
+  }
+}

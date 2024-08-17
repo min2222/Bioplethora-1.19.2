@@ -60,8 +60,9 @@ public class VermilionBladeProjectileEntity extends AbstractHurtingProjectile im
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-
-        entity.hurt(BPDamageSources.helioSlashed(this.getOwner(), this.getOwner()), 5 * ((float) this.bladeSize * 0.75F));
+        if(this.getOwner() != null) {
+            entity.hurt(BPDamageSources.helioSlashed(this.getOwner(), this.getOwner()), 5 * ((float) this.bladeSize * 0.75F));
+        }
         this.discard();
     }
 

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "bioplethora:end_islands_icicle_patch",
+    "features": [
+      {
+        "chance": 0.2224447,
+        "feature": "bioplethora:end_islands_icicle_patch"
+      }
+    ]
+  }
+}

@@ -31,7 +31,7 @@ public class BPEffectModel extends GeoModel<BPEffectEntity> {
     public void setCustomAnimations(InfernalQuarterstaffSlashEntity entity, long uniqueID, @Nullable AnimationState customPredicate) {
         super.setCustomAnimations(entity, uniqueID, customPredicate);
         CoreGeoBone head = this.getAnimationProcessor().getBone("bone");
-        EntityModelData extraData = (EntityModelData) customPredicate.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) customPredicate.getData(DataTickets.ENTITY_MODEL_DATA);
         head.setRotY((extraData.netHeadYaw()) * ((float) Math.PI / 270F));
     }*/
 }

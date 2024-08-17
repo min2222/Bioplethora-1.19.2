@@ -13,11 +13,8 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
-import net.minecraftforge.registries.DeferredRegister;
 
 public class BPConfiguredWorldCarvers {
-    public static final DeferredRegister<ConfiguredWorldCarver<?>> CONFIGURED_CARVER = DeferredRegister.create(Registries.CONFIGURED_CARVER, Bioplethora.MOD_ID);
-
     public static final ResourceKey<ConfiguredWorldCarver<?>> END_SPRINGS = createKey("end_springs");
     public static final ResourceKey<ConfiguredWorldCarver<?>> CAERI_FORMERS = createKey("caeri_formers");
 

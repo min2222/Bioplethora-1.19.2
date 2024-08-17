@@ -6,6 +6,7 @@ import io.github.bioplethora.entity.creatures.AltyrusEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
@@ -36,7 +37,7 @@ public class AltyrusEntityModel extends GeoModel<AltyrusEntity> implements IAdva
         CoreGeoBone ringsCenter = getB("rings_crenter"), bodyBot = getB("bodybot");
         CoreGeoBone htr = getB("hand_top_right"), htl = getB("hand_top_left"), hbr = getB("hand_bottom_right"), hbl = getB("hand_bottom_left");
 
-        EntityModelData extraData = (EntityModelData) event.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) event.getData(DataTickets.ENTITY_MODEL_DATA);
 
         if (entity.isCharging()) {
             adaptHeadOnLook(extraData, altyrus);

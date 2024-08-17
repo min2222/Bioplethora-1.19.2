@@ -1,0 +1,55 @@
+{
+  "type": "bioplethora:pendent_fleignarite",
+  "config": {
+    "base_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:stone"
+      }
+    },
+    "block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:fleignarite_vines_plant",
+        "Properties": {
+          "waterlogged": "false"
+        }
+      }
+    },
+    "end_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:fleignarite_vines",
+        "Properties": {
+          "age": "23",
+          "waterlogged": "false"
+        }
+      }
+    },
+    "fruited_block_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "bioplethora:fleignarite_vines_plant",
+        "Properties": {
+          "waterlogged": "false"
+        }
+      }
+    },
+    "max_length": 3,
+    "min_length": 1,
+    "whitelist": [
+      {
+        "Name": "minecraft:andesite"
+      },
+      {
+        "Name": "minecraft:stone"
+      },
+      {
+        "Name": "minecraft:granite"
+      },
+      {
+        "Name": "minecraft:diorite"
+      }
+    ]
+  }
+}

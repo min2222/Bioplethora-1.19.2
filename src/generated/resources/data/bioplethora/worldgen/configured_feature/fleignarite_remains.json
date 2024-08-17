@@ -1,0 +1,47 @@
+{
+  "type": "bioplethora:fleignarite_patch",
+  "config": {
+    "place_in": [
+      {
+        "Name": "minecraft:cave_air"
+      },
+      {
+        "Name": "minecraft:air"
+      }
+    ],
+    "place_on": [
+      {
+        "Name": "minecraft:stone"
+      },
+      {
+        "Name": "minecraft:andesite"
+      },
+      {
+        "Name": "minecraft:diorite"
+      },
+      {
+        "Name": "minecraft:granite"
+      }
+    ],
+    "place_under": [
+      {
+        "Name": "minecraft:cave_air"
+      },
+      {
+        "Name": "minecraft:air"
+      }
+    ],
+    "to_place": {
+      "Name": "bioplethora:fleignarite_remains",
+      "Properties": {
+        "waterlogged": "false"
+      }
+    },
+    "to_place_rare": {
+      "Name": "bioplethora:fleignarite_splotch",
+      "Properties": {
+        "waterlogged": "false"
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "carvers": {
+    "air": "bioplethora:caeri_formers"
+  },
+  "downfall": 0.5,
+  "effects": {
+    "ambient_sound": "minecraft:ambient.warped_forest.loop",
+    "fog_color": -14791063,
+    "mood_sound": {
+      "block_search_extent": 8,
+      "offset": 2.0,
+      "sound": "minecraft:ambient.warped_forest.mood",
+      "tick_delay": 6000
+    },
+    "particle": {
+      "options": {
+        "type": "minecraft:white_ash"
+      },
+      "probability": 0.005
+    },
+    "sky_color": -14791063,
+    "water_color": -14271360,
+    "water_fog_color": -13348438
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [
+      "minecraft:end_gateway_return"
+    ],
+    [],
+    [],
+    [
+      "bioplethora:caeri_cavern"
+    ],
+    [],
+    [
+      "bioplethora:caerulwood_tree",
+      "bioplethora:irion_grass",
+      "bioplethora:irion_tall_grass",
+      "bioplethora:artairius",
+      "bioplethora:byrss_lantern_forest_patch"
+    ]
+  ],
+  "has_precipitation": false,
+  "spawn_costs": {},
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [
+      {
+        "type": "minecraft:enderman",
+        "maxCount": 4,
+        "minCount": 4,
+        "weight": 10
+      }
+    ],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "temperature": 0.5
+}

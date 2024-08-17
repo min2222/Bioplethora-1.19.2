@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 1234567890,
+    "separation": 30,
+    "spacing": 230
+  },
+  "structures": [
+    {
+      "structure": "bioplethora:alphanum_mausoleum",
+      "weight": 1
+    }
+  ]
+}

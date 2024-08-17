@@ -36,6 +36,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -210,7 +211,7 @@ public class ServerWorldEvents {
                     !event.getSource().is(DamageTypes.IN_FIRE),
                     !event.getSource().is(DamageTypes.LAVA),
                     !event.getSource().is(DamageTypes.CACTUS),
-                    !event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD)
+                    !event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)
             };
 
             if (dmgEx[0] && dmgEx[1] && dmgEx[2] && dmgEx[3]) {
@@ -247,7 +248,7 @@ public class ServerWorldEvents {
     public static void onLivingHurt(LivingHurtEvent event) {
     	
         boolean dsFire = (event.getSource().is(DamageTypes.IN_FIRE));
-        boolean dsVoid = (event.getSource().is(DamageTypes.FELL_OUT_OF_WORLD));
+        boolean dsVoid = (event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY));
         boolean dsFire2 = (event.getSource().is(DamageTypes.ON_FIRE));
 
         if (event.getEntity() instanceof LivingEntity) {

@@ -14,6 +14,7 @@ import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
@@ -22,18 +23,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.RegistryObject;
 
-public class BioplethoraSpawnEggItem extends SpawnEggItem {
+public class BioplethoraSpawnEggItem extends ForgeSpawnEggItem {
 
     protected static final List<BioplethoraSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
     private final BPEntityClasses entityClass;
 
-    public BioplethoraSpawnEggItem(final RegistryObject<? extends EntityType<?>> entityTypeSupplier, BPEntityClasses entityClass, Properties properties) {
-        super(null, 0xFFFFFFF, 0xFFFFFFF, properties);
+    public BioplethoraSpawnEggItem(final RegistryObject<? extends EntityType<? extends Mob>> entityTypeSupplier, BPEntityClasses entityClass, Properties properties) {
+        super(entityTypeSupplier, 0xFFFFFFF, 0xFFFFFFF, properties);
         this.entityTypeSupplier = Lazy.of(entityTypeSupplier);
         this.entityClass = entityClass;
         UNADDED_EGGS.add(this);

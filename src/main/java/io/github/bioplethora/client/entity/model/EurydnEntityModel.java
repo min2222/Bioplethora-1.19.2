@@ -4,6 +4,7 @@ import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.EurydnEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationProcessor;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -38,7 +39,7 @@ public class EurydnEntityModel extends GeoModel<EurydnEntity> {
         super.setCustomAnimations(entity, uniqueID, event);
 
         AnimationProcessor ap = this.getAnimationProcessor();
-        EntityModelData extraData = (EntityModelData) event.getExtraData().get(0);
+        EntityModelData extraData = (EntityModelData) event.getData(DataTickets.ENTITY_MODEL_DATA);
         CoreGeoBone head = ap.getBone("head");
         CoreGeoBone tailfront = ap.getBone("tailfront"), tailmid = ap.getBone("tailmid"), tailbot = ap.getBone("tailbot");
 

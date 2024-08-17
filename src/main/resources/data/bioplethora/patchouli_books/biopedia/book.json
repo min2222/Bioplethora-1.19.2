@@ -7,5 +7,6 @@
   "custom_book_item":"bioplethora:biopedia",
   "book_texture": "bioplethora:textures/gui/patchouli/gui/book_biopedia.png",
   "show_progress":false,
+  "use_resource_pack": true,
   "i18n": true
 }
