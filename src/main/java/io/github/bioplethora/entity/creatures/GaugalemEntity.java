@@ -49,16 +49,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class GaugalemEntity extends FloatingMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification {
+public class GaugalemEntity extends FloatingMonsterEntity implements GeoEntity, FlyingAnimal, IBioClassification {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public GaugalemEntity(EntityType<? extends Monster> type, Level world) {
@@ -110,13 +110,13 @@ public class GaugalemEntity extends FloatingMonsterEntity implements IAnimatable
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
         if(this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gaugalem.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.gaugalem.attack"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.gaugalem.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.gaugalem.idle"));
         return PlayState.CONTINUE;
     }
 
@@ -150,7 +150,7 @@ public class GaugalemEntity extends FloatingMonsterEntity implements IAnimatable
         }
 
         if (this.getMainHandItem().getItem() instanceof SwordItem) {
-            world.playSound(null, new BlockPos(entity.getX(), entity.getY(), entity.getZ()), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1, 1);
+            world.playSound(null, entity.blockPosition(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1, 1);
             if(!world.isClientSide) {
                 world.addParticle(ParticleTypes.SWEEP_ATTACK, entity.getX(), entity.getY() + 2, entity.getZ(), 1, 1, 0.1);
             }
@@ -163,7 +163,7 @@ public class GaugalemEntity extends FloatingMonsterEntity implements IAnimatable
                     for (Entity entityIterator : world.getEntitiesOfClass(Entity.class, new AABB(x - (10 / 2d), y, z - (10 / 2d), x + (10 / 2d), y + (10 / 2d), z + (10 / 2d)))) {
                         if (entityIterator instanceof LivingEntity && entityIterator != this) {
                             if (entityIterator != entity) {
-                                entityIterator.hurt(DamageSource.mobAttack(this), ((StellarScytheItem) this.getMainHandItem().getItem()).getDamage() * 0.8F);
+                                entityIterator.hurt(this.damageSources().mobAttack(this), ((StellarScytheItem) this.getMainHandItem().getItem()).getDamage() * 0.8F);
                             }
                         }
                     }
@@ -224,12 +224,12 @@ public class GaugalemEntity extends FloatingMonsterEntity implements IAnimatable
     public boolean teleport(double p_70825_1_, double p_70825_3_, double p_70825_5_) {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(p_70825_1_, p_70825_3_, p_70825_5_);
 
-        while(mutable.getY() > 0 && !this.level.getBlockState(mutable).getMaterial().blocksMotion()) {
+        while(mutable.getY() > 0 && !this.level.getBlockState(mutable).blocksMotion()) {
             mutable.move(Direction.DOWN);
         }
 
         BlockState blockstate = this.level.getBlockState(mutable);
-        boolean flag = blockstate.getMaterial().blocksMotion();
+        boolean flag = blockstate.blocksMotion();
         boolean flag1 = blockstate.getFluidState().is(FluidTags.WATER);
         if (flag && !flag1) {
             EntityTeleportEvent.EnderEntity event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(this, p_70825_1_, p_70825_3_, p_70825_5_);

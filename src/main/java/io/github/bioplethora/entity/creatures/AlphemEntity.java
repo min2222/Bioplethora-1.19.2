@@ -52,10 +52,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
 public class AlphemEntity extends SummonableMonsterEntity implements GeoEntity, IBioClassification {
 
@@ -109,26 +108,26 @@ public class AlphemEntity extends SummonableMonsterEntity implements GeoEntity, 
 
     private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem.attack"));
             return PlayState.CONTINUE;
         }
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem.attack"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.walking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem.walking"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.alphem.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem.idle"));
         return PlayState.CONTINUE;
     }
 

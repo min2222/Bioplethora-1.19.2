@@ -58,10 +58,10 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
 public class AltyrusEntity extends BPMonsterEntity implements GeoEntity, FlyingAnimal, IBioClassification, IMobCappedEntity {
 
@@ -130,31 +130,31 @@ public class AltyrusEntity extends BPMonsterEntity implements GeoEntity, FlyingA
     private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying() || this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.isSummoning()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.summoning", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.summoning"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.attacking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.attacking"));
             return PlayState.CONTINUE;
         }
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.charging", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.charging"));
             return PlayState.CONTINUE;
         }
 
         if (this.isDodging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.dodging", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.dodging"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.altyrus.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.idle"));
         return PlayState.CONTINUE;
     }
 

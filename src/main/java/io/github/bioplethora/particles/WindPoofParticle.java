@@ -18,6 +18,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
@@ -100,8 +101,8 @@ public class WindPoofParticle extends TextureSheetParticle {
         //RenderSystem.alphaFunc(GL11.GL_GREATER, 0.003921569F);
         //RenderSystem.disableLighting();
         
-        manager.bindForSetup(InventoryMenu.BLOCK_ATLAS);
-        manager.getTexture(InventoryMenu.BLOCK_ATLAS).setBlurMipmap(true, false);
+        manager.bindForSetup(TextureAtlas.LOCATION_PARTICLES);
+        manager.getTexture(TextureAtlas.LOCATION_PARTICLES).setBlurMipmap(true, false);
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
     }
 

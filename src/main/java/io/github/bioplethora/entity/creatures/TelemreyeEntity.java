@@ -38,17 +38,17 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
 
-public class TelemreyeEntity extends BPMonsterEntity implements IAnimatable, IBioClassification, FlyingAnimal {
+public class TelemreyeEntity extends BPMonsterEntity implements GeoEntity, IBioClassification, FlyingAnimal {
     
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private TelemreyeEntity.AttackPhase attackPhase = TelemreyeEntity.AttackPhase.CIRCLE;
@@ -93,17 +93,17 @@ public class TelemreyeEntity extends BPMonsterEntity implements IAnimatable, IBi
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if (this.attackPhase == AttackPhase.SWOOP) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.telemreye.charging", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.telemreye.charging"));
             return PlayState.CONTINUE;
         }
         if (event.isMoving() || this.attackPhase == AttackPhase.CIRCLE) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.telemreye.moving_air", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.telemreye.moving_air"));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.telemreye.idle_air", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.telemreye.idle_air"));
         return PlayState.CONTINUE;
     }
 

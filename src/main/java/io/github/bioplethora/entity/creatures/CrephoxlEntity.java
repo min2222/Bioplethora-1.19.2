@@ -40,16 +40,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class CrephoxlEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
+public class CrephoxlEntity extends BPMonsterEntity implements GeoEntity, IBioClassification {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(CrephoxlEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
@@ -89,28 +89,28 @@ public class CrephoxlEntity extends BPMonsterEntity implements IAnimatable, IBio
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers(this.getClass()));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.crephoxl.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.crephoxl.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.crephoxl.charging", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.crephoxl.charging"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.crephoxl.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.crephoxl.attack"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.crephoxl.walking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.crephoxl.walking"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.crephoxl.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.crephoxl.idle"));
         return PlayState.CONTINUE;
     }
 

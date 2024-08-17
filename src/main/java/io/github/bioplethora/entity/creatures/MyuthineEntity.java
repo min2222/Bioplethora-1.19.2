@@ -28,16 +28,16 @@ import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
+public class MyuthineEntity extends BPMonsterEntity implements GeoEntity, IBioClassification {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public MyuthineEntity(EntityType<? extends Monster> type, Level worldIn) {
@@ -127,21 +127,21 @@ public class MyuthineEntity extends BPMonsterEntity implements IAnimatable, IBio
         data.add(new AnimationController<>(this, "myuthine_controller", 0, this::predicate));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if(this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.attack", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 0;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.myuthine.attack"));
+            event.getController().transitionLength(0);
             return PlayState.CONTINUE;
         }
 
         if(event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.walk", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 5;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.myuthine.walk"));
+            event.getController().transitionLength(5);
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myuthine.idle", EDefaultLoopTypes.LOOP));
-        event.getController().transitionLengthTicks = 4;
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.myuthine.idle"));
+        event.getController().transitionLength(4);
         return PlayState.CONTINUE;
     }
 

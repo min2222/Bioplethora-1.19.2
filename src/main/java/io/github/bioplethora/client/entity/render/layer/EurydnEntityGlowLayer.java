@@ -1,6 +1,7 @@
 package io.github.bioplethora.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.entity.creatures.EurydnEntity;
@@ -8,8 +9,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
-import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 public class EurydnEntityGlowLayer extends GeoRenderLayer<EurydnEntity> {
 
@@ -21,26 +23,25 @@ public class EurydnEntityGlowLayer extends GeoRenderLayer<EurydnEntity> {
 
     private static final ResourceLocation MODEL = new ResourceLocation(Bioplethora.MOD_ID, "geo/eurydn.geo.json");
 
-    public EurydnEntityGlowLayer(IGeoRenderer<EurydnEntity> entityRendererIn) {
+    public EurydnEntityGlowLayer(GeoRenderer<EurydnEntity> entityRendererIn) {
         super(entityRendererIn);
     }
-
+    
     @Override
-    public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, EurydnEntity entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-
+    public void render(PoseStack matrixStackIn, EurydnEntity entityLivingBaseIn, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferIn, VertexConsumer buffer, float partialTicks, int packedLightIn, int packedOverlay) {
         boolean isFiery = entityLivingBaseIn.variant == EurydnEntity.Variant.FIERY;
 
         if (!entityLivingBaseIn.isDeadOrDying()) {
             RenderType cameo =  isFiery ? RenderType.eyes(GLOW_FIERY) : RenderType.eyes(GLOW_SOUL);
 
-            this.getRenderer().render(this.getEntityModel().getModel(MODEL), entityLivingBaseIn, partialTicks, cameo, matrixStackIn, bufferIn, bufferIn.getBuffer(cameo), packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 0.75f);
+            this.getRenderer().reRender(this.getGeoModel().getBakedModel(MODEL), matrixStackIn, bufferIn, entityLivingBaseIn, cameo, bufferIn.getBuffer(cameo), partialTicks, packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 0.75f);
         }
 
         if (!entityLivingBaseIn.level.isEmptyBlock(entityLivingBaseIn.blockPosition())) {
             RenderType trslct =  isFiery ? RenderType.eyes(TRSLCT_FIERY) : RenderType.eyes(TRSLCT_SOUL);
 
             matrixStackIn.scale(1.5F, 1.5F, 1.5F);
-            this.getRenderer().render(this.getEntityModel().getModel(MODEL), entityLivingBaseIn, partialTicks, trslct, matrixStackIn, bufferIn, bufferIn.getBuffer(trslct), packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 0.15f);
+            this.getRenderer().reRender(this.getGeoModel().getBakedModel(MODEL), matrixStackIn, bufferIn, entityLivingBaseIn, trslct, bufferIn.getBuffer(trslct), partialTicks, packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 0.15f);
         }
     }
 }

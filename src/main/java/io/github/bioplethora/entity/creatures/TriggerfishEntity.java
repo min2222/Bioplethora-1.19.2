@@ -23,11 +23,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
 public class TriggerfishEntity extends AbstractSchoolingFish implements GeoEntity {
     private static final EntityDataAccessor<Boolean> IS_END = SynchedEntityData.defineId(TriggerfishEntity.class, EntityDataSerializers.BOOLEAN);
@@ -93,8 +91,8 @@ public class TriggerfishEntity extends AbstractSchoolingFish implements GeoEntit
         data.add(new AnimationController<>(this, "triggerfish_controller", 0, this::predicate));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.triggerfish.swim", EDefaultLoopTypes.LOOP));
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.triggerfish.swim"));
         return PlayState.CONTINUE;
     }
 

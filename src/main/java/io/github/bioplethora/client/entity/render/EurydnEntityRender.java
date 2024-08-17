@@ -10,31 +10,26 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class EurydnEntityRender extends GeoEntityRenderer<EurydnEntity> {
 
     public EurydnEntityRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new EurydnEntityModel());
-        this.addLayer(new EurydnEntityGlowLayer(this));
+        this.addRenderLayer(new EurydnEntityGlowLayer(this));
         this.shadowRadius = 0.5F;
     }
-
+    
     @Override
-    public void renderEarly(EurydnEntity animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
-        float scale = 1.2F;
-        stackIn.scale(scale, scale, scale);
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+    public void preRender(PoseStack poseStack, EurydnEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        float size = 1.2F;
+        poseStack.scale(size, size, size);
+    	super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
-
+    
     @Override
-    public RenderType getRenderType(EurydnEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityTranslucent(getTextureLocation(animatable));
-    }
-
-    @Override
-    public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    public RenderType getRenderType(EurydnEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+    	return RenderType.entityTranslucent(texture);
     }
 }

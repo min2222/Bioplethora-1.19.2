@@ -43,16 +43,16 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
+public class DwarfMossadileEntity extends BPMonsterEntity implements GeoEntity, IBioClassification {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_NETHER_VARIANT = SynchedEntityData.defineId(DwarfMossadileEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
@@ -103,18 +103,18 @@ public class DwarfMossadileEntity extends BPMonsterEntity implements IAnimatable
         return this.factory;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.attacking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.dwarf_mossadile.attacking"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.walking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.dwarf_mossadile.walking"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.dwarf_mossadile.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.dwarf_mossadile.idle"));
         return PlayState.CONTINUE;
     }
 

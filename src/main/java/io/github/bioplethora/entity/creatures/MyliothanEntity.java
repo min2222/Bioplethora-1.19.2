@@ -56,11 +56,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
 public class MyliothanEntity extends WaterAnimal implements GeoEntity, IBioClassification {
 
@@ -264,7 +262,7 @@ public class MyliothanEntity extends WaterAnimal implements GeoEntity, IBioClass
                 for(int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir() && blockstate.getMaterial() != Material.FIRE) {
+                    if (!blockstate.isAir() && !blockstate.is(BlockTags.FIRE)) {
                         if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(BlockTags.DRAGON_IMMUNE)) {
                             flag1 = this.level.removeBlock(blockpos, false) || flag1;
                         } else {
@@ -284,14 +282,14 @@ public class MyliothanEntity extends WaterAnimal implements GeoEntity, IBioClass
     }
 
     // TODO: 26/01/2022 - Better Myliothan charging animation.
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if (this.isCharging()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myliothan.charge", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.myliothan.charge"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.myliothan.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.myliothan.idle"));
         return PlayState.CONTINUE;
     }
 

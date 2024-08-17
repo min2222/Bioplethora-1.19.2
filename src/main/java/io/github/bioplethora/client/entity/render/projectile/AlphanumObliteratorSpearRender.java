@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class AlphanumObliteratorSpearRender extends GeoEntityRenderer<AlphanumObliteratorSpearEntity> {
@@ -28,15 +29,15 @@ public class AlphanumObliteratorSpearRender extends GeoEntityRenderer<AlphanumOb
     }
     
     @Override
-    protected int getSkyLightLevel(AlphanumObliteratorSpearEntity pEntity, BlockPos pPos) {
+    protected int getBlockLightLevel(AlphanumObliteratorSpearEntity pEntity, BlockPos pPos) {
     	return 15;
     }
-
+    
     @Override
-    public void renderEarly(AlphanumObliteratorSpearEntity animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+    public void preRender(PoseStack poseStack, AlphanumObliteratorSpearEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float size = 1.2F;
-        stackIn.scale(size, size, size);
-        stackIn.mulPose(Axis.YP.rotationDegrees(-90));
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+        poseStack.scale(size, size, size);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-90));
+    	super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

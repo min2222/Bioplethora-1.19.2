@@ -5,6 +5,7 @@ import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPParticles;
 import io.github.bioplethora.registry.worldgen.BPConfiguredWorldCarvers;
 import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.Carvers;
@@ -28,12 +29,14 @@ import net.minecraft.world.level.biome.Climate.TargetPoint;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep.Carving;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class BPBiomeSettings {
 
     public static final TargetPoint ATTRIBUTE = Climate.target(-0.35F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
     
-    public static Biome rockyWoodlandsBiome() {
+    public static Biome rockyWoodlandsBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
     	MobSpawnSettings.Builder spawnInfo = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.farmAnimals(spawnInfo);
         BiomeDefaultFeatures.commonSpawns(spawnInfo);
@@ -41,7 +44,7 @@ public class BPBiomeSettings {
         spawnInfo.addSpawn(MobCategory.CREATURE,
                 new MobSpawnSettings.SpawnerData(BPEntities.ALPHEM.get(), 50, 2, 6));
 
-        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
 
         BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
         BiomeDefaultFeatures.addTaigaTrees(biomeGenSettings);
@@ -64,7 +67,7 @@ public class BPBiomeSettings {
 
         biomeGenSettings.addFeature(Decoration.LAKES, MiscOverworldPlacements.LAKE_LAVA_SURFACE);
 
-        return (new Biome.BiomeBuilder()).precipitation(Biome.Precipitation.SNOW)
+        return (new Biome.BiomeBuilder())
                 .temperature(-0.5F).downfall(0.5F).specialEffects((new BiomeSpecialEffects.Builder())
                         .fogColor(12638463)
                         .waterColor(4159204)
@@ -81,7 +84,7 @@ public class BPBiomeSettings {
     }
     
 
-    public static Biome cryeanumPlainsBiome() {
+    public static Biome cryeanumPlainsBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
         MobSpawnSettings.Builder spawnInfoBuilder = new MobSpawnSettings.Builder();
 
         if (BPConfig.COMMON.spawnMyuthine.get()) {
@@ -101,7 +104,7 @@ public class BPBiomeSettings {
         spawnInfoBuilder.addMobCharge(EntityType.STRIDER, 0.7D, 0.15D);
 
         MobSpawnSettings mobspawninfo = spawnInfoBuilder.build();
-        BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder();
+        BiomeGenerationSettings.Builder biomegenerationsettings$builder = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
 
         biomegenerationsettings$builder.addCarver(Carving.AIR, Carvers.NETHER_CAVE);
 
@@ -126,7 +129,7 @@ public class BPBiomeSettings {
 
         BiomeDefaultFeatures.addNetherDefaultOres(biomegenerationsettings$builder);
         Biome.BiomeBuilder builder1 = new Biome.BiomeBuilder();
-        builder1.precipitation(Biome.Precipitation.NONE);
+        builder1.hasPrecipitation(false);
         builder1.temperature(1.0F);
         builder1.downfall(0.0F);
 
@@ -154,8 +157,8 @@ public class BPBiomeSettings {
     }
 
     // Caeri
-    public static Biome caeriPlainsBiome() {
-        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+    public static Biome caeriPlainsBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
 
         biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.CAERI_CAVERN.getHolder().get());
 
@@ -170,7 +173,7 @@ public class BPBiomeSettings {
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
     	
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .hasPrecipitation(false)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
@@ -187,11 +190,11 @@ public class BPBiomeSettings {
                 .generationSettings(biomeGenSettings.build()).build();
     }
     
-    public static Biome caeriForestBiome() {
-        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+    public static Biome caeriForestBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
         
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
-        biomeGenSettings.addCarver(Carving.AIR, BPConfiguredWorldCarvers.CAERI_FORMERS.getHolder().get());
+        biomeGenSettings.addCarver(Carving.AIR, BPConfiguredWorldCarvers.CAERI_FORMERS);
         biomeGenSettings.addFeature(Decoration.UNDERGROUND_DECORATION, BPPlacedFeatures.CAERI_CAVERN.getHolder().get());
 
         biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.CAERI_FOREST_TREES.getHolder().get());
@@ -205,7 +208,7 @@ public class BPBiomeSettings {
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
     	
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .hasPrecipitation(false)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
@@ -223,8 +226,8 @@ public class BPBiomeSettings {
     }
 
     // Winterfest
-    public static Biome winterfestBiome() {
-        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+    public static Biome winterfestBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
         
         biomeGenSettings.addFeature(Decoration.SURFACE_STRUCTURES, EndPlacements.END_GATEWAY_RETURN);
         if (BPConfig.WORLDGEN.endIcicleIslands.get()) biomeGenSettings.addFeature(Decoration.VEGETAL_DECORATION, BPPlacedFeatures.END_ISLANDS_ICICLE_PATCH.getHolder().get());
@@ -236,7 +239,7 @@ public class BPBiomeSettings {
     	MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
     	BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
         return (new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .hasPrecipitation(false)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(
                         (new BiomeSpecialEffects.Builder())
@@ -253,8 +256,8 @@ public class BPBiomeSettings {
                 .generationSettings(biomeGenSettings.build()).build();
     }
     
-    public static Biome lavenderLakesBiome() {
-        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+    public static Biome lavenderLakesBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
         MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
 
@@ -276,7 +279,7 @@ public class BPBiomeSettings {
         if (BPConfig.WORLDGEN.endSpongeHighlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL.getHolder().get());
 
         return(new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .hasPrecipitation(false)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(new BiomeSpecialEffects.Builder()
                                 .waterColor(-6599759)
@@ -291,9 +294,9 @@ public class BPBiomeSettings {
                 .generationSettings(biomeGenSettings.build()).build();
     }
     
-    public static Biome lavenderPondsBiome() {
+    public static Biome lavenderPondsBiome(HolderGetter<PlacedFeature> pPlacedFeatures, HolderGetter<ConfiguredWorldCarver<?>> pWorldCarvers) {
 
-        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder();
+        BiomeGenerationSettings.Builder biomeGenSettings = new BiomeGenerationSettings.Builder(pPlacedFeatures, pWorldCarvers);
         MobSpawnSettings.Builder mobspawninfo$builder = new MobSpawnSettings.Builder();
         BiomeDefaultFeatures.endSpawns(mobspawninfo$builder);
 
@@ -315,7 +318,7 @@ public class BPBiomeSettings {
         if (BPConfig.WORLDGEN.endSpongeMidlands.get()) biomeGenSettings.addFeature(Decoration.LOCAL_MODIFICATIONS, BPPlacedFeatures.END_LAND_SPONGE_PATCH_ML.getHolder().get());
 
         return(new Biome.BiomeBuilder())
-                .precipitation(Biome.Precipitation.NONE)
+                .hasPrecipitation(false)
                 .temperature(0.5F).downfall(0.5F)
                 .specialEffects(new BiomeSpecialEffects.Builder()
                                 .waterColor(-6599759)

@@ -66,16 +66,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class PeaguinEntity extends WaterAndLandAnimalEntity implements IAnimatable, NeutralMob, IBioClassification {
+public class PeaguinEntity extends WaterAndLandAnimalEntity implements GeoEntity, NeutralMob, IBioClassification {
 
     private static final EntityDataAccessor<Integer> DATA_REMAINING_ANGER_TIME = SynchedEntityData.defineId(PeaguinEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
@@ -180,34 +180,34 @@ public class PeaguinEntity extends WaterAndLandAnimalEntity implements IAnimatab
         this.playSound(SoundEvents.SALMON_FLOP, 0.15f, 1);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying() || this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.peaguin.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.sitting", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.peaguin.sitting"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking() && this.shouldDropLoot()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.attacking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.peaguin.attacking"));
             return PlayState.CONTINUE;
         }
 
         if (this.isSwimming() || this.isInWaterOrBubble() || this.isInWater()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.swimming", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.peaguin.swimming"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.walking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.peaguin.walking"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.peaguin.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.peaguin.idle"));
         return PlayState.CONTINUE;
     }
 

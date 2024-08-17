@@ -32,16 +32,16 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class NandbriEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
+public class NandbriEntity extends BPMonsterEntity implements GeoEntity, IBioClassification {
     public int attackPhase;
     protected static final EntityDataAccessor<Boolean> SCRATCHING = SynchedEntityData.defineId(NandbriEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> SPITTING = SynchedEntityData.defineId(NandbriEntity.class, EntityDataSerializers.BOOLEAN);
@@ -98,23 +98,23 @@ public class NandbriEntity extends BPMonsterEntity implements IAnimatable, IBioC
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
         if(this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.nandbri.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.nandbri.attack"));
             return PlayState.CONTINUE;
         }
 
         if(event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.nandbri.walk", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.nandbri.walk"));
             return PlayState.CONTINUE;
         }
 
         if(this.getScratching()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.nandbri.scratch", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.nandbri.scratch"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.nandbri.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.nandbri.idle"));
         return PlayState.CONTINUE;
     }
 

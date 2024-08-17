@@ -13,7 +13,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -31,16 +30,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidType;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable, IBioClassification, ItemSteerable, IVerticalMount, ISaddleable {
+public class AquamaerEntity extends BPAirWaterLandEntity implements GeoEntity, IBioClassification, ItemSteerable, IVerticalMount, ISaddleable {
 
     private static final EntityDataAccessor<Boolean> HAS_SADDLE = SynchedEntityData.defineId(TrapjawEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
@@ -85,10 +85,10 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     public boolean fireImmune() {
         return true;
     }
-
+    
     @Override
-    public boolean rideableUnderWater() {
-        return true;
+    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
+    	return true;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     }
 
     @Override
-    public float getSteeringSpeed() {
+    public float getRiddenSpeed(Player pPlayer) {
         return 0.5F;
     }
 
@@ -138,8 +138,8 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
     }
 
     @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
+    public LivingEntity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);
     }
 
     public int getAmbientSoundInterval() {
@@ -172,29 +172,25 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
             this.yRotO = this.yRot;
             this.xRot = entity.xRot * 0.5F;
             this.setRot(this.yRot, this.xRot);
-            this.flyingSpeed = this.getSpeed() * 0.15F;
             this.yBodyRot = entity.yRot;
             this.yHeadRot = entity.yRot;
-            this.maxUpStep = 1.0F;
+            this.setMaxUpStep(1.0F);
             if (entity instanceof LivingEntity) {
                 this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
                 float forward = ((LivingEntity) entity).zza;
                 float strafe = ((LivingEntity) entity).xxa;
                 super.travel(new Vec3(strafe, 0, forward));
             }
-            this.animationSpeedOld = this.animationSpeed;
-            double d1 = this.getX() - this.xo;
-            double d0 = this.getZ() - this.zo;
-            float f1 = Mth.sqrt((float) (d1 * d1 + d0 * d0)) * 4.0F;
-            if (f1 > 1.0F)
-                f1 = 1.0F;
-            this.animationSpeed += (f1 - this.animationSpeed) * 0.4F;
-            this.animationPosition += this.animationSpeed;
+            this.calculateEntityAnimation(false);
             return;
         }
-        this.maxUpStep = 0.5F;
-        this.flyingSpeed = 0.02F;
+        this.setMaxUpStep(0.5F);
         super.travel(dir);
+    }
+    
+    @Override
+    protected float getFlyingSpeed() {
+    	return this.isVehicle() && this.getControllingPassenger() != null ? this.getSpeed() * 0.15F : 0.02F;
     }
 
     public Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
@@ -245,16 +241,12 @@ public class AquamaerEntity extends BPAirWaterLandEntity implements IAnimatable,
         return null;
     }
 
-    @Override
-    public void travelWithInput(Vec3 pTravelVec) {
-    }
-
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (event.isMoving() && this.getTarget() == null) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.walk", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.aquamaer.walk"));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.aquamaer.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.aquamaer.idle"));
         return PlayState.CONTINUE;
     }
 

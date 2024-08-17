@@ -29,16 +29,16 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable, IBioClassification {
+public class OnofishEntity extends FloatingCreatureEntity implements GeoEntity, IBioClassification {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(OnofishEntity.class, EntityDataSerializers.INT);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int particleTime;
@@ -173,14 +173,14 @@ public class OnofishEntity extends FloatingCreatureEntity implements IAnimatable
         return SoundEvents.SQUID_DEATH;
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.onofish.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.onofish.death"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.onofish.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.onofish.idle"));
         return PlayState.CONTINUE;
     }
 

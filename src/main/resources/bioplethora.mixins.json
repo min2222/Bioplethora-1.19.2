@@ -1,26 +1,27 @@
 {
-  "required": true,
-  "package": "io.github.bioplethora.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "refmap": "bioplethora.refmap.json",
-  "mixins": [
-    "AbstractArrowEntityMixin",
-    "ChorusFlowerBlockMixin",
-    "ChorusPlantBlockMixin",
-    "ChorusPlantFeatureMixin",
-    "ItemEntityMixin",
-    "LivingEntityMixin",
-    "MonsterEntityMixin",
-    "PlayerEntityMixin",
-    "QuickChargeEnchantmentMixin",
-    "ServerWorldInfoMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "client": [
-    "BipedModelMixin",
-    "accessors.ParticleAccessor",
-    "accessors.SpriteTexturedParticleAccessor"
-  ]
+	"required": true,
+	"package": "io.github.bioplethora.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"refmap": "bioplethora.refmap.json",
+	"mixins": [
+		"AbstractArrowEntityMixin",
+		"ChorusFlowerBlockMixin",
+		"ChorusPlantBlockMixin",
+		"ChorusPlantFeatureMixin",
+		"ItemEntityMixin",
+		"LivingEntityMixin",
+		"MonsterEntityMixin",
+		"PlayerEntityMixin",
+		"QuickChargeEnchantmentMixin",
+		"ServerWorldInfoMixin",
+		"ProjectileMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"client": [
+		"BipedModelMixin",
+		"accessors.ParticleAccessor",
+		"accessors.SpriteTexturedParticleAccessor"
+	]
 }

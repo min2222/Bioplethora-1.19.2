@@ -42,7 +42,6 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -50,16 +49,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class FrostbiteGolemEntity extends SummonableMonsterEntity implements IAnimatable, IBioClassification {
+public class FrostbiteGolemEntity extends SummonableMonsterEntity implements GeoEntity, IBioClassification {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_CHARGING = SynchedEntityData.defineId(FrostbiteGolemEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
@@ -120,28 +119,28 @@ public class FrostbiteGolemEntity extends SummonableMonsterEntity implements IAn
         this.targetSelector.addGoal(1, new CopyTargetOwnerGoal(this));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_golem.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.frostbite_golem.death"));
             return PlayState.CONTINUE;
         }
 
         /*if (this.getSmashing()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_golem.smashing", true));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.frostbite_golem.smashing", true));
             return PlayState.CONTINUE;
         }*/
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_golem.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.frostbite_golem.attack"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_golem.walking", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.frostbite_golem.walking"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.frostbite_golem.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.frostbite_golem.idle"));
         return PlayState.CONTINUE;
     }
 
@@ -191,7 +190,7 @@ public class FrostbiteGolemEntity extends SummonableMonsterEntity implements IAn
                 }
             } else {
                 if (this.level instanceof ServerLevel) {
-                    this.level.explode(null, getX() + d0, getY(), getZ() + d1, 1.2F, Explosion.BlockInteraction.NONE);
+                    this.level.explode(null, getX() + d0, getY(), getZ() + d1, 1.2F, Level.ExplosionInteraction.NONE);
                     ((ServerLevel) this.level).sendParticles(ParticleTypes.POOF, getX() + d0, getY(), getZ() + d1, 20, 0.4, 0.4,
                             0.4, 0.1);
                 }

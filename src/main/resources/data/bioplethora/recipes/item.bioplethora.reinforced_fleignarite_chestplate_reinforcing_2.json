@@ -1,0 +1,15 @@
+{
+  "type": "bioplethora:reinforcing",
+  "core": {
+    "item": "bioplethora:fleignarite_chestplate"
+  },
+  "material": {
+    "item": "bioplethora:frostbite_metal"
+  },
+  "result": {
+    "item": "bioplethora:reinforced_fleignarite_chestplate"
+  },
+  "weapon": {
+    "item": "minecraft:netherite_chestplate"
+  }
+}

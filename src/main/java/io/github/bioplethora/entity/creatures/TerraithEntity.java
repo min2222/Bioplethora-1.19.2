@@ -18,16 +18,16 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class TerraithEntity extends FloatingMonsterEntity implements IAnimatable, FlyingAnimal, IBioClassification {
+public class TerraithEntity extends FloatingMonsterEntity implements GeoEntity, FlyingAnimal, IBioClassification {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public TerraithEntity(EntityType<? extends Monster> type, Level world) {
@@ -85,17 +85,17 @@ public class TerraithEntity extends FloatingMonsterEntity implements IAnimatable
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
         if(this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.terraith.attack"));
             return PlayState.CONTINUE;
         }
 
         if(event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.move", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.terraith.move"));
             return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.terraith.idle"));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.terraith.idle"));
         return PlayState.CONTINUE;
     }
 

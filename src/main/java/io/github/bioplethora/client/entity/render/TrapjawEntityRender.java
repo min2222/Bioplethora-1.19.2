@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class TrapjawEntityRender extends GeoEntityRenderer<TrapjawEntity> {
@@ -18,23 +18,18 @@ public class TrapjawEntityRender extends GeoEntityRenderer<TrapjawEntity> {
         super(renderManager, new TrapjawEntityModel());
         this.shadowRadius = 0.5F;
     }
-
+    
     @Override
-    public void renderEarly(TrapjawEntity animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+    public void preRender(PoseStack poseStack, TrapjawEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float size = 0.5F;
         if (animatable.isBaby()) {
-            stackIn.scale(size, size, size);
+            poseStack.scale(size, size, size);
         }
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+    	super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
-    public RenderType getRenderType(TrapjawEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityTranslucent(getTextureLocation(animatable));
-    }
-
-    @Override
-    public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    public RenderType getRenderType(TrapjawEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+    	return RenderType.entityTranslucent(texture);
     }
 }

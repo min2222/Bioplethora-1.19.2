@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class VoidjawEntityRender extends GeoEntityRenderer<VoidjawEntity> {
@@ -22,31 +22,26 @@ public class VoidjawEntityRender extends GeoEntityRenderer<VoidjawEntity> {
 
     public VoidjawEntityRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new VoidjawEntityModel());
-        this.addLayer(new VoidjawImpulseLayer(this));
+        this.addRenderLayer(new VoidjawImpulseLayer(this));
         this.shadowRadius = 0.5F;
     }
-
+    
     @Override
-    public void renderEarly(VoidjawEntity animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+    public void preRender(PoseStack poseStack, VoidjawEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float size = 0.5F;
         if (animatable.isBaby()) {
-            stackIn.scale(size, size, size);
+            poseStack.scale(size, size, size);
         }
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.getVehicle() == animatable) {
             alp = 0.15F;
         } else {
             alp = 1.0F;
         }
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
+    	super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
-    public RenderType getRenderType(VoidjawEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return RenderType.entityTranslucent(getTextureLocation(animatable));
-    }
-
-    @Override
-    public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alp);
+    public RenderType getRenderType(VoidjawEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+    	return RenderType.entityTranslucent(texture);
     }
 }

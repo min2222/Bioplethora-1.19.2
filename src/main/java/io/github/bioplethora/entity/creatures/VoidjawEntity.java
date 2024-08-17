@@ -25,7 +25,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,11 +51,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 
 public class VoidjawEntity extends TrapjawEntity {
 
@@ -181,7 +181,7 @@ public class VoidjawEntity extends TrapjawEntity {
                 for(int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (!blockstate.isAir() && blockstate.getMaterial() != Material.FIRE) {
+                    if (!blockstate.isAir() && !blockstate.is(BlockTags.FIRE)) {
                         if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(BlockTags.DRAGON_IMMUNE) &&
                                 (blockstate.is(BlockTags.LEAVES) || blockstate.is(BlockTags.CORAL_PLANTS))) {
                             flag1 = this.level.removeBlock(blockpos, false) || flag1;
@@ -246,18 +246,18 @@ public class VoidjawEntity extends TrapjawEntity {
         data.add(new AnimationController<>(this, "voidjaw_controller", 0, this::predicate));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("animation.voidjaw.attack"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.voidjaw.attack"));
             return PlayState.CONTINUE;
         } else if (this.isInSittingPose()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("animation.voidjaw.sit"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.voidjaw.sit"));
             return PlayState.CONTINUE;
         } else if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().loop("animation.voidjaw.float"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.voidjaw.float"));
             return PlayState.CONTINUE;
         } else {
-            event.getController().setAnimation(new AnimationBuilder().loop("animation.voidjaw.idle"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.voidjaw.idle"));
             return PlayState.CONTINUE;
         }
     }
@@ -434,7 +434,7 @@ public class VoidjawEntity extends TrapjawEntity {
             if (VoidjawEntity.this.getOwner().fallDistance > 5.0F && VoidjawEntity.this.isSaddled() && !VoidjawEntity.this.isVehicle() && !VoidjawEntity.this.getOwner().isPassenger()) {
                 VoidjawEntity.this.setSaving(true);
                 VoidjawEntity.this.getOwner().playSound(SoundEvents.ELDER_GUARDIAN_HURT, 1.0F, 1.75F);
-                VoidjawEntity.this.playSound(VoidjawEntity.this.getHurtSound(DamageSource.GENERIC), 1.5F, 1.3F);
+                VoidjawEntity.this.playSound(VoidjawEntity.this.getHurtSound(VoidjawEntity.this.damageSources().generic()), 1.5F, 1.3F);
                 VoidjawEntity.this.moveControl.setWantedPosition(vector3d.x, vector3d.y - 1, vector3d.z, 6D);
                 EffectUtils.addCircleParticleForm(VoidjawEntity.this.level, VoidjawEntity.this, ParticleTypes.CAMPFIRE_COSY_SMOKE, 15, 0.5, 0.01);
                 if (VoidjawEntity.this.getBoundingBox().intersects(VoidjawEntity.this.getOwner().getBoundingBox())) {

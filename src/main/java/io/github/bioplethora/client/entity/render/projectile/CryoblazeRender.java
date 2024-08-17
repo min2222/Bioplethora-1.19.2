@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class CryoblazeRender extends GeoEntityRenderer<CryoblazeEntity> {
@@ -23,8 +23,8 @@ public class CryoblazeRender extends GeoEntityRenderer<CryoblazeEntity> {
     }
 
     @Override
-    public RenderType getRenderType(CryoblazeEntity animatable, float partialTicks, PoseStack stack, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
-        return BEAM;
+    public RenderType getRenderType(CryoblazeEntity animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+    	return BEAM;
     }
 
     protected int getBlockLightLevel(CryoblazeEntity entityIn, BlockPos partialTicks) {
@@ -32,14 +32,9 @@ public class CryoblazeRender extends GeoEntityRenderer<CryoblazeEntity> {
     }
 
     @Override
-    public void renderEarly(CryoblazeEntity animatable, PoseStack stackIn, float ticks, MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+    public void preRender(PoseStack poseStack, CryoblazeEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         float size = 1.2F;
-        stackIn.scale(size, size, size);
-        super.renderEarly(animatable, stackIn, ticks, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, partialTicks);
-    }
-
-    @Override
-    public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        poseStack.scale(size, size, size);
+    	super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

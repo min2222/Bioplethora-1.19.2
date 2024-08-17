@@ -66,16 +66,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class ShachathEntity extends SummonableMonsterEntity implements IAnimatable, IBioClassification, IMobCappedEntity {
+public class ShachathEntity extends SummonableMonsterEntity implements GeoEntity, IBioClassification, IMobCappedEntity {
     protected static final EntityDataAccessor<Boolean> ATTACKING2 = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Boolean> STRIKING = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_IS_QUICKSHOOTING = SynchedEntityData.defineId(ShachathEntity.class, EntityDataSerializers.BOOLEAN);
@@ -151,46 +151,46 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
         return this.factory;
     }
 
-    private <E extends IAnimatable>PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
 
         if (this.isQuickShooting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.quick_shooting", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 0;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.quick_shooting"));
+            event.getController().transitionLength(0);
             return PlayState.CONTINUE;
         }
 
         if (this.getStriking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.striking", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 0;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.striking"));
+            event.getController().transitionLength(0);
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking2()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.attacking2", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 0;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.attacking2"));
+            event.getController().transitionLength(0);
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.attacking", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 0;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.attacking"));
+            event.getController().transitionLength(0);
             return PlayState.CONTINUE;
         }
 
         if (isInWater() || level.isEmptyBlock(blockPosition().below())) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.float", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 5;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.float"));
+            event.getController().transitionLength(5);
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.running", EDefaultLoopTypes.LOOP));
-            event.getController().transitionLengthTicks = 5;
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.running"));
+            event.getController().transitionLength(5);
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.shachath.idle", EDefaultLoopTypes.LOOP));
-        event.getController().transitionLengthTicks = 5;
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.shachath.idle"));
+        event.getController().transitionLength(5);
         return PlayState.CONTINUE;
     }
 
@@ -278,7 +278,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
             for (LivingEntity entities : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(2.4, 0, 2.4))) {
                 if (entities != this) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                    entities.hurt(DamageSource.mobAttack(this), this.isClone() ? 7F : 10F);
+                    entities.hurt(this.damageSources().mobAttack(this), this.isClone() ? 7F : 10F);
                     level.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                     level.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                 }
@@ -292,7 +292,7 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
             for (LivingEntity entities : level.getEntitiesOfClass(LivingEntity.class, new AABB(getX() - d0, getY() - 2.5, getZ() - d1, getX() + d0, getY() + 2.5, getZ() + d1))) {
                 if (entities != this) {
                     double xa = entities.getX(), ya = entities.getY() + 1, za = entities.getZ();
-                    entities.hurt(DamageSource.mobAttack(this), this.isClone() ? 8F : 12F);
+                    entities.hurt(this.damageSources().mobAttack(this), this.isClone() ? 8F : 12F);
                     level.addParticle(BPParticles.SHACHATH_CLASH_INNER.get(), xa, ya, za, 0, 0, 0);
                     level.addParticle(BPParticles.SHACHATH_CLASH_OUTER.get(), xa, ya, za, 0, 0, 0);
                 }
@@ -376,9 +376,9 @@ public class ShachathEntity extends SummonableMonsterEntity implements IAnimatab
             ((ServerLevel) this.level).sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getX(), this.getY(), this.getZ(), this.tpParticleAmount, this.tpParticleRadius, this.tpParticleRadius, this.tpParticleRadius, 0.01);
         }
 
-        BlockPos blockpos = new BlockPos(this.getX() + (isNegVal ? tpLoc : -tpLoc), this.getY(), this.getZ() + (isNegVal ? tpLoc : -tpLoc));
+        BlockPos blockpos = BlockPos.containing(this.getX() + (isNegVal ? tpLoc : -tpLoc), this.getY(), this.getZ() + (isNegVal ? tpLoc : -tpLoc));
 
-        if (!this.level.getBlockState(blockpos).getMaterial().blocksMotion() && this.canSeePos(blockpos)) {
+        if (!this.level.getBlockState(blockpos).blocksMotion() && this.canSeePos(blockpos)) {
             this.teleportWithEffect(blockpos.getX(), blockpos.getY(), blockpos.getZ());
         }
     }

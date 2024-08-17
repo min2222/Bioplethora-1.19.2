@@ -41,16 +41,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
-public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable, IBioClassification {
+public class CavernFleignarEntity extends BPMonsterEntity implements GeoEntity, IBioClassification {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public boolean isHuge;
@@ -147,18 +147,18 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(this.getClass()));
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationState<E> event) {
+    private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
         if (this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.cavern_fleignar.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.attack", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.cavern_fleignar.attack"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cavern_fleignar.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.cavern_fleignar.idle"));
         return PlayState.CONTINUE;
     }
 
@@ -224,7 +224,7 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
                 }
 
                 targetArea.knockback(knockbackValue * 0.5F, Mth.sin(this.yRot * ((float) Math.PI / 180F)), -Mth.cos(this.yRot * ((float) Math.PI / 180F)));
-                targetArea.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * 0.75));
+                targetArea.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_KNOCKBACK) * 0.75));
                 if (targetArea instanceof CavernFleignarEntity) {
                     targetArea.addEffect(new MobEffectInstance(MobEffects.POISON, poisonDuration, poisonAmplification));
                 }
@@ -253,7 +253,7 @@ public class CavernFleignarEntity extends BPMonsterEntity implements IAnimatable
 
     @Override
     public void checkDespawn() {
-        BlockPos posBelow = new BlockPos(this.getX(), this.getY(), this.getZ()).below();
+        BlockPos posBelow = this.blockPosition().below();
         if (!this.level.getBlockState(posBelow).is(BPTags.Blocks.ALPHANIA)) {
             super.checkDespawn();
         } else {

@@ -19,10 +19,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 
 public class CuttlefishEntity extends Squid implements GeoEntity, IBioClassification {
 
@@ -57,11 +56,11 @@ public class CuttlefishEntity extends Squid implements GeoEntity, IBioClassifica
     private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if(this.isDeadOrDying() || this.dead) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cuttlefish.death", EDefaultLoopTypes.LOOP));
+            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.cuttlefish.death"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.cuttlefish.idle", EDefaultLoopTypes.LOOP));
+        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.cuttlefish.idle"));
         return PlayState.CONTINUE;
     }
 

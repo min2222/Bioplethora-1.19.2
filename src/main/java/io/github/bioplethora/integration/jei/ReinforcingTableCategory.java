@@ -52,7 +52,7 @@ public class ReinforcingTableCategory implements IRecipeCategory<ReinforcingReci
         .addIngredients(recipe.botIngredient);
         
         recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 127, 37)
-        .addItemStack(recipe.getResultItem());
+        .addItemStack(recipe.getResult());
     }
 
 	@Override

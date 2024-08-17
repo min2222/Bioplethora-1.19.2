@@ -1,19 +1,12 @@
 package io.github.bioplethora;
 
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import io.github.bioplethora.config.BPConfig;
-import io.github.bioplethora.data.BioAdvancementProvider;
-import io.github.bioplethora.data.BioBlockModelProvider;
-import io.github.bioplethora.data.BioBlockTagsProvider;
-import io.github.bioplethora.data.BioBlockstateProvider;
-import io.github.bioplethora.data.BioEntityTagsProvider;
-import io.github.bioplethora.data.BioItemModelProvider;
-import io.github.bioplethora.data.BioItemTagsProvider;
-import io.github.bioplethora.data.BioLanguageProvider;
-import io.github.bioplethora.data.BioLootTablesProvider;
-import io.github.bioplethora.data.BioRecipeProvider;
 import io.github.bioplethora.integration.BPCompatTOP;
 import io.github.bioplethora.network.BPNetwork;
 import io.github.bioplethora.registry.BPAttributes;
@@ -23,6 +16,7 @@ import io.github.bioplethora.registry.BPEffects;
 import io.github.bioplethora.registry.BPEnchantments;
 import io.github.bioplethora.registry.BPEntities;
 import io.github.bioplethora.registry.BPExtras;
+import io.github.bioplethora.registry.BPItemGroup;
 import io.github.bioplethora.registry.BPItems;
 import io.github.bioplethora.registry.BPLootConditions;
 import io.github.bioplethora.registry.BPParticles;
@@ -38,9 +32,14 @@ import io.github.bioplethora.registry.worldgen.BPFeatures;
 import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
 import io.github.bioplethora.registry.worldgen.BPStructures;
 import io.github.bioplethora.registry.worldgen.BPWorldCarvers;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -93,6 +92,7 @@ public class Bioplethora {
         BPContainerTypes.CONTAINERS.register(bus);
         BPRecipes.RECIPE_SERIALIZERS.register(bus);
         BPRecipes.RECIPE_TYPES.register(bus);
+        BPItemGroup.CREATIVE_MODE_TAB.register(bus);
         BPConfig.loadConfig(BPConfig.COMMON_SPEC, FMLPaths.CONFIGDIR.get().resolve("bioplethora-common.toml").toString());
         BPConfig.loadConfig(BPConfig.WORLDGEN_SPEC, FMLPaths.CONFIGDIR.get().resolve("bioplethora-worldgen.toml").toString());
 
@@ -136,23 +136,26 @@ public class Bioplethora {
         BPNetwork.initializeNetwork();
         BPExtras.addExtras();
     }
-
+    
     private void gatherData(final GatherDataEvent event) {
         DataGenerator dataGenerator = event.getGenerator();
-        final ExistingFileHelper efh = event.getExistingFileHelper();
+        dataGenerator.addProvider(event.includeServer(), BPWorldGenerator.addProviders(dataGenerator.getPackOutput(), event.getLookupProvider()));
+    }
+    
+    public static class BPWorldGenerator extends DatapackBuiltinEntriesProvider {
+        public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+    			.add(Registries.CONFIGURED_CARVER, BPConfiguredWorldCarvers::bootstrap)
+    			.add(Registries.BIOME, BPBiomes::bootstrap)
+    			.add(Registries.STRUCTURE, BPStructures::bootstrapStructures)
+    			.add(Registries.STRUCTURE_SET, BPStructures::bootstrapSets);
+        
+    	private BPWorldGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+    		super(output, provider, BUILDER, Set.of(Bioplethora.MOD_ID));
+    	}
 
-        dataGenerator.addProvider(event.includeServer(), new BioBlockModelProvider(dataGenerator, MOD_ID, efh));
-        dataGenerator.addProvider(event.includeServer(), new BioBlockstateProvider(dataGenerator, MOD_ID, efh));
-        dataGenerator.addProvider(event.includeServer(), new BioItemModelProvider(dataGenerator, efh));
-        dataGenerator.addProvider(event.includeServer(), new BioRecipeProvider(dataGenerator));
-        dataGenerator.addProvider(event.includeServer(), new BioLootTablesProvider(dataGenerator));
-
-        dataGenerator.addProvider(event.includeServer(), new BioBlockTagsProvider(dataGenerator, efh));
-        dataGenerator.addProvider(event.includeServer(), new BioEntityTagsProvider(dataGenerator, efh));
-        dataGenerator.addProvider(event.includeServer(), new BioItemTagsProvider(dataGenerator, new BioBlockTagsProvider(dataGenerator, efh), efh));
-
-        dataGenerator.addProvider(event.includeServer(), new BioAdvancementProvider(dataGenerator, efh));
-
-        dataGenerator.addProvider(event.includeServer(), new BioLanguageProvider(dataGenerator, MOD_ID, "en_us_test"));
+    	public static DataProvider addProviders(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
+    		DataProvider data = new BPWorldGenerator(output, provider);
+    		return data;
+    	}
     }
 }
