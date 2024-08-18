@@ -86,26 +86,31 @@ public class UltimateFrostbiteMetalClusterEntity extends AbstractHurtingProjecti
     @Override
     protected void onHitBlock(BlockHitResult p_230299_1_) {
         super.onHitBlock(p_230299_1_);
-        this.hitAndExplode();
+        if(this.getOwner() != null) {
+            this.hitAndExplode();
+        }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof Projectile) {
-            if (((Projectile) entity).getOwner() != this.getOwner()) {
+
+        if(this.getOwner() != null) {
+            if (entity instanceof Projectile) {
+                if (((Projectile) entity).getOwner() != this.getOwner()) {
+                    this.hitAndExplode();
+                }
+            } else if (entity instanceof TamableAnimal) {
+                if (((TamableAnimal) entity).getOwner() != this.getOwner()) {
+                    this.hitAndExplode();
+                }
+            } else if (entity instanceof SummonableMonsterEntity) {
+                if (((SummonableMonsterEntity) entity).getOwner() != this.getOwner()) {
+                    this.hitAndExplode();
+                }
+            } else {
                 this.hitAndExplode();
             }
-        } else if (entity instanceof TamableAnimal) {
-            if (((TamableAnimal) entity).getOwner() != this.getOwner()) {
-                this.hitAndExplode();
-            }
-        } else if (entity instanceof SummonableMonsterEntity) {
-            if (((SummonableMonsterEntity) entity).getOwner() != this.getOwner()) {
-                this.hitAndExplode();
-            }
-        } else {
-            this.hitAndExplode();
         }
     }
 

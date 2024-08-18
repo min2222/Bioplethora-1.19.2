@@ -70,13 +70,15 @@ public class AlphanumObliteratorSpearEntity extends AbstractHurtingProjectile im
 
         Entity entity = entityHitResult.getEntity();
 
-        if (entity instanceof Projectile) {
-            if (!(((Projectile) entity).getOwner() == this.getOwner())) {
-                this.hitAndExplode();
-            }
-        } else {
-            if (entity != this.getOwner()) {
-                this.hitAndExplode();
+        if(this.getOwner() != null) {
+            if (entity instanceof Projectile) {
+                if (!(((Projectile) entity).getOwner() == this.getOwner())) {
+                    this.hitAndExplode();
+                }
+            } else {
+                if (entity != this.getOwner()) {
+                    this.hitAndExplode();
+                }
             }
         }
     }
@@ -84,7 +86,9 @@ public class AlphanumObliteratorSpearEntity extends AbstractHurtingProjectile im
     @Override
     protected void onHitBlock(BlockHitResult p_230299_1_) {
         super.onHitBlock(p_230299_1_);
-        this.hitAndExplode();
+        if(this.getOwner() != null) {
+        	this.hitAndExplode();
+        }
     }
 
     @Override
