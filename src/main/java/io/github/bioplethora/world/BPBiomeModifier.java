@@ -36,11 +36,6 @@ public class BPBiomeModifier implements BiomeModifier {
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (phase == Phase.ADD) {
-        	ServerLevel overWorld = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
-        	ServerLevel nether = ServerLifecycleHooks.getCurrentServer().getLevel(Level.NETHER);
-        	ServerLevel end = ServerLifecycleHooks.getCurrentServer().getLevel(Level.END);
-        	if(overWorld == null || nether == null || end == null)
-        		return;
         	if(biome.is(BiomeTags.IS_OVERWORLD)) {
         		BioplethoraMobSpawns.OVERWORLD_ENTITIES.accept(builder.getMobSpawnSettings());
         	}
@@ -93,43 +88,52 @@ public class BPBiomeModifier implements BiomeModifier {
         	}
         	
         	if(biome.is(BiomeTags.IS_OVERWORLD)) {
-        		builder.getGenerationSettings().addFeature(Decoration.UNDERGROUND_DECORATION, overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_REMAINS));
-        		builder.getGenerationSettings().addFeature(Decoration.UNDERGROUND_DECORATION, overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_VINES));
-        		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_REMAINS));
-        		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_VINES));
+            	ServerLevel overWorld = ServerLifecycleHooks.getCurrentServer().getLevel(Level.OVERWORLD);
+            	if(overWorld == null)
+            		return;
+        		builder.getGenerationSettings().getFeatures(Decoration.UNDERGROUND_DECORATION).add(overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_REMAINS));
+        		builder.getGenerationSettings().getFeatures(Decoration.UNDERGROUND_DECORATION).add(overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_VINES));
+        		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_REMAINS));
+        		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(overWorld.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.FLEIGNARITE_VINES));
         	}
         	if(biome.is(BiomeTags.IS_NETHER)) {
+            	ServerLevel nether = ServerLifecycleHooks.getCurrentServer().getLevel(Level.NETHER);
+            	if(nether == null)
+            		return;
         		if(biome.is(Biomes.BASALT_DELTAS)) {
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.BASALT_SPELEOTHERM));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.LAVA_SPIRE));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.BASALT_SPELEOTHERM));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.LAVA_SPIRE));
         		}
         		if(biome.is(Biomes.NETHER_WASTES)) {
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.THONTUS_THISTLE));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.LAVA_SPIRE));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.THONTUS_THISTLE));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.LAVA_SPIRE));
         		}
         		if(biome.is(Biomes.WARPED_FOREST)) {
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.WARPED_DANCER));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.TURQUOISE_PENDENT));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.WARPED_DANCER));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.TURQUOISE_PENDENT));
         		}
         		if(biome.is(Biomes.CRIMSON_FOREST)) {
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CERISE_IVY));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.LAVA_SPIRE));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CERISE_IVY));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.LAVA_SPIRE));
         		}
         		if(biome.is(Biomes.SOUL_SAND_VALLEY)) {
         			
-        			builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_MINISHROOM));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_BIGSHROOM));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_SPROUTS));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_TALL_GRASS));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SPIRIT_DANGLER));
-            		builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_ETERN));
+        			builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_MINISHROOM));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_BIGSHROOM));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_SPROUTS));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_TALL_GRASS));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SPIRIT_DANGLER));
+            		builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(nether.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.SOUL_ETERN));
         		}
         	}
         	if(biome.is(Biomes.THE_END)) {
-                if (BPConfig.WORLDGEN.cyraLakesEnd.get()) builder.getGenerationSettings().addFeature(Decoration.UNDERGROUND_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CYRA_LAKE));
+            	ServerLevel end = ServerLifecycleHooks.getCurrentServer().getLevel(Level.END);
+            	if(end == null)
+            		return;
+                if (BPConfig.WORLDGEN.cyraLakesEnd.get()) builder.getGenerationSettings().getFeatures(Decoration.UNDERGROUND_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CYRA_LAKE));
                 if (!BPConfig.WORLDGEN.createNewSpongeBiome.get()) {
                     if (biome.is(Biomes.END_HIGHLANDS)) {
-                        builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_MYCHRODEGIA));
+                        builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_MYCHRODEGIA));
                         builder.getSpecialEffects().waterColor(-6599759)
                         .waterFogColor(-13158998)
                         .fogColor(-12378263)
@@ -139,23 +143,23 @@ public class BPBiomeModifier implements BiomeModifier {
                         .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
                         .build();
 
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.TOP_LAYER_MODIFICATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_KELP));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.TOP_LAYER_MODIFICATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_KELP));
 
-                        if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_LANTERN_HIGHLANDS_PATCH));
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDON));
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDE_FAN));
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_CORSASCILE));
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_PURPLE));
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_RED));
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_GREEN));
+                        if (BPConfig.WORLDGEN.chorusLanternHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_LANTERN_HIGHLANDS_PATCH));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDON));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDE_FAN));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_CORSASCILE));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_PURPLE));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_RED));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_GREEN));
 
-                        if (BPConfig.WORLDGEN.endSpikeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL));
+                        if (BPConfig.WORLDGEN.endSpikeHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.LOCAL_MODIFICATIONS).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPIKE_PATCH_HL));
                         
-                        if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL));
+                        if (BPConfig.WORLDGEN.endSpongeHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.LOCAL_MODIFICATIONS).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPONGE_PATCH_HL));
                     }
 
                     if (biome.is(Biomes.END_MIDLANDS) || biome.is(Biomes.END_BARRENS)) {
-                        builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_MYCHRODEGIA));
+                        builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_MYCHRODEGIA));
                         builder.getSpecialEffects()
                         .waterColor(-6599759)
                         .waterFogColor(-13158998)
@@ -166,19 +170,19 @@ public class BPBiomeModifier implements BiomeModifier {
                         .ambientMoodSound(new AmbientMoodSettings(SoundEvents.AMBIENT_NETHER_WASTES_MOOD, 6000, 8, 2.0D))
                         .build();
 
-                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().addFeature(Decoration.TOP_LAYER_MODIFICATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_KELP));
+                        if (BPConfig.WORLDGEN.chorusVegetationHighlands.get()) builder.getGenerationSettings().getFeatures(Decoration.TOP_LAYER_MODIFICATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_KELP));
 
-                        if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_LANTERN_MIDLANDS_PATCH));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDON));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDE_FAN));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_KELP));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_CORSASCILE));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_PURPLE));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_RED));
-                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.VEGETAL_DECORATION, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_GREEN));
+                        if (BPConfig.WORLDGEN.chorusLanternMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_LANTERN_MIDLANDS_PATCH));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDON));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.CHORUS_IDE_FAN));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_KELP));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.ENREDE_CORSASCILE));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_PURPLE));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_RED));
+                        if (BPConfig.WORLDGEN.chorusVegetationMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.VEGETAL_DECORATION).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.OCHAIM_GREEN));
 
-                        if (BPConfig.WORLDGEN.endSpikeMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPIKE_PATCH_ML));
-                        if (BPConfig.WORLDGEN.endSpongeMidlands.get()) builder.getGenerationSettings().addFeature(Decoration.LOCAL_MODIFICATIONS, end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPONGE_PATCH_ML));
+                        if (BPConfig.WORLDGEN.endSpikeMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.LOCAL_MODIFICATIONS).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPIKE_PATCH_ML));
+                        if (BPConfig.WORLDGEN.endSpongeMidlands.get()) builder.getGenerationSettings().getFeatures(Decoration.LOCAL_MODIFICATIONS).add(end.registryAccess().registryOrThrow(Registries.PLACED_FEATURE).getHolderOrThrow(BPPlacedFeatures.END_LAND_SPONGE_PATCH_ML));
                     }
                 }
         	}

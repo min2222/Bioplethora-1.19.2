@@ -2,6 +2,9 @@ package io.github.bioplethora.registry.worldgen;
 
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.BPBiomeSettings;
+import io.github.bioplethora.config.BPConfig;
+import net.fabricmc.fabric.api.NetherBiomes;
+import net.fabricmc.fabric.api.TheEndBiomes;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
@@ -42,8 +45,7 @@ public class BPBiomes {
 	public static void generateBiomes() {
         //OverworldBiomes.addContinentalBiome(BPBiomes.ROCKY_WOODLANDS, ClimateSettings.COOL, 1);
 
-		//TODO BiomeApiReforged Port
-		/*NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS, BPBiomeSettings.ATTRIBUTE);
+		NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS, BPBiomeSettings.ATTRIBUTE);
 
 		TheEndBiomes.addHighlandsBiome(BPBiomes.CAERI_FOREST, 7.0);
         TheEndBiomes.addMidlandsBiome(BPBiomes.CAERI_FOREST, BPBiomes.CAERI_PLAINS, 5);
@@ -55,7 +57,7 @@ public class BPBiomes {
             TheEndBiomes.addHighlandsBiome(BPBiomes.LAVENDER_LAKES, 7);
             TheEndBiomes.addMidlandsBiome(BPBiomes.LAVENDER_LAKES, BPBiomes.LAVENDER_PONDS, 5);
             TheEndBiomes.addBarrensBiome(BPBiomes.LAVENDER_LAKES, BPBiomes.LAVENDER_PONDS, 5);
-        }*/
+        }
     }
 
     //==============================================

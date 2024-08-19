@@ -159,7 +159,7 @@ dependencies {
 	// Dependencies
 	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.20.1:${geckolib_version}")
 	implementation("com.eliotlash.mclib:mclib:20")
-	//implementation fg.deobf("net.yeoxuhang.biomeapireforged:biomeapireforged-1.20.1:1.0.0")
+	implementation fg.deobf("net.yeoxuhang.biomeapireforged:biomeapireforged-1.20.1:1.0.0")
 	
 	// Extras
 	
