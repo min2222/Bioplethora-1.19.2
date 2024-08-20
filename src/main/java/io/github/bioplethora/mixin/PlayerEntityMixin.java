@@ -118,8 +118,9 @@ public abstract class PlayerEntityMixin extends LivingEntity implements IPlayerE
     
     protected void playEquipSound(ItemStack p_217042_) 
     {
-    	if (!p_217042_.isEmpty() && !this.isSpectator()) {
-    		SoundEvent soundevent = Equipable.get(p_217042_).getEquipSound();
+    	if (!p_217042_.isEmpty() && !this.isSpectator() && Equipable.get(p_217042_) != null) {
+    		Equipable equipable = Equipable.get(p_217042_);
+    		SoundEvent soundevent = equipable.getEquipSound();
     		if (soundevent != null) {
     			this.playSound(soundevent, 1.0F, 1.0F);
     		}
