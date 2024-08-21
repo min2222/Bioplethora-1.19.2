@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:nether_wastes",
+  "features": [
+    "bioplethora:thontus_thistle",
+    "bioplethora:lava_spire"
+  ],
+  "step": "vegetal_decoration"
+}

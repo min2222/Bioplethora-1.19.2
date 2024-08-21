@@ -32,10 +32,10 @@
     "min_length": 2,
     "whitelist": [
       {
-        "Name": "minecraft:blackstone"
+        "Name": "minecraft:netherrack"
       },
       {
-        "Name": "minecraft:netherrack"
+        "Name": "minecraft:blackstone"
       }
     ]
   }

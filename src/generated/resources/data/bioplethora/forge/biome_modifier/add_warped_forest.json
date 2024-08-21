@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:warped_forest",
+  "features": [
+    "bioplethora:warped_dancer",
+    "bioplethora:turquoise_pendent"
+  ],
+  "step": "vegetal_decoration"
+}

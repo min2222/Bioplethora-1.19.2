@@ -39,16 +39,16 @@
     "min_length": 1,
     "whitelist": [
       {
-        "Name": "minecraft:andesite"
-      },
-      {
-        "Name": "minecraft:stone"
-      },
-      {
         "Name": "minecraft:granite"
       },
       {
         "Name": "minecraft:diorite"
+      },
+      {
+        "Name": "minecraft:andesite"
+      },
+      {
+        "Name": "minecraft:stone"
       }
     ]
   }

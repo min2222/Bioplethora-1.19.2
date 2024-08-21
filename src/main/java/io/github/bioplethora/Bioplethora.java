@@ -32,6 +32,7 @@ import io.github.bioplethora.registry.worldgen.BPFeatures;
 import io.github.bioplethora.registry.worldgen.BPPlacedFeatures;
 import io.github.bioplethora.registry.worldgen.BPStructures;
 import io.github.bioplethora.registry.worldgen.BPWorldCarvers;
+import io.github.bioplethora.world.BPBiomeModifier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -52,6 +53,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib.GeckoLib;
 
 @Mod(Bioplethora.MOD_ID)
@@ -144,7 +146,8 @@ public class Bioplethora {
     			.add(Registries.STRUCTURE, BPStructures::bootstrapStructures)
     			.add(Registries.STRUCTURE_SET, BPStructures::bootstrapSets)
     			.add(Registries.PLACED_FEATURE, BPPlacedFeatures::bootstrap)
-    			.add(Registries.CONFIGURED_FEATURE, BPConfiguredFeatures::bootstrap);
+    			.add(Registries.CONFIGURED_FEATURE, BPConfiguredFeatures::bootstrap)
+    			.add(ForgeRegistries.Keys.BIOME_MODIFIERS, BPBiomeModifiers::bootstrap);;
         
     	private BPWorldGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
     		super(output, provider, BUILDER, Set.of(Bioplethora.MOD_ID));

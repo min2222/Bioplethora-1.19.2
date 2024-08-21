@@ -1,0 +1,13 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:soul_sand_valley",
+  "features": [
+    "bioplethora:soul_minishroom",
+    "bioplethora:soul_bigshroom",
+    "bioplethora:soul_sprouts",
+    "bioplethora:soul_tall_grass",
+    "bioplethora:spirit_dangler",
+    "bioplethora:soul_etern"
+  ],
+  "step": "vegetal_decoration"
+}

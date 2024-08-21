@@ -1,0 +1,17 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "minecraft:end_highlands",
+    "minecraft:end_midlands",
+    "minecraft:end_barrens"
+  ],
+  "features": [
+    "bioplethora:chorus_idon",
+    "bioplethora:chorus_ide_fan",
+    "bioplethora:enrede_corsascile",
+    "bioplethora:ochaim_purple",
+    "bioplethora:ochaim_red",
+    "bioplethora:ochaim_green"
+  ],
+  "step": "vegetal_decoration"
+}

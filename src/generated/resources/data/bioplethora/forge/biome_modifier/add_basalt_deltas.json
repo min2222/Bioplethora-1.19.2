@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "minecraft:basalt_deltas",
+  "features": [
+    "bioplethora:basalt_speleotherm",
+    "bioplethora:lava_spire"
+  ],
+  "step": "vegetal_decoration"
+}

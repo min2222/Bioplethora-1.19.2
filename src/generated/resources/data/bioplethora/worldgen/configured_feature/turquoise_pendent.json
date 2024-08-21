@@ -32,13 +32,13 @@
     "min_length": 2,
     "whitelist": [
       {
-        "Name": "minecraft:blackstone"
+        "Name": "minecraft:warped_wart_block"
       },
       {
         "Name": "minecraft:netherrack"
       },
       {
-        "Name": "minecraft:warped_wart_block"
+        "Name": "minecraft:blackstone"
       }
     ]
   }

@@ -130,12 +130,12 @@ public class EntitySpawnManager {
         public static final Consumer<MobSpawnSettingsBuilder> OCEAN_ENTITIES = (builder) -> {
             //Triggerfish
             if (BPConfig.COMMON.spawnTriggerfish.get()) {
-                builder.addSpawn(waterAmbient, new MobSpawnSettings.SpawnerData(BPEntities.TRIGGERFISH.get(), 15 * BPConfig.COMMON.mobSpawnWeightMultiplier.get(), 1, 5));
+                builder.addSpawn(waterAmbient, new MobSpawnSettings.SpawnerData(BPEntities.TRIGGERFISH.get(), 5 * BPConfig.COMMON.mobSpawnWeightMultiplier.get(), 1, 5));
             }
 
             //Myliothan
             if (BPConfig.COMMON.spawnMyliothan.get()) {
-                builder.addSpawn(waterCreature, new MobSpawnSettings.SpawnerData(BPEntities.MYLIOTHAN.get(), 5 * BPConfig.COMMON.mobSpawnWeightMultiplier.get(), 1, 1));
+                builder.addSpawn(waterCreature, new MobSpawnSettings.SpawnerData(BPEntities.MYLIOTHAN.get(), 1 * BPConfig.COMMON.mobSpawnWeightMultiplier.get(), 1, 1));
             }
         };
 
@@ -166,13 +166,13 @@ public class EntitySpawnManager {
 
         public static final Consumer<MobSpawnSettingsBuilder> END_ENTITIES = (builder) -> {
             //Voidjaw
-            createSpawn(builder, monster, BPEntities.VOIDJAW, 60, 1, 1, BPConfig.COMMON.spawnVoidjaw);
+            createSpawn(builder, monster, BPEntities.VOIDJAW, 30, 1, 1, BPConfig.COMMON.spawnVoidjaw);
 
             //Gaugalem
-            createSpawn(builder, monster, BPEntities.GAUGALEM, 50, 1, 1, BPConfig.COMMON.spawnGaugalem);
+            createSpawn(builder, monster, BPEntities.GAUGALEM, 25, 1, 1, BPConfig.COMMON.spawnGaugalem);
 
             //Onofish
-            createSpawn(builder, monster, BPEntities.ONOFISH, 80, 2, 2, BPConfig.COMMON.spawnOnofish);
+            createSpawn(builder, monster, BPEntities.ONOFISH, 40, 2, 2, BPConfig.COMMON.spawnOnofish);
 
             //Triggerfish
             createSpawn(builder, monster, BPEntities.TRIGGERFISH, 5, 3, 5, BPConfig.COMMON.spawnTriggerfish);

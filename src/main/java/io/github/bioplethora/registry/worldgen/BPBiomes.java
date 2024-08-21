@@ -3,7 +3,6 @@ package io.github.bioplethora.registry.worldgen;
 import io.github.bioplethora.Bioplethora;
 import io.github.bioplethora.api.BPBiomeSettings;
 import io.github.bioplethora.config.BPConfig;
-import net.fabricmc.fabric.api.NetherBiomes;
 import net.fabricmc.fabric.api.TheEndBiomes;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -45,7 +44,9 @@ public class BPBiomes {
 	public static void generateBiomes() {
         //OverworldBiomes.addContinentalBiome(BPBiomes.ROCKY_WOODLANDS, ClimateSettings.COOL, 1);
 
-		NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS, BPBiomeSettings.ATTRIBUTE);
+		//https://www.curseforge.com/minecraft/mc-mods/feature-recycler
+		//FIXME cause crash
+		//NetherBiomes.addNetherBiome(BPBiomes.CRYEANUM_PLAINS, BPBiomeSettings.ATTRIBUTE);
 
 		TheEndBiomes.addHighlandsBiome(BPBiomes.CAERI_FOREST, 7.0);
         TheEndBiomes.addMidlandsBiome(BPBiomes.CAERI_FOREST, BPBiomes.CAERI_PLAINS, 5);
