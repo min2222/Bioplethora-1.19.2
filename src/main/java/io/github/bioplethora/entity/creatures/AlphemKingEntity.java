@@ -221,51 +221,51 @@ public class AlphemKingEntity extends BPMonsterEntity implements GeoEntity, IBio
     private <E extends GeoEntity> PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.death"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.getWaking()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.waking"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.waking"));
             return PlayState.CONTINUE;
         }
 
         if (this.getRoaring()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.roar"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.roar"));
             return PlayState.CONTINUE;
         }
 
         if (this.isPursuit()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.pursuit"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.pursuit"));
             return PlayState.CONTINUE;
         }
 
         if (this.getSmashing()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.attack_2"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.attack_2"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking2()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.attack_1"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.attack_1"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.attack_0"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.attack_0"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving() && this.isBerserked()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.walk_berserk"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.walk_berserk"));
             return PlayState.CONTINUE;
         }
 
         if (event.isMoving() && !this.isBerserked()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.walk"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.walk"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.alphem_king.idle"));
+        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.alphem_king.idle"));
         return PlayState.CONTINUE;
     }
 

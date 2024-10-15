@@ -130,31 +130,31 @@ public class AltyrusEntity extends BPMonsterEntity implements GeoEntity, FlyingA
     private <E extends GeoEntity>PlayState predicate(AnimationState<E> event) {
 
         if (this.isDeadOrDying() || this.dead) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.death"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.altyrus.death"));
             return PlayState.CONTINUE;
         }
 
         if (this.isSummoning()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.summoning"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.altyrus.summoning"));
             return PlayState.CONTINUE;
         }
 
         if (this.getAttacking()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.attacking"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.altyrus.attacking"));
             return PlayState.CONTINUE;
         }
 
         if (this.isCharging()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.charging"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.altyrus.charging"));
             return PlayState.CONTINUE;
         }
 
         if (this.isDodging()) {
-            event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.dodging"));
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.altyrus.dodging"));
             return PlayState.CONTINUE;
         }
 
-        event.getController().setAnimation(RawAnimation.begin().thenPlay("animation.altyrus.idle"));
+        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.altyrus.idle"));
         return PlayState.CONTINUE;
     }
 
